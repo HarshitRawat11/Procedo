@@ -1,0 +1,70 @@
+---
+/* ============================================================================
+ *  STANDALONE CONCEPT PAGE — /uptime
+ *
+ *  Companion to /quiet. Same idea, different moment: where /quiet says "nothing
+ *  needs you", this one says "something went wrong outside and you never knew".
+ *
+ *  ⚠️ NOT part of the website: not in `nav`, linked from nowhere, noindex, and
+ *  excluded from the sitemap filter in astro.config.mjs.
+ * ========================================================================== */
+import '@fontsource-variable/inter';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '../styles/global.css';
+import UptimeScene from '../components/UptimeScene.astro';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Uptime | Procedo Infosystems</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#FBFAF8" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+  </head>
+
+  <body>
+    <main class="stage">
+      <UptimeScene surface="bare" class="hero" />
+      <p class="caption">Procedo Infosystems · Power &amp; Precision concept</p>
+    </main>
+
+    <style>
+      .stage {
+        min-height: 100svh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 1.5rem;
+        text-align: center;
+      }
+      /* `.hero` lands on an element rendered inside UptimeScene, so the page's
+         own scope never matches it — these have to be :global. Without the
+         explicit width the figure is shrink-to-fit and the caption ends up
+         sizing the artwork. */
+      :global(.hero) {
+        width: 100%;
+        max-width: 30rem;
+      }
+      :global(.hero .scene) {
+        max-width: 30rem;
+      }
+      :global(.hero .line) {
+        max-width: 32ch;
+        font-size: clamp(1.0625rem, 2.4vw, 1.25rem);
+      }
+      .caption {
+        margin-top: 2.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #94a3b8;
+      }
+    </style>
+  </body>
+</html>

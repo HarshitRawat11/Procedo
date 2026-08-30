@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+import { termsOfService } from '../data/site';
+---
+
+<BaseLayout
+  title="Terms of Service"
+  description="The terms governing your use of the Procedo Infosystems website and services."
+>
+  <LegalDoc doc={termsOfService} />
+</BaseLayout>

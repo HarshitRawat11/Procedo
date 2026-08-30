@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+import { privacyPolicy } from '../data/site';
+---
+
+<BaseLayout
+  title="Privacy Policy"
+  description="How Procedo Infosystems collects, uses and safeguards the information you share with us."
+>
+  <LegalDoc doc={privacyPolicy} />
+</BaseLayout>

@@ -1,0 +1,93 @@
+---
+// Renders a policy document (Privacy / Terms / Cookies) from src/data/site.ts.
+// Numbered sections, hairline dividers, and a closing contact panel.
+import Container from './Container.astro';
+import PageHeader from './PageHeader.astro';
+import { Icon } from 'astro-icon/components';
+import { contact } from '../data/site';
+import type { LegalDoc } from '../data/site';
+
+interface Props {
+  doc: LegalDoc;
+}
+const { doc } = Astro.props;
+---
+
+<PageHeader eyebrow="Legal" title={doc.title} subtitle={doc.intro} />
+
+<section class="bg-cream py-16 lg:py-24">
+  <Container>
+    <div class="max-w-3xl">
+      <p class="font-mono text-xs uppercase tracking-[0.18em] text-slate-500" data-reveal>
+        Last updated · {doc.updated}
+      </p>
+
+      <div class="mt-10 space-y-12">
+        {
+          doc.sections.map((s, i) => (
+            <section data-reveal>
+              <h2 class="flex items-baseline gap-3 text-xl font-semibold text-navy-950">
+                <span class="font-mono text-sm text-brand-500 tabular-nums">{i + 1}.</span>
+                {s.heading}
+              </h2>
+
+              {s.body?.map((p) => (
+                <p class="mt-4 leading-relaxed text-slate-600">{p}</p>
+              ))}
+
+              {s.list && (
+                <ul class="mt-4 space-y-2.5">
+                  {s.list.map((it) => (
+                    <li class="flex items-start gap-2.5 leading-relaxed text-slate-600">
+                      <Icon
+                        name="lucide:check"
+                        class="mt-1 size-4 shrink-0 text-brand-500"
+                        aria-hidden="true"
+                      />
+                      <span>{it}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {s.terms && (
+                <dl class="mt-4 space-y-3">
+                  {s.terms.map((t) => (
+                    <div class="rounded-lg border border-line bg-white px-5 py-4 shadow-sm">
+                      <dt class="text-sm font-semibold text-navy-950">{t.term}</dt>
+                      <dd class="mt-1 text-sm leading-relaxed text-slate-600">{t.body}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+            </section>
+          ))
+        }
+      </div>
+
+      <div
+        class="mt-14 rounded-xl border border-brand-200 bg-brand-50 px-6 py-6"
+        data-reveal
+      >
+        <h2 class="text-base font-semibold text-navy-950">Contact us</h2>
+        <p class="mt-2 text-sm leading-relaxed text-brand-900/80">{doc.contactLine}</p>
+        <div class="mt-4 flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:gap-6">
+          <a
+            href={`mailto:${contact.email}`}
+            class="inline-flex items-center gap-2 font-medium text-brand-700 hover:text-brand-800"
+          >
+            <Icon name="lucide:mail" class="size-4" aria-hidden="true" />
+            {contact.email}
+          </a>
+          <a
+            href={'tel:' + contact.phone.replace(/[^+\d]/g, '')}
+            class="inline-flex items-center gap-2 font-medium text-brand-700 hover:text-brand-800"
+          >
+            <Icon name="lucide:phone" class="size-4" aria-hidden="true" />
+            {contact.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

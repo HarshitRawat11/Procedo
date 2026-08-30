@@ -1,0 +1,28 @@
+# build output
+dist/
+dist-client/
+.output/
+
+# dependencies
+node_modules/
+
+# astro generated types & cache
+.astro/
+
+# environment & secrets
+.env
+.env.production
+.env.local
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+
+# local scrape + downloaded reference assets (not part of the app)
+scrape/
+reference/
+
+# verification artifacts
+lighthouse*.json

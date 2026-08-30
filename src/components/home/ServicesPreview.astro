@@ -1,0 +1,21 @@
+---
+// Home "Our core competencies" section (light band) — the first services
+// section, used as the new reference design. Reuses CompetencyCard.
+import Container from '../Container.astro';
+import SectionHeading from '../SectionHeading.astro';
+import CompetencyCard from '../CompetencyCard.astro';
+import { competencies, competenciesIntro } from '../../data/site';
+---
+
+<section id="services" class="border-t border-line bg-band py-20 lg:py-28">
+  <Container>
+    <SectionHeading
+      eyebrow={competenciesIntro.eyebrow}
+      title={competenciesIntro.title}
+      subtitle={competenciesIntro.sub}
+    />
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {competencies.map((c, idx) => <CompetencyCard competency={c} delay={(idx % 3) * 80} />)}
+    </div>
+  </Container>
+</section>

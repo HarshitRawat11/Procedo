@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ClosingCta from '../components/ClosingCta.astro';
+import { Icon } from 'astro-icon/components';
+import { careers } from '../data/site';
+---
+
+<BaseLayout
+  title="Careers"
+  description="Join Procedo Infosystems — engineers and specialists building scalable digital infrastructure, secure smart environments and immersive communication spaces."
+>
+  <PageHeader eyebrow="Careers" title="Build systems that matter" subtitle={careers.intro} />
+
+  <!-- Why work with us -->
+  <section class="bg-cream py-16 lg:py-24">
+    <Container>
+      <div class="grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div class="lg:col-span-5" data-reveal>
+          <p
+            class="flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.18em] text-navy-600"
+          >
+            <span class="inline-block h-px w-7 bg-brand-500" aria-hidden="true"></span>
+            Life at Procedo
+          </p>
+          <h2 class="mt-4 text-2xl font-semibold text-navy-950 sm:text-3xl">
+            {careers.cultureTitle}
+          </h2>
+          <p class="mt-4 leading-relaxed text-slate-600">
+            We are a small, senior team — which means your work is visible, your decisions carry
+            weight, and you learn across every layer of the stack.
+          </p>
+        </div>
+
+        <ul class="grid gap-4 sm:grid-cols-2 lg:col-span-7">
+          {
+            careers.culture.map((c, i) => (
+              <li
+                data-reveal
+                style={`--reveal-delay:${(i % 2) * 80}ms`}
+                class="flex items-start gap-3 rounded-xl border border-line bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg hover:shadow-navy-950/[0.06]"
+              >
+                <Icon
+                  name="lucide:circle-check"
+                  class="mt-0.5 size-5 shrink-0 text-brand-500"
+                  aria-hidden="true"
+                />
+                <span class="text-sm leading-relaxed text-slate-700">{c}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Roles -->
+  <section class="border-t border-line bg-band py-16 lg:py-24">
+    <Container>
+      <SectionHeading
+        eyebrow="Open disciplines"
+        title={careers.rolesTitle}
+        subtitle={careers.rolesIntro}
+      />
+
+      <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {
+          careers.roles.map((r, i) => (
+            <article
+              data-reveal
+              style={`--reveal-delay:${(i % 3) * 80}ms`}
+              class="flex flex-col rounded-xl border border-line bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg hover:shadow-navy-950/[0.06]"
+            >
+              <span class="grid size-11 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                <Icon name={r.icon} class="size-5" aria-hidden="true" />
+              </span>
+              <h3 class="mt-5 text-base font-semibold text-navy-950">{r.title}</h3>
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{r.body}</p>
+              <a
+                href={`mailto:${careers.applyEmail}?subject=${encodeURIComponent('Application: ' + r.title)}`}
+                class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700"
+              >
+                Apply for this role
+                <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" />
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      <!-- Open application -->
+      <div
+        class="mt-10 flex flex-col items-start justify-between gap-5 rounded-2xl border border-line bg-white p-7 shadow-sm sm:flex-row sm:items-center"
+        data-reveal
+      >
+        <div>
+          <h2 class="text-base font-semibold text-navy-950">Don’t see your role?</h2>
+          <p class="mt-1.5 text-sm leading-relaxed text-slate-600">
+            Send us your CV and a short note on what you’d like to build. We keep good people in
+            mind for upcoming projects.
+          </p>
+        </div>
+        <a
+          href={`mailto:${careers.applyEmail}?subject=${encodeURIComponent('Open application')}`}
+          class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-500 px-5 py-2.5 text-[15px] font-medium text-white shadow-sm shadow-brand-600/20 transition-all duration-200 hover:bg-brand-600 active:scale-[0.98]"
+        >
+          <Icon name="lucide:mail" class="size-4" aria-hidden="true" />
+          {careers.applyEmail}
+        </a>
+      </div>
+    </Container>
+  </section>
+
+  <ClosingCta />
+</BaseLayout>

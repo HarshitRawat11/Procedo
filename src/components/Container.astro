@@ -1,0 +1,12 @@
+---
+// Centered max-width content wrapper used across all sections.
+export interface Props {
+  class?: string;
+  as?: string;
+}
+const { class: className = '', as: Tag = 'div' } = Astro.props;
+---
+
+<Tag class:list={['mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10', className]}>
+  <slot />
+</Tag>

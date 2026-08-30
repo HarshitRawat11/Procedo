@@ -1,0 +1,48 @@
+---
+/* ============================================================================
+ *  404 — page not found.
+ *
+ *  Uses the QuietScene illustration (cat asleep on a humming rack). The joke
+ *  lands because the scene says "everything is fine" while the page you asked
+ *  for is the one thing that isn't there.
+ *
+ *  Unlike the old standalone /quiet concept page, this one sits inside
+ *  BaseLayout so the header and footer are present — someone who lands here by
+ *  mistake needs a way back out.
+ *
+ *  Astro emits this as dist/404.html, which static hosts (Netlify, Vercel,
+ *  Cloudflare Pages, nginx) serve automatically for unmatched routes.
+ * ========================================================================== */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Button from '../components/Button.astro';
+import QuietScene from '../components/QuietScene.astro';
+---
+
+<BaseLayout title="Page not found" noindex>
+  <section class="bg-cream py-16 lg:py-24">
+    <Container>
+      <div class="mx-auto flex max-w-xl flex-col items-center text-center">
+        <p class="font-mono text-xs uppercase tracking-[0.18em] text-brand-600">Error 404</p>
+        <h1 class="mt-4 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-tight text-navy-950">
+          This page isn’t on the rack
+        </h1>
+        <p class="mt-4 text-lg leading-relaxed text-slate-600">
+          The address you followed doesn’t exist, or it moved. Everything else is running
+          exactly as it should.
+        </p>
+
+        <QuietScene
+          chip="All other systems nominal"
+          surface="bare"
+          class="mt-10 w-full max-w-sm"
+        />
+
+        <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+          <Button href="/" chevron>Back to home</Button>
+          <Button href="/contact" variant="secondary">Contact us</Button>
+        </div>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

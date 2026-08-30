@@ -1,0 +1,189 @@
+---
+// Contact form wired to Web3Forms (free, no backend). Paste your access key in
+// src/data/site.ts → contactForm.web3formsKey. Includes a honeypot + accessible
+// labels. On submit it posts to Web3Forms, which emails contactForm.deliversTo.
+//
+// If no access key is set yet, the form renders disabled with a clear
+// direct-email fallback rather than silently failing on submit.
+import { Icon } from 'astro-icon/components';
+import QuietScene from './QuietScene.astro';
+import { contactForm, contact, site } from '../data/site';
+
+const ready = contactForm.web3formsKey.trim().length > 0;
+
+const field =
+  'w-full rounded-lg border border-line bg-white px-4 py-2.5 text-navy-900 placeholder:text-slate-400 transition-colors focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-band disabled:text-slate-400';
+const label = 'mb-1.5 block text-sm font-medium text-navy-800';
+---
+
+{
+  !ready && (
+    <div class="mb-6 flex items-start gap-3 rounded-lg border border-brand-200 bg-brand-50 px-5 py-4 text-sm text-brand-900">
+      <Icon name="lucide:info" class="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+      <p>
+        The form isn’t connected yet. In the meantime, email us at{' '}
+        <a href={`mailto:${contact.email}`} class="font-semibold underline">
+          {contact.email}
+        </a>{' '}
+        or call{' '}
+        <a href={'tel:' + contact.phone.replace(/[^+\d]/g, '')} class="font-semibold underline">
+          {contact.phone}
+        </a>
+      </p>
+    </div>
+  )
+}
+
+<form
+  id="contact-form"
+  action="https://api.web3forms.com/submit"
+  method="POST"
+  class="space-y-5"
+  data-ready={ready ? 'true' : 'false'}
+>
+  <input type="hidden" name="access_key" value={contactForm.web3formsKey} />
+  <input type="hidden" name="subject" value={`New enquiry from ${site.url.replace('https://', '')}`} />
+  <input type="hidden" name="from_name" value={`${site.name} website`} />
+  <!-- honeypot: bots fill this; humans never see it -->
+  <input
+    type="checkbox"
+    name="botcheck"
+    class="hidden"
+    style="display:none"
+    tabindex="-1"
+    autocomplete="off"
+  />
+
+  <fieldset disabled={!ready} class="space-y-5 border-0 p-0">
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label class={label} for="cf-name">Name</label>
+        <input class={field} id="cf-name" type="text" name="name" placeholder="Your name" required />
+      </div>
+      <div>
+        <label class={label} for="cf-email">Email</label>
+        <input
+          class={field}
+          id="cf-email"
+          type="email"
+          name="email"
+          placeholder="you@company.com"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label class={label} for="cf-company">
+          Company <span class="font-normal text-slate-400">(optional)</span>
+        </label>
+        <input class={field} id="cf-company" type="text" name="company" placeholder="Company name" />
+      </div>
+      <div>
+        <label class={label} for="cf-interest">What’s this about?</label>
+        <select class={field} id="cf-interest" name="interest">
+          <option>General enquiry</option>
+          <option>IT Infrastructure</option>
+          <option>Facilities Security</option>
+          <option>Audio &amp; Video Conferencing</option>
+          <option>Telecom Infrastructure</option>
+          <option>Power &amp; Precision Systems</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label class={label} for="cf-message">How can we help?</label>
+      <textarea
+        class={field}
+        id="cf-message"
+        name="message"
+        rows="5"
+        placeholder="Tell us about your project or requirement…"
+        required></textarea>
+    </div>
+
+    <button
+      type="submit"
+      class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-500 px-6 py-3 text-[15px] font-medium text-white shadow-sm shadow-brand-600/20 transition-all duration-200 hover:bg-brand-600 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none sm:w-auto"
+    >
+      <span data-submit-label>Send message</span>
+      <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" />
+    </button>
+  </fieldset>
+
+  <p
+    id="cf-status"
+    role="status"
+    aria-live="polite"
+    hidden
+    class="rounded-lg px-4 py-3 text-sm"
+  >
+  </p>
+</form>
+
+<!-- Shown in place of the form once a message actually sends. Rendered up front
+     and toggled, so the illustration is already in the DOM when it's needed. -->
+<div id="cf-success" hidden role="status" aria-live="polite" class="text-center">
+  <h3 class="text-xl font-semibold text-navy-950">Message received</h3>
+  <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-slate-600">
+    It’s landed with the right team. We’ll be in touch shortly — nothing else needed from you.
+  </p>
+  <QuietScene
+    chip="Enquiry logged"
+    lines={['Consider it handled. Go put the kettle on.']}
+    surface="bare"
+    class="mt-6"
+  />
+</div>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('cf-status');
+  const labelEl = form?.querySelector('[data-submit-label]');
+
+  if (form && status && labelEl && form.dataset.ready === 'true') {
+    const show = (msg: string, ok: boolean) => {
+      status.textContent = msg;
+      status.hidden = false;
+      status.className = ok
+        ? 'rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800'
+        : 'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800';
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const original = labelEl.textContent;
+      labelEl.textContent = 'Sending…';
+      status.hidden = true;
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          form.reset();
+          // swap the whole form out for the confirmation scene
+          const success = document.getElementById('cf-success');
+          if (success) {
+            form.hidden = true;
+            success.hidden = false;
+            success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          } else {
+            show('Thanks — your message is on its way. We’ll be in touch shortly.', true);
+          }
+        } else {
+          show(data?.message ?? 'Something went wrong. Please email us instead.', false);
+        }
+      } catch {
+        show('Network error — please email us at contact@procedoinfo.com instead.', false);
+      } finally {
+        labelEl.textContent = original;
+      }
+    });
+  }
+</script>

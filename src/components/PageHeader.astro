@@ -1,0 +1,35 @@
+---
+// Inner-page header (light): mono eyebrow + orange tick, calm navy title, muted
+// subtitle. Sits below the fixed navbar (BaseLayout adds the top offset).
+import Container from './Container.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+}
+const { eyebrow, title, subtitle } = Astro.props;
+---
+
+<section class="border-b border-line bg-cream">
+  <Container class="pt-14 pb-12 lg:pt-20 lg:pb-16">
+    <div data-reveal>
+      {
+        eyebrow && (
+          <p class="flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
+            <span class="inline-block h-px w-7 bg-brand-500" aria-hidden="true" />
+            {eyebrow}
+          </p>
+        )
+      }
+      <h1 class="mt-4 text-[clamp(2rem,4vw,3rem)] font-semibold leading-tight tracking-tight text-navy-950">
+        {title}
+      </h1>
+      {
+        subtitle && (
+          <p class="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">{subtitle}</p>
+        )
+      }
+    </div>
+  </Container>
+</section>

@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+import { cookiePolicy } from '../data/site';
+---
+
+<BaseLayout
+  title="Cookie Policy"
+  description="How Procedo Infosystems uses cookies and similar technologies on this website."
+>
+  <LegalDoc doc={cookiePolicy} />
+</BaseLayout>

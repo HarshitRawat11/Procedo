@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Procedo Infosystems — Content Review</title>
+<style>
+  :root{
+    --brand-500:#f24e1e; --brand-600:#d63f12; --brand-50:#fef2ee; --brand-100:#fcdccf;
+    --navy-950:#0f172a; --navy-800:#1b2a4a; --navy-700:#25395e; --navy-600:#334a73;
+    --cream:#fbfaf8; --band:#f3f4f6; --line:#e5e7eb; --ink:#475569;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--cream); color:var(--ink);
+    font-family:'Inter','Segoe UI',ui-sans-serif,system-ui,-apple-system,sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 1.5rem 6rem;}
+  header.doc-head{
+    background:var(--navy-950); color:#fff; padding:3rem 1.5rem 2.5rem; margin-bottom:0;
+  }
+  header.doc-head .inner{max-width:760px; margin:0 auto;}
+  header.doc-head .kicker{
+    font-family:ui-monospace,'IBM Plex Mono',Menlo,monospace; font-size:.7rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--brand-500); margin:0 0 .75rem;
+  }
+  header.doc-head h1{font-size:1.9rem; margin:0 0 .5rem; font-weight:650; letter-spacing:-.01em;}
+  header.doc-head p{margin:0; color:#cbd5e1; max-width:56ch;}
+
+  .callout{
+    background:var(--brand-50); border:1px solid var(--brand-100); border-radius:.75rem;
+    padding:1.1rem 1.35rem; margin:2rem 0; font-size:.925rem; color:#7c2d12;
+  }
+  .callout strong{color:#7c2d12;}
+  .callout ul{margin:.5rem 0 0; padding-left:1.2rem;}
+
+  nav.toc{
+    background:#fff; border:1px solid var(--line); border-radius:.75rem;
+    padding:1.25rem 1.5rem; margin:2rem 0 3rem;
+  }
+  nav.toc h2{
+    font-size:.7rem; text-transform:uppercase; letter-spacing:.14em; color:var(--navy-600);
+    font-family:ui-monospace,'IBM Plex Mono',Menlo,monospace; margin:0 0 .75rem;
+  }
+  nav.toc ol{margin:0; padding-left:1.1rem; columns:2; column-gap:2rem;}
+  nav.toc li{margin-bottom:.35rem; break-inside:avoid;}
+  nav.toc a{color:var(--navy-800); text-decoration:none;}
+  nav.toc a:hover{color:var(--brand-600); text-decoration:underline;}
+
+  section.page{border-top:1px solid var(--line); padding:3rem 0 2.5rem; scroll-margin-top:1.5rem;}
+  section.page:first-of-type{border-top:none;}
+  .page-kicker{
+    font-family:ui-monospace,'IBM Plex Mono',Menlo,monospace; font-size:.7rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--navy-600); display:flex; align-items:center; gap:.6rem; margin:0 0 .6rem;
+  }
+  .page-kicker::before{content:''; width:1.6rem; height:1px; background:var(--brand-500); display:inline-block;}
+  .route{
+    font-family:ui-monospace,'IBM Plex Mono',Menlo,monospace; font-size:.7rem; color:#94a3b8; font-weight:normal;
+    margin-left:.25rem;
+  }
+  h1.page-title{font-size:1.65rem; color:var(--navy-950); margin:0 0 .35rem; font-weight:650; letter-spacing:-.01em;}
+  p.page-sub{color:var(--ink); font-size:1.02rem; margin:0 0 1.75rem; max-width:60ch;}
+
+  h2.sec{font-size:1.15rem; color:var(--navy-950); margin:2rem 0 .6rem; font-weight:650;}
+  h2.sec .eyebrow{
+    display:block; font-family:ui-monospace,'IBM Plex Mono',Menlo,monospace; font-size:.68rem;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--navy-600); font-weight:500; margin-bottom:.4rem;
+  }
+  h3.sub{font-size:.95rem; color:var(--navy-800); margin:1.2rem 0 .4rem; font-weight:600;}
+  p{margin:0 0 .9rem;}
+  ul.bullets{margin:.4rem 0 1rem; padding-left:1.3rem;}
+  ul.bullets li{margin-bottom:.3rem;}
+  ul.pills{list-style:none; margin:.5rem 0 1rem; padding:0; display:flex; flex-wrap:wrap; gap:.4rem;}
+  ul.pills li{
+    background:var(--band); border:1px solid var(--line); border-radius:999px; padding:.3rem .75rem;
+    font-size:.85rem; color:var(--navy-800);
+  }
+  blockquote.quote{
+    border-left:2px solid var(--brand-500); margin:1rem 0; padding:.2rem 0 .2rem 1.1rem;
+    font-style:italic; color:var(--navy-950); font-weight:500;
+  }
+  .card{
+    border:1px solid var(--line); background:#fff; border-radius:.75rem; padding:1.1rem 1.3rem; margin:.6rem 0;
+  }
+  .card h4{margin:0 0 .3rem; font-size:.95rem; color:var(--navy-950);}
+  .card p{margin:0; font-size:.9rem;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:.9rem;}
+  @media (max-width:600px){.grid2{grid-template-columns:1fr;} nav.toc ol{columns:1;}}
+  .cta-row{display:flex; gap:.6rem; flex-wrap:wrap; margin:.75rem 0 0;}
+  .btn{
+    display:inline-block; font-size:.85rem; font-weight:600; padding:.4rem .85rem; border-radius:.5rem;
+  }
+  .btn.primary{background:var(--brand-500); color:#fff;}
+  .btn.secondary{border:1px solid var(--line); color:var(--navy-800);}
+  .note{
+    font-size:.85rem; color:#92400e; background:#fffbeb; border:1px solid #fde68a; border-radius:.5rem;
+    padding:.6rem .9rem; margin:.6rem 0;
+  }
+  .field-note{
+    display:inline-block; font-size:.75rem; color:#b45309; background:#fffbeb; border:1px solid #fde68a;
+    border-radius:999px; padding:.1rem .55rem; margin-left:.4rem; font-weight:600; vertical-align:middle;
+  }
+  table.roles{width:100%; border-collapse:collapse; margin:.5rem 0 1rem;}
+  table.roles td{border-bottom:1px solid var(--line); padding:.6rem 0; vertical-align:top; font-size:.9rem;}
+  table.roles td:first-child{width:34%; font-weight:600; color:var(--navy-950); padding-right:1rem;}
+  .legal-form{background:#fff; border:1px solid var(--line); border-radius:.5rem; padding:.9rem 1.1rem; margin:.5rem 0 1rem;}
+  .legal-form dt{font-weight:600; color:var(--navy-950); font-size:.9rem;}
+  .legal-form dd{margin:.15rem 0 .8rem; font-size:.88rem;}
+  .legal-form dd:last-child{margin-bottom:0;}
+  .contact-block{font-size:.9rem; margin-top:.5rem;}
+  .contact-block a{color:var(--brand-600); font-weight:600;}
+  footer.doc-foot{
+    max-width:760px; margin:0 auto; padding:2rem 1.5rem 0; color:#94a3b8; font-size:.8rem; border-top:1px solid var(--line);
+  }
+  a{color:inherit;}
+</style>
+</head>
+<body>
+
+<header class="doc-head">
+  <div class="inner">
+    <p class="kicker">Content review — not for indexing or distribution beyond this review</p>
+    <h1>Procedo Infosystems — website copy</h1>
+    <p>
+      Every word below is the real, current copy from the live build — pulled directly from
+      <code>src/data/site.ts</code>, the single source of truth the site reads from. This document is for
+      reviewing <strong>wording only</strong>: it doesn't attempt to reproduce the site's visual design,
+      layout or animation. Section order follows the site's own navigation.
+    </p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="callout">
+    <strong>Three things are intentionally incomplete</strong> below, pending information only Procedo can supply —
+    each is marked inline where it appears:
+    <ul>
+      <li>Office address (Contact page) — not yet supplied</li>
+      <li>LinkedIn profile URL (Footer) — not yet supplied</li>
+      <li>Contact form delivery key — not yet connected; the site currently shows a direct-email fallback instead</li>
+    </ul>
+    Two additional pages exist only as internal design concepts and are <strong>not included here</strong> because
+    they are not part of the approved site: a standalone illustration study, and a placement mock-up awaiting a
+    keep/bin decision.
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#company">Company</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#mission">Our Mission</a></li>
+      <li><a href="#careers">Careers</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#privacy">Privacy Policy</a></li>
+      <li><a href="#terms">Terms of Service</a></li>
+      <li><a href="#cookies">Cookie Policy</a></li>
+    </ol>
+  </nav>
+
+  <!-- ══════════════════════ HOME ══════════════════════ -->
+  <section class="page" id="home">
+    <p class="page-kicker">Page 1 of 9<span class="route">/</span></p>
+    <h1 class="page-title">Home</h1>
+
+    <h2 class="sec"><span class="eyebrow">Intelligent systems integration</span>Hero</h2>
+    <p><strong>Headline:</strong> “We design systems that work <em>intelligently</em>—so you can focus on what matters.”</p>
+    <p><strong>Sub-headline:</strong> “From secure IT infrastructure to advanced building automation and AV ecosystems—we help businesses operate smarter, safer, and more connected.”</p>
+    <div class="cta-row">
+      <span class="btn primary">Explore Our Solutions →</span>
+      <span class="btn secondary">Talk to Us</span>
+    </div>
+    <ul class="pills"><li>Enterprise Grade Solutions</li><li>24/7 Support</li></ul>
+    <p><strong>Side panel — “Core competencies” index</strong> (links into the Services page): IT Infrastructure,
+      Facilities Security, Audio &amp; Video Conferencing, Telecom Infrastructure, Power &amp; Precision Systems.</p>
+
+    <h2 class="sec"><span class="eyebrow">Our core competencies</span>Comprehensive technology, engineered as one system</h2>
+    <p class="page-sub">Comprehensive technology solutions designed to transform how your business operates.</p>
+    <p>Five cards, each with title, tagline and top highlights (full detail is under the Services page below):</p>
+    <div class="grid2">
+      <div class="card"><h4>IT Infrastructure</h4><p>Digital foundations built for agility and scale.</p></div>
+      <div class="card"><h4>Facilities Security</h4><p>Smart environments that sense, protect, and evolve.</p></div>
+      <div class="card"><h4>Audio &amp; Video Conferencing</h4><p>Spaces that connect with clarity, ease, and presence.</p></div>
+      <div class="card"><h4>Telecom Infrastructure</h4><p>Smart, scalable communication systems for modern enterprises.</p></div>
+      <div class="card"><h4>Power &amp; Precision Systems</h4><p>UPS • Cooling • Racks — scalable infrastructure for uptime and control.</p></div>
+    </div>
+
+    <h2 class="sec"><span class="eyebrow">Who we are</span>An infrastructure-first technology firm</h2>
+    <p>Procedo Infosystems Pvt. Ltd. is an infrastructure-first technology firm delivering integrated solutions across IT Infrastructure, Facilities Security, and Audio-Visual (AV) Systems. Our modular, enterprise-grade offerings are built to support secure operations, resilient growth, and seamless client engagement.</p>
+    <p>Whether deploying robust network architecture, securing workspaces with intelligent surveillance systems, or enabling modern communication through advanced AV integration—Procedo ensures each environment is tailored, scalable, and aligned with business continuity.</p>
+    <div class="cta-row"><span class="btn primary">Company Overview</span><span class="btn secondary">Our Mission</span></div>
+    <blockquote class="quote">“We believe technology should enable, not complicate. Our mission is to deliver integrated IT, security, and AV solutions that empower organizations to thrive in a rapidly evolving world.”</blockquote>
+    <p><strong>Service Pillars:</strong></p>
+    <ul class="pills"><li>IT Infrastructure</li><li>Facilities Security</li><li>Audio &amp; Video Conferencing</li><li>Telecom Infrastructure</li><li>Power &amp; Precision Systems</li></ul>
+
+    <h2 class="sec"><span class="eyebrow">Why Procedo</span>Why partner with Procedo?</h2>
+    <p class="page-sub">Experience the future of infrastructure-driven success with industry-leading expertise.</p>
+    <div class="grid2">
+      <div class="card"><h4>Enterprise-Grade Security</h4><p>Leveraging the latest advancements in security protocols and threat protection to safeguard your business operations.</p></div>
+      <div class="card"><h4>Expert Team</h4><p>Dedicated specialists committed to your project's success and long-term growth with industry-leading expertise.</p></div>
+      <div class="card"><h4>Collaborative Approach</h4><p>Working closely with you to tailor solutions to your exact business needs and strategic objectives.</p></div>
+      <div class="card"><h4>Measurable Results</h4><p>Focusing on delivering tangible business value and return on investment through proven methodologies.</p></div>
+    </div>
+
+    <h2 class="sec">Closing banner</h2>
+    <p><strong>Heading:</strong> “Ready to Future-Proof Your Business?”</p>
+    <p><strong>Sub:</strong> “Whether you're starting from scratch or upgrading legacy systems, our experts are ready to guide you through every step of your digital transformation journey.”</p>
+    <div class="cta-row"><span class="btn primary">Talk to Our Team →</span><span class="btn secondary">Explore Our Services</span></div>
+  </section>
+
+  <!-- ══════════════════════ COMPANY ══════════════════════ -->
+  <section class="page" id="company">
+    <p class="page-kicker">Page 2 of 9<span class="route">/company</span></p>
+    <h1 class="page-title">Company Overview</h1>
+    <p class="page-sub">We bring IT, security, AV, telecom and power together into infrastructure that quietly works.</p>
+
+    <p>Procedo Infosystems Pvt. Ltd. is an infrastructure-first technology firm delivering integrated solutions across IT Infrastructure, Facilities Security, and Audio-Visual (AV) Systems. Our modular, enterprise-grade offerings are built to support secure operations, resilient growth, and seamless client engagement.</p>
+    <p>Whether deploying robust network architecture, securing workspaces with intelligent surveillance systems, or enabling modern communication through advanced AV integration—Procedo ensures each environment is tailored, scalable, and aligned with business continuity.</p>
+    <p>With a commitment to technical precision and implementation clarity, our solutions empower organizations to evolve confidently while protecting their assets, people, and digital workflows.</p>
+    <p><strong>“What we deliver” index:</strong> IT Infrastructure · Facilities Security · Audio &amp; Video Conferencing · Telecom Infrastructure · Power &amp; Precision Systems</p>
+
+    <h2 class="sec"><span class="eyebrow">Our core values</span>What we stand for</h2>
+    <p class="page-sub">The principles that guide every solution we deliver and every partnership we build.</p>
+    <div class="grid2">
+      <div class="card"><h4>Security First</h4><p>We prioritize the protection of your critical infrastructure and data above all else.</p></div>
+      <div class="card"><h4>Innovation</h4><p>Continuously advancing technology solutions to meet evolving business needs and stay ahead of industry trends.</p></div>
+      <div class="card"><h4>Collaboration</h4><p>Working closely with clients to understand their unique challenges and exceed their expectations through partnership.</p></div>
+      <div class="card"><h4>Excellence</h4><p>Committed to delivering the highest quality solutions and maintaining industry-leading standards in all our services.</p></div>
+      <div class="card"><h4>Scalability</h4><p>Building solutions that grow with your business, ensuring long-term value and adaptability to future needs.</p></div>
+      <div class="card"><h4>Reliability</h4><p>Providing dependable solutions and support that businesses can count on, with 24/7 monitoring and maintenance.</p></div>
+    </div>
+
+    <h2 class="sec"><span class="eyebrow">Why us?</span>Why partner with Procedo?</h2>
+    <p class="page-sub">Experience the future of infrastructure-driven success with industry-leading expertise.</p>
+    <p><em>(Same four cards as the Home page — Enterprise-Grade Security, Expert Team, Collaborative Approach, Measurable Results.)</em></p>
+
+    <h2 class="sec">Closing banner</h2>
+    <p><em>(Same as Home — “Ready to Future-Proof Your Business?”)</em></p>
+  </section>
+
+  <!-- ══════════════════════ SERVICES ══════════════════════ -->
+  <section class="page" id="services">
+    <p class="page-kicker">Page 3 of 9<span class="route">/services</span></p>
+    <h1 class="page-title">Comprehensive technology, engineered as one system</h1>
+    <p class="page-sub">Comprehensive technology solutions designed to transform how your business operates.</p>
+
+    <h2 class="sec">1. IT Infrastructure</h2>
+    <p><em>Digital foundations built for agility and scale.</em></p>
+    <p>Modern businesses need more than just devices—they need a scalable, secure digital backbone. We deliver enterprise-grade IT solutions tailored to your goals.</p>
+    <blockquote class="quote">“We don't just install servers. We build systems that carry your ambitions.”</blockquote>
+    <h3 class="sub">Network Architecture</h3>
+    <ul class="bullets"><li>LAN/WAN design &amp; deployment</li><li>Enterprise &amp; mesh Wi-Fi</li><li>VPN, firewall, SD-WAN</li></ul>
+    <h3 class="sub">Server &amp; Storage</h3>
+    <ul class="bullets"><li>On-prem + cloud (AWS / Azure / GCP)</li><li>Virtualization (VMware / Proxmox / Hyper-V)</li><li>NAS / SAN with redundancy</li></ul>
+    <h3 class="sub">Endpoint &amp; Access Security</h3>
+    <ul class="bullets"><li>SSO, LDAP, Azure AD</li><li>Role-based access control</li><li>Patch &amp; asset management</li></ul>
+    <h3 class="sub">Continuity &amp; Recovery</h3>
+    <ul class="bullets"><li>Backup (cloud / local / hybrid)</li><li>Disaster recovery</li><li>Monitoring &amp; failover</li></ul>
+
+    <h2 class="sec">2. Facilities Security</h2>
+    <p><em>Smart environments that sense, protect, and evolve.</em></p>
+    <p>Security should be invisible until you need it. We integrate surveillance, access control and building management into one coherent, monitored system.</p>
+    <blockquote class="quote">“Security isn't about fear—it's about freedom to focus.”</blockquote>
+    <h3 class="sub">Surveillance</h3>
+    <ul class="bullets"><li>IP CCTV (PTZ / fisheye / thermal)</li><li>VMS + cloud archiving</li></ul>
+    <h3 class="sub">Access Control</h3>
+    <ul class="bullets"><li>Biometrics (fingerprint / facial)</li><li>RFID / NFC / mobile credentials</li><li>Zonal control &amp; visitor workflows</li></ul>
+    <h3 class="sub">Building Management Systems</h3>
+    <ul class="bullets"><li>HVAC, fire alarm, lighting automation</li><li>Central energy &amp; environment dashboard</li></ul>
+    <h3 class="sub">Monitoring &amp; Reporting</h3>
+    <ul class="bullets"><li>Real-time dashboards</li><li>Remote diagnostics &amp; alerts</li><li>Compliance-ready audit trails</li></ul>
+
+    <h2 class="sec">3. Audio &amp; Video Conferencing</h2>
+    <p><em>Spaces that connect with clarity, ease, and presence.</em></p>
+    <p>Whether it's boardrooms or remote workspaces, we engineer communication environments that feel effortless and immersive.</p>
+    <blockquote class="quote">“A great conversation shouldn't depend on your geography.”</blockquote>
+    <h3 class="sub">Room Design &amp; Acoustics</h3>
+    <ul class="bullets"><li>Sightline &amp; acoustic optimization</li><li>Lighting for engagement</li><li>Noise control</li></ul>
+    <h3 class="sub">Platform Integration</h3>
+    <ul class="bullets"><li>Zoom, Teams, Webex</li><li>AV control (Crestron, Extron)</li><li>BYOD &amp; calendar sync</li></ul>
+    <h3 class="sub">Hardware Setup</h3>
+    <ul class="bullets"><li>PTZ cameras, ceiling mics, smart displays</li><li>Wireless presentation</li><li>Voice tracking</li></ul>
+
+    <h2 class="sec">4. Telecom Infrastructure</h2>
+    <p><em>Smart, scalable communication systems for modern enterprises.</em></p>
+    <p>Voice remains the backbone of enterprise communication. We design and maintain IP telephony that spans every branch, desk and remote worker.</p>
+    <blockquote class="quote">“Communication is the backbone of every modern business—make yours future-ready.”</blockquote>
+    <h3 class="sub">Voice Systems</h3>
+    <ul class="bullets"><li>IP EPABX (IVR, voicemail, call forwarding, routing)</li><li>IP phones &amp; SIP terminals (HD voice, remote provisioning)</li></ul>
+    <h3 class="sub">Cabling &amp; Racks</h3>
+    <ul class="bullets"><li>Structured cabling (CAT6 / Fiber)</li><li>Telecom rack setup (EPABX, switches, routers, backup)</li></ul>
+    <h3 class="sub">Integration &amp; Support</h3>
+    <ul class="bullets"><li>LAN/WAN voice integration (VoIP, multi-branch)</li><li>Ongoing support, troubleshooting &amp; upgrades</li></ul>
+
+    <h2 class="sec">5. Power &amp; Precision Systems</h2>
+    <p><em>UPS • Cooling • Racks — scalable infrastructure for uptime and control.</em></p>
+    <p>Uptime is engineered, not hoped for. We build the power, cooling and rack layer that keeps critical infrastructure running through anything.</p>
+    <blockquote class="quote">“Power without precision is chaos. Precision without power is limitation. We deliver both.”</blockquote>
+    <h3 class="sub">UPS &amp; Power</h3>
+    <ul class="bullets"><li>Online / modular UPS, battery banks</li><li>Intelligent PDUs, surge protection, dual-feed failover</li><li>Generator integration &amp; AMC</li></ul>
+    <h3 class="sub">Cooling</h3>
+    <ul class="bullets"><li>Rack- and room-level cooling</li><li>N+1 / 2N redundancy</li><li>Temp / humidity monitoring &amp; HVAC integration</li></ul>
+    <h3 class="sub">Smart Racks</h3>
+    <ul class="bullets"><li>High-density enclosures with airflow optimization and cable management</li><li>Structured patching, secure access, and modular layout</li><li>Integrated UPS, cooling, PDUs and sensors with real-time dashboards and remote control</li></ul>
+
+    <h2 class="sec">Closing banner</h2>
+    <p><em>(Same as Home.)</em></p>
+  </section>
+
+  <!-- ══════════════════════ OUR MISSION ══════════════════════ -->
+  <section class="page" id="mission">
+    <p class="page-kicker">Page 4 of 9<span class="route">/our-mission</span></p>
+    <h1 class="page-title">Technology that gets out of the way</h1>
+
+    <blockquote class="quote">“We believe technology should enable, not complicate. Our mission is to deliver integrated IT, security, and AV solutions that empower organizations to thrive in a rapidly evolving world.”</blockquote>
+    <p>From secure IT infrastructure to intelligent building automation and immersive AV, we help you create environments where people and ideas flourish—today and tomorrow.</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h4>Vision</h4>
+        <p>To be a leading provider of integrated infrastructure and facility security solutions that enable efficient, secure, and collaborative environments across industries.</p>
+        <p><strong>Key Focus Areas:</strong> Industry Leadership · Integrated Solutions · Cross-Industry Impact</p>
+      </div>
+      <div class="card">
+        <h4>Mission</h4>
+        <p>Deliver innovative, modular services in IT, facilities security, and audio-visual systems, with an emphasis on scalability, compliance, and reliability. We align advanced technology with operational clarity, helping businesses safeguard what matters while empowering seamless interaction.</p>
+        <p><strong>Service Pillars:</strong> IT Infrastructure · Facilities Security · Audio &amp; Video Conferencing · Telecom Infrastructure · Power &amp; Precision Systems</p>
+      </div>
+    </div>
+
+    <h2 class="sec"><span class="eyebrow">Principles</span>How we work</h2>
+    <p class="page-sub">Three commitments that shape every design decision we make.</p>
+    <div class="grid2">
+      <div class="card"><h4>Outcomes over hardware</h4><p>We start from the business result you need and engineer backwards to the right systems.</p></div>
+      <div class="card"><h4>Secure and resilient</h4><p>Every design assumes the unexpected — redundancy, recovery and protection are built in.</p></div>
+      <div class="card"><h4>Effortless to operate</h4><p>Intelligent monitoring and clean integration mean far less to manage day to day.</p></div>
+    </div>
+
+    <h2 class="sec">Closing banner</h2>
+    <p><em>(Same as Home.)</em></p>
+  </section>
+
+  <!-- ══════════════════════ CAREERS ══════════════════════ -->
+  <section class="page" id="careers">
+    <p class="page-kicker">Page 5 of 9<span class="route">/careers</span></p>
+    <h1 class="page-title">Build systems that matter</h1>
+    <p class="page-sub">Help us build scalable digital infrastructure, secure smart environments, and immersive communication spaces.</p>
+
+    <h2 class="sec"><span class="eyebrow">Life at Procedo</span>Why work with us</h2>
+    <p>We are a small, senior team — which means your work is visible, your decisions carry weight, and you learn across every layer of the stack.</p>
+    <div class="grid2">
+      <div class="card"><p>Innovation-driven culture that values creative solutions.</p></div>
+      <div class="card"><p>Collaborative environment focused on continuous growth.</p></div>
+      <div class="card"><p>Work-life balance with flexible opportunities.</p></div>
+      <div class="card"><p>Challenging projects that make a real-world impact.</p></div>
+    </div>
+
+    <h2 class="sec"><span class="eyebrow">Open disciplines</span>Roles we hire for</h2>
+    <p class="page-sub">These are the disciplines we recruit for as projects come in. Send us your CV even if nothing below matches exactly.</p>
+    <table class="roles">
+      <tr><td>Server &amp; Security Engineer</td><td>Handle on-prem and cloud server setups (AWS, Azure, GCP), virtualization with VMware/Proxmox/Hyper-V, and storage redundancy. Manage endpoint security and access controls (SSO, LDAP, Azure AD), and lead backup and recovery initiatives with monitoring and failover strategies.</td></tr>
+      <tr><td>Security Systems Specialist</td><td>Configure and maintain IP surveillance, access control, and BMS integration.</td></tr>
+      <tr><td>AV Integration Expert</td><td>Deliver seamless AV experiences with platform and hardware integration.</td></tr>
+      <tr><td>Software Engineer</td><td>Design, develop, and optimize software systems that power secure, high-performance infrastructures.</td></tr>
+      <tr><td>Full Stack Developer</td><td>Build and maintain scalable web applications with modern frontend and backend frameworks.</td></tr>
+      <tr><td>Data Scientist</td><td>Develop ML models, analyze complex data sets, and deliver actionable insights that drive business decisions.</td></tr>
+    </table>
+    <p>Each role links to <code>mailto:contact@procedoinfo.com</code> with a pre-filled subject line. A closing callout reads: <em>“Don't see your role? Send us your CV and a short note on what you'd like to build. We keep good people in mind for upcoming projects.”</em></p>
+
+    <h2 class="sec">Closing banner</h2>
+    <p><em>(Same as Home.)</em></p>
+  </section>
+
+  <!-- ══════════════════════ CONTACT ══════════════════════ -->
+  <section class="page" id="contact">
+    <p class="page-kicker">Page 6 of 9<span class="route">/contact</span></p>
+    <h1 class="page-title">Let's talk about your systems</h1>
+    <p class="page-sub">Tell us what you're planning — we'll help you scope the right solution. No pressure, just expert guidance.</p>
+
+    <h2 class="sec">Reach us directly</h2>
+    <ul class="bullets">
+      <li><strong>General enquiries:</strong> contact@procedoinfo.com</li>
+      <li><strong>Sales:</strong> sales@procedoinfo.com</li>
+      <li><strong>Phone:</strong> +91 9958896172</li>
+      <li><strong>Office address:</strong> <span class="field-note">not yet supplied — card is hidden until provided</span></li>
+    </ul>
+    <p><strong>“What we can help with” pills:</strong> IT Infrastructure · Facilities Security · Audio &amp; Video Conferencing · Telecom Infrastructure · Power &amp; Precision Systems</p>
+
+    <h2 class="sec">Send us a message (form)</h2>
+    <p>“Share a few details and the right engineer will get back to you.”</p>
+    <p><strong>Fields:</strong> Name · Email · Company (optional) · “What's this about?” dropdown
+      (General enquiry / IT Infrastructure / Facilities Security / Audio &amp; Video Conferencing / Telecom Infrastructure / Power &amp; Precision Systems)
+      · “How can we help?” (message)</p>
+    <div class="note">
+      <strong>Current live state:</strong> the form's email delivery isn't connected yet, so visitors instead see:
+      “The form isn't connected yet. In the meantime, email us at contact@procedoinfo.com or call +91 9958896172.”
+      This resolves itself automatically once a Web3Forms key is supplied — no design change needed.
+    </div>
+
+    <h2 class="sec">Footer</h2>
+    <p><strong>Tagline:</strong> “Designing intelligent systems that empower businesses to focus on what matters most.”</p>
+    <p><strong>Solutions:</strong> IT Infrastructure · Facilities Security · AV Conferencing · Telecom Infrastructure · Power &amp; Precision</p>
+    <p><strong>Company:</strong> Company Overview · Our Core Values · Why Us? · Our Mission · Careers</p>
+    <p><strong>Legal:</strong> Privacy Policy · Terms of Service · Cookie Policy</p>
+    <p><strong>Social:</strong> LinkedIn <span class="field-note">not yet supplied — icon is hidden until provided</span></p>
+    <p><strong>Copyright line:</strong> “© 2026 Procedo Infosystems Pvt. Ltd. All rights reserved.”</p>
+  </section>
+
+  <!-- ══════════════════════ PRIVACY ══════════════════════ -->
+  <section class="page" id="privacy">
+    <p class="page-kicker">Page 7 of 9<span class="route">/privacy</span></p>
+    <h1 class="page-title">Privacy Policy</h1>
+    <p class="page-sub">At Procedo Infosystems Pvt. Ltd. (“we”, “our”, or “us”), your privacy is one of our top priorities. This Privacy Policy outlines how we collect, use, and safeguard the information you provide when using our website and services.</p>
+    <p><em>Last updated: 27 August 2026</em> <span class="field-note">pending legal review</span></p>
+
+    <div class="legal-form">
+      <dt>1. Information we collect</dt>
+      <dd>Personal details you voluntarily submit (such as name, email, phone number). Technical data like IP address, browser type, device type, and time of visit. Cookies and similar tracking technologies to improve your browsing experience.</dd>
+      <dt>2. How we use your information</dt>
+      <dd>To provide and maintain our services. To respond to your inquiries or customer support requests. To send updates, marketing material, or newsletters (only with your consent). To analyze usage trends and improve website performance.</dd>
+      <dt>3. Data security</dt>
+      <dd>We implement appropriate technical and organizational measures to protect your personal data from unauthorized access, disclosure, alteration, or destruction. However, no method of transmission over the internet is 100% secure.</dd>
+      <dt>4. Third-party services</dt>
+      <dd>We may integrate third-party services such as analytics providers and hosting platforms. These services may collect data independently in accordance with their own privacy policies.</dd>
+      <dt>5. Your rights</dt>
+      <dd>You have the right to access, update, or delete your personal information. If you would like to exercise any of these rights, please contact us using the information below.</dd>
+      <dt>6. Cookies</dt>
+      <dd>Our website may use cookies to remember preferences and collect analytics data. You can choose to disable cookies through your browser settings — see our Cookie Policy for details.</dd>
+      <dt>7. Changes to this policy</dt>
+      <dd>We may revise this Privacy Policy from time to time. Any changes take effect as soon as they are posted on this page, and the date above is updated accordingly.</dd>
+    </div>
+    <p class="contact-block">Contact us: “If you have any questions or concerns regarding this Privacy Policy, please reach out to us at:” <a href="mailto:contact@procedoinfo.com">contact@procedoinfo.com</a> · +91 9958896172</p>
+  </section>
+
+  <!-- ══════════════════════ TERMS ══════════════════════ -->
+  <section class="page" id="terms">
+    <p class="page-kicker">Page 8 of 9<span class="route">/terms</span></p>
+    <h1 class="page-title">Terms of Service</h1>
+    <p class="page-sub">These Terms of Service govern your use of the website and services provided by Procedo Infosystems Pvt. Ltd. Please read them carefully before using our services.</p>
+    <p><em>Last updated: 27 August 2026</em> <span class="field-note">pending legal review</span></p>
+
+    <div class="legal-form">
+      <dt>1. Acceptance of terms</dt>
+      <dd>By accessing our website or using our services, you agree to be bound by these Terms and our Privacy Policy.</dd>
+      <dt>2. Use of services</dt>
+      <dd>You agree to use our services only for lawful purposes and in accordance with all applicable laws and regulations.</dd>
+      <dt>3. Intellectual property</dt>
+      <dd>All content on our site, including text, graphics, logos, and software, is the property of Procedo Infosystems or its licensors and is protected by copyright and trademark laws.</dd>
+      <dt>4. Limitation of liability</dt>
+      <dd>We are not liable for any damages resulting from the use or inability to use our services, including indirect or consequential losses.</dd>
+      <dt>5. Termination</dt>
+      <dd>We reserve the right to suspend or terminate your access to our services at any time, without prior notice, for any reason.</dd>
+      <dt>6. Changes to terms</dt>
+      <dd>We may update these Terms from time to time. Any changes will be effective immediately upon posting on this page.</dd>
+    </div>
+    <p class="contact-block">Contact us: “For any questions regarding these Terms, please contact us at:” <a href="mailto:contact@procedoinfo.com">contact@procedoinfo.com</a> · +91 9958896172</p>
+  </section>
+
+  <!-- ══════════════════════ COOKIES ══════════════════════ -->
+  <section class="page" id="cookies">
+    <p class="page-kicker">Page 9 of 9<span class="route">/cookies</span></p>
+    <h1 class="page-title">Cookie Policy</h1>
+    <p class="page-sub">This Cookie Policy explains how Procedo Infosystems Pvt. Ltd. uses cookies and similar technologies to enhance your experience on our website.</p>
+    <p><em>Last updated: 27 August 2026</em> <span class="field-note">pending legal review</span></p>
+
+    <div class="legal-form">
+      <dt>1. What are cookies?</dt>
+      <dd>Cookies are small text files stored on your device to collect standard internet log information and visitor behavior information.</dd>
+      <dt>2. How we use cookies</dt>
+      <dd>We use cookies to: understand how you use our website; improve site functionality and performance; remember your preferences; provide relevant content or ads.</dd>
+      <dt>3. Types of cookies we use</dt>
+      <dd><strong>Essential cookies</strong> — required for the website to function correctly.<br>
+          <strong>Analytics cookies</strong> — help us analyze site usage and performance.<br>
+          <strong>Preference cookies</strong> — remember your settings and preferences.</dd>
+      <dt>4. Managing cookies</dt>
+      <dd>You can set your browser to not accept cookies or delete them manually. However, some features of our site may not function properly without cookies.</dd>
+      <dt>5. Updates to this policy</dt>
+      <dd>We may update this Cookie Policy occasionally. Please review it regularly to stay informed.</dd>
+    </div>
+    <p class="contact-block">Contact us: “For more information about our use of cookies, reach out to us at:” <a href="mailto:contact@procedoinfo.com">contact@procedoinfo.com</a> · +91 9958896172</p>
+  </section>
+
+</div>
+
+<footer class="doc-foot">
+  <p>Generated from <code>src/data/site.ts</code> for content sign-off. Layout, color, illustration and motion are
+  not represented here — those are already built and confirmed separately. Questions on any line above map directly
+  to a field in <code>site.ts</code>, so changes are quick to make.</p>
+</footer>
+
+</body>
+</html>

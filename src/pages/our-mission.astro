@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import ClosingCta from '../components/ClosingCta.astro';
+import { Icon } from 'astro-icon/components';
+import { mission } from '../data/site';
+
+const panels = [
+  { label: 'Vision', icon: 'lucide:eye', ...mission.vision },
+  { label: 'Mission', icon: 'lucide:target', ...mission.purpose },
+];
+---
+
+<BaseLayout
+  title="Our Mission"
+  description="We believe technology should enable, not complicate — integrated IT, security and AV solutions that empower organizations to thrive."
+>
+  <PageHeader eyebrow="Our mission" title="Technology that gets out of the way" />
+
+  <!-- Mission statement -->
+  <section class="bg-cream py-16 lg:py-24">
+    <Container>
+      <div class="max-w-3xl" data-reveal>
+        <blockquote
+          class="border-l-2 border-brand-500 pl-6 text-[clamp(1.35rem,2.6vw,1.85rem)] font-semibold leading-snug text-navy-950"
+        >
+          {mission.statement}
+        </blockquote>
+        <p class="mt-8 text-lg leading-relaxed text-slate-600">{mission.body}</p>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Vision & Mission panels -->
+  <section class="border-t border-line bg-band py-16 lg:py-24">
+    <Container>
+      <div class="grid gap-6 lg:grid-cols-2">
+        {
+          panels.map((p, i) => (
+            <div
+              data-reveal
+              style={`--reveal-delay:${i * 100}ms`}
+              class="flex flex-col rounded-2xl border border-line bg-white p-7 shadow-sm sm:p-9"
+            >
+              <div class="flex items-center gap-3.5">
+                <span class="grid size-11 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                  <Icon name={p.icon} class="size-5" aria-hidden="true" />
+                </span>
+                <h2 class="text-2xl font-semibold text-navy-950">{p.label}</h2>
+              </div>
+
+              <p class="mt-6 flex-1 leading-relaxed text-slate-600">{p.statement}</p>
+
+              <div class="mt-7 border-t border-line pt-6">
+                <h3 class="font-mono text-xs uppercase tracking-wider text-navy-700">
+                  {p.listTitle}
+                </h3>
+                <ul class="mt-3.5 flex flex-wrap gap-2">
+                  {p.items.map((it) => (
+                    <li class="inline-flex items-center gap-1.5 rounded-full border border-line bg-band px-3 py-1.5 text-sm text-navy-800">
+                      <Icon
+                        name="lucide:check"
+                        class="size-3.5 shrink-0 text-brand-500"
+                        aria-hidden="true"
+                      />
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  <!-- Principles -->
+  <section class="bg-cream py-16 lg:py-24">
+    <Container>
+      <SectionHeading
+        eyebrow="Principles"
+        title="How we work"
+        subtitle="Three commitments that shape every design decision we make."
+      />
+      <FeatureGrid items={mission.points} columns={3} class="mt-12" />
+    </Container>
+  </section>
+
+  <ClosingCta />
+</BaseLayout>

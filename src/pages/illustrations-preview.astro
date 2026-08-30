@@ -1,0 +1,134 @@
+---
+/* ============================================================================
+ *  ⚠️ THROWAWAY PREVIEW — /illustrations-preview
+ *
+ *  A gallery of five hand-authored SVG illustrations, one per core competency,
+ *  for review before anything is wired into the live site.
+ *
+ *  Nothing in the live site imports these yet. To bin the idea, delete:
+ *      src/pages/illustrations-preview.astro
+ *      src/components/illustrations/
+ *  and remove '/illustrations-preview' from the sitemap filter in
+ *  astro.config.mjs.
+ * ========================================================================== */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import PageHeader from '../components/PageHeader.astro';
+import ItInfrastructure from '../components/illustrations/IllustrationItInfrastructure.astro';
+import FacilitiesSecurity from '../components/illustrations/IllustrationFacilitiesSecurity.astro';
+import AvConferencing from '../components/illustrations/IllustrationAvConferencing.astro';
+import Telecom from '../components/illustrations/IllustrationTelecom.astro';
+import PowerPrecision from '../components/illustrations/IllustrationPowerPrecision.astro';
+import { competencies } from '../data/site';
+
+const items = [
+  {
+    slug: 'it-infrastructure',
+    Art: ItInfrastructure,
+    shows: 'A server tower uplinking to cloud, with a laptop and desktop attached.',
+  },
+  {
+    slug: 'facilities-security',
+    Art: FacilitiesSecurity,
+    shows: 'A CCTV camera panning across a building, card reader at the door, all clear.',
+  },
+  {
+    slug: 'av-conferencing',
+    Art: AvConferencing,
+    shows: 'A meeting-room display with three participants and a table mic picking up the room.',
+  },
+  {
+    slug: 'telecom',
+    Art: Telecom,
+    shows: 'An IP desk phone with signal reaching out, cabled back to a patch panel.',
+  },
+  {
+    slug: 'power-precision',
+    Art: PowerPrecision,
+    shows: 'A UPS feeding a charged battery bank and a cooling fan along a busbar.',
+  },
+].map((i) => ({ ...i, meta: competencies.find((c) => c.slug === i.slug)! }));
+---
+
+<BaseLayout title="Illustrations (preview)" noindex>
+  <!-- preview-only banner -->
+  <div class="border-b border-brand-200 bg-brand-50">
+    <Container>
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 py-2.5 text-sm text-brand-900">
+        <span
+          class="rounded bg-brand-500 px-2 py-0.5 font-mono text-[10px] font-medium uppercase tracking-wider text-white"
+        >
+          Preview
+        </span>
+        <span>Five illustration concepts — not applied to any live page yet.</span>
+        <a href="/services" class="font-semibold underline hover:text-brand-700">
+          Compare with the real /services →
+        </a>
+      </div>
+    </Container>
+  </div>
+
+  <PageHeader
+    eyebrow="Illustration set"
+    title="One illustration per competency"
+    subtitle="Hand-drawn SVG in the same line-art family as the site — no photography, no stock imagery, nothing to license. Each is under 3 KB and animates subtly."
+  />
+
+  <section class="bg-cream py-16 lg:py-24">
+    <Container>
+      <div class="grid gap-8 lg:grid-cols-2">
+        {
+          items.map(({ Art, meta, shows }, i) => (
+            <figure
+              data-reveal
+              style={`--reveal-delay:${(i % 2) * 80}ms`}
+              class="flex flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-sm"
+            >
+              <div class="border-b border-line bg-band px-6 py-8">
+                <Art class="mx-auto max-w-[22rem]" />
+              </div>
+              <figcaption class="flex flex-1 flex-col p-6">
+                <p class="font-mono text-xs uppercase tracking-[0.18em] text-brand-600">
+                  {String(i + 1).padStart(2, '0')}
+                </p>
+                <h2 class="mt-2 text-lg font-semibold text-navy-950">{meta.title}</h2>
+                <p class="mt-1.5 text-sm font-medium text-slate-500">{meta.tagline}</p>
+                <p class="mt-4 text-sm leading-relaxed text-slate-600">{shows}</p>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+
+      <!-- where these could go -->
+      <div class="mt-12 rounded-2xl border border-line bg-band p-7 sm:p-9" data-reveal>
+        <h2 class="text-lg font-semibold text-navy-950">Where these could go</h2>
+        <ul class="mt-4 space-y-3 text-sm leading-relaxed text-slate-600">
+          <li>
+            <strong class="font-semibold text-navy-900">Services page —</strong> one per competency
+            section, in the left column beneath the pull-quote. The most natural fit: each section
+            already has a column with room to spare.
+          </li>
+          <li>
+            <strong class="font-semibold text-navy-900">Home competency cards —</strong> scaled down
+            as a header image on each card. Higher visual impact, but five illustrations above the
+            fold competes with the hero.
+          </li>
+          <li>
+            <strong class="font-semibold text-navy-900">Leave them out —</strong> the site currently
+            ships no imagery at all, which reads as deliberate and confident. These are only worth
+            adding if they earn their place.
+          </li>
+        </ul>
+        <p class="mt-5 border-t border-line pt-5 text-sm leading-relaxed text-slate-600">
+          Technique borrowed from the Google Chat reference set — see
+          <code class="rounded bg-white px-1.5 py-0.5 font-mono text-xs">
+            reference/inspiration/ANALYSIS.md
+          </code>
+          — specifically two-tone outlines: navy on the subject, pale slate on the environment, so the
+          subject reads forward without shading or gradients.
+        </p>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

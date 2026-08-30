@@ -1,0 +1,112 @@
+/* ============================================================================
+   Procedo Infosystems — global stylesheet & design tokens
+   LIGHT theme matching the navy+orange logo. One clean sans (Inter) for all
+   type, GitHub-style calm medium-weight headings, Procedo orange accent, navy
+   structural color, hairline borders, soft shadows, subtle motion.
+   ========================================================================== */
+@import 'tailwindcss';
+
+@theme {
+  /* ---- Typography: one humanist sans everywhere (+ sparing mono labels) ---- */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---- Brand: Procedo orange (#F24E1E) — CTAs, links, key accents ---- */
+  --color-brand-50: #fef2ee;
+  --color-brand-100: #fcdccf;
+  --color-brand-200: #fabda6;
+  --color-brand-300: #f7956f;
+  --color-brand-400: #f56f42;
+  --color-brand-500: #f24e1e;
+  --color-brand-600: #d63f12;
+  --color-brand-700: #b22f0e;
+  --color-brand-800: #8c2710;
+  --color-brand-900: #6f2110;
+
+  /* ---- Navy: logo mark color — headings & structural (#1B2A4A) ---- */
+  --color-navy-500: #455c86;
+  --color-navy-600: #334a73;
+  --color-navy-700: #25395e;
+  --color-navy-800: #1b2a4a;
+  --color-navy-900: #111c30;
+  --color-navy-950: #0f172a;
+
+  /* ---- Neutrals ---- */
+  --color-cream: #fbfaf8; /* warm page background */
+  --color-surface: #ffffff; /* raised cards */
+  --color-band: #f3f4f6; /* alternating section band */
+  --color-line: #e5e7eb; /* hairline borders */
+}
+
+/* ---------- Base element styles ---------- */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-cream);
+  color: #475569; /* slate-600 body */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Calm, GitHub-style headings: medium weight, tight-not-cramped, navy ink. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--color-navy-950);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+::selection {
+  background-color: var(--color-brand-500);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-500);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Faint engineered dot field (very subtle) for hero atmosphere. */
+.dot-grid {
+  background-image: radial-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* ---------- Scroll-reveal: fade + 14px rise (enhancement only) ----------
+   Hidden state scoped to `.reveal`, added by an inline <head> script only when
+   motion is allowed + IntersectionObserver exists → safe with no-JS/reduced-motion. */
+.reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.reveal [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

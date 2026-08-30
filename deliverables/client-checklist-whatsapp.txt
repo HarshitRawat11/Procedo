@@ -1,0 +1,67 @@
+*Procedo website — what we need from you* 🙏
+
+Hi! Attached is the full website copy for review (open the HTML file in any browser — no internet needed).
+
+Please check the wording and tell us anything you'd like changed. Alongside that, here's what we still need from your side 👇
+
+━━━━━━━━━━━━━━━━━━━
+
+*1️⃣ NEEDED TO GO LIVE* (site can't launch without these)
+
+*📍 Office address*
+Your full registered/office address for the Contact page and Google search listing.
+_Example format: 3rd Floor, Tower B, Sector 62, Noida, Uttar Pradesh 201301_
+👉 We couldn't find this anywhere, so please share it.
+
+*📧 Contact form activation*
+Right now the enquiry form is switched off — visitors see "please email us directly" instead.
+To turn it on, someone needs to:
+• Go to *web3forms.com*
+• Enter *contact@procedoinfo.com*
+• They'll email back an access key — just forward us that key
+Takes 2 minutes, completely free, no card needed.
+
+*⚖️ Legal sign-off*
+The Privacy Policy, Terms of Service and Cookie Policy are in the attached file (last 3 sections).
+These carry over from your old website. Please have someone confirm they're still accurate before we publish.
+
+━━━━━━━━━━━━━━━━━━━
+
+*2️⃣ NICE TO HAVE* (site can launch without these)
+
+*🔗 LinkedIn page link*
+The footer has a LinkedIn icon ready — it's hidden until we have the URL.
+Any other social pages? Send those too.
+
+*📸 Photographs*
+Right now the site has *no photos at all* — only your logo, plus icons and illustrations.
+It looks clean and professional this way, so this is a genuine choice, not a mistake.
+But if you'd like real photos, useful ones would be:
+• Your office / workspace
+• Team photo
+• Completed installations (server racks, CCTV setups, conference rooms)
+👉 Just tell us: keep it as-is, or send photos?
+
+━━━━━━━━━━━━━━━━━━━
+
+*3️⃣ PLEASE CONFIRM*
+
+*✅ Contact details* — are these correct?
+• contact@procedoinfo.com (general)
+• sales@procedoinfo.com (sales)
+• +91 9958896172
+
+*✅ Company name spelling*
+We're using *Procedo Infosystems Pvt. Ltd.* in the footer and legal pages, and *Procedo Infosystems* elsewhere. Correct?
+
+*✅ Careers page* — it lists 6 roles: Server & Security Engineer, Security Systems Specialist, AV Integration Expert, Software Engineer, Full Stack Developer, Data Scientist.
+Are you still hiring for all of these? Applications go to contact@procedoinfo.com.
+
+*✅ Website address*
+We've set it up for *www.procedoinfo.com* — is that the final domain?
+
+━━━━━━━━━━━━━━━━━━━
+
+*Quickest path:* send us the *address*, the *web3forms key*, and a *yes/no on the legal pages* — that's enough for us to put the site live. Everything else can follow.
+
+Thanks! 🚀

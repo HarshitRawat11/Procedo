@@ -1,0 +1,112 @@
+---
+/* Telecom Infrastructure — an IP desk phone on structured cabling, with signal
+   reaching out to the branch network. */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<svg
+  class:list={['ill', className]}
+  viewBox="0 0 320 240"
+  role="img"
+  aria-labelledby="ill-tel-title"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="ill-tel-title">
+    An IP desk phone with its handset resting on top, signal arcs rising from it, and
+    structured cabling running back to a patch panel.
+  </title>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- desk -->
+    <ellipse cx="160" cy="196" rx="76" ry="5" fill="#F3F4F6" />
+    <path d="M40 196 H280" stroke="#CBD5E1" stroke-width="2" />
+
+    <!-- signal arcs -->
+    <g stroke="#CBD5E1" stroke-width="2">
+      <path class="sig sig-1" d="M139 104 C150 94 170 94 181 104" />
+      <path class="sig sig-2" d="M129 94 C146 78 174 78 191 94" />
+      <path class="sig sig-3" d="M119 84 C142 62 178 62 201 84" />
+    </g>
+
+    <!-- patch panel behind, to the right -->
+    <rect x="236" y="124" width="46" height="34" rx="4" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" />
+    <g fill="#CBD5E1">
+      <rect x="243" y="131" width="7" height="6" rx="1.5" />
+      <rect x="254" y="131" width="7" height="6" rx="1.5" />
+      <rect x="265" y="131" width="7" height="6" rx="1.5" />
+      <rect x="243" y="144" width="7" height="6" rx="1.5" />
+      <rect x="254" y="144" width="7" height="6" rx="1.5" />
+      <rect x="265" y="144" width="7" height="6" rx="1.5" />
+    </g>
+    <!-- cabling from phone to panel -->
+    <path d="M228 172 C246 172 250 164 254 158" stroke="#CBD5E1" stroke-width="2" />
+
+    <!-- phone base -->
+    <path d="M90 146 H230 L238 190 H82 Z" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <rect x="94" y="154" width="52" height="24" rx="3" fill="#F3F4F6" />
+    <path d="M101 162 H139 M101 170 H126" stroke="#CBD5E1" stroke-width="2" />
+    <g fill="#CBD5E1">
+      <circle cx="170" cy="158" r="3.5" />
+      <circle cx="188" cy="158" r="3.5" />
+      <circle cx="206" cy="158" r="3.5" />
+      <circle cx="172" cy="170" r="3.5" />
+      <circle cx="190" cy="170" r="3.5" />
+      <circle cx="208" cy="170" r="3.5" />
+      <circle cx="174" cy="182" r="3.5" />
+      <circle cx="192" cy="182" r="3.5" />
+      <circle cx="210" cy="182" r="3.5" />
+    </g>
+
+    <!-- handset -->
+    <rect x="98" y="120" width="124" height="17" rx="8.5" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <rect x="90" y="114" width="28" height="28" rx="7" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <rect x="202" y="114" width="28" height="28" rx="7" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <circle class="live" cx="160" cy="128.5" r="3.5" fill="#F24E1E" />
+  </g>
+</svg>
+
+<style>
+  .ill {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sig {
+      opacity: 0.2;
+      animation: telSig 3s ease-in-out infinite;
+    }
+    .sig-2 {
+      animation-delay: 0.35s;
+    }
+    .sig-3 {
+      animation-delay: 0.7s;
+    }
+    @keyframes telSig {
+      0%,
+      100% {
+        opacity: 0.15;
+      }
+      45% {
+        opacity: 0.95;
+      }
+    }
+
+    .live {
+      animation: telLive 2.2s ease-in-out infinite;
+    }
+    @keyframes telLive {
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+  }
+</style>

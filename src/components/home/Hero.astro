@@ -1,0 +1,83 @@
+---
+// Home hero (light): calm GitHub-style sans headline with a single orange
+// accent word, muted body, orange + outlined CTAs, trust badges, and a clean
+// white competency index card on the right. Subtle dot-grid atmosphere.
+import Container from '../Container.astro';
+import Button from '../Button.astro';
+import Badge from '../Badge.astro';
+import { Icon } from 'astro-icon/components';
+import { hero, competencies } from '../../data/site';
+
+const badgeIcons = ['lucide:shield-check', 'lucide:clock'];
+---
+
+<section class="relative overflow-hidden bg-cream">
+  <div class="dot-grid absolute inset-0 opacity-60" aria-hidden="true"></div>
+  <div
+    class="absolute -top-24 right-0 size-[30rem] rounded-full bg-brand-100/40 blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  <Container class="relative pb-20 pt-28 sm:pb-24 lg:pb-28 lg:pt-36">
+    <div class="grid items-center gap-14 lg:grid-cols-12 lg:gap-12">
+      <!-- Value proposition -->
+      <div class="lg:col-span-7" data-reveal>
+        <p class="flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
+          <span class="inline-block h-px w-7 bg-brand-500" aria-hidden="true"></span>
+          {hero.eyebrow}
+        </p>
+
+        <h1 class="mt-6 max-w-2xl text-[clamp(2rem,4.5vw,3.25rem)] font-semibold leading-[1.12] tracking-tight text-navy-950">
+          We design systems that work <span class="text-brand-600">intelligently</span>—so you can
+          focus on what matters.
+        </h1>
+
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-slate-600">{hero.sub}</p>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Button href={hero.primaryCta.href} size="lg" chevron>{hero.primaryCta.label}</Button>
+          <Button href={hero.secondaryCta.href} size="lg" variant="secondary">
+            {hero.secondaryCta.label}
+          </Button>
+        </div>
+
+        <div class="mt-9 flex flex-wrap gap-3">
+          {hero.badges.map((b, i) => <Badge icon={badgeIcons[i]}>{b}</Badge>)}
+        </div>
+      </div>
+
+      <!-- Competency index -->
+      <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
+        <div class="overflow-hidden rounded-xl border border-line bg-white shadow-sm shadow-navy-950/[0.04]">
+          <p class="border-b border-line px-6 py-4 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
+            Core competencies
+          </p>
+          <ul>
+            {
+              competencies.map((c, i) => (
+                <li class={i > 0 ? 'border-t border-line' : ''}>
+                  <a
+                    href={`/services#${c.slug}`}
+                    class="group flex items-center gap-4 px-6 py-4 transition-colors hover:bg-band"
+                  >
+                    <span class="font-mono text-xs text-slate-500 tabular-nums">0{i + 1}</span>
+                    <span class="grid size-9 shrink-0 place-items-center rounded-md bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                      <Icon name={c.icon} class="size-[18px]" aria-hidden="true" />
+                    </span>
+                    <span class="min-w-0 flex-1 font-medium text-navy-900">{c.title}</span>
+                    <Icon
+                      name="lucide:arrow-up-right"
+                      class="size-4 text-slate-400 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand-600"
+                      aria-hidden="true"
+                    />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

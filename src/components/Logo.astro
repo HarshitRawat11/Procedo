@@ -1,0 +1,24 @@
+---
+// Procedo's real logo lockup, used as-is (navy+orange hexagon + wordmark) on
+// the light navbar/footer. Do not recolor or crop — the full artwork ships.
+interface Props {
+  class?: string;
+  href?: string | null;
+}
+const { class: className = '', href = '/' } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+  {...href ? { href } : {}}
+  aria-label="Procedo Infosystems — home"
+  class:list={['inline-flex items-center', className]}
+>
+  <img
+    src="/assets/procedo-logo.png"
+    alt="Procedo Infosystems"
+    width="790"
+    height="316"
+    class="h-9 w-auto"
+  />
+</Tag>

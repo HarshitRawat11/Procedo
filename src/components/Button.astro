@@ -1,0 +1,51 @@
+---
+// Reusable link-styled button (light theme). Orange primary; white outlined
+// secondary; quiet ghost. Smooth ~200ms hover + subtle active press. Optional
+// trailing chevron nudges right on hover.
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  size?: 'md' | 'lg';
+  class?: string;
+  icon?: string;
+  chevron?: boolean;
+  'aria-label'?: string;
+}
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  class: className = '',
+  icon,
+  chevron = false,
+  'aria-label': ariaLabel,
+} = Astro.props;
+
+const base =
+  'group inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 ease-out active:scale-[0.98]';
+const sizes = {
+  md: 'px-5 py-2.5 text-sm',
+  lg: 'px-6 py-3 text-[15px]',
+};
+const variants = {
+  primary: 'bg-brand-500 text-white shadow-sm shadow-brand-600/20 hover:bg-brand-600',
+  secondary: 'bg-white text-navy-900 ring-1 ring-line shadow-sm hover:bg-band hover:ring-slate-300',
+  ghost: 'text-navy-700 hover:text-brand-600',
+};
+---
+
+<a href={href} aria-label={ariaLabel} class:list={[base, sizes[size], variants[variant], className]}>
+  {icon && <Icon name={icon} class="size-4 shrink-0" aria-hidden="true" />}
+  <span><slot /></span>
+  {
+    chevron && (
+      <Icon
+        name="lucide:arrow-right"
+        class="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5"
+        aria-hidden="true"
+      />
+    )
+  }
+</a>

@@ -1,0 +1,118 @@
+---
+/* Audio & Video Conferencing — a wall display with three participants, a
+   soundbar, and a table mic picking up the room. */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<svg
+  class:list={['ill', className]}
+  viewBox="0 0 320 240"
+  role="img"
+  aria-labelledby="ill-av-title"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="ill-av-title">
+    A wall-mounted conferencing display showing three participants, with a soundbar below and a
+    table microphone picking up the room.
+  </title>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- display -->
+    <rect x="76" y="42" width="168" height="100" rx="6" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <rect x="84" y="50" width="152" height="84" rx="3" fill="#F3F4F6" />
+
+    <!-- participant tiles -->
+    <g>
+      <rect x="92" y="60" width="44" height="34" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" />
+      <circle cx="114" cy="72" r="6" fill="#F3F4F6" stroke="#1B2A4A" stroke-width="1.8" />
+      <path d="M105 90 C105 81 123 81 123 90" stroke="#1B2A4A" stroke-width="1.8" />
+
+      <rect x="140" y="60" width="44" height="34" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" />
+      <circle cx="162" cy="72" r="6" fill="#F3F4F6" stroke="#1B2A4A" stroke-width="1.8" />
+      <path d="M153 90 C153 81 171 81 171 90" stroke="#1B2A4A" stroke-width="1.8" />
+
+      <rect x="188" y="60" width="44" height="34" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" />
+      <circle cx="210" cy="72" r="6" fill="#F3F4F6" stroke="#1B2A4A" stroke-width="1.8" />
+      <path d="M201 90 C201 81 219 81 219 90" stroke="#1B2A4A" stroke-width="1.8" />
+      <!-- active speaker -->
+      <circle class="speaking" cx="228" cy="64" r="3" fill="#16A34A" />
+    </g>
+
+    <!-- shared content strip -->
+    <rect x="92" y="102" width="140" height="24" rx="3" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2" />
+    <path d="M100 110 H180 M100 118 H154" stroke="#CBD5E1" stroke-width="2" />
+
+    <!-- soundbar -->
+    <rect x="110" y="150" width="100" height="13" rx="6.5" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <g fill="#CBD5E1">
+      <circle cx="126" cy="156.5" r="2" />
+      <circle cx="136" cy="156.5" r="2" />
+      <circle cx="146" cy="156.5" r="2" />
+      <circle cx="174" cy="156.5" r="2" />
+      <circle cx="184" cy="156.5" r="2" />
+      <circle cx="194" cy="156.5" r="2" />
+    </g>
+
+    <!-- table -->
+    <path d="M52 196 H268" stroke="#1B2A4A" stroke-width="2" />
+
+    <!-- pickup arcs, spreading sideways so they clear the soundbar -->
+    <g class="arcs" stroke="#CBD5E1" stroke-width="2">
+      <path class="arc arc-1" d="M130 174 C123 179 123 185 130 190" />
+      <path class="arc arc-2" d="M120 169 C109 177 109 187 120 195" />
+      <path class="arc arc-3" d="M190 174 C197 179 197 185 190 190" />
+      <path class="arc arc-4" d="M200 169 C211 177 211 187 200 195" />
+    </g>
+
+    <!-- table mic -->
+    <ellipse cx="160" cy="188" rx="22" ry="8" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <path d="M138 188 V180" stroke="#1B2A4A" stroke-width="2" />
+    <path d="M182 188 V180" stroke="#1B2A4A" stroke-width="2" />
+    <ellipse cx="160" cy="180" rx="22" ry="8" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <circle cx="160" cy="180" r="4.5" fill="#F24E1E" />
+  </g>
+</svg>
+
+<style>
+  .ill {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .arc {
+      opacity: 0.25;
+      animation: avArc 2.8s ease-in-out infinite;
+    }
+    .arc-2,
+    .arc-4 {
+      animation-delay: 0.5s;
+    }
+    @keyframes avArc {
+      0%,
+      100% {
+        opacity: 0.2;
+      }
+      50% {
+        opacity: 0.9;
+      }
+    }
+
+    .speaking {
+      animation: avSpeak 2s ease-in-out infinite;
+    }
+    @keyframes avSpeak {
+      0%,
+      100% {
+        opacity: 0.35;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+  }
+</style>

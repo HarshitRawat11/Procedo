@@ -1,0 +1,36 @@
+---
+// Reusable icon + title + body grid (light). Used for "Why Procedo" and the
+// mission principles. Cards reveal with a gentle stagger.
+import { Icon } from 'astro-icon/components';
+import type { Feature } from '../data/site';
+
+interface Props {
+  items: readonly Feature[];
+  columns?: 2 | 3 | 4;
+  class?: string;
+}
+const { items, columns = 4, class: className = '' } = Astro.props;
+const colClass = {
+  2: 'sm:grid-cols-2',
+  3: 'sm:grid-cols-2 lg:grid-cols-3',
+  4: 'sm:grid-cols-2 lg:grid-cols-4',
+}[columns];
+---
+
+<div class:list={['grid gap-5', colClass, className]}>
+  {
+    items.map((f, i) => (
+      <div
+        data-reveal
+        style={`--reveal-delay:${(i % 4) * 80}ms`}
+        class="rounded-xl border border-line bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg hover:shadow-navy-950/[0.06]"
+      >
+        <span class="grid size-11 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+          <Icon name={f.icon} class="size-5" aria-hidden="true" />
+        </span>
+        <h3 class="mt-5 text-base font-semibold text-navy-950">{f.title}</h3>
+        <p class="mt-2 text-sm leading-relaxed text-slate-600">{f.body}</p>
+      </div>
+    ))
+  }
+</div>

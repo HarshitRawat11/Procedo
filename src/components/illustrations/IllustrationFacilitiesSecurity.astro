@@ -1,0 +1,100 @@
+---
+/* Facilities Security — a wall-mounted CCTV camera watching a building, with a
+   card reader at the door and an all-clear badge. */
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<svg
+  class:list={['ill', className]}
+  viewBox="0 0 320 240"
+  role="img"
+  aria-labelledby="ill-sec-title"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id="ill-sec-title">
+    A wall-mounted CCTV camera watching over a building with a card reader at the door, and a
+    green all-clear badge.
+  </title>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- ground -->
+    <ellipse cx="188" cy="197" rx="62" ry="5" fill="#F3F4F6" />
+    <path d="M40 197 H280" stroke="#CBD5E1" stroke-width="2" />
+
+    <!-- wall + bracket -->
+    <path d="M44 38 V118" stroke="#CBD5E1" stroke-width="2" />
+    <path d="M44 62 H64" stroke="#1B2A4A" stroke-width="2" />
+
+    <!-- view cone -->
+    <g class="cone" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 6">
+      <path d="M116 72 L244 152" />
+      <path d="M116 72 L150 197" />
+    </g>
+
+    <!-- camera -->
+    <rect x="62" y="52" width="46" height="22" rx="9" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <circle cx="108" cy="65" r="9" fill="#F3F4F6" stroke="#1B2A4A" stroke-width="2" />
+    <circle cx="108" cy="65" r="3.5" fill="#1B2A4A" />
+    <circle class="rec" cx="72" cy="49" r="2.8" fill="#F24E1E" />
+
+    <!-- building -->
+    <path d="M150 148 H232 V197 H150 Z" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <path d="M144 148 L191 128 L238 148" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <rect x="182" y="172" width="19" height="25" rx="2" fill="#F3F4F6" stroke="#1B2A4A" stroke-width="2" />
+    <rect x="158" y="158" width="16" height="14" rx="2" fill="#F3F4F6" stroke="#CBD5E1" stroke-width="2" />
+    <rect x="209" y="158" width="16" height="14" rx="2" fill="#F3F4F6" stroke="#CBD5E1" stroke-width="2" />
+
+    <!-- card reader beside the door -->
+    <rect x="206" y="176" width="9" height="13" rx="2" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+    <circle class="reader" cx="210.5" cy="182.5" r="1.8" fill="#16A34A" />
+
+    <!-- all-clear badge -->
+    <circle cx="252" cy="126" r="16" fill="#DCFCE7" stroke="#16A34A" stroke-width="2" />
+    <path d="M245 126 L250 131 L259 121" stroke="#16A34A" stroke-width="2.5" />
+  </g>
+</svg>
+
+<style>
+  .ill {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* the scan cone drifts, as though the camera is panning */
+    .cone {
+      transform-box: fill-box;
+      transform-origin: 0% 0%;
+      animation: secPan 7s ease-in-out infinite alternate;
+    }
+    @keyframes secPan {
+      from {
+        transform: rotate(-3deg);
+      }
+      to {
+        transform: rotate(3deg);
+      }
+    }
+
+    .rec {
+      animation: secBlink 2s ease-in-out infinite;
+    }
+    .reader {
+      animation: secBlink 2s ease-in-out infinite;
+      animation-delay: 0.8s;
+    }
+    @keyframes secBlink {
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+  }
+</style>
