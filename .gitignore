@@ -22,7 +22,14 @@ npm-debug.log*
 
 # local scrape + downloaded reference assets (not part of the app)
 scrape/
-reference/
+reference/*
+
+# ...but DO track the written design analysis. The reference images stay local
+# (they are third-party screenshots), while the notes derived from them are real
+# project knowledge and should survive a machine change.
+!reference/inspiration/
+reference/inspiration/*
+!reference/inspiration/*.md
 
 # verification artifacts
 lighthouse*.json
