@@ -5,7 +5,7 @@ Status board for the Procedo Infosystems website.
 immediately after `CLAUDE.md`.
 
 - **Last updated:** 2026-08-30
-- **Build:** ✅ passing — 14 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
+- **Build:** ✅ passing — 12 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
 - **Deployed:** ❌ not yet — domain exists (procedoinfo.com) but still serves the old site
 - **Repo:** ✅ `HarshitRawat11/Procedo` on GitHub
 - **Overall:** the site is content-complete and shippable. Only the legal review
@@ -28,7 +28,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 7 | Office address | ✅ | — | 324 Guru Ram Das Nagar, Laxmi Nagar, Delhi – 110092. PIN confirmed by user 2026-08-30. Live on `/contact` and in the homepage JSON-LD |
 | 8 | LinkedIn profile URL | 🔴 | Not supplied | Client to provide; replace `'#'` in `socials` — footer icon unhides itself |
 | 9 | Governance docs (CLAUDE / README / PROGRESS) | ✅ | — | Keep this board current |
-| 10 | `/quiet` illustration concept page | ✅ | — | Decide where it lands — see #11 and #12 |
+| 10 | QuietScene illustration | ✅ | — | Landed on the real site in three places: the 404 page, `/our-mission`, and the contact-form success state. The standalone `/quiet` concept page was deleted 2026-08-30 once adopted |
 | 11 | Custom 404 page | ✅ | — | Built 2026-08-30 using QuietScene inside BaseLayout (header/footer present so visitors can recover). Emits `dist/404.html`, excluded from sitemap |
 | 12 | Illustration on Our Mission page | ✅ | — | Adopted 2026-08-30 — QuietScene now sits beside the mission statement on the live `/our-mission`. Preview page deleted |
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
@@ -57,6 +57,11 @@ Nothing is blocked on code.
 ## Log
 
 ### 2026-08-30 (later)
+- Deleted the standalone `/quiet` concept page now that its illustration is
+  adopted in three real places (404, `/our-mission`, contact success). Kept
+  `QuietScene.astro` — three live pages import it. Also cleaned up the stale
+  `/quiet` references left behind in the sitemap comment, `404.astro` and
+  `uptime.astro`. `dist-client/` kept deliberately, for future preview builds.
 - **Illustration adopted on `/our-mission`** — QuietScene now sits beside the
   mission statement on the live page, and `our-mission-preview.astro` was deleted
   along with its sitemap exclusion. Verified the preview banner did not leak

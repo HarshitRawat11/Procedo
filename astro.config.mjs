@@ -12,12 +12,12 @@ export default defineConfig({
 
   integrations: [
     mdx(), // Markdown + components for blog posts
-    // Auto-generates /sitemap-index.xml for SEO. `/quiet` is a standalone
-    // concept page, not part of the site, so it is kept out of the sitemap
-    // (it is also marked noindex and linked from nowhere).
+    // Auto-generates /sitemap-index.xml for SEO. The routes listed below are
+    // standalone concept pages, not part of the real site, so they are kept out
+    // of the sitemap (they are also marked noindex and linked from nowhere).
     sitemap({
       filter: (page) =>
-        !['/quiet', '/uptime', '/illustrations-preview'].some((p) => page.includes(p)),
+        !['/uptime', '/illustrations-preview'].some((p) => page.includes(p)),
     }),
     icon(), // build-time inlined Lucide icons (zero runtime JS)
   ],
