@@ -7,6 +7,7 @@ immediately after `CLAUDE.md`.
 - **Last updated:** 2026-08-30
 - **Build:** ✅ passing — 14 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
 - **Deployed:** ❌ not yet — domain exists (procedoinfo.com) but still serves the old site
+- **Repo:** ✅ `HarshitRawat11/Procedo` on GitHub
 - **Overall:** the site is content-complete and shippable. Only the legal review
   and deployment remain before launch.
 
@@ -24,18 +25,18 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 4 | Remove all Aviator Infotech material | ✅ | — | — |
 | 5 | Legal pages (privacy / terms / cookies) | 🔴 | Needs review by Procedo's legal advisor | Send the three pages for sign-off; update the `updated` date in `site.ts` after |
 | 6 | Contact form delivery | ✅ | — | Web3Forms key set 2026-08-30. First key was tied to the wrong inbox and replaced same day; the current key (ending `...6a36`) is verified live via two real form submissions through `/contact` |
-| 7 | Office address | ✅ | — | Supplied 2026-08-30: 324 Guru Ram Das Nagar, Laxmi Nagar, Delhi – 110092. Live on `/contact` and in the homepage JSON-LD. **PIN expanded from "Delhi - 92" — confirm 110092 is right** |
+| 7 | Office address | ✅ | — | 324 Guru Ram Das Nagar, Laxmi Nagar, Delhi – 110092. PIN confirmed by user 2026-08-30. Live on `/contact` and in the homepage JSON-LD |
 | 8 | LinkedIn profile URL | 🔴 | Not supplied | Client to provide; replace `'#'` in `socials` — footer icon unhides itself |
 | 9 | Governance docs (CLAUDE / README / PROGRESS) | ✅ | — | Keep this board current |
 | 10 | `/quiet` illustration concept page | ✅ | — | Decide where it lands — see #11 and #12 |
 | 11 | Custom 404 page | ✅ | — | Built 2026-08-30 using QuietScene inside BaseLayout (header/footer present so visitors can recover). Emits `dist/404.html`, excluded from sitemap |
-| 12 | `/our-mission-preview` placement mock-up | 🟡 | Awaiting your keep/bin call | View both, then either move the marked block into `our-mission.astro` or delete the preview page + `QuietScene.astro` |
+| 12 | Illustration on Our Mission page | ✅ | — | Adopted 2026-08-30 — QuietScene now sits beside the mission statement on the live `/our-mission`. Preview page deleted |
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
 | 14 | Design inspiration folder | ✅ | Image files not saved (can't write images from chat) | Drop the 10 PNGs into `reference/inspiration/` using the filenames in its README |
 | 15 | Illustration set for the site | 🟡 | Awaiting your call on the 4 rejected drafts | First batch of 5 rejected 2026-08-29 — only Power & Precision kept. Root cause and rules in `ANALYSIS.md` §6: draw the *moment* the service creates, not the equipment; one illustration at a time, not batched |
-| 16 | Deployment | 🔴 | Needs your account on a host — not something I can create for you | `dist-client/` is built and ready (client-safe: excludes `/quiet` and `/our-mission-preview`). Drag it onto [app.netlify.com/drop](https://app.netlify.com/drop) for an instant URL, then click "claim this site" (free signup) so it doesn't expire in 1 hour. Confirm the real domain in `astro.config.mjs` once you have one |
-| 17 | Version control | 🟡 | No git identity configured on this machine | `git init` done 2026-08-30, 52 files staged. Run `git config user.name "..."` and `git config user.email "..."` yourself (not something I'll set), then say go and I'll make the first commit |
-| 18 | Analytics | ⬜ | Needs a decision on provider + consent | If added, the cookie policy already describes analytics cookies — keep them consistent |
+| 16 | Deployment | ⏸️ | Parked 2026-08-30 | Netlify path parked. Repo is on GitHub, so connecting a host later is a 3-click job. Still unknown: who currently hosts procedoinfo.com |
+| 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
+| 18 | Analytics | ⏸️ | Parked 2026-08-30 | Recommendation on record: Cloudflare Web Analytics (free, cookieless, no consent banner needed). ~5 min to add whenever you want it |
 | 19 | Photography / real imagery | ✅ | — | **Decided 2026-08-30: no photography.** The illustration-and-icon style is a deliberate choice, not a gap. Revisit only if real project photos become available |
 | 20 | Dark mode | ⏸️ | Parked 2026-08-30 — client decision | Big change; user will raise with the client. No `prefers-color-scheme` handling exists today |
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
@@ -56,9 +57,14 @@ Nothing is blocked on code.
 ## Log
 
 ### 2026-08-30 (later)
+- **Illustration adopted on `/our-mission`** — QuietScene now sits beside the
+  mission statement on the live page, and `our-mission-preview.astro` was deleted
+  along with its sitemap exclusion. Verified the preview banner did not leak
+  through into the live page.
+- Git set up by the user and pushed to GitHub (`HarshitRawat11/Procedo`).
+- Analytics (#18) and deployment (#16) parked by decision, not blocked.
 - Office address supplied and wired in — live on `/contact` and in the homepage
-  schema. Expanded "Delhi - 92" to PIN 110092 (Laxmi Nagar's code) and flagged it
-  on the board for confirmation rather than assuming silently.
+  schema. PIN 110092 confirmed by the user.
 - **`/quiet` moved to a real 404 page.** Now uses BaseLayout so the header, footer
   and two escape links are present — a bare page would strand anyone landing there.
   Astro emits `dist/404.html`, which static hosts serve automatically.
