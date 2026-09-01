@@ -37,7 +37,7 @@ A single coherent set, which is why it's worth analysing as a system.
 | 05 | `empty-state-google-chat-05-yoga-fold.png` | "Nothing unread. Two words: Good vibes." | Figure forms an arch; the cat sits in the negative space inside it. Shelving in thin blue outline. |
 | 06 | `empty-state-google-chat-06-pouring-tea.png` | "You're all caught up. Time for a cup." | Most "props" of any — lamp, frame, fruit bowl, counter — all thin blue outline. Cat asleep on a shelf. |
 | 07 | `empty-state-google-chat-07-grass-flower.png` | "New messages: Zero. You: 100% awesome" | Flat green blob foliage on thin blue stems. Cat climbing a tree. |
-| 10 | `empty-state-google-chat-10-couch-tv.png` | "All caught up on messages. Way to go, Chat hero!" | Elevated couch on visible thin-blue legs, floating over a TV silhouette — furniture as the whole set. Popcorn box (blue-striped) as the one prop-in-hand. Cat curled into the crook of the figure's arm rather than nearby. "Radiating" motion lines (the four short strokes under the couch) reused from #09's floating-chip device, here signalling "comfortably settled" rather than "in motion." |
+| 10 | `empty-state-google-chat-10-couch-tv.png` | "All caught up on messages. Way to go, Chat hero!" | Blue couch on thin-blue legs sitting *above* a TV — a stacked, deliberately unreal arrangement rather than a real room. **Thin white rays fan up from the TV screen onto the couch**: the light source is drawn, not the glow. Cat stretched out full-length beside the reclining figure, who has one arm up behind their head. Blue-and-white striped popcorn box. Pink cushions on the couch, pink pot holding a cactus on the TV stand, thin-blue cable running from the TV. |
 
 ### Google Chat — other states (not empty states)
 

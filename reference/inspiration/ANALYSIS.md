@@ -56,7 +56,26 @@ white, blue, green or black. The restraint is what stops it looking childish.
 - **Negative space as subject** (05): the figure's body forms an arch and the cat
   occupies the gap inside it.
 - **Floating UI chips** (09): product icons orbit the figure at varying sizes.
-- **Elevated / floating furniture** (10): the couch sits on visible thin-blue legs above a TV silhouette, with short motion-lines underneath signalling "settled" rather than "falling" — same device as #09's chips, repurposed for comfort instead of connection.
+- **Stacked, unreal furniture** (10): the couch sits on thin-blue legs *above* the
+  TV rather than in front of it. Nobody's living room looks like this, and it
+  doesn't matter — the arrangement reads as "evening in" without needing a room.
+- **Light drawn as rays, never as glow** (10): thin white lines fan up from the TV
+  screen onto the couch. No gradient, no blur, no bloom — just strokes. This is
+  how the set does light everywhere, and it's the cheapest way to imply a lit
+  source in flat vector work.
+
+  > Correction, 2026-08-30: these rays were first catalogued here as "motion
+  > lines signalling settled." A clearer copy of the same reference showed they
+  > originate at the screen and land on the figures — they are light, not motion.
+  > The original note also had the cat curled in the figure's arm; it is actually
+  > stretched out full-length beside them.
+
+  **For Procedo — this is a concrete lead on the style gap.** `UptimeScene` draws
+  its lamplight as a `radialGradient` pool. The reference set never uses a
+  gradient for anything; light is always discrete strokes. That difference in
+  *technique* may be part of why `/uptime` reads as "close but not matching"
+  (see §6 and the `procedo-illustration-approach` memory). Worth testing on the
+  next attempt: replace the gradient glow with fanned strokes and compare.
 
 ## 4. Characters
 
