@@ -58,13 +58,13 @@ to change site text by editing that one file. If you are about to type a sentenc
 of marketing copy into a `.astro` file, stop and put it in `site.ts` instead.
 
 ### 3. Missing data degrades gracefully — never show a placeholder
-Two values are still unknown (office address, LinkedIn URL). Each
+One value is still unknown (the LinkedIn URL). It
 is wired so that an empty value **hides the feature** rather than rendering a
 dead link, an empty card, or a form that silently fails. Preserve that pattern
 for any new unknown.
 
 ### 4. Confirm before destructive changes
-Git was initialized 2026-08-30, but nothing is pushed anywhere and there is no CI
+Git is set up and pushed to GitHub (`HarshitRawat11/Procedo`), but there is no CI
 or branch protection — **confirm before deleting or overwriting anything**, and
 prefer additive changes. Preview work goes in a new file, never on top of a live
 page. Uncommitted work still has no undo.
@@ -72,7 +72,9 @@ page. Uncommitted work still has no undo.
 ### 5. Concept and preview pages must be sealed off
 Anything not part of the real site must be: not in `nav`, linked from nowhere,
 marked `noindex`, and excluded from the sitemap filter in `astro.config.mjs`.
-Current examples: `/quiet`, `/our-mission-preview`.
+Current examples: `/uptime`, `/illustrations-preview`. (`/quiet` and
+`/our-mission-preview` existed under this rule until their illustrations were
+adopted into the real site, at which point both pages were deleted.)
 
 ### 6. Accessibility is not optional
 - Every animation sits inside `@media (prefers-reduced-motion: no-preference)`.

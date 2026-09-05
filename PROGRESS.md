@@ -32,7 +32,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 11 | Custom 404 page | ✅ | — | Built 2026-08-30 using QuietScene inside BaseLayout (header/footer present so visitors can recover). Emits `dist/404.html`, excluded from sitemap |
 | 12 | Illustration on Our Mission page | ✅ | — | Adopted 2026-08-30 — QuietScene now sits beside the mission statement on the live `/our-mission`. Preview page deleted |
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
-| 14 | Design inspiration folder | ✅ | Image files not saved (can't write images from chat) | Drop the 10 PNGs into `reference/inspiration/` using the filenames in its README |
+| 14 | Design inspiration folder | ✅ | Image files not saved (can't write images from chat) | Drop the 11 PNGs into `reference/inspiration/` using the filenames in its README. The written notes are now tracked in git; the images stay local |
 | 15 | Illustration set for the site | 🟡 | Awaiting your call on the 4 rejected drafts | First batch of 5 rejected 2026-08-29 — only Power & Precision kept. Root cause and rules in `ANALYSIS.md` §6: draw the *moment* the service creates, not the equipment; one illustration at a time, not batched |
 | 16 | Deployment | ⏸️ | Parked 2026-08-30 | Netlify path parked. Repo is on GitHub, so connecting a host later is a 3-click job. Still unknown: who currently hosts procedoinfo.com |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
