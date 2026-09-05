@@ -1,11 +1,16 @@
-# What the Google Chat illustration set is actually doing
+# What the reference illustrations are actually doing
 
-Notes from eleven references (see [`README.md`](./README.md) for the index).
-References 01–10 are one coherent system, so §1–§5 are reverse-engineered from
-that set rather than guessed at from any single image.
+Notes from twelve references (see [`README.md`](./README.md) for the index).
 
-**Read §7 before treating §1–§5 as universal.** Reference 11 deliberately breaks
-most of them, because it serves a different kind of empty state.
+**§1–§5 describe references 01–10 only** — those are one coherent Google Chat
+system, so the rules are reverse-engineered from the set rather than guessed at
+from any single image. Do not treat them as universal:
+
+- **§7 — reference 11** breaks most of them, because it serves a different kind
+  of empty state (absence as a *prompt*, not a *reward*).
+- **§8 — reference 12** is a different illustration system altogether: Google
+  Meet, no outlines at all, light theme, and a *reassurance* register. It is the
+  closest of the twelve to Procedo's own tone.
 
 ---
 
@@ -267,3 +272,60 @@ Not the marketing pages — those are all "reward" states or plain content. But 
 the right model for any **interactive state that needs the user to act**: a form
 validation error, a filter with no results, an incomplete selection. If those ever
 appear, use this register, not the sleeping cat.
+
+---
+
+## 8. Reference 12 — a different illustration system entirely
+
+Added 2026-09-05. Worth separating from §1–§7 because it is **not Google Chat**
+and does not share the technique. Treating it as part of the same set would
+muddle the rules.
+
+**What it shows:** two figures seen from behind, shoulders-up, inside a pale blue
+circle. A blue shield with a padlock floats between their heads. White background.
+
+**Caption:** "Your meeting is safe", then *"No one outside your organization can
+join a meeting unless invited or admitted by the host."*
+
+### What makes it a different system
+
+- **No outlines at all.** Not thin blue, not near-black — none. Pure flat shapes
+  with colour boundaries doing all the work. Every one of references 01–11 is
+  built on outlines; this abandons them completely.
+- **Light theme.** White ground, where 10 of the 11 Chat references are near-black.
+- **Straight brand palette** — Google's yellow, green and blue, used literally
+  rather than the muted, restrained scheme of §2.
+- **Figures from behind.** No faces at all, so no expression work is needed.
+- **A containing circle** rather than a scene. The circle *is* the composition;
+  there is no environment, ground line or props.
+
+### The category it belongs to
+
+This is neither "absence as reward" (§1–§6) nor "absence as prompt" (§7). It is a
+**reassurance** state: nothing is wrong, nothing is missing, and the user has not
+asked anything — the screen exists to pre-empt a worry.
+
+That dictates the tone. The caption makes no joke, offers no reward, and gives no
+instruction. It states a fact plainly and then explains the mechanism behind it.
+Humour here would actively undermine the message, because the subject is trust.
+
+### Where this fits Procedo
+
+**This is the closest reference yet to Procedo's actual register.** Procedo sells
+infrastructure on the promise that it will not fail — which is a trust argument,
+not a delight argument. Note how much this illustration achieves with:
+
+- no faces to characterise,
+- no scene to build,
+- one icon (shield + padlock) carrying the entire meaning,
+- and a plain, factual two-tier caption.
+
+Compare with §6's post-mortem: the five rejected competency illustrations failed
+because they *diagrammed equipment*. This shows a third way — neither a life
+scene nor a diagram, but **a single symbolic object inside a simple containing
+shape**, with the copy doing the explaining. Worth considering for the Services
+page, where five life-scenes may be the wrong ambition anyway.
+
+⚠️ One caution: adopting this system means dropping outlines, which would clash
+with `QuietScene` and `UptimeScene`. Do not mix the two techniques in one site —
+pick one and stay with it.

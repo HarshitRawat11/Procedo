@@ -53,9 +53,22 @@ A genuinely different category, which is why it sits on its own. See
 
 | # | Filename | Caption | Note |
 |---|---|---|---|
-| 11 | `empty-state-google-chat-11-two-hands-bubbles.png` | "No conversation selected" + *"Use the toggle to switch between single and split pane modes"* | **Hands only** — no figure, no cat, no nature, first in the set. Two hands enter from opposite corners in 180° rotational symmetry, with deliberately contrasting skin tones. A single continuous thin-blue path loops hand → bubble → badge → hand, tying the whole composition into a loose rounded rectangle. Subject is pure product iconography: speech bubbles, a `0` unread badge, an avatar dot. **Two-tier caption with an accent-coloured headline** — the only instructional caption in the set. |
+| 11 | *(PNG missing — see note below)* | "No conversation selected" + *"Use the toggle to switch between single and split pane modes"* | **Hands only** — no figure, no cat, no nature, first in the set. Two hands enter from opposite corners in 180° rotational symmetry, with deliberately contrasting skin tones. A single continuous thin-blue path loops hand → bubble → badge → hand, tying the whole composition into a loose rounded rectangle. Subject is pure product iconography: speech bubbles, a `0` unread badge, an avatar dot. **Two-tier caption with an accent-coloured headline** — the only instructional caption in the set. |
 
-> ⚠️ **The image files are not saved here yet.** I can't write images out of a
-> chat conversation. Please drop the eleven PNGs in using the filenames above and
-> the index will line up. Everything else — the analysis, the notes — is written
-> from the images as shared, so it stands on its own either way.
+### Google Meet — reassurance state
+
+Not Google Chat, and not the same illustration system. See
+[`ANALYSIS.md`](./ANALYSIS.md) §8.
+
+| # | Filename | Caption | Note |
+|---|---|---|---|
+| 12 | `illustration-google-meet-12-meeting-is-safe.png` | "Your meeting is safe" + *"No one outside your organization can join a meeting unless invited or admitted by the host"* | **No outlines anywhere** — pure flat shapes, the first in the collection with no line art at all. Light theme on white. Two figures seen from behind, shoulders-up, inside a pale blue circle; a blue shield with a padlock floats between their heads. Straight Google brand palette (yellow, green, blue). A **reassurance** state, not an empty state: it exists to answer an unspoken worry, so the caption is calm and factual with no joke at all. |
+
+> ✅ **Image files saved 2026-09-05** and renamed to match the index above.
+> Verified by opening each one rather than trusting timestamps.
+>
+> ⚠️ **Reference 11 is still missing.** The two-hands / "No conversation selected"
+> image was analysed from chat but never made it into the folder — the eleventh
+> file dropped in turned out to be a different image entirely (now catalogued as
+> 12). Its notes below and in `ANALYSIS.md` §7 stand on their own; only the PNG
+> is absent.

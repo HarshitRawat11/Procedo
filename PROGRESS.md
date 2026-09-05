@@ -4,7 +4,7 @@ Status board for the Procedo Infosystems website.
 **Update this file whenever a task changes state.** New sessions should read it
 immediately after `CLAUDE.md`.
 
-- **Last updated:** 2026-08-30
+- **Last updated:** 2026-09-05
 - **Build:** ✅ passing — 12 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
 - **Deployed:** ❌ not yet — domain exists (procedoinfo.com) but still serves the old site
 - **Repo:** ✅ `HarshitRawat11/Procedo` on GitHub
@@ -32,7 +32,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 11 | Custom 404 page | ✅ | — | Built 2026-08-30 using QuietScene inside BaseLayout (header/footer present so visitors can recover). Emits `dist/404.html`, excluded from sitemap |
 | 12 | Illustration on Our Mission page | ✅ | — | Adopted 2026-08-30 — QuietScene now sits beside the mission statement on the live `/our-mission`. Preview page deleted |
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
-| 14 | Design inspiration folder | ✅ | Image files not saved (can't write images from chat) | Drop the 11 PNGs into `reference/inspiration/` using the filenames in its README. The written notes are now tracked in git; the images stay local |
+| 14 | Design inspiration folder | ✅ | — | Images saved and renamed to the index 2026-09-05, verified by opening each. 11 of 12 present — ref 11 (two-hands) never made it in; ref 12 (Google Meet "meeting is safe") is new and now catalogued as ANALYSIS §8. Notes tracked in git, images stay local |
 | 15 | Illustration set for the site | 🟡 | Awaiting your call on the 4 rejected drafts | First batch of 5 rejected 2026-08-29 — only Power & Precision kept. Root cause and rules in `ANALYSIS.md` §6: draw the *moment* the service creates, not the equipment; one illustration at a time, not batched |
 | 16 | Deployment | ⏸️ | Parked 2026-08-30 | Netlify path parked. Repo is on GitHub, so connecting a host later is a 3-click job. Still unknown: who currently hosts procedoinfo.com |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
@@ -55,6 +55,22 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-05
+- Reference images dropped into `reference/inspiration/` and renamed to match the
+  index. Identified each by **opening it**, not by timestamp — which caught two
+  things a filename sort would have missed: reference 11 (two hands, "No
+  conversation selected") never actually made it into the folder, and the
+  eleventh file was a **new** image entirely — a Google Meet "Your meeting is
+  safe" reassurance state, now catalogued as reference 12 / `ANALYSIS.md` §8.
+- Reference 12 is a genuinely different illustration system: no outlines at all,
+  light theme, straight Google brand palette, and a *reassurance* register rather
+  than reward-or-prompt. Noted as **the closest of the twelve to Procedo's own
+  tone**, and as a possible third way for the Services page — a single symbolic
+  object in a containing shape, rather than either a life scene or a diagram.
+- Brought `CLAUDE.md` back in line with reality (it still said the repo was
+  unpushed, listed two unknown values when only LinkedIn remains, and named two
+  deleted pages as the sealed-off examples). Refreshed the stale project memory.
 
 ### 2026-08-30 (later)
 - Deleted the standalone `/quiet` concept page now that its illustration is
