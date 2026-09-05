@@ -10,23 +10,48 @@ from any single image. Do not treat them as universal:
   of empty state (absence as a *prompt*, not a *reward*).
 - **§8 — reference 12** is a different illustration system altogether: Google
   Meet, no outlines at all, light theme, and a *reassurance* register. It is the
-  closest of the twelve to Procedo's own tone.
+  closest of the twelve to Procedo's own tone. Note it is genuinely outline-free,
+  unlike 01–11 which combine flat colour *with* outlines (see §1).
 
 ---
 
-## 1. Two-tone outlines — the most transferable technique
+## 1. Flat colour AND outlines — not one or the other
 
-This is the thing that makes the whole set hang together, and it's easy to miss:
+> **Corrected 2026-09-05.** This section previously described the set as a
+> *line-art* system and treated "flat" (§8) as a rival technique. That was a
+> false binary and it caused a real error: `QuietScene` was built almost entirely
+> from white fills with hairline accents, which is why it reads thin beside the
+> references. The client spotted it — *"flat is used for colour but outline is
+> used to make the white look visible."* That is exactly right.
 
-- **Figures** (people, cats) are outlined in **near-black**, ~2px.
-- **Environment and props** (furniture, shelves, lamps, plant pots, stems, ground
-  lines, motion arcs) are outlined in a **thin, bright blue**, ~1.5px, and are
-  often left completely unfilled.
+The set uses **both at once**. Every shape gets a flat colour fill *and* an
+outline on top:
 
-The result is depth and hierarchy with no shading, no gradients and no drop
-shadows. The subject reads forward; the world recedes. It also means the
-background can be near-black without the props disappearing, because the blue
-holds its own against dark *and* light grounds.
+- The trousers in 01 are flat light blue **with** a dark outline.
+- The couch in 10 is flat blue **with** an outline; the cushions flat pink, the
+  cactus flat green, the pot flat pink — all outlined.
+- White is used as a *colour in its own right* (a t-shirt, a cat's belly) and the
+  outline is what keeps it legible against a coloured neighbour. Without the
+  outline, white-on-blue or white-on-cream simply disappears.
+
+So the two jobs are cleanly separated:
+
+| Job | Done by |
+|---|---|
+| Carrying colour, mass, warmth | **flat fills** |
+| Keeping shapes legible against each other | **outlines** |
+| Pushing environment back behind the subject | **thinner / paler outlines** |
+
+Outline weight still varies by role — figures get near-black ~2px, props and
+environment get a thinner, paler stroke — which is what produces depth with no
+shading, gradients or drop shadows. But the weight hierarchy sits *on top of*
+flat colour; it does not replace it.
+
+**For Procedo:** the fix is not "go flat" or "stay outline". It is **keep the
+outlines and put real colour underneath them**. `QuietScene` today is roughly 90%
+white fill; the references are closer to half saturated colour. Giving the rack,
+mug, cat and foliage genuine fills — while keeping every existing navy stroke —
+closes most of the gap without changing the drawing at all.
 
 **For Procedo:** `/quiet` already separates subject from environment, but it does
 it with navy `#1B2A4A` on everything and `#CBD5E1` for secondary detail. Adopting

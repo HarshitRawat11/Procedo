@@ -67,8 +67,7 @@ Not Google Chat, and not the same illustration system. See
 > ✅ **Image files saved 2026-09-05** and renamed to match the index above.
 > Verified by opening each one rather than trusting timestamps.
 >
-> ⚠️ **Reference 11 is still missing.** The two-hands / "No conversation selected"
-> image was analysed from chat but never made it into the folder — the eleventh
-> file dropped in turned out to be a different image entirely (now catalogued as
-> 12). Its notes below and in `ANALYSIS.md` §7 stand on their own; only the PNG
-> is absent.
+> ℹ️ **Reference 11 has no PNG by choice.** The file was removed as a duplicate
+> on 2026-09-05. The image was analysed from chat when it was shared, so its notes
+> below and in `ANALYSIS.md` §7 stand on their own — do not go looking for the
+> file, it is absent deliberately.
