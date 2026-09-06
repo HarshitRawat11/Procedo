@@ -1,8 +1,8 @@
 # CLAUDE.md — working agreement for this repo
 
 Marketing website for **Procedo Infosystems Pvt. Ltd.**, an infrastructure-first
-technology firm (IT infrastructure, facilities security, AV, telecom, power &
-precision systems).
+technology firm (IT infrastructure, facilities security, AV, digital workplace
+services, datacenter infrastructure).
 
 ---
 

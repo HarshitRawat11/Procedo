@@ -4,8 +4,8 @@ Status board for the Procedo Infosystems website.
 **Update this file whenever a task changes state.** New sessions should read it
 immediately after `CLAUDE.md`.
 
-- **Last updated:** 2026-09-06
-- **Build:** ✅ passing — 12 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
+- **Last updated:** 2026-09-06 (later)
+- **Build:** ✅ passing — 14 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
 - **Deployed:** ❌ not yet — domain exists (procedoinfo.com) but still serves the old site
 - **Repo:** ✅ `HarshitRawat11/Procedo` on GitHub
 - **Overall:** the site is content-complete and shippable. Only the legal review
@@ -42,7 +42,8 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
 | 22 | `/uptime` illustration concept ("power cut at 3am, nobody noticed") | 🟡 | Not yet matching the bar — see below | 2026-08-30 verdict: "better than the previous 5" but still short of `/quiet` and the Google references. Parked, not reworked — see `procedo-illustration-approach` memory for a color/frame-share theory to test on the next attempt |
 | 23 | Illustration technique — outline vs flat colour | 🟡 | Needs your call | `/404-preview` shows all three on the real 404 layout: **A** outline (live today), **B** outline + flat colour, **C** flat without outlines. One component, one palette swap, identical geometry. Blocks #15 and #24 — the choice changes what the mis-registration and stroke-colour gates even mean |
-| 24 | Our Mission illustration | 🟡 | No approved concept | The four-floor "connected building" concept was withdrawn 2026-09-06 for exceeding the composition budget. QuietScene still sits on the page and reads as "all is well", which is not the mission. Needs a Gate 0 concept agreed before any drawing starts |
+| 24 | Our Mission illustration | ⏸️ | Parked 2026-09-06 | **Two iterations rejected.** Iteration 1 read as a diagram (figures ~30% of canvas, everything on one baseline). Iteration 2 fixed scale and depth, passed all six countable gates, and was still rejected by both Harshit and the client. Pattern across attempts: 1 success with an animal subject (QuietScene), 4 + 2 failures whenever human figures are involved. Live page keeps QuietScene. `src/components/preview/MissionScene.astro` and `/our-mission-preview` left uncommitted pending a call on whether to bin them |
+| 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06. Telecom removed as a competency; **Digital Workplace Services & Field Operations** added at #4; **Power & Precision Systems** renamed **Datacenter Infrastructure** at #5 with the client’s full copy. Still five competencies. Two CTAs the client asked for are withheld until their targets exist — see the log |
 
 ---
 
@@ -57,6 +58,40 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-06 (later)
+- **Client copy revision applied to the services page.** Telecom removed as a
+  competency, Digital Workplace Services & Field Operations added in its place at
+  position 4, and Power & Precision Systems renamed Datacenter Infrastructure at
+  position 5 with the client's full replacement copy. Net count is still five, so
+  every "five core competencies" line survives untouched.
+- Telecom appeared in **14 places**, not one. All updated: `site.description`,
+  the mission page's Service Pillars list, the footer Solutions column, the
+  contact form's subject dropdown, the services / company / contact meta
+  descriptions, the illustrations gallery, and this repo's own CLAUDE.md
+  description of the firm. Homepage JSON-LD needed no edit — `makesOffer` derives
+  from the `competencies` array.
+- Slugs renamed (`power-precision` → `datacenter-infrastructure`, `telecom` →
+  `digital-workplace`). Safe because the site has never been deployed, so no
+  public URL carries the old anchors. The illustrations gallery looks competencies
+  up by slug with a non-null assertion, so a stale slug there would have crashed
+  the render — both were fixed in the same change.
+- `Competency` gained two optional fields: `banner` (the client's closing banner)
+  and an optional `quote`. The client supplied no quote line for Digital
+  Workplace, so that section hides the blockquote rather than inventing one.
+- **Two CTAs deliberately not built.** "Download Technical Overview" has no asset
+  and "Explore Our Managed Services" has no page; rendering either would be a dead
+  link, which CLAUDE.md #3 forbids. `CompetencyBanner.ctaSecondary` is wired and
+  waiting — supply a target and each becomes a one-line change.
+- Fixed on the way in: `$N+1$` and `$2N$` in the client's text were LaTeX
+  delimiters and would have rendered literally. Now plain `N+1` / `2N`.
+- **Mission illustration abandoned after two iterations (#24).** Rejected by both
+  Harshit and the client. Recording the pattern rather than the excuse: every
+  illustration that landed has an animal or an object as its subject; every one
+  rejected has human figures. Worth treating as a known limit when planning the
+  next one.
+- `src/components/illustrations/IllustrationTelecom.astro` is now unreferenced.
+  Left in place rather than deleted, pending confirmation (CLAUDE.md #4).
 
 ### 2026-09-06
 - **Adopted a measured illustration procedure.** `reference/illustration-loop.md`

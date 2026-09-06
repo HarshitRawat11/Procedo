@@ -17,7 +17,7 @@ export default defineConfig({
     // of the sitemap (they are also marked noindex and linked from nowhere).
     sitemap({
       filter: (page) =>
-        !['/uptime', '/illustrations-preview', '/404-preview'].some((p) => page.includes(p)),
+        !['/uptime', '/illustrations-preview', '/404-preview', '/our-mission-preview'].some((p) => page.includes(p)),
     }),
     icon(), // build-time inlined Lucide icons (zero runtime JS)
   ],

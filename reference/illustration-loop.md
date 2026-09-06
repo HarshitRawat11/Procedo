@@ -96,10 +96,22 @@ State the intended scene in prose, then measure it.
 - **Characters carrying the scene: 1–2**, human or animal. This is the figure the
   face and posture gates apply to. An animal subject does not exempt you from
   them — a sleeping cat still has closed eyes, a curled spine and a tucked paw.
-- **Primary character height: at least 25% of canvas height**, or at least 35% of
-  its width if the pose is horizontal. A curled or seated figure is measured
-  across its longest axis. (`QuietScene`'s cat is ~19% tall but ~15% of canvas
-  area and unmistakably the subject — so also satisfy the next line.)
+- **Primary character height: at least 45% of canvas height**, or 35% of its
+  width if the pose is horizontal. A curled or seated figure is measured across
+  its longest axis.
+  > Raised from 25% on 2026-09-06, after iteration 1 of "The handover" passed
+  > every countable gate at 30% and still read as a diagram. The floor was set
+  > low, I drew to the floor, and the gate certified a pictogram. The reference
+  > figures run about 60%. `QuietScene`'s cat is the standing exception — it is
+  > ~19% and works, because it is one animal in a near-empty frame; a scene with
+  > people and furniture does not get that latitude.
+- **Canvas proportion.** Do not draw a wide, short canvas unless the subject is
+  genuinely horizontal. A 440x340 frame pushes everything onto one baseline in a
+  row, which is the arrangement that reads as a diagram. The references are
+  roughly square or portrait.
+- **Depth: at least two overlaps.** Two named pairs of elements where one
+  partially occludes the other. Objects lined up side by side, each fully
+  visible, is schematic no matter how well each one is drawn.
 - **The primary character must be the largest single organic mass in the scene**
   and must sit at or near an optical focal point. If equipment dominates, you are
   drawing the equipment, which is the failure mode this document exists to stop.

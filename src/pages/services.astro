@@ -3,13 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ClosingCta from '../components/ClosingCta.astro';
+import Button from '../components/Button.astro';
 import { Icon } from 'astro-icon/components';
 import { competencies, competenciesIntro } from '../data/site';
 ---
 
 <BaseLayout
   title="Services"
-  description="Five core competencies — IT infrastructure, facilities security, AV & conferencing, telecom, and power & precision systems — engineered as one."
+  description="Five core competencies — IT infrastructure, facilities security, AV & conferencing, digital workplace services, and datacenter infrastructure — engineered as one."
 >
   <PageHeader
     eyebrow={competenciesIntro.eyebrow}
@@ -35,9 +36,11 @@ import { competencies, competenciesIntro } from '../data/site';
               <h2 class="mt-5 text-2xl font-semibold text-navy-950 sm:text-3xl">{c.title}</h2>
               <p class="mt-2 font-medium text-brand-600">{c.tagline}</p>
               <p class="mt-4 text-sm leading-relaxed text-slate-600">{c.intro}</p>
-              <blockquote class="mt-6 border-l-2 border-brand-500 pl-4 text-slate-600 italic">
-                “{c.quote}”
-              </blockquote>
+              {c.quote && (
+                <blockquote class="mt-6 border-l-2 border-brand-500 pl-4 text-slate-600 italic">
+                  “{c.quote}”
+                </blockquote>
+              )}
             </div>
 
             <div class="grid gap-5 sm:grid-cols-2 lg:col-span-8">
@@ -64,6 +67,28 @@ import { competencies, competenciesIntro } from '../data/site';
               ))}
             </div>
           </div>
+
+          {c.banner && (
+            <div
+              data-reveal
+              class="mt-10 rounded-2xl bg-navy-950 px-7 py-8 text-center sm:px-10 sm:py-10"
+            >
+              <p class="text-xl font-semibold text-white sm:text-2xl">{c.banner.headline}</p>
+              <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-white/70">
+                {c.banner.sub}
+              </p>
+              <div class="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+                <Button href={c.banner.cta.href} chevron>
+                  {c.banner.cta.label}
+                </Button>
+                {c.banner.ctaSecondary && (
+                  <Button href={c.banner.ctaSecondary.href} variant="secondary">
+                    {c.banner.ctaSecondary.label}
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
         </Container>
       </section>
     ))
