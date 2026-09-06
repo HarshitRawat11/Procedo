@@ -19,14 +19,76 @@ interface Props {
   chip?: string | null;
   lines?: string[];
   surface?: 'bare' | 'panel';
+  /**
+   * Fill technique. 'outline' is the original: white fills, navy contours.
+   * 'coloured' is technique B — the same contours with flat colour laid in
+   * underneath. Geometry and animation are identical either way; only fills
+   * change, plus two shading shapes the outline version does not need.
+   */
+  palette?: 'outline' | 'coloured';
   class?: string;
 }
 const {
   chip = 'All systems nominal',
   lines = [],
   surface = 'panel',
+  palette = 'outline',
   class: className = '',
 } = Astro.props;
+
+/* Shading shapes used only by the coloured palette. */
+const CAT_BODY = 'M180 128 C178 110 190 98 208 98 C226 98 242 106 244 128 Z';
+const CAT_BACK = 'M180 128 C178 110 190 98 208 98 C218 98 227 101 233 107 C214 104 192 112 186 128 Z';
+const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113 Z';
+
+const PALETTES = {
+  outline: {
+    cloud: '#FFFFFF',
+    ground: '#F3F4F6',
+    groundLine: '#CBD5E1',
+    rack: '#FFFFFF',
+    monPanel: '#F3F4F6',
+    panelEdge: 'none',
+    module: 'none',
+    fanFace: 'none',
+    bay: '#F3F4F6',
+    cushion: '#FCDCCF',
+    catBody: '#FFFFFF',
+    catShade: null as string | null,
+    headShade: null as string | null,
+    mug: '#FFFFFF',
+    leafA: '#DCFCE7',
+    leafB: '#DCFCE7',
+    leafC: '#DCFCE7',
+    pot: '#FCDCCF',
+    grass: '#22C55E',
+    grassW: 3,
+  },
+  coloured: {
+    cloud: '#FFFFFF',
+    ground: '#E3EAF3',
+    groundLine: '#CBD5E1',
+    rack: '#C9D9EC',
+    monPanel: '#FFFFFF',
+    panelEdge: '#1B2A4A',
+    module: '#8FA8C8',
+    fanFace: '#FFFFFF',
+    bay: '#FFFFFF',
+    cushion: '#FCDCCF',
+    catBody: '#FFFFFF',
+    catShade: '#B9C4D2' as string | null,
+    headShade: '#B9C4D2' as string | null,
+    mug: '#F7B9A3',
+    leafA: '#7DD87D',
+    leafB: '#4EB86B',
+    leafC: '#7DD87D',
+    pot: '#FCDCCF',
+    grass: '#3FAE5F',
+    grassW: 3.5,
+  },
+} as const;
+
+const P = PALETTES[palette];
 
 const rotates = lines.length > 1;
 ---
@@ -58,14 +120,14 @@ const rotates = lines.length > 1;
       <path
         class="cloud"
         d="M60 80 C55 80 54 71 61 69 C62 60 74 57 80 63 C86 56 99 59 100 68 C108 68 110 79 104 80 Z"
-        fill="#FFFFFF"
+        fill={P.cloud}
         stroke="#1B2A4A"
         stroke-width="2"
       />
 
       <!-- ── Ground ── -->
-      <ellipse cx="209" cy="292" rx="74" ry="6" fill="#F3F4F6" />
-      <path d="M48 292 H384" stroke="#CBD5E1" stroke-width="2" />
+      <ellipse cx="209" cy="292" rx="74" ry="6" fill={P.ground} />
+      <path d="M48 292 H384" stroke={P.groundLine} stroke-width="2" />
 
       <!-- ── Rack cabinet ── -->
       <rect
@@ -74,18 +136,36 @@ const rotates = lines.length > 1;
         width="118"
         height="158"
         rx="8"
-        fill="#FFFFFF"
+        fill={P.rack}
         stroke="#1B2A4A"
         stroke-width="2"
       />
 
       <!-- Monitoring panel: a reassuringly flat line -->
-      <rect x="160" y="142" width="98" height="30" rx="4" fill="#F3F4F6" />
+      <rect
+        x="160"
+        y="142"
+        width="98"
+        height="30"
+        rx="4"
+        fill={P.monPanel}
+        stroke={P.panelEdge}
+        stroke-width="2"
+      />
       <path d="M167 158 H251" stroke="#16A34A" stroke-width="2" opacity="0.5" />
       <circle class="blip" cx="167" cy="158" r="2.5" fill="#16A34A" />
 
       <!-- Status + vent module -->
-      <rect x="160" y="178" width="98" height="26" rx="4" stroke="#1B2A4A" stroke-width="2" />
+      <rect
+        x="160"
+        y="178"
+        width="98"
+        height="26"
+        rx="4"
+        fill={P.module}
+        stroke="#1B2A4A"
+        stroke-width="2"
+      />
       <circle class="led led-1" cx="171" cy="191" r="3" fill="#16A34A" />
       <circle class="led led-2" cx="183" cy="191" r="3" fill="#16A34A" />
       <circle class="led led-3" cx="195" cy="191" r="3" fill="#16A34A" />
@@ -96,9 +176,18 @@ const rotates = lines.length > 1;
       </g>
 
       <!-- Fan module -->
-      <rect x="160" y="210" width="98" height="34" rx="4" stroke="#1B2A4A" stroke-width="2" />
+      <rect
+        x="160"
+        y="210"
+        width="98"
+        height="34"
+        rx="4"
+        fill={P.module}
+        stroke="#1B2A4A"
+        stroke-width="2"
+      />
       <g transform="translate(185 227)">
-        <circle r="13" stroke="#1B2A4A" stroke-width="2" />
+        <circle r="13" fill={P.fanFace} stroke="#1B2A4A" stroke-width="2" />
         <g class="blades" fill="#CBD5E1">
           <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" />
           <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" transform="rotate(90)" />
@@ -108,7 +197,7 @@ const rotates = lines.length > 1;
         <circle r="2.5" fill="#1B2A4A" />
       </g>
       <g transform="translate(233 227)">
-        <circle r="13" stroke="#1B2A4A" stroke-width="2" />
+        <circle r="13" fill={P.fanFace} stroke="#1B2A4A" stroke-width="2" />
         <g class="blades blades-slow" fill="#CBD5E1">
           <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" />
           <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" transform="rotate(90)" />
@@ -119,18 +208,27 @@ const rotates = lines.length > 1;
       </g>
 
       <!-- Drive bays -->
-      <rect x="160" y="250" width="98" height="32" rx="4" stroke="#1B2A4A" stroke-width="2" />
+      <rect
+        x="160"
+        y="250"
+        width="98"
+        height="32"
+        rx="4"
+        fill={P.module}
+        stroke="#1B2A4A"
+        stroke-width="2"
+      />
       <g>
-        <rect x="167" y="254" width="84" height="6" rx="2" fill="#F3F4F6" />
+        <rect x="167" y="254" width="84" height="6" rx="2" fill={P.bay} />
         <circle class="led led-1" cx="246" cy="257" r="1.8" fill="#16A34A" />
-        <rect x="167" y="264" width="84" height="6" rx="2" fill="#F3F4F6" />
+        <rect x="167" y="264" width="84" height="6" rx="2" fill={P.bay} />
         <circle class="led led-2" cx="246" cy="267" r="1.8" fill="#16A34A" />
-        <rect x="167" y="274" width="84" height="6" rx="2" fill="#F3F4F6" />
+        <rect x="167" y="274" width="84" height="6" rx="2" fill={P.bay} />
         <circle class="led led-3" cx="246" cy="277" r="1.8" fill="#16A34A" />
       </g>
 
       <!-- ── Cushion ── -->
-      <ellipse cx="212" cy="130" rx="40" ry="8" fill="#FCDCCF" />
+      <ellipse cx="212" cy="130" rx="40" ry="8" fill={P.cushion} />
 
       <!-- ── Sleeping cat ── -->
       <g class="cat">
@@ -143,12 +241,13 @@ const rotates = lines.length > 1;
         />
         <!-- body, with the faintest tabby markings -->
         <g class="breathe">
-          <path
-            d="M180 128 C178 110 190 98 208 98 C226 98 242 106 244 128 Z"
-            fill="#FFFFFF"
-            stroke="#1B2A4A"
-            stroke-width="2"
-          />
+          <path d={CAT_BODY} fill={P.catBody} stroke="#1B2A4A" stroke-width="2" />
+          {P.catShade && (
+            <>
+              <path d={CAT_BACK} fill={P.catShade} />
+              <path d={CAT_BODY} fill="none" stroke="#1B2A4A" stroke-width="2" />
+            </>
+          )}
           <g stroke="#CBD5E1" stroke-width="2">
             <path d="M193 102 Q197 107 195 112" />
             <path d="M203 99.5 Q207 104 205 109" />
@@ -169,6 +268,7 @@ const rotates = lines.length > 1;
         <path d="M241 103.5 L248 97 L247.5 110 Z" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
         <!-- head -->
         <circle cx="236" cy="116" r="12" fill="#FFFFFF" stroke="#1B2A4A" stroke-width="2" />
+        {P.headShade && <path d={HEAD_SHADE} fill={P.headShade} />}
         <!-- closed, contented eyes -->
         <path d="M228 114 Q231 117 234 114" stroke="#1B2A4A" stroke-width="1.8" />
         <path d="M239 114 Q242 117 245 114" stroke="#1B2A4A" stroke-width="1.8" />
@@ -187,7 +287,7 @@ const rotates = lines.length > 1;
       </g>
       <path
         d="M96 268 L96 286 Q96 292 102 292 L114 292 Q120 292 120 286 L120 268 Z"
-        fill="#FFFFFF"
+        fill={P.mug}
         stroke="#1B2A4A"
         stroke-width="2"
       />
@@ -200,28 +300,28 @@ const rotates = lines.length > 1;
       <g class="leaves">
         <path
           d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z"
-          fill="#DCFCE7"
+          fill={P.leafA}
           stroke="#1B2A4A"
           stroke-width="2"
         />
         <path
           d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z"
-          fill="#DCFCE7"
+          fill={P.leafB}
           stroke="#1B2A4A"
           stroke-width="2"
         />
         <path
           d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z"
-          fill="#DCFCE7"
+          fill={P.leafC}
           stroke="#1B2A4A"
           stroke-width="2"
         />
       </g>
-      <path d="M314 274 L318 292 H342 L346 274 Z" fill="#FCDCCF" stroke="#1B2A4A" stroke-width="2" />
+      <path d="M314 274 L318 292 H342 L346 274 Z" fill={P.pot} stroke="#1B2A4A" stroke-width="2" />
       <path d="M312 274 H348" stroke="#1B2A4A" stroke-width="2" />
 
       <!-- ── Grass ── -->
-      <g stroke="#22C55E" stroke-width="3">
+      <g stroke={P.grass} stroke-width={P.grassW}>
         <g class="grass">
           <path d="M62 292 C61 284 64 277 69 272" />
           <path d="M68 292 C68 284 70 278 74 274" />

@@ -41,7 +41,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 20 | Dark mode | ⏸️ | Parked 2026-08-30 — client decision | Big change; user will raise with the client. No `prefers-color-scheme` handling exists today |
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
 | 22 | `/uptime` illustration concept ("power cut at 3am, nobody noticed") | 🟡 | Not yet matching the bar — see below | 2026-08-30 verdict: "better than the previous 5" but still short of `/quiet` and the Google references. Parked, not reworked — see `procedo-illustration-approach` memory for a color/frame-share theory to test on the next attempt |
-| 23 | Illustration technique — outline vs flat colour | 🟡 | Needs your call | `/404-preview` shows all three on the real 404 layout: **A** outline (live today), **B** outline + flat colour, **C** flat without outlines. One component, one palette swap, identical geometry. Blocks #15 and #24 — the choice changes what the mis-registration and stroke-colour gates even mean |
+| 23 | Illustration technique — outline vs flat colour | 🟡 | 2 of 3 scenes still to convert | **Decided 2026-09-06: technique B** (navy contours with flat colour underneath). Applied to the **404 page** only. `QuietScene` now takes a `palette` prop (`outline` default, `coloured`); `/our-mission` and the contact-form success state are still `outline` and will look plainer beside it until converted — each is a one-word change |
 | 24 | Our Mission illustration | ⏸️ | Parked 2026-09-06 | **Two iterations rejected.** Iteration 1 read as a diagram (figures ~30% of canvas, everything on one baseline). Iteration 2 fixed scale and depth, passed all six countable gates, and was still rejected by both Harshit and the client. Pattern across attempts: 1 success with an animal subject (QuietScene), 4 + 2 failures whenever human figures are involved. Live page keeps QuietScene. `src/components/preview/MissionScene.astro` and `/our-mission-preview` left uncommitted pending a call on whether to bin them |
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06. Telecom removed as a competency; **Digital Workplace Services & Field Operations** added at #4; **Power & Precision Systems** renamed **Datacenter Infrastructure** at #5 with the client’s full copy. Still five competencies. Two CTAs the client asked for are withheld until their targets exist — see the log |
 
@@ -58,6 +58,21 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-06 (later still)
+- **404 illustration converted to technique B.** `QuietScene` gained a `palette`
+  prop rather than being rewritten in place, because three live pages import it
+  (404, `/our-mission`, the contact-form success state) and only the 404 was
+  asked for. `outline` stays the default, so the other two are untouched.
+- Verified the two unconverted pages did not drift: `/our-mission` still renders
+  65 elements with the original stroke colours, identical to the pre-change
+  measurement. The only delta is one `stroke-width` attribute paired with
+  `stroke="none"`, which paints nothing. The coloured 404 renders 68 — the extra
+  three are the cat's back shading, its re-stated contour and the head shading,
+  which the outline version does not need.
+- Consequence to plan for: the 404 now carries noticeably more colour than
+  `/our-mission` and the contact success state. Converting those is
+  `palette="coloured"` on each, whenever wanted.
 
 ### 2026-09-06 (later)
 - **Client copy revision applied to the services page.** Telecom removed as a
