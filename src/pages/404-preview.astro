@@ -1,0 +1,367 @@
+---
+/* ============================================================================
+ *  /404-preview — PREVIEW ONLY. Sealed off: noindex, in no nav, linked from
+ *  nowhere, excluded from the sitemap filter in astro.config.mjs.
+ *
+ *  The 404 page rendered three times, once per illustration technique, so a
+ *  technique can be chosen by looking at it in its real context rather than at
+ *  a cropped side-by-side. The artwork comes from a single component with a
+ *  swappable palette — identical geometry and identical animation across all
+ *  three — so nothing but the fills differs.
+ *
+ *  Once a technique is chosen: fold it into src/components/QuietScene.astro,
+ *  then delete this page and src/components/preview/.
+ * ========================================================================== */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Button from '../components/Button.astro';
+import SceneVariant from '../components/preview/SceneVariant.astro';
+import type { Variant } from '../components/preview/SceneVariant.astro';
+
+/* The live 404 copy, mirrored so the preview reads exactly like the real page. */
+const copy = {
+  eyebrow: 'Error 404',
+  heading: 'This page isn’t on the rack',
+  body: 'The address you followed doesn’t exist, or it moved. Everything else is running exactly as it should.',
+  chip: 'All other systems nominal',
+};
+
+const variants: {
+  key: Variant;
+  letter: string;
+  name: string;
+  tagline: string;
+  note: string;
+}[] = [
+  {
+    key: 'outline',
+    letter: 'A',
+    name: 'Outline',
+    tagline: 'What is live today',
+    note: 'White fills, navy contours throughout. Light and airy, and it sits on the cream page without a container. The rack reads as an empty box, and at small sizes the whole scene can look under-drawn.',
+  },
+  {
+    key: 'coloured',
+    letter: 'B',
+    name: 'Outline + flat colour',
+    tagline: 'The reference technique',
+    note: 'Exactly the same contours as A, with flat colour laid in underneath. The outlines keep white shapes legible; the fills give the rack mass. This is what references 01 and 10 actually do.',
+  },
+  {
+    key: 'flat',
+    letter: 'C',
+    name: 'Flat, no outlines',
+    tagline: 'Reference 12 technique',
+    note: 'No contours at all. Needs the pale disc behind it or the white shapes vanish against cream. Boldest of the three, and the furthest from what is on the rest of the site today.',
+  },
+];
+---
+
+<BaseLayout title="404 — three illustration techniques" noindex>
+  <!-- ── Preview banner: makes it obvious this is not a real page ── -->
+  <div class="pv-banner">
+    <Container>
+      <div class="pv-banner-in">
+        <p class="pv-banner-txt">
+          <strong>Internal preview.</strong> The 404 page in three illustration techniques. Not linked
+          from the site, not indexed.
+        </p>
+        <nav class="pv-jump" aria-label="Jump to a technique">
+          {
+            variants.map((v) => (
+              <a href={`#v-${v.key}`}>
+                {v.letter} · {v.name}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </Container>
+  </div>
+
+  <!-- ── 1. Side by side, artwork only ── -->
+  <section class="py-14 lg:py-20">
+    <Container>
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="font-mono text-xs uppercase tracking-[0.18em] text-brand-600">Step one</p>
+        <h1 class="mt-3 text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-tight text-navy-950">
+          The same drawing, three ways
+        </h1>
+        <p class="mt-3 text-base leading-relaxed text-slate-600">
+          Every path and every animation is shared. Only the fills change, so any difference you see
+          is the technique and nothing else.
+        </p>
+      </div>
+
+      <ul class="pv-grid">
+        {
+          variants.map((v) => (
+            <li class="pv-card">
+              <div class="pv-card-head">
+                <span class="pv-letter">{v.letter}</span>
+                <div>
+                  <p class="pv-name">{v.name}</p>
+                  <p class="pv-tag">{v.tagline}</p>
+                </div>
+              </div>
+              <div class="pv-art">
+                <SceneVariant variant={v.key} id={`strip-${v.key}`} />
+              </div>
+              <p class="pv-note">{v.note}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  </section>
+
+  <!-- ── 2. Each one in situ, as the real 404 ── -->
+  <section class="border-t border-line pt-14 lg:pt-20">
+    <Container>
+      <div class="mx-auto max-w-2xl text-center">
+        <p class="font-mono text-xs uppercase tracking-[0.18em] text-brand-600">Step two</p>
+        <h2 class="mt-3 text-[clamp(1.375rem,3vw,1.875rem)] font-semibold leading-tight text-navy-950">
+          The same three, in place
+        </h2>
+        <p class="mt-3 text-base leading-relaxed text-slate-600">
+          Cropped side by side, the boldest option usually wins. On the page, with a heading and two
+          buttons around it, the balance often changes — so judge it here.
+        </p>
+      </div>
+    </Container>
+  </section>
+
+  {
+    variants.map((v) => (
+      <section id={`v-${v.key}`} class="pv-stage bg-cream">
+        <Container>
+          <p class="pv-stage-label">
+            <span class="pv-letter pv-letter--sm">{v.letter}</span>
+            {v.name}
+          </p>
+
+          <div class="mx-auto flex max-w-xl flex-col items-center text-center">
+            <p class="font-mono text-xs uppercase tracking-[0.18em] text-brand-600">
+              {copy.eyebrow}
+            </p>
+            <h3 class="mt-4 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-tight text-navy-950">
+              {copy.heading}
+            </h3>
+            <p class="mt-4 text-lg leading-relaxed text-slate-600">{copy.body}</p>
+
+            <figure class="pv-figure">
+              <p class="pv-chip">
+                <span class="pv-chip-dot" aria-hidden="true" />
+                {copy.chip}
+              </p>
+              <SceneVariant variant={v.key} id={`stage-${v.key}`} class="pv-stage-art" />
+            </figure>
+
+            <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+              <Button href="/" chevron>
+                Back to home
+              </Button>
+              <Button href="/contact" variant="secondary">
+                Contact us
+              </Button>
+            </div>
+          </div>
+        </Container>
+      </section>
+    ))
+  }
+</BaseLayout>
+
+<style>
+  /* ── Preview chrome ── */
+  .pv-banner {
+    background: var(--color-navy-950);
+    color: #fff;
+    padding: 0.75rem 0;
+  }
+  .pv-banner-in {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+  }
+  .pv-banner-txt {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgb(255 255 255 / 0.78);
+  }
+  .pv-banner-txt strong {
+    color: #fff;
+    font-weight: 600;
+  }
+  .pv-jump {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .pv-jump a {
+    padding: 0.25rem 0.7rem;
+    border: 1px solid rgb(255 255 255 / 0.25);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    color: rgb(255 255 255 / 0.85);
+    text-decoration: none;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease;
+  }
+  .pv-jump a:hover {
+    background: rgb(255 255 255 / 0.12);
+    border-color: rgb(255 255 255 / 0.5);
+    color: #fff;
+  }
+
+  /* ── Side-by-side strip ── */
+  .pv-grid {
+    display: grid;
+    gap: 1.25rem;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 60rem) {
+    .pv-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .pv-card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    background: #fff;
+    overflow: hidden;
+  }
+  .pv-card-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .pv-letter {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: 999px;
+    background: var(--color-navy-950);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .pv-letter--sm {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.6875rem;
+    margin-right: 0.55rem;
+    vertical-align: middle;
+  }
+  .pv-name {
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-navy-950);
+  }
+  .pv-tag {
+    margin: 0.1rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-brand-600);
+  }
+  /* The cream ground is what the artwork will really sit on — show it here. */
+  .pv-art {
+    background: var(--color-cream);
+    padding: 1.25rem 1rem;
+  }
+  .pv-note {
+    margin: 0;
+    padding: 1rem 1.25rem 1.25rem;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: #64748b;
+  }
+
+  /* ── In-situ stages ── */
+  .pv-stage {
+    position: relative;
+    padding: 4rem 0;
+    border-top: 1px solid var(--color-line);
+    scroll-margin-top: 4rem;
+  }
+  .pv-stage-label {
+    display: flex;
+    align-items: center;
+    margin: 0 0 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-navy-700);
+  }
+
+  .pv-figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 24rem;
+    margin: 2.5rem 0 0;
+  }
+  .pv-stage-art {
+    margin-top: 0.5rem;
+  }
+
+  /* The status chip, copied from QuietScene so the stages match the real page. */
+  .pv-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-navy-700);
+  }
+  .pv-chip-dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 999px;
+    background: #16a34a;
+    box-shadow: 0 0 0 3px rgb(22 163 74 / 0.14);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pv-chip-dot {
+      animation: pv-led 2.4s ease-in-out infinite;
+    }
+    @keyframes pv-led {
+      0%,
+      100% {
+        opacity: 0.35;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+  }
+</style>

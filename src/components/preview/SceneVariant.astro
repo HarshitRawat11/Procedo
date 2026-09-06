@@ -1,0 +1,580 @@
+---
+/* ============================================================================
+ *  SceneVariant — PREVIEW ONLY. Not part of the real site.
+ *
+ *  The QuietScene artwork drawn three ways so the fill technique can be judged
+ *  on its own. Every path, every coordinate and every animation is shared
+ *  between the three variants — only the palette changes. That is deliberate:
+ *  if the geometry drifted between variants the comparison would be worthless.
+ *
+ *    outline   what is live on the site today. White fills, navy contours.
+ *    coloured  the same contours, with flat colour laid in underneath.
+ *    flat      no contours at all, flat fills only, on a pale container disc
+ *              (reference 12's technique — without the disc, white shapes
+ *              simply vanish against the cream page).
+ *
+ *  Delete this file, its folder and /404-preview once a technique is chosen.
+ * ========================================================================== */
+export type Variant = 'outline' | 'coloured' | 'flat';
+
+interface Props {
+  variant: Variant;
+  id: string;
+  class?: string;
+}
+const { variant, id, class: className = '' } = Astro.props;
+
+const NAVY = '#1B2A4A';
+const GREEN = '#16A34A';
+const ORANGE = '#F24E1E';
+const PINK = '#FCDCCF';
+
+/* Back-of-the-cat shading. The flat variant instead lights the FRONT of the cat
+   white, so it needs a different path — hence this lives in the palette. */
+const CAT_BACK = 'M180 128 C178 110 190 98 208 98 C218 98 227 101 233 107 C214 104 192 112 186 128 Z';
+const CAT_FRONT = 'M198 128 C198 108 208 98 217 98 C231 99 242 108 244 128 Z';
+
+const PALETTES: Record<Variant, Record<string, any>> = {
+  outline: {
+    edge: NAVY,
+    edgeW: 2,
+    disc: null,
+    cloud: '#FFFFFF',
+    ground: '#F3F4F6',
+    groundLine: '#CBD5E1',
+    rack: '#FFFFFF',
+    monPanel: '#F3F4F6',
+    module: 'none',
+    vent: '#CBD5E1',
+    fanFace: 'none',
+    blade: '#CBD5E1',
+    hub: NAVY,
+    bay: '#F3F4F6',
+    cushion: PINK,
+    catBody: '#FFFFFF',
+    catShadePath: null,
+    catShade: 'none',
+    catMark: '#CBD5E1',
+    headShade: null,
+    tail: NAVY,
+    tailW: 2,
+    detail: NAVY,
+    whisker: '#CBD5E1',
+    mug: '#FFFFFF',
+    mugRim: null,
+    steam: '#CBD5E1',
+    leafA: '#DCFCE7',
+    leafB: '#DCFCE7',
+    leafC: '#DCFCE7',
+    pot: PINK,
+    grass: '#22C55E',
+    grassW: 3,
+  },
+  coloured: {
+    edge: NAVY,
+    edgeW: 2,
+    disc: null,
+    cloud: '#FFFFFF',
+    ground: '#E3EAF3',
+    groundLine: '#CBD5E1',
+    rack: '#C9D9EC',
+    monPanel: '#FFFFFF',
+    module: '#8FA8C8',
+    vent: '#E8EEF6',
+    fanFace: '#FFFFFF',
+    blade: '#CBD5E1',
+    hub: NAVY,
+    bay: '#FFFFFF',
+    cushion: PINK,
+    catBody: '#FFFFFF',
+    catShadePath: CAT_BACK,
+    catShade: '#B9C4D2',
+    catMark: '#CBD5E1',
+    headShade: '#B9C4D2',
+    tail: NAVY,
+    tailW: 2,
+    detail: NAVY,
+    whisker: '#CBD5E1',
+    mug: '#F7B9A3',
+    mugRim: null,
+    steam: '#CBD5E1',
+    leafA: '#7DD87D',
+    leafB: '#4EB86B',
+    leafC: '#7DD87D',
+    pot: PINK,
+    grass: '#3FAE5F',
+    grassW: 3.5,
+  },
+  flat: {
+    edge: 'none',
+    edgeW: 0,
+    disc: '#E8EEF6',
+    cloud: '#FFFFFF',
+    ground: '#D6DFEA',
+    groundLine: null,
+    rack: NAVY,
+    monPanel: '#F3F4F6',
+    module: '#33415C',
+    vent: '#55627C',
+    fanFace: '#F3F4F6',
+    blade: '#C3CCD8',
+    hub: NAVY,
+    bay: '#E5E7EB',
+    cushion: PINK,
+    catBody: '#C3CCD8',
+    catShadePath: CAT_FRONT,
+    catShade: '#FFFFFF',
+    catMark: '#AAB6C4',
+    headShade: '#AAB6C4',
+    tail: '#C3CCD8',
+    tailW: 5,
+    detail: NAVY,
+    whisker: '#AAB6C4',
+    mug: '#F7B9A3',
+    mugRim: '#DCE3EC',
+    steam: '#C3CCD8',
+    leafA: '#7DD87D',
+    leafB: '#4EB86B',
+    leafC: '#7DD87D',
+    pot: PINK,
+    grass: '#2E9B4F',
+    grassW: 4,
+  },
+};
+
+const P = PALETTES[variant];
+const isFlat = variant === 'flat';
+const titleId = `scene-title-${id}`;
+---
+
+<svg
+  class:list={['scene', className]}
+  viewBox="0 0 420 330"
+  role="img"
+  aria-labelledby={titleId}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id={titleId}>
+    A cat asleep on a cushion atop a quietly humming server rack, beside a mug of coffee and a
+    potted plant. Every status light is green.
+  </title>
+
+  <g class="float" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    {/* The flat technique needs a container shape, or white forms disappear. */}
+    {P.disc && <circle cx="210" cy="176" r="140" fill={P.disc} />}
+
+    <path
+      class="cloud"
+      d="M60 80 C55 80 54 71 61 69 C62 60 74 57 80 63 C86 56 99 59 100 68 C108 68 110 79 104 80 Z"
+      fill={P.cloud}
+      stroke={P.edge}
+      stroke-width={P.edgeW}
+    />
+
+    <ellipse cx="209" cy="292" rx="74" ry="6" fill={P.ground} />
+    {P.groundLine && <path d="M48 292 H384" stroke={P.groundLine} stroke-width="2" />}
+
+    <rect
+      x="150"
+      y="132"
+      width="118"
+      height="158"
+      rx="8"
+      fill={P.rack}
+      stroke={P.edge}
+      stroke-width={P.edgeW}
+    />
+
+    <rect
+      x="160"
+      y="142"
+      width="98"
+      height="30"
+      rx="4"
+      fill={P.monPanel}
+      stroke={P.edge}
+      stroke-width={P.edgeW}
+    />
+    <path d="M167 158 H251" stroke={GREEN} stroke-width="2" opacity="0.5" />
+    <circle class="blip" cx="167" cy="158" r="2.5" fill={GREEN} />
+
+    <rect
+      x="160"
+      y="178"
+      width="98"
+      height="26"
+      rx="4"
+      fill={P.module}
+      stroke={P.edge}
+      stroke-width={P.edgeW}
+    />
+    <circle class="led led-1" cx="171" cy="191" r="3" fill={GREEN} />
+    <circle class="led led-2" cx="183" cy="191" r="3" fill={GREEN} />
+    <circle class="led led-3" cx="195" cy="191" r="3" fill={GREEN} />
+    <g stroke={P.vent} stroke-width="2">
+      <path d="M214 185 H250" />
+      <path d="M214 191 H250" />
+      <path d="M214 197 H250" />
+    </g>
+
+    <rect
+      x="160"
+      y="210"
+      width="98"
+      height="34"
+      rx="4"
+      fill={P.module}
+      stroke={P.edge}
+      stroke-width={P.edgeW}
+    />
+    <g transform="translate(185 227)">
+      <circle r="13" fill={P.fanFace} stroke={P.edge} stroke-width={P.edgeW} />
+      <g class="blades" fill={P.blade}>
+        <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" />
+        <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" transform="rotate(90)" />
+        <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" transform="rotate(180)" />
+        <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" transform="rotate(270)" />
+      </g>
+      <circle r="2.5" fill={P.hub} />
+    </g>
+    <g transform="translate(233 227)">
+      <circle r="13" fill={P.fanFace} stroke={P.edge} stroke-width={P.edgeW} />
+      <g class="blades blades-slow" fill={P.blade}>
+        <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" />
+        <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" transform="rotate(90)" />
+        <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" transform="rotate(180)" />
+        <path d="M0 0 C-5.5 -7 -4 -12 0 -12 C4 -12 5.5 -7 0 0 Z" transform="rotate(270)" />
+      </g>
+      <circle r="2.5" fill={P.hub} />
+    </g>
+
+    <rect
+      x="160"
+      y="250"
+      width="98"
+      height="32"
+      rx="4"
+      fill={P.module}
+      stroke={P.edge}
+      stroke-width={P.edgeW}
+    />
+    <rect x="167" y="254" width="84" height="6" rx="2" fill={P.bay} />
+    <circle class="led led-1" cx="246" cy="257" r="1.8" fill={GREEN} />
+    <rect x="167" y="264" width="84" height="6" rx="2" fill={P.bay} />
+    <circle class="led led-2" cx="246" cy="267" r="1.8" fill={GREEN} />
+    <rect x="167" y="274" width="84" height="6" rx="2" fill={P.bay} />
+    <circle class="led led-3" cx="246" cy="277" r="1.8" fill={GREEN} />
+
+    <ellipse
+      cx="212"
+      cy="130"
+      rx="40"
+      ry="8"
+      fill={P.cushion}
+      stroke={P.edge}
+      stroke-width={P.edgeW}
+    />
+
+    <g class="cat">
+      <path
+        class="tail"
+        d="M182 126 C170 128 164 120 170 113 C174 108 181 110 181 116"
+        stroke={P.tail}
+        stroke-width={P.tailW}
+      />
+
+      <g class="breathe">
+        <path
+          d="M180 128 C178 110 190 98 208 98 C226 98 242 106 244 128 Z"
+          fill={P.catBody}
+          stroke={P.edge}
+          stroke-width={P.edgeW}
+        />
+        {P.catShadePath && <path d={P.catShadePath} fill={P.catShade} />}
+        {
+          !isFlat && (
+            <path
+              d="M180 128 C178 110 190 98 208 98 C226 98 242 106 244 128 Z"
+              fill="none"
+              stroke={P.edge}
+              stroke-width={P.edgeW}
+            />
+          )
+        }
+        {
+          !isFlat && (
+            <g stroke={P.catMark} stroke-width="2">
+              <path d="M193 102 Q197 107 195 112" />
+              <path d="M203 99.5 Q207 104 205 109" />
+            </g>
+          )
+        }
+      </g>
+
+      <ellipse
+        cx="213"
+        cy="124.5"
+        rx="8.5"
+        ry="3.5"
+        fill="#FFFFFF"
+        stroke={P.edge}
+        stroke-width={P.edgeW}
+      />
+      <path
+        d="M227.5 108 L228 96 L237 103.5 Z"
+        fill={isFlat ? P.catBody : '#FFFFFF'}
+        stroke={P.edge}
+        stroke-width={P.edgeW}
+      />
+      <path
+        d="M241 103.5 L248 97 L247.5 110 Z"
+        fill={isFlat ? P.catBody : '#FFFFFF'}
+        stroke={P.edge}
+        stroke-width={P.edgeW}
+      />
+      <circle cx="236" cy="116" r="12" fill="#FFFFFF" stroke={P.edge} stroke-width={P.edgeW} />
+      {
+        P.headShade && (
+          <path
+            d="M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113 Z"
+            fill={P.headShade}
+          />
+        )
+      }
+      <path d="M228 114 Q231 117 234 114" stroke={P.detail} stroke-width="1.8" />
+      <path d="M239 114 Q242 117 245 114" stroke={P.detail} stroke-width="1.8" />
+      <path d="M236 119.5 L236 121" stroke={P.detail} stroke-width="1.8" />
+      <g stroke={P.whisker} stroke-width="1.4">
+        <path d="M227 119 L222.5 118" />
+        <path d="M245 119 L249.5 118" />
+      </g>
+    </g>
+
+    <g class="steam" stroke={P.steam} stroke-width="2">
+      <path class="wisp wisp-1" d="M103 262 C100 256 108 252 105 246" />
+      <path class="wisp wisp-2" d="M112 262 C109 256 117 252 114 246" />
+    </g>
+    {
+      isFlat ? (
+        <path d="M120 272 a13 13 0 0 1 0 26 v-6 a7 7 0 0 0 0-14 z" fill={P.mug} />
+      ) : (
+        <path d="M120 275 C130 275 130 287 120 287" stroke={P.edge} stroke-width={P.edgeW} />
+      )
+    }
+    <path
+      d="M96 268 L96 286 Q96 292 102 292 L114 292 Q120 292 120 286 L120 268 Z"
+      fill={P.mug}
+      stroke={P.edge}
+      stroke-width={P.edgeW}
+    />
+    <rect x="97" y="278" width="22" height="5" fill={ORANGE} opacity="0.9" />
+    {
+      P.mugRim ? (
+        <rect x="96" y="268" width="24" height="5" fill={P.mugRim} />
+      ) : (
+        <path d="M96 273 H120" stroke={P.edge} stroke-width={P.edgeW} />
+      )
+    }
+
+    <g class="leaves">
+      <path
+        d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z"
+        fill={P.leafA}
+        stroke={P.edge}
+        stroke-width={P.edgeW}
+      />
+      <path
+        d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z"
+        fill={P.leafB}
+        stroke={P.edge}
+        stroke-width={P.edgeW}
+      />
+      <path
+        d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z"
+        fill={P.leafC}
+        stroke={P.edge}
+        stroke-width={P.edgeW}
+      />
+    </g>
+    <path
+      d="M314 274 L318 292 H342 L346 274 Z"
+      fill={P.pot}
+      stroke={P.edge}
+      stroke-width={P.edgeW}
+    />
+    {!isFlat && <path d="M312 274 H348" stroke={P.edge} stroke-width={P.edgeW} />}
+
+    <g stroke={P.grass} stroke-width={P.grassW}>
+      <g class="grass">
+        <path d="M62 292 C61 284 64 277 69 272" />
+        <path d="M68 292 C68 284 70 278 74 274" />
+        <path d="M74 292 C74 285 73 280 71 276" />
+      </g>
+      <g class="grass grass-b">
+        <path d="M356 292 C355 284 358 277 363 272" />
+        <path d="M363 292 C363 284 365 278 369 273" />
+        <path d="M370 292 C370 285 369 280 367 277" />
+      </g>
+    </g>
+  </g>
+</svg>
+
+<style>
+  .scene {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Motion is identical across all three variants, and all of it is gated so a
+     reduced-motion visitor gets a still — but complete — scene. */
+  @media (prefers-reduced-motion: no-preference) {
+    .float {
+      animation: float 7s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+    .blades {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: spin 14s linear infinite;
+    }
+    .blades-slow {
+      animation-duration: 19s;
+      animation-direction: reverse;
+    }
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    .led {
+      animation: led 2.4s ease-in-out infinite;
+    }
+    .led-2 {
+      animation-delay: 0.5s;
+    }
+    .led-3 {
+      animation-delay: 1s;
+    }
+    @keyframes led {
+      0%,
+      100% {
+        opacity: 0.35;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+    .blip {
+      animation: blip 6s linear infinite;
+    }
+    @keyframes blip {
+      0% {
+        transform: translateX(0);
+        opacity: 0;
+      }
+      8%,
+      92% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(84px);
+        opacity: 0;
+      }
+    }
+    .breathe {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: breathe 4.5s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,
+      100% {
+        transform: scaleY(1);
+      }
+      50% {
+        transform: scaleY(1.04);
+      }
+    }
+    .tail {
+      transform-box: fill-box;
+      transform-origin: 100% 60%;
+      animation: tail 9s ease-in-out infinite;
+    }
+    @keyframes tail {
+      0%,
+      80%,
+      100% {
+        transform: rotate(0deg);
+      }
+      87% {
+        transform: rotate(-8deg);
+      }
+      93% {
+        transform: rotate(4deg);
+      }
+    }
+    .wisp {
+      opacity: 0;
+      animation: wisp 4s ease-in-out infinite;
+    }
+    .wisp-2 {
+      animation-delay: 1.6s;
+    }
+    @keyframes wisp {
+      0% {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      40% {
+        opacity: 0.75;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+    }
+    .cloud {
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from {
+        transform: translateX(-6px);
+      }
+      to {
+        transform: translateX(12px);
+      }
+    }
+    .leaves {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: sway 6s ease-in-out infinite;
+    }
+    .grass {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: sway 5s ease-in-out infinite;
+    }
+    .grass-b {
+      animation-duration: 6.5s;
+      animation-delay: -2s;
+    }
+    @keyframes sway {
+      0%,
+      100% {
+        transform: rotate(-2.5deg);
+      }
+      50% {
+        transform: rotate(2.5deg);
+      }
+    }
+  }
+</style>

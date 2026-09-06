@@ -23,7 +23,11 @@ does and get in touch? If not, it is probably out of scope.
 2. **`PROGRESS.md`** — what is done, what is blocked, what is next. Start work here.
 3. **`src/data/site.ts`** — the single source of truth for all site copy.
 4. The specific page or component you are changing, under `src/pages/` or `src/components/`.
-5. `reference/inspiration/ANALYSIS.md` — only if doing visual/illustration work.
+5. **`reference/illustration-loop.md`** — the standing procedure for any new
+   illustration. Mandatory before writing a single line of SVG; it is a set of
+   measured gates, not advice. Its countable checks run via
+   `node scripts/measure-svg.cjs <file>`.
+6. `reference/inspiration/ANALYSIS.md` — the reference set and what it teaches.
 
 Do not read `scrape/procedo/app.js` cover to cover; it is a 1 MB minified
 bundle. Grep it (see below).
@@ -72,7 +76,7 @@ page. Uncommitted work still has no undo.
 ### 5. Concept and preview pages must be sealed off
 Anything not part of the real site must be: not in `nav`, linked from nowhere,
 marked `noindex`, and excluded from the sitemap filter in `astro.config.mjs`.
-Current examples: `/uptime`, `/illustrations-preview`. (`/quiet` and
+Current examples: `/uptime`, `/illustrations-preview`, `/404-preview`. (`/quiet` and
 `/our-mission-preview` existed under this rule until their illustrations were
 adopted into the real site, at which point both pages were deleted.)
 

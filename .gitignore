@@ -23,6 +23,9 @@ npm-debug.log*
 # local scrape + downloaded reference assets (not part of the app)
 scrape/
 reference/*
+# ...but the written procedures at the top level of reference/ are project
+# knowledge, not downloaded assets. Track them.
+!reference/*.md
 
 # ...but DO track the written design analysis. The reference images stay local
 # (they are third-party screenshots), while the notes derived from them are real

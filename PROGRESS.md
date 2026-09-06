@@ -4,7 +4,7 @@ Status board for the Procedo Infosystems website.
 **Update this file whenever a task changes state.** New sessions should read it
 immediately after `CLAUDE.md`.
 
-- **Last updated:** 2026-09-05
+- **Last updated:** 2026-09-06
 - **Build:** ✅ passing — 12 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
 - **Deployed:** ❌ not yet — domain exists (procedoinfo.com) but still serves the old site
 - **Repo:** ✅ `HarshitRawat11/Procedo` on GitHub
@@ -33,7 +33,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 12 | Illustration on Our Mission page | ✅ | — | Adopted 2026-08-30 — QuietScene now sits beside the mission statement on the live `/our-mission`. Preview page deleted |
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
 | 14 | Design inspiration folder | ✅ | — | Images saved and renamed to the index 2026-09-05, verified by opening each. 11 of 12 present — ref 11 (two-hands) never made it in; ref 12 (Google Meet "meeting is safe") is new and now catalogued as ANALYSIS §8. Notes tracked in git, images stay local |
-| 15 | Illustration set for the site | 🟡 | Awaiting your call on the 4 rejected drafts | First batch of 5 rejected 2026-08-29 — only Power & Precision kept. Root cause and rules in `ANALYSIS.md` §6: draw the *moment* the service creates, not the equipment; one illustration at a time, not batched |
+| 15 | Illustration set for the site | 🟡 | Technique undecided (#23) | First batch of 5 rejected 2026-08-29 — only Power & Precision kept. Since 2026-09-06 governed by `reference/illustration-loop.md`: measured gates, run `node scripts/measure-svg.cjs <file>`. Thresholds calibrated so QuietScene passes all six and UptimeScene fails two by a hair |
 | 16 | Deployment | ⏸️ | Parked 2026-08-30 | Netlify path parked. Repo is on GitHub, so connecting a host later is a 3-click job. Still unknown: who currently hosts procedoinfo.com |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
 | 18 | Analytics | ⏸️ | Parked 2026-08-30 | Recommendation on record: Cloudflare Web Analytics (free, cookieless, no consent banner needed). ~5 min to add whenever you want it |
@@ -41,6 +41,8 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 20 | Dark mode | ⏸️ | Parked 2026-08-30 — client decision | Big change; user will raise with the client. No `prefers-color-scheme` handling exists today |
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
 | 22 | `/uptime` illustration concept ("power cut at 3am, nobody noticed") | 🟡 | Not yet matching the bar — see below | 2026-08-30 verdict: "better than the previous 5" but still short of `/quiet` and the Google references. Parked, not reworked — see `procedo-illustration-approach` memory for a color/frame-share theory to test on the next attempt |
+| 23 | Illustration technique — outline vs flat colour | 🟡 | Needs your call | `/404-preview` shows all three on the real 404 layout: **A** outline (live today), **B** outline + flat colour, **C** flat without outlines. One component, one palette swap, identical geometry. Blocks #15 and #24 — the choice changes what the mis-registration and stroke-colour gates even mean |
+| 24 | Our Mission illustration | 🟡 | No approved concept | The four-floor "connected building" concept was withdrawn 2026-09-06 for exceeding the composition budget. QuietScene still sits on the page and reads as "all is well", which is not the mission. Needs a Gate 0 concept agreed before any drawing starts |
 
 ---
 
@@ -55,6 +57,27 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-06
+- **Adopted a measured illustration procedure.** `reference/illustration-loop.md`
+  replaces "take inspiration from the references" with gates that produce numbers.
+  Wired into the `CLAUDE.md` read order as mandatory before any SVG.
+- Calibrated it against the work rather than against taste. The first draft of the
+  rubric **failed `QuietScene`** — the illustration that was called fantastic — on
+  curve ratio (43% vs a 70% floor), on primitives (the cat's head is a `<circle>`)
+  and on prop count. Every threshold was reset from measured values. Sanity check:
+  `QuietScene` now passes all six countable gates; `UptimeScene` — "better but still
+  not matching" — fails two by a hair. That split is the calibration.
+- Added `scripts/measure-svg.cjs`, which prints the Gate 1 numbers with PASS/FAIL
+  per floor and exits non-zero on failure. The procedure references the script
+  rather than inlining it, so the two cannot drift apart.
+- Built `/404-preview` — the 404 page rendered three times, once per technique,
+  from a single component with a swappable palette so only the fills differ.
+  Sealed off per §5. See #23.
+- Withdrew the four-floor mission concept (#24) and recorded the consequence: the
+  Our Mission page now has no approved illustration concept.
+- `.gitignore` now tracks top-level `reference/*.md`. The procedure is project
+  knowledge and must survive a machine change; only the third-party images stay local.
 
 ### 2026-09-05
 - Reference images dropped into `reference/inspiration/` and renamed to match the
