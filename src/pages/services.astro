@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ClosingCta from '../components/ClosingCta.astro';
-import Button from '../components/Button.astro';
 import { Icon } from 'astro-icon/components';
 import { competencies, competenciesIntro } from '../data/site';
 ---
@@ -67,28 +66,6 @@ import { competencies, competenciesIntro } from '../data/site';
               ))}
             </div>
           </div>
-
-          {c.banner && (
-            <div
-              data-reveal
-              class="mt-10 rounded-2xl bg-navy-950 px-7 py-8 text-center sm:px-10 sm:py-10"
-            >
-              <p class="text-xl font-semibold text-white sm:text-2xl">{c.banner.headline}</p>
-              <p class="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-white/70">
-                {c.banner.sub}
-              </p>
-              <div class="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-                <Button href={c.banner.cta.href} chevron>
-                  {c.banner.cta.label}
-                </Button>
-                {c.banner.ctaSecondary && (
-                  <Button href={c.banner.ctaSecondary.href} variant="secondary">
-                    {c.banner.ctaSecondary.label}
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
         </Container>
       </section>
     ))

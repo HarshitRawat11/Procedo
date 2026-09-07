@@ -67,18 +67,6 @@ export interface CompetencyGroup {
   name: string;
   items: string[];
 }
-export interface CompetencyBanner {
-  headline: string;
-  sub: string;
-  cta: { label: string; href: string };
-  /**
-   * Second call to action. Left undefined while its target does not exist, so
-   * the button hides itself rather than rendering a dead link (CLAUDE.md #3).
-   * The client asked for "Download Technical Overview" and "Explore Our
-   * Managed Services"; wire each one up here once the asset or page exists.
-   */
-  ctaSecondary?: { label: string; href: string };
-}
 export interface Competency {
   slug: string;
   title: string;
@@ -90,12 +78,97 @@ export interface Competency {
   groups: CompetencyGroup[];
   /** Omitted where the client has not supplied a line; the section hides it. */
   quote?: string;
-  /** Optional closing banner beneath the section. */
-  banner?: CompetencyBanner;
 }
 
 /** The five core competencies (real Procedo content). */
 export const competencies: Competency[] = [
+
+  {
+    slug: 'digital-workplace',
+    title: 'Digital Workplace Services & Field Operations',
+    icon: 'lucide:laptop',
+    tagline: 'End-to-end user computing, compliance automation, and distributed maintenance.',
+    intro:
+      'Frictionless technology for your people, tight control for your auditors. We run the service desk, keep endpoints compliant, govern the asset lifecycle, and put engineers on site across metro and regional branches.',
+    groups: [
+      {
+        name: 'Service Desk & Incident Governance',
+        items: [
+          'Unified intake by portal, email and phone with tiered escalation',
+          'VIP and key-user protocols with prioritized response',
+          'ITIL-aligned root cause analysis to end repeat incidents',
+        ],
+      },
+      {
+        name: 'End-User Computing',
+        items: [
+          'L1/L2 support across operating systems and business applications',
+          'Golden image deployment and standard IMAC execution',
+          'Self-service password reset and account unlock',
+        ],
+      },
+      {
+        name: 'Asset & Endpoint Compliance',
+        items: [
+          'Hardware and software repository inside your ITSM platform',
+          'Licence tracking, usage metering and audit preparation',
+          'Patch deployment, rollback and quarantine for non-compliant endpoints',
+        ],
+      },
+      {
+        name: 'Field Operations & Break-Fix',
+        items: [
+          'Turnkey branch openings, relocations and closures',
+          'On-site cover across metro, tier 2 and tier 3 locations',
+          'Component-level rate contracts for post-warranty hardware',
+        ],
+      },
+    ],
+    quote: 'Empower every user. Secure every asset.',
+  },
+  {
+    slug: 'datacenter-infrastructure',
+    title: 'Datacenter Infrastructure',
+    icon: 'lucide:zap',
+    tagline: 'Power • Cooling • Containment • Monitoring — engineered for mission-critical uptime.',
+    intro:
+      'Uptime is engineered, not assumed. We design, deploy and commission high-availability datacenter and server room infrastructure — fault-tolerant power, precision cooling, intelligent containment and DCIM telemetry.',
+    groups: [
+      {
+        name: 'Power & Redundancy',
+        items: [
+          'Modular online double-conversion UPS with VRLA or lithium banks',
+          'Dual-path A+B topology, static transfer switches, metered rack PDUs',
+          'Surge protection, AMF synchronization and generator integration',
+        ],
+      },
+      {
+        name: 'Cooling & Containment',
+        items: [
+          'In-row and perimeter PAC/PAHU with N+1 and 2N redundancy',
+          'Hot aisle / cold aisle containment to remove hot spots and lower PUE',
+          'Continuous temperature, humidity and air-pressure sensing',
+        ],
+      },
+      {
+        name: 'Racks & Structured Cabling',
+        items: [
+          '42U–52U high-density racks with front-to-back laminar airflow',
+          'Overhead fibre raceways and pre-terminated copper/MPO trunking',
+          'Labelled, segregated patch fields for zero-disruption expansion',
+        ],
+      },
+      {
+        name: 'Safety, Security & Monitoring',
+        items: [
+          'Clean-agent suppression (Novec 1230 / FM-200) with VESDA detection',
+          'Biometric and RFID access control with HD IP surveillance',
+          'DCIM telemetry, SNMP/Modbus into BMS, automated alerting',
+        ],
+      },
+    ],
+    quote: 'Power without precision is chaos. Precision without power is limitation. We deliver both.',
+  },
   {
     slug: 'it-infrastructure',
     title: 'IT Infrastructure',
@@ -181,147 +254,6 @@ export const competencies: Competency[] = [
     ],
     quote: "A great conversation shouldn't depend on your geography.",
   },
-  {
-    slug: 'digital-workplace',
-    title: 'Digital Workplace Services & Field Operations',
-    icon: 'lucide:laptop',
-    tagline: 'End-to-end user computing, compliance automation, and distributed maintenance.',
-    intro:
-      'Workforce productivity requires frictionless technology, while enterprise integrity demands strict compliance, tight asset control, and zero downtime. We deliver complete digital workplace management and distributed field operations—integrating centralized service desk workflows, automated endpoint compliance, complete asset lifecycle governance, distributed branch rollouts, and nationwide hardware break-fix support.',
-    groups: [
-      {
-        name: 'Omnichannel Service Desk & Incident Governance',
-        items: [
-          'Unified ticket intake via web portal, email and phone with automated routing, diagnostic logging and tiered escalation paths',
-          'Dedicated VIP and key business user handling protocols with prioritized response workflows',
-          'ITIL-aligned problem management driving root cause analysis (RCA) and proactive trend modelling to eliminate repeat incidents',
-          'Continuous knowledge base maintenance focused on high First Call Resolution (FCR) rates',
-        ],
-      },
-      {
-        name: 'Modern End-User Computing (EUC) & Automation',
-        items: [
-          'L1/L2 engineering support across enterprise client operating systems, office productivity tools, messaging clients and core business applications',
-          'Zero-touch remote desktop assistance, background file cleanup, disk maintenance and administrative script automation',
-          'Golden image deployment, standard IMAC (Install, Move, Add, Change) execution and secure user data backup workflows',
-          'Self-service password management enabling automated account unlock, self-resets and expiry notifications',
-        ],
-      },
-      {
-        name: 'IT Asset Management (ITAM) & Inventory Control',
-        items: [
-          'Hardware and software asset repository management integrated directly into enterprise ITSM platforms',
-          'Centralized store and inventory operations covering peripheral distribution, computer stationery, consumables and buffer stock',
-          'Proactive tracking of OEM warranties, AMC renewal timelines, vendor escalation matrices and repaired asset movements',
-          'Software licence tracking, usage metering and compliance audit preparation to eliminate unauthorized installations or licence shortfalls',
-          'Quarterly asset reconciliation linking physical branch audits against enterprise procurement and purchase registers',
-        ],
-      },
-      {
-        name: 'Endpoint Compliance & Security Operations',
-        items: [
-          'Continuous monitoring and automated enforcement across next-generation anti-virus, Network Access Control (NAC) and Data Loss Prevention (DLP) agents',
-          'Centralized patch deployment, validation, rollback and quarantine isolation for non-compliant or unpatched endpoints',
-          'Rapid endpoint containment for suspected breaches, data leak mitigation and audit support for regulatory reviews',
-        ],
-      },
-      {
-        name: 'Distributed Branch Enablement & Field Operations',
-        items: [
-          'Turnkey IT execution for new branch openings, office relocations and closures, spanning LAN, WAN, power coordination and device staging',
-          'First-level troubleshooting and OEM coordination for wireless controllers and access points',
-          'ISP and telecom coordination for leased lines and VPN links, including failover management and link outage tracking',
-          'Proactive branch outreach coordinating directly with regional hubs and site leadership',
-        ],
-      },
-      {
-        name: 'Hardware Break-Fix, AMC & Parts Restoration',
-        items: [
-          'On-call hardware restoration and part replacement across metro (Class A), tier 2 (Class B) and tier 3 (Class C) locations',
-          'Coverage for post-warranty laptops, desktops, projectors, video conferencing rigs and shared peripherals',
-          'Transparent, component-level rate contracts for rapid part replacement and minimal downtime',
-          'Vendor and partner coordination for managed print fleets, network switches and specialized office hardware',
-        ],
-      },
-      {
-        name: 'Tiered SLA Framework & Operational Cadence',
-        items: [
-          'Business-impact incident SLAs with response and resolution targets for critical outages, VIP users, key business functions, security incidents and standard requests',
-          'Geographic break-fix tiers calibrated across major metros, secondary commercial hubs and interior regional branches',
-          'Continuous improvement programme targeting systematic ticket reduction across all severity categories',
-          'Multi-tier governance with daily health checks, high-severity alerts and monthly compliance dashboards',
-        ],
-      },
-    ],
-    banner: {
-      headline: 'Empower Every User. Secure Every Asset.',
-      sub: 'Enterprise digital workplace management, complete asset governance, and distributed field support engineered for absolute uptime.',
-      cta: { label: 'Schedule a Consultation', href: '/contact' },
-    },
-  },
-  {
-    slug: 'datacenter-infrastructure',
-    title: 'Datacenter Infrastructure',
-    icon: 'lucide:zap',
-    tagline: 'Power • Cooling • Containment • Monitoring — engineered for mission-critical uptime.',
-    intro:
-      'Uptime is engineered, not assumed. We design, deploy and commission high-availability datacenter and server room infrastructure. From fault-tolerant electrical paths and precision thermal regulation to intelligent containment and DCIM telemetry, we deliver resilient physical architectures aligned with Tier-standard benchmarks.',
-    groups: [
-      {
-        name: 'Continuous Power Distribution & Redundancy',
-        items: [
-          'Modular, high-efficiency online double-conversion UPS systems with scalable VRLA/lithium battery banks',
-          'Dual-path A+B power topology, static transfer switches (STS) and intelligent switched/metered rack PDUs',
-          'Surge protective devices (SPD), automated mains failure (AMF) synchronization and emergency generator integration',
-        ],
-      },
-      {
-        name: 'Precision Thermal Management & Containment',
-        items: [
-          'In-row and perimeter PAC/PAHU units with N+1 and 2N mechanical redundancy',
-          'Engineered hot aisle / cold aisle containment (HAC/CAC) to eliminate hot spots, prevent air mixing and lower PUE',
-          'Continuous microclimate sensing: static air pressure, temperature gradients and relative humidity monitoring',
-        ],
-      },
-      {
-        name: 'High-Density Enclosures & Structured Cabling',
-        items: [
-          'Heavy-load server and network racks (42U—52U) with high-perforation doors for front-to-back laminar airflow',
-          'Overhead fibre raceways, underfloor basket trays and pre-terminated high-density copper/MPO fibre trunking',
-          'Standardized labelling, path segregation and modular patch fields designed for zero-disruption expansion',
-        ],
-      },
-      {
-        name: 'Life Safety & Environmental Security',
-        items: [
-          'Clean-agent gas fire suppression (Novec 1230 / FM-200) coupled with very early warning aspirating smoke detection (VESDA)',
-          'Direct-sensing water leak detection rope along AC lines and raised-floor perimeters',
-          'Ultrasonic rodent repellent and multi-point environmental sensors tied into master alarm loops',
-        ],
-      },
-      {
-        name: 'Physical Security & Electronic Access',
-        items: [
-          'Multi-tier authentication: biometric and RFID access control at server room perimeters and individual cabinet handles',
-          'High-definition IP surveillance with full aisle coverage, tamper alerts and compliance-grade audit logging',
-        ],
-      },
-      {
-        name: 'DCIM & Centralized Telemetry',
-        items: [
-          'Centralized data center infrastructure management (DCIM) for real-time monitoring of power loads, thermal heatmaps and PUE',
-          'SNMP/Modbus protocol integration into building management systems (BMS)',
-          'Automated out-of-band alerting (SMS, email, webhook) with diagnostic telemetry for predictive maintenance',
-        ],
-      },
-    ],
-    quote: 'Power without precision is chaos. Precision without power is limitation. We deliver both.',
-    banner: {
-      headline: 'Resilient Architecture. Zero Single Points of Failure.',
-      sub: 'End-to-end datacenter physical infrastructure engineered for peak density and verified uptime.',
-      cta: { label: 'Request an Infrastructure Consultation', href: '/contact' },
-    },
-  },
 ];
 
 /** Closing call-to-action band. */
@@ -339,11 +271,11 @@ export const footer = {
     {
       title: 'Solutions',
       links: [
+        { label: 'Digital Workplace', href: '/services#digital-workplace' },
+        { label: 'Datacenter Infrastructure', href: '/services#datacenter-infrastructure' },
         { label: 'IT Infrastructure', href: '/services#it-infrastructure' },
         { label: 'Facilities Security', href: '/services#facilities-security' },
         { label: 'AV Conferencing', href: '/services#av-conferencing' },
-        { label: 'Digital Workplace', href: '/services#digital-workplace' },
-        { label: 'Datacenter Infrastructure', href: '/services#datacenter-infrastructure' },
       ],
     },
     {
@@ -455,11 +387,11 @@ export const mission = {
       'Deliver innovative, modular services in IT, facilities security, and audio-visual systems, with an emphasis on scalability, compliance, and reliability. We align advanced technology with operational clarity, helping businesses safeguard what matters while empowering seamless interaction.',
     listTitle: 'Service Pillars',
     items: [
+      'Digital Workplace Services',
+      'Datacenter Infrastructure',
       'IT Infrastructure',
       'Facilities Security',
       'Audio & Video Conferencing',
-      'Digital Workplace Services',
-      'Datacenter Infrastructure',
     ],
   },
   points: [

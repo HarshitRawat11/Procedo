@@ -43,7 +43,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 22 | `/uptime` illustration concept ("power cut at 3am, nobody noticed") | 🟡 | Not yet matching the bar — see below | 2026-08-30 verdict: "better than the previous 5" but still short of `/quiet` and the Google references. Parked, not reworked — see `procedo-illustration-approach` memory for a color/frame-share theory to test on the next attempt |
 | 23 | Illustration technique — outline vs flat colour | ✅ | — | **Decided 2026-09-06: technique B.** Applied to all three QuietScene call sites 2026-09-07 — the 404, the contact-form success state and `/our-mission`. `QuietScene` takes a `palette` prop (`outline` default, `coloured`); every live instance now passes `coloured` |
 | 24 | Our Mission illustration | ❌ | Abandoned 2026-09-07 | **Dropped.** Two iterations rejected by both Harshit and the client; the second passed all six countable gates and was still no good. `MissionScene.astro` and `/our-mission-preview` deleted 2026-09-07. `/our-mission` keeps QuietScene, now in technique B. The cause is now a standing rule, not an open question — no human figures (CLAUDE.md §5b) |
-| 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06. Telecom removed as a competency; **Digital Workplace Services & Field Operations** added at #4; **Power & Precision Systems** renamed **Datacenter Infrastructure** at #5 with the client’s full copy. Still five competencies. Two CTAs the client asked for are withheld until their targets exist — see the log |
+| 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
 
 ---
 
@@ -58,6 +58,37 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-07 — services page tightened after preview review
+- **Removed the two per-section closing banners.** Harshit's call, reviewing the
+  deployed preview: they were redundant against the page-level "Ready to
+  Future-Proof Your Business?" CTA that already closes the page. The
+  `CompetencyBanner` interface, the `banner` field, the render block and the
+  now-unused `Button` import in `services.astro` all went with them — no dead
+  machinery left behind.
+- **Condensed the two new competencies to 4 cards each.** Digital Workplace went
+  from 7 groups / 28 bullets to 4 / 12; Datacenter Infrastructure from 6 / 17 to
+  4 / 12. Both intros cut from ~360-430 characters to 214. All five sections now
+  read 4/4/4/4/3 cards — the two new ones no longer dwarf the rest.
+- **Reordered: Digital Workplace first, Datacenter second**, then IT
+  Infrastructure, Facilities Security, AV. The footer Solutions column, the
+  contact form's subject dropdown and the mission page's Service Pillars were
+  reordered to match; the services page, the company page's "What we deliver"
+  list and the homepage JSON-LD all derive from the array and followed on their
+  own.
+- **What was cut, so it can be restored on request:** the whole *Tiered SLA
+  Framework & Operational Cadence* group (business-impact SLAs, geographic
+  break-fix tiers, continuous improvement programme, multi-tier governance);
+  ITAM and Endpoint Compliance merged into one card; Life Safety, Physical
+  Security and DCIM merged into *Safety, Security & Monitoring*; and the phrase
+  "aligned with Tier-standard benchmarks" dropped from the Datacenter intro.
+  Dropping the SLA group also removes the contractual-sounding promises flagged
+  earlier as a risk to publish before legal sign-off (#5).
+- The banner headline *"Empower Every User. Secure Every Asset."* survives as
+  the Digital Workplace section quote, so that line is not lost. Datacenter kept
+  the stronger power/precision quote it already had.
+- Every condensed bullet is a compression of the client's own wording. Nothing
+  new is claimed.
 
 ### 2026-09-07 (later still)
 - **New hard rule: no human figures in illustrations.** Harshit, verbatim: *"no
