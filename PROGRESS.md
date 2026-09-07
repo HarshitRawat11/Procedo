@@ -33,7 +33,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 12 | Illustration on Our Mission page | ✅ | — | Adopted 2026-08-30 — QuietScene now sits beside the mission statement on the live `/our-mission`. Preview page deleted |
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
 | 14 | Design inspiration folder | ✅ | — | Images saved and renamed to the index 2026-09-05, verified by opening each. 11 of 12 present — ref 11 (two-hands) never made it in; ref 12 (Google Meet "meeting is safe") is new and now catalogued as ANALYSIS §8. Notes tracked in git, images stay local |
-| 15 | Illustration set for the site | 🟡 | Technique undecided (#23) | First batch of 5 rejected 2026-08-29 — only Power & Precision kept. Since 2026-09-06 governed by `reference/illustration-loop.md`: measured gates, run `node scripts/measure-svg.cjs <file>`. Thresholds calibrated so QuietScene passes all six and UptimeScene fails two by a hair |
+| 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. Four scenes exist: QuietScene (404, contact success, `/our-mission`), UptimeScene (`/uptime`), the kept Power/Datacenter concept, and **DeskScene**, adopted on **Careers** 2026-09-07 — first illustration to clear the loop end to end |
 | 16 | Deployment | 🟡 | Needs you to connect the repo | **Client preview deploy prepared 2026-09-07.** `netlify.toml` committed: build config plus `X-Robots-Tag: noindex, nofollow` on every response, so the preview can never be indexed while the legal pages are unreviewed. Connect `HarshitRawat11/Procedo` at app.netlify.com and it auto-deploys on push. Production on procedoinfo.com is still a separate, later decision — host unknown |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
 | 18 | Analytics | ⏸️ | Parked 2026-08-30 | Recommendation on record: Cloudflare Web Analytics (free, cookieless, no consent banner needed). ~5 min to add whenever you want it |
@@ -58,6 +58,27 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-07 (later)
+- **DeskScene adopted on the Careers page**, inside the open application card
+  (placement B of two shown on `/careers-preview`). First illustration to pass
+  through the whole critique loop and be accepted.
+- Fixed the alignment Harshit spotted. The boxes were already centred perfectly;
+  the fault was inside the SVG. The artwork's bounding box ran y=128..380 in a
+  `0 0 400 380` viewBox, so 34% of the image was empty sky and the drawing sat
+  low in its own box. Cropped the viewBox to `0 104 400 276`, which also makes
+  the cat larger at the same footprint. Verified: image, heading block, button
+  and card now share one centre line, measured offset 0px.
+- Answered the negative-space question with measurements rather than opinion:
+  every inner page uses the same left-aligned `PageHeader` with a `max-w-2xl`
+  subtitle, and `/our-mission` has no subtitle at all, so it has more empty space
+  than Careers. Not a Careers problem; changing it is a whole-site decision.
+- **Self-inflicted bug worth recording.** Editing `careers-preview.astro` with
+  PowerShell `Set-Content` double-encoded the file's UTF-8 (em dashes became
+  mojibake). The build stayed green because mojibake is valid text. Added a
+  scan, confirmed only that one untracked file was hit, and rewrote it.
+  **Do not use PowerShell Set-Content on UTF-8 source files** — use the Edit
+  tool or Node, which handle the encoding correctly.
 
 ### 2026-09-07
 - Converted the remaining two QuietScene instances to technique B — the

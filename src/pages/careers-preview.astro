@@ -1,0 +1,124 @@
+---
+/* ============================================================================
+ *  /careers-preview — PREVIEW ONLY. Sealed off per CLAUDE.md §5: noindex, in no
+ *  nav, linked from nowhere, excluded from the sitemap filter.
+ *
+ *  Placement B was chosen on 2026-09-07 and is now live on the real Careers
+ *  page, inside the open application card. This page is kept only so the two
+ *  candidates can still be compared side by side; it is safe to delete.
+ *
+ *  Placement A — a standalone band before the roles, with a caption.
+ *  Placement B — smaller, inside the open application card. ADOPTED.
+ * ========================================================================== */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import DeskScene from '../components/DeskScene.astro';
+import { Icon } from 'astro-icon/components';
+import { careers } from '../data/site';
+
+/* Placement A only. B is decorative and carries no caption. */
+const sceneCaption = 'The desk is ready. The chair is only temporarily occupied.';
+---
+
+<BaseLayout title="Careers — illustration placements" noindex>
+  <div class="pv-banner">
+    <Container>
+      <p class="pv-banner-txt">
+        <strong>Internal preview.</strong> The two candidate placements for the Careers
+        illustration. Placement B is the one now live on <code>/careers</code>. Not linked from the
+        site, not indexed.
+      </p>
+    </Container>
+  </div>
+
+  <!-- ══ PLACEMENT A — a standalone band ══ -->
+  <section class="bg-cream py-14 lg:py-20">
+    <Container>
+      <p class="pv-tag">Placement A — a breather before the roles (not adopted)</p>
+      <div class="mx-auto max-w-sm">
+        <DeskScene id="band" caption={sceneCaption} />
+      </div>
+      <p class="pv-note">
+        Every detail earns its keep at this size — the caret on the monitor, the steam off the mug,
+        the status pip, the tail curl. The cost is that it needs a section of its own.
+      </p>
+    </Container>
+  </section>
+
+  <!-- ══ PLACEMENT B — inside the open application card. ADOPTED ══ -->
+  <section class="border-t border-line bg-band py-14 lg:py-20">
+    <Container>
+      <p class="pv-tag pv-tag--live">Placement B — inside the open application card (adopted)</p>
+      <div
+        class="flex flex-col items-start justify-between gap-5 rounded-2xl border border-line bg-white p-7 shadow-sm sm:flex-row sm:items-center sm:gap-8"
+      >
+        <div class="w-44 shrink-0 self-center sm:w-52">
+          <DeskScene id="card" />
+        </div>
+        <div class="sm:flex-1">
+          <h2 class="text-base font-semibold text-navy-950">Don’t see your role?</h2>
+          <p class="mt-1.5 text-sm leading-relaxed text-slate-600">
+            Send us your CV and a short note on what you’d like to build. We keep good people in
+            mind for upcoming projects.
+          </p>
+        </div>
+        <a
+          href={`mailto:${careers.applyEmail}?subject=${encodeURIComponent('Open application')}`}
+          class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-500 px-5 py-2.5 text-[15px] font-medium text-white shadow-sm shadow-brand-600/20 transition-all duration-200 hover:bg-brand-600 active:scale-[0.98]"
+        >
+          <Icon name="lucide:mail" class="size-4" aria-hidden="true" />
+          {careers.applyEmail}
+        </a>
+      </div>
+      <p class="pv-note">
+        The illustration's viewBox is cropped to the artwork (<code>0 104 400 276</code>). Before
+        that it ran the full <code>0 0 400 380</code>, leaving 34% of the image as empty sky, which
+        made the drawing sit low even though the boxes were perfectly centred.
+      </p>
+    </Container>
+  </section>
+</BaseLayout>
+
+<style>
+  .pv-banner {
+    background: var(--color-navy-950);
+    color: #fff;
+    padding: 0.75rem 0;
+  }
+  .pv-banner-txt {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgb(255 255 255 / 0.78);
+  }
+  .pv-banner-txt strong {
+    color: #fff;
+    font-weight: 600;
+  }
+  .pv-banner-txt code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .pv-tag {
+    margin: 0 0 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #64748b;
+  }
+  .pv-tag--live {
+    color: var(--color-brand-600);
+  }
+  .pv-note {
+    max-width: 46rem;
+    margin: 1.5rem 0 0;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: #64748b;
+  }
+  .pv-note code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-navy-800);
+  }
+</style>

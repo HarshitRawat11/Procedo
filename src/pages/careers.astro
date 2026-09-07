@@ -4,6 +4,7 @@ import Container from '../components/Container.astro';
 import PageHeader from '../components/PageHeader.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import ClosingCta from '../components/ClosingCta.astro';
+import DeskScene from '../components/DeskScene.astro';
 import { Icon } from 'astro-icon/components';
 import { careers } from '../data/site';
 ---
@@ -92,10 +93,15 @@ import { careers } from '../data/site';
 
       <!-- Open application -->
       <div
-        class="mt-10 flex flex-col items-start justify-between gap-5 rounded-2xl border border-line bg-white p-7 shadow-sm sm:flex-row sm:items-center"
+        class="mt-10 flex flex-col items-start justify-between gap-5 rounded-2xl border border-line bg-white p-7 shadow-sm sm:flex-row sm:items-center sm:gap-8"
         data-reveal
       >
-        <div>
+        <!-- The cat is holding the seat. Decorative support for the copy beside
+             it, so it does not take a caption of its own. -->
+        <div class="w-44 shrink-0 self-center sm:w-52">
+          <DeskScene id="careers" />
+        </div>
+        <div class="sm:flex-1">
           <h2 class="text-base font-semibold text-navy-950">Don’t see your role?</h2>
           <p class="mt-1.5 text-sm leading-relaxed text-slate-600">
             Send us your CV and a short note on what you’d like to build. We keep good people in
