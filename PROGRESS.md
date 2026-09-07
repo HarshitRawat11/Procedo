@@ -34,14 +34,14 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
 | 14 | Design inspiration folder | ✅ | — | Images saved and renamed to the index 2026-09-05, verified by opening each. 11 of 12 present — ref 11 (two-hands) never made it in; ref 12 (Google Meet "meeting is safe") is new and now catalogued as ANALYSIS §8. Notes tracked in git, images stay local |
 | 15 | Illustration set for the site | 🟡 | Technique undecided (#23) | First batch of 5 rejected 2026-08-29 — only Power & Precision kept. Since 2026-09-06 governed by `reference/illustration-loop.md`: measured gates, run `node scripts/measure-svg.cjs <file>`. Thresholds calibrated so QuietScene passes all six and UptimeScene fails two by a hair |
-| 16 | Deployment | ⏸️ | Parked 2026-08-30 | Netlify path parked. Repo is on GitHub, so connecting a host later is a 3-click job. Still unknown: who currently hosts procedoinfo.com |
+| 16 | Deployment | 🟡 | Needs you to connect the repo | **Client preview deploy prepared 2026-09-07.** `netlify.toml` committed: build config plus `X-Robots-Tag: noindex, nofollow` on every response, so the preview can never be indexed while the legal pages are unreviewed. Connect `HarshitRawat11/Procedo` at app.netlify.com and it auto-deploys on push. Production on procedoinfo.com is still a separate, later decision — host unknown |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
 | 18 | Analytics | ⏸️ | Parked 2026-08-30 | Recommendation on record: Cloudflare Web Analytics (free, cookieless, no consent banner needed). ~5 min to add whenever you want it |
 | 19 | Photography / real imagery | ✅ | — | **Decided 2026-08-30: no photography.** The illustration-and-icon style is a deliberate choice, not a gap. Revisit only if real project photos become available |
 | 20 | Dark mode | ⏸️ | Parked 2026-08-30 — client decision | Big change; user will raise with the client. No `prefers-color-scheme` handling exists today |
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
 | 22 | `/uptime` illustration concept ("power cut at 3am, nobody noticed") | 🟡 | Not yet matching the bar — see below | 2026-08-30 verdict: "better than the previous 5" but still short of `/quiet` and the Google references. Parked, not reworked — see `procedo-illustration-approach` memory for a color/frame-share theory to test on the next attempt |
-| 23 | Illustration technique — outline vs flat colour | 🟡 | 2 of 3 scenes still to convert | **Decided 2026-09-06: technique B** (navy contours with flat colour underneath). Applied to the **404 page** only. `QuietScene` now takes a `palette` prop (`outline` default, `coloured`); `/our-mission` and the contact-form success state are still `outline` and will look plainer beside it until converted — each is a one-word change |
+| 23 | Illustration technique — outline vs flat colour | ✅ | — | **Decided 2026-09-06: technique B.** Applied to all three QuietScene call sites 2026-09-07 — the 404, the contact-form success state and `/our-mission`. `QuietScene` takes a `palette` prop (`outline` default, `coloured`); every live instance now passes `coloured` |
 | 24 | Our Mission illustration | ⏸️ | Parked 2026-09-06 | **Two iterations rejected.** Iteration 1 read as a diagram (figures ~30% of canvas, everything on one baseline). Iteration 2 fixed scale and depth, passed all six countable gates, and was still rejected by both Harshit and the client. Pattern across attempts: 1 success with an animal subject (QuietScene), 4 + 2 failures whenever human figures are involved. Live page keeps QuietScene. `src/components/preview/MissionScene.astro` and `/our-mission-preview` left uncommitted pending a call on whether to bin them |
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06. Telecom removed as a competency; **Digital Workplace Services & Field Operations** added at #4; **Power & Precision Systems** renamed **Datacenter Infrastructure** at #5 with the client’s full copy. Still five competencies. Two CTAs the client asked for are withheld until their targets exist — see the log |
 
@@ -58,6 +58,22 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-07
+- Converted the remaining two QuietScene instances to technique B — the
+  contact-form success state and `/our-mission`. All three live scenes now match.
+  Only the contact page was reported, but leaving `/our-mission` on the old
+  palette would have recreated the same mismatch a page later.
+- Prepared a **client preview deploy** (#16). `netlify.toml` carries the build
+  config and `X-Robots-Tag: noindex, nofollow` on every response. The noindex is
+  in the Netlify config rather than `public/robots.txt` deliberately: a robots.txt
+  in `public/` gets copied into `dist/` and would follow the site into production,
+  quietly de-indexing the real launch.
+- Started a new illustration for the **Careers page**, the only content page with
+  no artwork. Concept: a cat asleep on an office chair beside a lit desk — the
+  seat you would be taking. Animal-led on purpose; the honest read of the record
+  is that the rejected batch of five was *object-only* and read as diagrams, while
+  both scenes that landed had the cat in them.
 
 ### 2026-09-06 (later still)
 - **404 illustration converted to technique B.** `QuietScene` gained a `palette`

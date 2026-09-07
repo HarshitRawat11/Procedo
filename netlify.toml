@@ -1,0 +1,41 @@
+# Netlify config — for the CLIENT PREVIEW deploy, not production.
+#
+# Purpose: give the client a stable URL that rebuilds on every push to master,
+# so they can review as work lands. The real site still lives at
+# procedoinfo.com and is untouched by this.
+#
+# Deliberately NOT a public launch:
+#   - every response carries X-Robots-Tag: noindex, nofollow, so search engines
+#     never index the preview. This matters twice over — the legal pages have
+#     not been through review yet (#5), and an indexed preview would compete
+#     with procedoinfo.com.
+#   - the noindex lives here rather than in public/robots.txt on purpose. A
+#     robots.txt in public/ would be copied into dist/ and would follow the
+#     site into production, quietly de-indexing the real launch.
+#
+# `site` in astro.config.mjs still points at https://www.procedoinfo.com, so
+# canonical tags on the preview point at the production domain. That is correct
+# and is a second layer of protection against the preview being indexed.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Astro 6 needs >= 18.20.8 / 20.3 / 22. Local dev runs Node 24; 22 is the
+  # safest widely-supported choice on Netlify. Raise it if a build ever needs to.
+  NODE_VERSION = "22"
+
+# Keep the whole preview out of search results.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Long-cache the fingerprinted build assets; Astro hashes these filenames.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
