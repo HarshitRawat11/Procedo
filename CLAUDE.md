@@ -76,9 +76,19 @@ page. Uncommitted work still has no undo.
 ### 5. Concept and preview pages must be sealed off
 Anything not part of the real site must be: not in `nav`, linked from nowhere,
 marked `noindex`, and excluded from the sitemap filter in `astro.config.mjs`.
-Current examples: `/uptime`, `/illustrations-preview`, `/404-preview`. (`/quiet` and
-`/our-mission-preview` existed under this rule until their illustrations were
-adopted into the real site, at which point both pages were deleted.)
+Current examples: `/uptime`, `/illustrations-preview`, `/404-preview`,
+`/careers-preview`. (`/quiet` and `/our-mission-preview` existed under this rule
+and were deleted — the first once its illustration was adopted, the second when
+its illustration was rejected outright on 2026-09-07.)
+
+### 5b. No human figures in illustrations
+**Hard rule, set by Harshit on 2026-09-07.** Illustrations carry animal or
+machine subjects only — no people, not even a hand, without his explicit
+per-scene approval. The reference set in `reference/inspiration/` is full of
+people and draws them well; that is not reproducible at this standard in flat
+geometric shapes. Every accepted illustration here has an animal or a machine as
+its subject; every rejected one either had human figures or no character at all.
+Full reasoning in Gate 0 of `reference/illustration-loop.md`.
 
 ### 6. Accessibility is not optional
 - Every animation sits inside `@media (prefers-reduced-motion: no-preference)`.

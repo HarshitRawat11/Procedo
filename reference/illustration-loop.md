@@ -92,10 +92,30 @@ Throughout, **canvas** means the `viewBox` coordinate space, not rendered pixels
 
 State the intended scene in prose, then measure it.
 
-- **Human figures: maximum 2.**
-- **Characters carrying the scene: 1–2**, human or animal. This is the figure the
-  face and posture gates apply to. An animal subject does not exempt you from
-  them — a sleeping cat still has closed eyes, a curled spine and a tucked paw.
+- **Human figures: ZERO. This is a hard rule, not a budget.**
+  > Set 2026-09-07 by Harshit, and it reverses the earlier "people are fine, just
+  > like the references" decision. His words: *"no full images of people cause
+  > these are not looking good in geometric patterns but cat is looking good,
+  > server is also good but no people."*
+  >
+  > The evidence backs it. Every illustration accepted here has an animal or a
+  > machine as its subject — `QuietScene`, `UptimeScene`, `DeskScene`. Every one
+  > rejected either had human figures ("The handover", two iterations) or was
+  > pure equipment with no character at all (the batch of five). The references
+  > are full of people and draw them well; that is not reproducible at this
+  > standard in flat geometric shapes, and trying again wastes the client's time.
+  >
+  > Do not reopen this by proposing "just a hand" or "figures from behind"
+  > either. A partial figure needs Harshit's explicit approval first, per scene.
+  > If a concept only works with a person in it, the concept is wrong — say so
+  > and propose another.
+- **Characters carrying the scene: 1–2, animal or machine.** This is the subject
+  the face and posture gates apply to. An animal does not exempt you from them —
+  a sleeping cat still has closed eyes, a curled spine and a tucked paw. A
+  machine subject needs the equivalent: something that reads as alive, like the
+  rack's breathing status lights.
+  > A scene with no character at all is what produced the rejected batch of five.
+  > Equipment alone is a diagram. The cat is the thing that works.
 - **Primary character height: at least 45% of canvas height**, or 35% of its
   width if the pose is horizontal. A curled or seated figure is measured across
   its longest axis.
@@ -103,8 +123,9 @@ State the intended scene in prose, then measure it.
   > every countable gate at 30% and still read as a diagram. The floor was set
   > low, I drew to the floor, and the gate certified a pictogram. The reference
   > figures run about 60%. `QuietScene`'s cat is the standing exception — it is
-  > ~19% and works, because it is one animal in a near-empty frame; a scene with
-  > people and furniture does not get that latitude.
+  > ~19% and works, because it is one animal in a near-empty frame; a scene
+  > carrying furniture as well does not get that latitude. `DeskScene`'s cat is
+  > 36% of canvas width and that is about the floor for a furnished scene.
 - **Canvas proportion.** Do not draw a wide, short canvas unless the subject is
   genuinely horizontal. A 440x340 frame pushes everything onto one baseline in a
   row, which is the arrangement that reads as a diagram. The references are
@@ -227,9 +248,9 @@ under-baked even when the technique is right.
 carry green (`#22C55E`, `#DCFCE7`), peach (`#FCDCCF`) and the orange accent. Any
 new hue must earn its place beside these, not duplicate them.
 
-**No skin tones exist in the codebase today** — there are no human figures on the
-live site. Introducing people means introducing a skin-tone range for the first
-time; propose it explicitly rather than describing it as "already in use".
+**Skin tones are moot.** There are no human figures on the live site and, as of
+2026-09-07, there will not be — see the first line of Gate 0. Any skin-tone
+palette proposed in an earlier revision of this document is dead; ignore it.
 
 **On mechanism:** illustration fills are SVG presentation *attributes*, which do
 not read Tailwind `@theme` tokens. Adding `illus-*` to `@theme` only helps if the
@@ -249,6 +270,7 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
 ## Standing constraints
 
 - One illustration at a time. Never batch.
+- **No human figures.** Animal or machine subjects only. See Gate 0.
 - Draw the calm moment the service creates, not the equipment that creates it.
 - Flat colour **and** outlines together. These are not rival techniques.
   (See `reference/inspiration/ANALYSIS.md` §1, corrected 2026-09-05.)

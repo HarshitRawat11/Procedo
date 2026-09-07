@@ -42,7 +42,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
 | 22 | `/uptime` illustration concept ("power cut at 3am, nobody noticed") | 🟡 | Not yet matching the bar — see below | 2026-08-30 verdict: "better than the previous 5" but still short of `/quiet` and the Google references. Parked, not reworked — see `procedo-illustration-approach` memory for a color/frame-share theory to test on the next attempt |
 | 23 | Illustration technique — outline vs flat colour | ✅ | — | **Decided 2026-09-06: technique B.** Applied to all three QuietScene call sites 2026-09-07 — the 404, the contact-form success state and `/our-mission`. `QuietScene` takes a `palette` prop (`outline` default, `coloured`); every live instance now passes `coloured` |
-| 24 | Our Mission illustration | ⏸️ | Parked 2026-09-06 | **Two iterations rejected.** Iteration 1 read as a diagram (figures ~30% of canvas, everything on one baseline). Iteration 2 fixed scale and depth, passed all six countable gates, and was still rejected by both Harshit and the client. Pattern across attempts: 1 success with an animal subject (QuietScene), 4 + 2 failures whenever human figures are involved. Live page keeps QuietScene. `src/components/preview/MissionScene.astro` and `/our-mission-preview` left uncommitted pending a call on whether to bin them |
+| 24 | Our Mission illustration | ❌ | Abandoned 2026-09-07 | **Dropped.** Two iterations rejected by both Harshit and the client; the second passed all six countable gates and was still no good. `MissionScene.astro` and `/our-mission-preview` deleted 2026-09-07. `/our-mission` keeps QuietScene, now in technique B. The cause is now a standing rule, not an open question — no human figures (CLAUDE.md §5b) |
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06. Telecom removed as a competency; **Digital Workplace Services & Field Operations** added at #4; **Power & Precision Systems** renamed **Datacenter Infrastructure** at #5 with the client’s full copy. Still five competencies. Two CTAs the client asked for are withheld until their targets exist — see the log |
 
 ---
@@ -58,6 +58,27 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-07 (later still)
+- **New hard rule: no human figures in illustrations.** Harshit, verbatim: *"no
+  full images of people cause these are not looking good in geometric patterns
+  but cat is looking good, server is also good but no people."* This reverses his
+  2026-09-05 "including people in the images is fine as well just like the
+  reference images", so it is written down in three places rather than one:
+  Gate 0 of `reference/illustration-loop.md`, a new CLAUDE.md §5b, and the
+  project memory. A banner at the top of `ANALYSIS.md` also warns that the
+  reference set is full of people and we do not copy that part.
+- The rule includes partial figures. A hand, or figures seen from behind, needs
+  explicit per-scene approval — both were plausible next moves and both are
+  closed off deliberately, so the decision is not relitigated.
+- Deleted `src/components/preview/MissionScene.astro` and
+  `src/pages/our-mission-preview.astro` (#24), and dropped the now-dead
+  `/our-mission-preview` entry from the sitemap filter. `src/components/preview/`
+  now holds only `SceneVariant.astro`, which backs `/404-preview`.
+- Evidence behind the rule, for the record: accepted work is QuietScene,
+  UptimeScene and DeskScene — all animal or machine subjects. Rejected work is
+  the five competency illustrations (no character at all) and both "The handover"
+  iterations (human figures).
 
 ### 2026-09-07 (later)
 - **DeskScene adopted on the Careers page**, inside the open application card

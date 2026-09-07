@@ -15,6 +15,12 @@ from any single image. Do not treat them as universal:
 
 ---
 
+> **Before drawing anything from these notes:** the reference set is full of
+> human figures and draws them beautifully. **We do not.** As of 2026-09-07 our
+> illustrations carry no human figures at all — animal or machine subjects only.
+> Everything else here (palette, outline weights, composition devices, the
+> caption formula) still applies. See Gate 0 in `../illustration-loop.md`.
+
 ## 1. Flat colour AND outlines — not one or the other
 
 > **Corrected 2026-09-05.** This section previously described the set as a
