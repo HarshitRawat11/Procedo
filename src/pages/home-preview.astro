@@ -1,0 +1,157 @@
+---
+/* ============================================================================
+ *  /home-preview — PREVIEW ONLY. Sealed off per CLAUDE.md §5: noindex, in no
+ *  nav, linked from nowhere, excluded from the sitemap filter.
+ *
+ *  The home page with the refined UptimeScene given a real home: a quiet band
+ *  between the mission teaser and "Why Procedo". Everything else is a faithful
+ *  copy of src/pages/index.astro, minus the JSON-LD (which must not be
+ *  duplicated on a noindex page).
+ *
+ *  Why here rather than on Services or Company:
+ *    - Services has five sections and no illustrations. Adding one to a single
+ *      section creates the same lopsidedness the closing banners did.
+ *    - Company is still undecided between "Unpacked" and "Dressed and labelled",
+ *      so putting this there would pre-empt that call.
+ *    - The home page has no illustration at all and is the page that matters
+ *      most, and "power cut at 3am, nobody noticed" is a proposition rather
+ *      than a decoration — it earns a band of its own.
+ *
+ *  Once approved: add the band to index.astro, then delete this page and the
+ *  /uptime concept page it frees up.
+ * ========================================================================== */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import ClosingCta from '../components/ClosingCta.astro';
+import Button from '../components/Button.astro';
+import Hero from '../components/home/Hero.astro';
+import ServicesPreview from '../components/home/ServicesPreview.astro';
+import UptimeScene from '../components/UptimeScene.astro';
+import { Icon } from 'astro-icon/components';
+import { whyUs, mission, company, uptimeBand } from '../data/site';
+---
+
+<BaseLayout title="Home — illustration preview" noindex headerOverlap>
+  <Hero />
+
+  <!-- Below the hero, not above it: the home page uses `headerOverlap`, so a
+       banner at the top sits underneath the fixed header and is never seen. -->
+  <div class="pv-banner">
+    <Container>
+      <p class="pv-banner-txt">
+        <strong>Internal preview.</strong> The home page with the refined UptimeScene in a band of
+        its own. Not linked from the site, not indexed.
+      </p>
+    </Container>
+  </div>
+
+  <ServicesPreview />
+
+  <!-- Who we are / mission teaser -->
+  <section class="bg-cream py-20 lg:py-28">
+    <Container>
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-6" data-reveal>
+          <SectionHeading eyebrow="Who we are" title="An infrastructure-first technology firm" />
+          <p class="mt-6 text-lg leading-relaxed text-slate-600">{company.overview[0]}</p>
+          <p class="mt-4 leading-relaxed text-slate-600">{company.overview[1]}</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button href="/company" chevron>Company Overview</Button>
+            <Button href="/our-mission" variant="secondary">Our Mission</Button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6" data-reveal style="--reveal-delay:120ms">
+          <div class="rounded-2xl border border-line bg-white p-7 shadow-sm sm:p-9">
+            <span
+              class="grid size-11 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100"
+            >
+              <Icon name="lucide:quote" class="size-5" aria-hidden="true" />
+            </span>
+            <blockquote class="mt-6 text-lg font-medium leading-relaxed text-navy-900">
+              {mission.statement}
+            </blockquote>
+
+            <div class="mt-7 border-t border-line pt-6">
+              <h3 class="font-mono text-xs uppercase tracking-wider text-navy-700">
+                {mission.purpose.listTitle}
+              </h3>
+              <ul class="mt-3.5 flex flex-wrap gap-2">
+                {
+                  mission.purpose.items.map((it) => (
+                    <li class="inline-flex items-center gap-1.5 rounded-full border border-line bg-band px-3 py-1.5 text-sm text-navy-800">
+                      <Icon
+                        name="lucide:check"
+                        class="size-3.5 shrink-0 text-brand-500"
+                        aria-hidden="true"
+                      />
+                      {it}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- ══ THE BAND — the refined UptimeScene, centred, no new headline ══ -->
+  <section class="border-t border-line bg-cream py-16 lg:py-20">
+    <Container>
+      <p class="pv-tag">Proposed — a quiet band before “Why Procedo”</p>
+      <div class="mx-auto max-w-md" data-reveal>
+        <UptimeScene
+          id="home"
+          surface="bare"
+          chip={uptimeBand.chip}
+          caption={uptimeBand.caption}
+        />
+      </div>
+    </Container>
+  </section>
+
+  <!-- Why partner with us -->
+  <section class="border-t border-line bg-band py-20 lg:py-28">
+    <Container>
+      <SectionHeading
+        eyebrow="Why Procedo"
+        title="Why partner with Procedo?"
+        subtitle="Experience the future of infrastructure-driven success with industry-leading expertise."
+      />
+      <FeatureGrid items={whyUs} columns={4} class="mt-12" />
+    </Container>
+  </section>
+
+  <ClosingCta />
+</BaseLayout>
+
+<style>
+  .pv-banner {
+    position: relative;
+    z-index: 40;
+    background: var(--color-navy-950);
+    color: #fff;
+    padding: 0.75rem 0;
+  }
+  .pv-banner-txt {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgb(255 255 255 / 0.78);
+  }
+  .pv-banner-txt strong {
+    color: #fff;
+    font-weight: 600;
+  }
+  .pv-tag {
+    margin: 0 0 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-brand-600);
+  }
+</style>

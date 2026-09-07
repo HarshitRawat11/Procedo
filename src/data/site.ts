@@ -256,6 +256,16 @@ export const competencies: Competency[] = [
   },
 ];
 
+/**
+ * Quiet band on the home page, between the mission teaser and "Why Procedo".
+ * Copy for the UptimeScene illustration. Both lines already existed as
+ * component defaults; they live here so a non-developer can change them (#2).
+ */
+export const uptimeBand = {
+  chip: 'On backup power',
+  caption: 'Power cut at 3am. Nobody noticed.',
+} as const;
+
 /** Closing call-to-action band. */
 export const closingCta = {
   heading: 'Ready to Future-Proof Your Business?',
