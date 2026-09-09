@@ -1,0 +1,485 @@
+---
+/* ============================================================================
+ *  WorkshopScene — "Every tool in its place. Nearly." PREVIEW ONLY.
+ *
+ *  A shadow board with every tool hanging over its painted outline and a label
+ *  strip under every hook. One hook is empty. On the bench below, in the light
+ *  of a desk lamp, the cat is crouched over the missing screwdriver with one
+ *  paw on it. A mug steams. The board says precision; the cat says who has the
+ *  screwdriver.
+ *
+ *  Built under reference/illustration-loop.md, technique B. All six countable
+ *  Gate 1 checks pass with margin (curve ratio 47%, spread 3.18, 28 saturated
+ *  fills). Chosen over an asleep variant on 2026-09-09.
+ *
+ *  The cat is a play-crouch built from convex parts only — long low body, rump
+ *  highest, head low at the front, tail up, paws emerging from under the chest.
+ *  No legs are drawn. Every articulated cat attempted for this site has failed
+ *  on the legs; this pose has none to get wrong.
+ *
+ *  Every animation sits inside prefers-reduced-motion: no-preference and every
+ *  resting value lives on an attribute, so a reduced-motion visitor gets a
+ *  complete still scene. The paw bats the screwdriver once every six seconds;
+ *  the rest is breathing, steam, lamplight and a slow sway on the hanging cable.
+ * ========================================================================== */
+interface Props {
+  /** Caption below the art. Omit for none. */
+  caption?: string;
+  /** Unique per instance — the pattern, title and clip ids must not collide. */
+  id: string;
+  class?: string;
+}
+const { caption, id, class: className = '' } = Astro.props;
+const titleId = `workshop-title-${id}`;
+const pegId = `peg-${id}`;
+
+/* ── Contours ── */
+const NAVY = '#1B2A4A';
+const ENVLINE = '#A8BACF';
+const W_SUBJ = 2.6;
+const W_ENV = 1.7;
+const W_FINE = 1.1;
+
+/* ── The board ── */
+const BOARD = '#C9D9EC';
+const PEG = '#B4C3D6';
+const SHADOW = '#9FB3CC'; // the painted outline behind each tool
+const METAL = '#33415C';
+const GRIP = '#4A90D9'; // saturated blue at scale, as the references use it
+const LABEL = '#FFFFFF';
+
+/* ── The bench ── */
+const TIMBER = '#E4CBA8';
+const TIMBER_DK = '#C9A87C';
+const FLOOR = '#E3EAF3';
+
+/* ── Everything else ── */
+const FUR = '#FFFFFF';
+const FUR_DK = '#B9C4D2';
+const FUR_MARK = '#93A3B8';
+const ARM = '#8FA8C8';
+const SHADE = '#F7B9A3';
+const WARM = '#FCDCCF';
+const MUG = '#F7B9A3';
+const GREEN = '#16A34A';
+const LEAF = '#4EB86B';
+const LEAF_LT = '#7DD87D';
+const POT = '#FCDCCF';
+
+/* The one hit of orange: the hank of cable on the last hook. */
+const ORANGE = '#F24E1E';
+
+/* Cat body: filled, shaded off-register, then re-contoured (Gate 1 #1). */
+const CAT_BODY = 'M178 262 C176 232 186 208 206 206 C228 204 250 216 268 228 C276 234 280 246 280 262 Z';
+const CAT_BACK = 'M186 262 C184 236 194 214 212 212 C234 210 254 220 268 232 C252 222 232 218 214 220 C198 222 190 240 190 262 Z';
+/* Tallest leaf, filled off-register (Gate 1 #2). */
+const LEAF_BIG = 'M29 300 C14 272 18 238 29 228 C40 238 44 272 29 300 Z';
+
+/* Painted outlines are the tool shapes themselves, drawn once as shadows. */
+const WRENCH = 'M74 60 C74 55 79 52 84 52 C89 52 94 55 94 60 L92 74 L88 152 C88 156 80 156 80 152 L76 74 Z';
+const SCREWDRIVER_SHADOW = 'M130 58 C130 52 146 52 146 58 L146 96 C146 100 130 100 130 96 Z M136 100 L140 100 L139 152 L137 152 Z';
+const PLIERS = 'M186 52 L198 52 L200 70 L192 76 L184 70 Z M190 78 C182 100 178 124 178 146 C178 150 184 150 184 146 C184 124 188 102 194 82 Z M194 82 C200 102 204 124 204 146 C204 150 210 150 210 146 C210 124 206 100 198 78 Z';
+const CRIMPER = 'M292 52 L308 52 L310 72 L300 80 L290 72 Z M298 82 C288 104 284 128 284 148 C284 152 291 152 291 148 C291 128 295 106 302 86 Z M302 86 C309 106 313 128 313 148 C313 152 320 152 320 148 C320 128 316 104 306 82 Z';
+---
+
+<figure class:list={['workshop', className]}>
+  <svg
+    class="scene"
+    viewBox="0 20 420 360"
+    role="img"
+    aria-labelledby={titleId}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title id={titleId}>
+      A workshop shadow board with every tool hanging over its painted outline, one hook empty. On
+      the bench below, in the light of a desk lamp, a cat crouches with one paw on the missing
+      screwdriver, batting it about. A mug steams beside it.
+    </title>
+
+    <defs>
+      <pattern id={pegId} width="22" height="22" patternUnits="userSpaceOnUse">
+        <circle cx="11" cy="11" r="1.6" fill={PEG} />
+      </pattern>
+    </defs>
+
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <!-- ══ PLANE 1: the shadow board ══ -->
+      <rect x="40" y="30" width="340" height="240" rx="4" fill={BOARD} stroke={NAVY} stroke-width={W_ENV} />
+      <rect x="48" y="38" width="324" height="226" fill={`url(#${pegId})`} />
+
+      <g stroke={NAVY} stroke-width={W_ENV}>
+        <path d="M84 46 L84 56 C84 60 89 60 89 56" />
+        <path d="M138 46 L138 56 C138 60 143 60 143 56" />
+        <path d="M192 46 L192 56 C192 60 197 60 197 56" />
+        <path d="M246 46 L246 56 C246 60 251 60 251 56" />
+        <path d="M300 46 L300 56 C300 60 305 60 305 56" />
+        <path d="M352 46 L352 56 C352 60 357 60 357 56" />
+      </g>
+
+      <!-- a label strip under every hook: everything on this board is named -->
+      <g fill={LABEL} stroke={ENVLINE} stroke-width={W_FINE}>
+        <rect x="74" y="164" width="20" height="6" rx="1.5" />
+        <rect x="128" y="164" width="20" height="6" rx="1.5" />
+        <rect x="182" y="164" width="20" height="6" rx="1.5" />
+        <rect x="236" y="164" width="20" height="6" rx="1.5" />
+        <rect x="290" y="164" width="20" height="6" rx="1.5" />
+        <rect x="342" y="164" width="20" height="6" rx="1.5" />
+      </g>
+
+      <!-- painted outlines, laid 2 left / 2 down of each tool. Mis-registration
+           as an actual workshop practice. The second one has no tool over it. -->
+      <g fill={SHADOW} transform="translate(-2 2)">
+        <path d={WRENCH} />
+        <path d={SCREWDRIVER_SHADOW} />
+        <path d={PLIERS} />
+        <rect x="232" y="58" width="28" height="52" rx="5" />
+        <path d={CRIMPER} />
+      </g>
+
+      <!-- 1. adjustable wrench -->
+      <path d="M74 60 C74 55 79 52 84 52 C89 52 94 55 94 60 L92 74 L76 74 Z" fill={METAL} stroke={NAVY} stroke-width={W_ENV} />
+      <rect x="81" y="50" width="6" height="12" fill={BOARD} />
+      <path d="M79 74 L89 74 L88 152 C88 156 80 156 80 152 Z" fill={METAL} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M79.5 110 L88.5 110 L88 152 C88 156 80 156 80 152 Z" fill={GRIP} />
+
+      <!-- 2. the empty hook — its screwdriver is on the bench -->
+
+      <!-- 3. pliers -->
+      <path d="M186 52 L198 52 L200 70 L192 76 L184 70 Z" fill={METAL} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M190 78 C182 100 178 124 178 146 C178 150 184 150 184 146 C184 124 188 102 194 82 Z" fill={GRIP} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M194 82 C200 102 204 124 204 146 C204 150 210 150 210 146 C210 124 206 100 198 78 Z" fill={GRIP} stroke={NAVY} stroke-width={W_ENV} />
+      <circle cx="192" cy="77" r="3" fill={NAVY} />
+
+      <!-- 4. cable tester, on a lanyard, one green light -->
+      <path d="M246 46 L246 58" stroke={NAVY} stroke-width={W_FINE} />
+      <rect x="232" y="58" width="28" height="52" rx="5" fill={METAL} stroke={NAVY} stroke-width={W_ENV} />
+      <rect x="237" y="64" width="18" height="12" rx="2" fill="#E8EEF6" />
+      <circle class="pip" cx="241" cy="92" r="2.4" fill={GREEN} />
+      <rect x="247" y="89" width="8" height="5" rx="1.5" fill={ARM} />
+      <rect x="237" y="99" width="18" height="5" rx="1.5" fill={ARM} />
+
+      <!-- 5. crimper -->
+      <path d="M292 52 L308 52 L310 72 L300 80 L290 72 Z" fill={METAL} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M298 82 C288 104 284 128 284 148 C284 152 291 152 291 148 C291 128 295 106 302 86 Z" fill={GRIP} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M302 86 C309 106 313 128 313 148 C313 152 320 152 320 148 C320 128 316 104 306 82 Z" fill={GRIP} stroke={NAVY} stroke-width={W_ENV} />
+      <circle cx="300" cy="81" r="3" fill={NAVY} />
+
+      <!-- 6. hank of cable, coiled and tied — the one hit of orange -->
+      <g class="hank">
+        <g stroke={ORANGE} stroke-width="3.5">
+          <path d="M344 62 C344 56 360 56 360 62 L360 128 C360 136 344 136 344 128 Z" />
+          <path d="M348 66 C348 62 356 62 356 66 L356 124 C356 130 348 130 348 124 Z" />
+          <path d="M352 70 L352 120" />
+        </g>
+        <rect x="342" y="74" width="20" height="7" rx="2" fill={NAVY} />
+      </g>
+
+      <!-- ══ PLANE 2: the bench ══ -->
+      <ellipse cx="220" cy="362" rx="182" ry="9" fill={FLOOR} />
+      <rect x="96" y="292" width="16" height="68" rx="2" fill={TIMBER} stroke={ENVLINE} stroke-width={W_ENV} />
+      <rect x="370" y="292" width="16" height="68" rx="2" fill={TIMBER} stroke={ENVLINE} stroke-width={W_ENV} />
+      <rect x="26" y="278" width="394" height="14" fill={TIMBER_DK} stroke={NAVY} stroke-width={W_ENV} />
+      <rect x="20" y="262" width="400" height="16" rx="3" fill={TIMBER} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M40 271 C110 268 180 273 250 269 C310 266 360 272 408 270" stroke={TIMBER_DK} stroke-width={W_FINE} />
+      <ellipse class="glow" cx="232" cy="262" rx="112" ry="9" fill={WARM} opacity="0.55" />
+
+      <!-- lamp: clamp, two arms, joint, shade, bulb, three rays -->
+      <path d="M392 250 L400 248 L356 138 L348 142 Z" fill={ARM} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M348 136 L356 144 L286 168 L280 158 Z" fill={ARM} stroke={NAVY} stroke-width={W_ENV} />
+      <circle cx="352" cy="140" r="6" fill={NAVY} />
+      <rect x="388" y="248" width="16" height="28" rx="2" fill={ARM} stroke={NAVY} stroke-width={W_ENV} />
+      <g class="rays" stroke={WARM} stroke-width="2" opacity="0.7">
+        <path d="M256 186 L238 256" />
+        <path d="M270 186 L270 256" />
+        <path d="M284 186 L302 256" />
+      </g>
+      <path d="M244 178 Q270 138 296 178 Z" fill={SHADE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <circle class="bulb" cx="270" cy="180" r="4.5" fill={WARM} />
+
+      <!-- mug, still steaming -->
+      <g class="steam" stroke="#CBD5E1" stroke-width={W_ENV}>
+        <path class="wisp wisp-1" d="M106 228 C103 222 111 218 108 212" />
+        <path class="wisp wisp-2" d="M118 228 C115 222 123 218 120 212" />
+      </g>
+      <path d="M126 242 C134 242 134 254 126 254" stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M100 236 L100 254 Q100 262 106 262 L120 262 Q126 262 126 254 L126 236 Z" fill={MUG} stroke={NAVY} stroke-width={W_ENV} />
+      <rect x="101" y="246" width="24" height="4" fill={ARM} />
+      <path d="M100 240 H126" stroke={NAVY} stroke-width={W_ENV} />
+
+      <!-- the screwdriver, just batted: tilted, with two motion marks. The tilt
+           is an attribute on the inner group so the CSS rock on the outer one
+           does not replace it. -->
+      <g class="screwdriver">
+        <g transform="rotate(-9 344 254)">
+          <path d="M318 254 C318 249 323 247 328 247 L352 247 L354 262 L324 262 C320 262 318 259 318 254 Z" fill={GRIP} stroke={NAVY} stroke-width={W_ENV} />
+          <path d="M354 252 L382 252 L382 257 L354 257 Z" fill={METAL} stroke={NAVY} stroke-width={W_FINE} />
+        </g>
+      </g>
+      <g class="marks" stroke={ENVLINE} stroke-width={W_FINE} opacity="0.35">
+        <path d="M388 240 C392 244 392 251 388 255" />
+        <path d="M395 236 C401 242 401 253 395 259" />
+      </g>
+
+      <!-- ══ PLANE 3: the cat — awake, crouched low, one paw on its prize ══ -->
+      <path class="tail" d="M184 248 C168 240 156 222 162 204 C166 192 180 190 186 200 C180 202 176 208 178 216 C180 228 190 238 196 246 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+      <g class="breathe">
+        <path d={CAT_BODY} fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d={CAT_BACK} fill={FUR_DK} transform="translate(3 2)" />
+        <path d={CAT_BODY} fill="none" stroke={NAVY} stroke-width={W_SUBJ} />
+        <g stroke={FUR_MARK} stroke-width={W_ENV}>
+          <path d="M212 224 C217 232 216 242 212 248" />
+          <path d="M236 226 C241 234 240 244 236 249" />
+        </g>
+      </g>
+      <!-- ears up, alert -->
+      <path d="M278 216 L274 196 L292 208 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M300 208 L318 194 L316 216 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+      <!-- head, low and forward -->
+      <path d="M272 232 C272 219 282 210 294 210 C306 210 316 219 316 232 C316 245 306 254 294 254 C282 254 272 245 272 232 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M275 224 C279 214 288 210 298 211 C287 214 279 220 276 229 Z" fill={FUR_DK} />
+      <!-- eyes open, pupils low in the almonds: looking DOWN at the screwdriver -->
+      <path d="M282 230 C285 226 291 226 294 230 C291 234 285 234 282 230 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+      <circle cx="291" cy="232" r="2.1" fill={NAVY} />
+      <path d="M298 230 C301 226 307 226 310 230 C307 234 301 234 298 230 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+      <circle cx="307" cy="232" r="2.1" fill={NAVY} />
+      <g stroke={NAVY} stroke-width={W_ENV}>
+        <path d="M297 239 L297 241" />
+        <path d="M293 244 Q297 247 301 244" />
+      </g>
+      <g stroke={ENVLINE} stroke-width={W_FINE}>
+        <path d="M270 236 L257 233" />
+        <path d="M270 242 L257 244" />
+        <path d="M318 236 L328 234" />
+        <path d="M318 241 L328 243" />
+      </g>
+      <!-- forepaws: the far one planted, the near one on the screwdriver -->
+      <path d="M286 254 C290 250 298 250 302 254 C304 258 300 262 294 262 C287 262 283 258 286 254 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+      <path class="paw" d="M310 249 C314 244 324 244 330 248 C333 253 328 259 320 259 C312 259 307 254 310 249 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+
+      <!-- ══ PLANE 4: the plant, cropping the corner ══ -->
+      <g class="leaves">
+        <path d={LEAF_BIG} fill={LEAF} transform="translate(-3 1.5)" />
+        <path d={LEAF_BIG} stroke={NAVY} stroke-width={W_ENV} />
+        <path d="M29 300 C6 286 -8 258 -2 244 C16 252 28 278 29 300 Z" fill={LEAF_LT} stroke={NAVY} stroke-width={W_ENV} />
+        <path d="M29 300 C54 286 72 258 66 244 C50 252 32 278 29 300 Z" fill={LEAF_LT} stroke={NAVY} stroke-width={W_ENV} />
+        <path d="M29 300 C44 286 62 270 78 268 C66 282 48 294 29 300 Z" fill={LEAF} stroke={NAVY} stroke-width={W_ENV} />
+      </g>
+      <path d="M-6 300 L4 380 L54 380 L64 300 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M-10 300 H68" stroke={NAVY} stroke-width={W_SUBJ} />
+    </g>
+  </svg>
+
+  {caption && <figcaption class="line">{caption}</figcaption>}
+</figure>
+
+<style>
+  .workshop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+  }
+  .scene {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .line {
+    max-width: 30ch;
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--color-navy-900);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .breathe {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: breathe 4.6s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,
+      100% {
+        transform: scaleY(1);
+      }
+      50% {
+        transform: scaleY(1.03);
+      }
+    }
+
+    /* the raised tail sways from its root */
+    .tail {
+      transform-box: fill-box;
+      transform-origin: 90% 95%;
+      animation: sway-tail 5.2s ease-in-out infinite;
+    }
+    @keyframes sway-tail {
+      0%,
+      100% {
+        transform: rotate(-3deg);
+      }
+      50% {
+        transform: rotate(3deg);
+      }
+    }
+
+    /* one bat every six seconds: paw pushes, screwdriver rocks, marks flare */
+    .paw {
+      animation: bat 6s ease-in-out infinite;
+    }
+    @keyframes bat {
+      0%,
+      84%,
+      96%,
+      100% {
+        transform: translate(0, 0);
+      }
+      88% {
+        transform: translate(4px, 1px);
+      }
+      92% {
+        transform: translate(2px, 0);
+      }
+    }
+    .screwdriver {
+      transform-box: fill-box;
+      transform-origin: 15% 50%;
+      animation: rock 6s ease-in-out infinite;
+    }
+    @keyframes rock {
+      0%,
+      86%,
+      98%,
+      100% {
+        transform: rotate(0deg);
+      }
+      89% {
+        transform: rotate(3deg);
+      }
+      93% {
+        transform: rotate(-1.5deg);
+      }
+    }
+    .marks {
+      animation: flare 6s ease-in-out infinite;
+    }
+    @keyframes flare {
+      0%,
+      84%,
+      100% {
+        opacity: 0.35;
+      }
+      89% {
+        opacity: 1;
+      }
+      95% {
+        opacity: 0.35;
+      }
+    }
+
+    .wisp {
+      opacity: 0;
+      animation: wisp 4.2s ease-in-out infinite;
+    }
+    .wisp-2 {
+      animation-delay: 1.7s;
+    }
+    @keyframes wisp {
+      0% {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      40% {
+        opacity: 0.7;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+    }
+
+    .glow {
+      animation: glow 6s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%,
+      100% {
+        opacity: 0.45;
+      }
+      50% {
+        opacity: 0.65;
+      }
+    }
+    .rays {
+      animation: rays 6s ease-in-out infinite;
+    }
+    @keyframes rays {
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+      50% {
+        opacity: 0.8;
+      }
+    }
+    .bulb {
+      animation: bulb 6s ease-in-out infinite;
+    }
+    @keyframes bulb {
+      0%,
+      100% {
+        opacity: 0.8;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .pip {
+      animation: pip 2.6s ease-in-out infinite;
+    }
+    @keyframes pip {
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* the hanging cable swings, just, from its hook */
+    .hank {
+      transform-box: fill-box;
+      transform-origin: 50% 0%;
+      animation: swing 7s ease-in-out infinite;
+    }
+    @keyframes swing {
+      0%,
+      100% {
+        transform: rotate(-1.2deg);
+      }
+      50% {
+        transform: rotate(1.2deg);
+      }
+    }
+
+    .leaves {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: leaves 6.8s ease-in-out infinite;
+    }
+    @keyframes leaves {
+      0%,
+      100% {
+        transform: rotate(-1.8deg);
+      }
+      50% {
+        transform: rotate(1.8deg);
+      }
+    }
+  }
+</style>

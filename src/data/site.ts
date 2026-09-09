@@ -266,6 +266,15 @@ export const uptimeBand = {
   caption: 'Power cut at 3am. Nobody noticed.',
 } as const;
 
+/**
+ * Quiet band on the Company page, between "Core values" and "Why us".
+ * Caption for the WorkshopScene illustration: a shadow board with one hook
+ * empty, and the cat on the bench with the missing screwdriver.
+ */
+export const workshopBand = {
+  caption: 'Every tool in its place. Nearly.',
+} as const;
+
 /** Closing call-to-action band. */
 export const closingCta = {
   heading: 'Ready to Future-Proof Your Business?',

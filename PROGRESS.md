@@ -4,8 +4,8 @@ Status board for the Procedo Infosystems website.
 **Update this file whenever a task changes state.** New sessions should read it
 immediately after `CLAUDE.md`.
 
-- **Last updated:** 2026-09-06 (later)
-- **Build:** ✅ passing — 14 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
+- **Last updated:** 2026-09-09
+- **Build:** ✅ passing — 16 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
 - **Deployed:** ❌ not yet — domain exists (procedoinfo.com) but still serves the old site
 - **Repo:** ✅ `HarshitRawat11/Procedo` on GitHub
 - **Overall:** the site is content-complete and shippable. Only the legal review
@@ -44,6 +44,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 23 | Illustration technique — outline vs flat colour | ✅ | — | **Decided 2026-09-06: technique B.** Applied to all three QuietScene call sites 2026-09-07 — the 404, the contact-form success state and `/our-mission`. `QuietScene` takes a `palette` prop (`outline` default, `coloured`); every live instance now passes `coloured` |
 | 24 | Our Mission illustration | ❌ | Abandoned 2026-09-07 | **Dropped.** Two iterations rejected by both Harshit and the client; the second passed all six countable gates and was still no good. `MissionScene.astro` and `/our-mission-preview` deleted 2026-09-07. `/our-mission` keeps QuietScene, now in technique B. The cause is now a standing rule, not an open question — no human figures (CLAUDE.md §5b) |
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
+| 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** — "Every tool in its place. Nearly." A shadow board with every tool over its painted outline, one hook empty, the cat crouched on the bench with the missing screwdriver. Built 2026-09-09 as `src/components/preview/WorkshopScene.astro`; in place on `/company-preview` between Core values and Why us. Chosen over an asleep variant and over two earlier candidates ("Unpacked", "Dressed and labelled"). Passes all six countable gates with margin (curve 47%, spread 3.18) |
 
 ---
 
@@ -58,6 +59,36 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-09
+- **WorkshopScene built and previewed for the Company page** (#26). The concept
+  came out of a one-off session on a different model at maximum effort, with the
+  brief "make a masterpiece": a workshop shadow board, every tool hanging over
+  its painted outline with a label strip under each hook, one hook empty, and
+  the cat on the bench below with the missing screwdriver. Harshit's reaction
+  to the first (asleep) version: "i love it". He then asked for the cat awake
+  and playing, like the cat in reference 04, and chose that version.
+- **The pose is the finding worth keeping.** An awake cat has failed here
+  before. This one is a play-crouch built from convex parts only — long low
+  body with the rump highest, head low at the front, tail up, paws emerging
+  from under the chest, and no legs drawn at all. It reads. Every articulated
+  cat that failed, failed on its legs; this pose has none. Recorded so the next
+  awake cat starts here rather than at a sitting or walking pose.
+- Two details did most of the work: dropping the pupils to the bottom of the
+  eyes so the cat looks down at the screwdriver rather than across at the
+  viewer, and drawing the raised tail so it tapers upward rather than curling
+  under — a tail that curls under has read as a hook in every scene so far.
+- The painted outlines behind each tool are the mis-registration technique made
+  literal: a real shadow board practice, offset 2 units, with the empty one
+  telling the story.
+- Preview: `/company-preview`, sealed off per §5. Caption in `site.ts` as
+  `workshopBand`. Verified in the browser: 13 animations running (paw bat,
+  screwdriver rock, motion marks, breathing, tail sway, steam, lamp, tester LED,
+  cable swing, leaves), unique pattern/title ids, noindex, no console errors,
+  zero gradients. Build clean, 16 pages.
+- Still open alongside it: `/home-preview` (UptimeScene band) and the earlier
+  Company candidates. If WorkshopScene is adopted on Company, UptimeScene on the
+  home page still stands as a separate proposal.
 
 ### 2026-09-07 — services page tightened after preview review
 - **Removed the two per-section closing banners.** Harshit's call, reviewing the
