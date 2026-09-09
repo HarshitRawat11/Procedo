@@ -44,7 +44,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 23 | Illustration technique — outline vs flat colour | ✅ | — | **Decided 2026-09-06: technique B.** Applied to all three QuietScene call sites 2026-09-07 — the 404, the contact-form success state and `/our-mission`. `QuietScene` takes a `palette` prop (`outline` default, `coloured`); every live instance now passes `coloured` |
 | 24 | Our Mission illustration | ❌ | Abandoned 2026-09-07 | **Dropped.** Two iterations rejected by both Harshit and the client; the second passed all six countable gates and was still no good. `MissionScene.astro` and `/our-mission-preview` deleted 2026-09-07. `/our-mission` keeps QuietScene, now in technique B. The cause is now a standing rule, not an open question — no human figures (CLAUDE.md §5b) |
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
-| 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene**, now in the `/our-mission` layout on `/company-preview`: the "technical precision and implementation clarity" paragraph as a blockquote, the illustration in a bordered panel with chip and caption. Placement history: band (disliked) → header aside (disliked) → this. Lamp changed to a pendant to clear the right-hand side; **removal of the lamp altogether is queued.** Passes all six gates |
+| 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** in the `/our-mission` layout on `/company-preview`: precision statement as a blockquote, the illustration in a bordered panel with chip and caption. **No lamp** — clamp-arm crowded the corner, a pendant replaced it, then Harshit asked for none at all (2026-09-09). Passes all six gates, 52% curve ratio |
 
 ---
 
@@ -60,6 +60,18 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-09 (later still)
+- **Lamp removed from the workshop scene** at Harshit's request — cord, shade,
+  bulb, rays, the pool of light on the bench, and their three animations. The
+  scene stands on the board and the cat. Curve ratio rose to 52%; ten
+  animations remain.
+- Started the next image for the **Contact page**, the one content page with
+  no artwork in its default state: "Ring for service" — a reception counter, a
+  desk phone (ringing), a wall clock, a brass bell, and the cat on the counter
+  with a paw on the bell. The workshop crouch reused verbatim and *mirrored*
+  with one transform, so the pose is proven and faces the other way for
+  variety. Image only so far; component and preview to follow a verdict.
 
 ### 2026-09-09 (later)
 - **Company placement, third attempt.** Harshit did not like the illustration

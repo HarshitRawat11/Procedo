@@ -3,10 +3,9 @@
  *  WorkshopScene — "Every tool in its place. Nearly." PREVIEW ONLY.
  *
  *  A shadow board with every tool hanging over its painted outline and a label
- *  strip under every hook. One hook is empty. On the bench below, in the light
- *  of a desk lamp, the cat is crouched over the missing screwdriver with one
- *  paw on it. A mug steams. The board says precision; the cat says who has the
- *  screwdriver.
+ *  strip under every hook. One hook is empty. On the bench below the cat is
+ *  crouched over the missing screwdriver with one paw on it. A mug steams. The
+ *  board says precision; the cat says who has the screwdriver.
  *
  *  Built under reference/illustration-loop.md, technique B. All six countable
  *  Gate 1 checks pass with margin (curve ratio 47%, spread 3.18, 28 saturated
@@ -20,7 +19,7 @@
  *  Every animation sits inside prefers-reduced-motion: no-preference and every
  *  resting value lives on an attribute, so a reduced-motion visitor gets a
  *  complete still scene. The paw bats the screwdriver once every six seconds;
- *  the rest is breathing, steam, lamplight and a slow sway on the hanging cable.
+ *  the rest is breathing, steam and a slow sway on the hanging cable.
  * ========================================================================== */
 interface Props {
   /** Small mono status label above the art, as on QuietScene. Omit for none. */
@@ -60,8 +59,6 @@ const FUR = '#FFFFFF';
 const FUR_DK = '#B9C4D2';
 const FUR_MARK = '#93A3B8';
 const ARM = '#8FA8C8';
-const SHADE = '#F7B9A3';
-const WARM = '#FCDCCF';
 const MUG = '#F7B9A3';
 const GREEN = '#16A34A';
 const LEAF = '#4EB86B';
@@ -103,8 +100,8 @@ const CRIMPER = 'M292 52 L308 52 L310 72 L300 80 L290 72 Z M298 82 C288 104 284 
   >
     <title id={titleId}>
       A workshop shadow board with every tool hanging over its painted outline, one hook empty. On
-      the bench below, in the light of a desk lamp, a cat crouches with one paw on the missing
-      screwdriver, batting it about. A mug steams beside it.
+      the bench below a cat crouches with one paw on the missing screwdriver, batting it about. A
+      mug steams beside it.
     </title>
 
     <defs>
@@ -192,22 +189,10 @@ const CRIMPER = 'M292 52 L308 52 L310 72 L300 80 L290 72 Z M298 82 C288 104 284 
       <rect x="26" y="278" width="394" height="14" fill={TIMBER_DK} stroke={NAVY} stroke-width={W_ENV} />
       <rect x="20" y="262" width="400" height="16" rx="3" fill={TIMBER} stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M40 271 C110 268 180 273 250 269 C310 266 360 272 408 270" stroke={TIMBER_DK} stroke-width={W_FINE} />
-      <ellipse class="glow" cx="219" cy="262" rx="112" ry="9" fill={WARM} opacity="0.55" />
+      <!-- No lamp. A clamp-arm lamp crowded the right-hand corner; a pendant
+           replaced it; Harshit then asked for no lamp at all (2026-09-09). The
+           board and the cat carry the scene without one. -->
 
-      <!-- lamp: a pendant on a cord from above the frame, hung over the middle of
-           the bench. It replaced a clamp-arm lamp on the right, which crowded
-           the cat's head, paw and screwdriver into one corner. The cord drops
-           through the gap between the pliers and the tester and crops at the
-           top edge. -->
-      <path d="M219 20 L219 167" stroke={NAVY} stroke-width={W_ENV} />
-      <g class="rays" stroke={WARM} stroke-width="2" opacity="0.7">
-        <path d="M205 194 L190 256" />
-        <path d="M219 194 L219 256" />
-        <path d="M233 194 L248 256" />
-      </g>
-      <path d="M193 186 Q219 148 245 186 Z" fill={SHADE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <circle cx="219" cy="167" r="3" fill={NAVY} />
-      <circle class="bulb" cx="219" cy="188" r="4.5" fill={WARM} />
 
       <!-- mug, still steaming -->
       <g class="steam" stroke="#CBD5E1" stroke-width={W_ENV}>
@@ -435,43 +420,6 @@ const CRIMPER = 'M292 52 L308 52 L310 72 L300 80 L290 72 Z M298 82 C288 104 284 
       100% {
         opacity: 0;
         transform: translateY(-10px);
-      }
-    }
-
-    .glow {
-      animation: glow 6s ease-in-out infinite;
-    }
-    @keyframes glow {
-      0%,
-      100% {
-        opacity: 0.45;
-      }
-      50% {
-        opacity: 0.65;
-      }
-    }
-    .rays {
-      animation: rays 6s ease-in-out infinite;
-    }
-    @keyframes rays {
-      0%,
-      100% {
-        opacity: 0.6;
-      }
-      50% {
-        opacity: 0.8;
-      }
-    }
-    .bulb {
-      animation: bulb 6s ease-in-out infinite;
-    }
-    @keyframes bulb {
-      0%,
-      100% {
-        opacity: 0.8;
-      }
-      50% {
-        opacity: 1;
       }
     }
 
