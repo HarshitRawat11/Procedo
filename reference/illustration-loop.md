@@ -277,6 +277,13 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
 - Animation only inside `@media (prefers-reduced-motion: no-preference)`, with the
   resting value on an SVG attribute — never inside the media query, or
   reduced-motion visitors get the mid-animation state.
+- Animating a *transform*: keep the resting `transform` on the attribute and
+  drive the motion with CSS `transform` keyframes on the same element, declared
+  with `transform-box: view-box; transform-origin: 0 0` (the SVG defaults, but
+  stated so nobody has to wonder). Verified 2026-09-09 on `ReceptionScene`: the
+  CSS values reproduce the attribute transform to two decimals, on a viewBox
+  whose min-y is 70. Nest groups when two things must travel together (the
+  handset and the paw holding it) rather than matching two separate paths.
 - `role="img"` and a `<title>` with a unique `id`; pure decoration gets
   `aria-hidden`. Several instances on one page must not share an id.
 - Preview work goes in a new file, sealed off per `CLAUDE.md` §5. Never overwrite

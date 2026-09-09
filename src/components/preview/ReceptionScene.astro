@@ -1,0 +1,548 @@
+---
+/* ============================================================================
+ *  ReceptionScene — "Ring the desk. Someone picks up." PREVIEW ONLY.
+ *
+ *  A reception counter. A desk phone within reach of the cat, a visitor book
+ *  and a pot of pens along the counter, a clock on the wall, the plant cropping
+ *  the corner. The cat is the workshop crouch, mirrored to face the phone.
+ *
+ *  The resting pose — what a reduced-motion visitor sees — is the call in
+ *  progress: handset at the ear, one paw holding it, the cord stretched across
+ *  from the phone. Under motion it is a twelve-second loop: the cat talks, hangs
+ *  up, the desk goes quiet, the phone rings twice (the handset rattles, arcs
+ *  either side, the light, an ear flick), the paw reaches, the handset lifts to
+ *  the ear, and the voice comes back.
+ *
+ *  Built under reference/illustration-loop.md, technique B. All six countable
+ *  Gate 1 checks pass (curve ratio 48%, spread 2.91, 12 saturated fills).
+ *
+ *  How the pickup is rigged: the handset and the paw that holds it share one
+ *  group, `.rig`, so they travel together. `.grip` moves the paw between the
+ *  counter and the handset only while the rig is parked on the cradle;
+ *  `.rattle` shakes the handset alone. The cord is anchored at the phone and
+ *  rotated + stretched to the handset's plug; its keyframes are sampled from
+ *  the rig's ease-in-out so the plug stays within a pixel of the handset
+ *  mid-lift. Every resting value is an attribute; the CSS only ever overrides.
+ * ========================================================================== */
+interface Props {
+  /** Small mono status label above the art, as on QuietScene. Omit for none. */
+  chip?: string;
+  /** Caption below the art. Omit for none. */
+  caption?: string;
+  /** Unique per instance — the title id must not collide. */
+  id: string;
+  class?: string;
+}
+const { chip, caption, id, class: className = '' } = Astro.props;
+const titleId = `reception-title-${id}`;
+
+/* ── Contours ── */
+const NAVY = '#1B2A4A';
+const ENVLINE = '#A8BACF';
+const W_SUBJ = 2.6;
+const W_ENV = 1.7;
+const W_FINE = 1.1;
+const W_PEN = 3.2;
+
+/* ── The counter and the wall ── */
+const COUNTER = '#C9D9EC';
+const COUNTER_DK = '#8FA8C8';
+const TIMBER = '#E4CBA8';
+const TIMBER_DK = '#C9A87C';
+const FLOOR = '#E3EAF3';
+const CLOCK = '#E8EEF6';
+
+/* ── Things on the counter ── */
+const PLASTIC = '#33415C'; // the phone, its handset, the pen, the ribbon
+const KEYS = '#8FA8C8';
+const COVER = '#F7B9A3';
+const PAPER = '#FFFFFF';
+
+/* ── The cat and the plant ── */
+const FUR = '#FFFFFF';
+const FUR_DK = '#B9C4D2';
+const FUR_MARK = '#93A3B8';
+const LEAF = '#4EB86B';
+const LEAF_LT = '#7DD87D';
+const POT = '#FCDCCF';
+
+/* The one hit of orange: the in-use light on the phone. */
+const ORANGE = '#F24E1E';
+
+/* The cat is WorkshopScene's, drawn in its own coordinates and mirrored by the
+   group transform: x = 586 - x0, y = y0 - 16. Body filled, shaded off-register,
+   then re-contoured (Gate 1). */
+const CAT_BODY = 'M178 262 C176 232 186 208 206 206 C228 204 250 216 268 228 C276 234 280 246 280 262 Z';
+const CAT_BACK = 'M186 262 C184 236 194 214 212 212 C234 210 254 220 268 232 C252 222 232 218 214 220 C198 222 190 240 190 262 Z';
+/* Tallest leaf, filled off-register. */
+const LEAF_BIG = 'M29 300 C14 272 18 238 29 228 C40 238 44 272 29 300 Z';
+/* The handset, centred on its own origin so the rig can rotate it in place. */
+const HANDSET = 'M-6 -19 C-6 -22 -3 -24 0 -24 C3 -24 6 -22 6 -19 L6 -13 C6 -11 4.5 -10.5 3 -10 L3 10 C4.5 10.5 6 11 6 13 L6 19 C6 22 3 24 0 24 C-3 24 -6 22 -6 19 L-6 13 C-6 11 -4.5 10.5 -3 10 L-3 -10 C-4.5 -10.5 -6 -11 -6 -13 Z';
+---
+
+<figure class:list={['reception', className]}>
+  {
+    chip && (
+      <p class="chip">
+        <span class="chip-dot" aria-hidden="true" />
+        {chip}
+      </p>
+    )
+  }
+
+  <svg
+    class="scene"
+    viewBox="0 70 420 310"
+    role="img"
+    aria-labelledby={titleId}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title id={titleId}>
+      A cat on a reception counter answering the telephone: the handset up at its ear, the coiled
+      cord trailing back to the phone beside it. A visitor book and a pot of pens sit along the
+      counter, and a clock hangs on the wall above.
+    </title>
+
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <!-- ── Floor ── -->
+      <path d="M8 350 H420" stroke={ENVLINE} stroke-width={W_ENV} />
+      <ellipse cx="220" cy="352" rx="190" ry="8" fill={FLOOR} />
+
+      <!-- ══ PLANE 1: the wall clock ══
+           mis-registration 1: the face is laid 3 right / 2 down of its rim -->
+      <circle cx="123" cy="132" r="42" fill={CLOCK} />
+      <circle cx="120" cy="130" r="42" stroke={NAVY} stroke-width={W_SUBJ} />
+      <circle cx="120" cy="130" r="35" stroke={ENVLINE} stroke-width={W_FINE} />
+      <path d="M120 96 V102 M154 130 H148 M120 164 V158 M86 130 H92" stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M120 130 L103 119" stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M120 130 L137 107" stroke={NAVY} stroke-width={W_ENV} />
+      <circle cx="120" cy="130" r="3" fill={NAVY} />
+
+      <!-- ══ PLANE 2: the counter ══ -->
+      <rect x="36" y="262" width="384" height="88" fill={COUNTER} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M36 292 H420" stroke={ENVLINE} stroke-width={W_FINE} />
+      <path d="M244 292 V336" stroke={ENVLINE} stroke-width={W_FINE} />
+      <rect x="36" y="336" width="384" height="14" fill={COUNTER_DK} />
+      <rect x="30" y="246" width="390" height="16" rx="3" fill={TIMBER} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M48 255 C120 252 200 257 280 253 C340 250 380 256 410 254" stroke={TIMBER_DK} stroke-width={W_FINE} />
+
+      <!-- the visitor book, lying flat, a ribbon out of it.
+           mis-registration 2: the cover colour sits 2 right / 1 up of its edge -->
+      <rect x="77" y="238" width="42" height="8" fill={PAPER} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M80 241.5 H116 M80 244 H116" stroke={ENVLINE} stroke-width={W_FINE} />
+      <rect x="77" y="233" width="46" height="4" rx="1.5" fill={COVER} />
+      <rect x="75" y="234" width="46" height="4" rx="1.5" stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M118 240 C122 240 123 244 122 248" stroke={PLASTIC} stroke-width={W_ENV} />
+
+      <!-- a pen and a pencil in a pot -->
+      <path d="M151 226 L149 205" stroke={PLASTIC} stroke-width={W_PEN} />
+      <path d="M158 226 L160.5 207" stroke={TIMBER} stroke-width={W_PEN} />
+      <path d="M158.6 208.5 L160.5 201 L162.4 208.5 Z" fill={NAVY} />
+      <path d="M144 228 C144 226.5 145 226 146.5 226 L163.5 226 C165 226 166 226.5 166 228 L163.5 246 L146.5 246 Z" fill={KEYS} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M145.5 234 Q155 236.5 164.5 234" stroke={COUNTER} stroke-width={W_ENV} />
+
+      <!-- the phone, within reach: two cradle nubs, the keypad, and the in-use
+           light. The light is grey underneath and orange on top, so the orange
+           can switch off with an opacity alone. -->
+      <path d="M204 222 C204 215 214 215 214 222 Z" fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
+      <path d="M228 222 C228 215 238 215 238 222 Z" fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
+      <rect x="184" y="222" width="56" height="24" rx="4" fill={PLASTIC} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M191 229 h8 v5 h-8 Z M203 229 h8 v5 h-8 Z M215 229 h8 v5 h-8 Z M191 237 h8 v5 h-8 Z M203 237 h8 v5 h-8 Z M215 237 h8 v5 h-8 Z" fill={KEYS} />
+      <circle cx="232" cy="232" r="2.8" fill={KEYS} />
+      <circle class="inuse" cx="232" cy="232" r="2.8" fill={ORANGE} />
+
+      <!-- the coiled cord: anchored at the base, rotated and stretched to the
+           handset's plug. Drawn before the cat so the paw sits in front of it. -->
+      <g class="cord" transform="translate(240 236) rotate(-4.58)">
+        <path d="M0 0 c2.12 -7 6.36 7 8.48 0 c2.12 -7 6.36 7 8.48 0 c2.12 -7 6.36 7 8.48 0 c2.12 -7 6.36 7 8.48 0" stroke={ENVLINE} stroke-width={W_ENV} />
+      </g>
+
+      <!-- ══ PLANE 3: the cat — the workshop crouch, mirrored to face the phone ══
+           Same paths as WorkshopScene bar the forward paw, which lives in the
+           handset rig below. -->
+      <g transform="translate(586 -16) scale(-1 1)">
+        <path class="tail" d="M184 248 C168 240 156 222 162 204 C166 192 180 190 186 200 C180 202 176 208 178 216 C180 228 190 238 196 246 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <g class="breathe">
+          <path d={CAT_BODY} fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+          <!-- mis-registration 3: the back shading, 3 right / 2 down of its contour -->
+          <path d={CAT_BACK} fill={FUR_DK} transform="translate(3 2)" />
+          <path d={CAT_BODY} fill="none" stroke={NAVY} stroke-width={W_SUBJ} />
+          <g stroke={FUR_MARK} stroke-width={W_ENV}>
+            <path d="M212 224 C217 232 216 242 212 248" />
+            <path d="M236 226 C241 234 240 244 236 249" />
+          </g>
+        </g>
+        <!-- ears up; the one nearer the phone flicks when it rings -->
+        <path d="M278 216 L274 196 L292 208 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path class="ear" d="M300 208 L318 194 L316 216 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M272 232 C272 219 282 210 294 210 C306 210 316 219 316 232 C316 245 306 254 294 254 C282 254 272 245 272 232 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M275 224 C279 214 288 210 298 211 C287 214 279 220 276 229 Z" fill={FUR_DK} />
+        <path d="M282 230 C285 226 291 226 294 230 C291 234 285 234 282 230 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+        <circle cx="291" cy="232" r="2.1" fill={NAVY} />
+        <path d="M298 230 C301 226 307 226 310 230 C307 234 301 234 298 230 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+        <circle cx="307" cy="232" r="2.1" fill={NAVY} />
+        <g stroke={NAVY} stroke-width={W_ENV}>
+          <path d="M297 239 L297 241" />
+          <path d="M293 244 Q297 247 301 244" />
+        </g>
+        <g stroke={ENVLINE} stroke-width={W_FINE}>
+          <path d="M270 236 L257 233" />
+          <path d="M270 242 L257 244" />
+          <path d="M318 236 L328 234" />
+          <path d="M318 241 L328 243" />
+        </g>
+        <!-- the far forepaw, planted -->
+        <path d="M286 254 C290 250 298 250 302 254 C304 258 300 262 294 262 C287 262 283 258 286 254 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+      </g>
+
+      <!-- ══ THE HANDSET RIG: the handset and the paw that holds it ══
+           Resting pose is the call in progress: rig at the ear, paw on the grip.
+           The animation parks the rig on the cradle (translate 226 212, rotate
+           -90) and the paw on the counter (translate -24 48, rotate 90). -->
+      <g class="rig" transform="translate(268 210) rotate(-14)">
+        <g class="rattle">
+          <path d={HANDSET} fill={PLASTIC} stroke={NAVY} stroke-width={W_ENV} />
+          <path d="M-3 -19 C-3 -21 3 -21 3 -19" stroke={KEYS} stroke-width={W_FINE} />
+          <path d="M-3 19 C-3 21 3 21 3 19" stroke={KEYS} stroke-width={W_FINE} />
+        </g>
+        <g class="grip" transform="translate(-2 18)">
+          <path d="M10 -3 C6 -8 -4 -8 -10 -4 C-13 1 -8 7 0 7 C8 7 13 2 10 -3 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+        </g>
+      </g>
+
+      <!-- the ring, either side of the cradled handset; hidden while the call is on -->
+      <g class="ring" opacity="0" stroke={ENVLINE} stroke-width={W_ENV}>
+        <path d="M197 205 C192 208.5 192 215.5 197 219" />
+        <path d="M191 201 C184 206 184 218 191 223" />
+        <path d="M254 205 C259 208.5 259 215.5 254 219" />
+        <path d="M259 202 C265 206 265 218 259 222" />
+      </g>
+
+      <!-- a voice coming out of the earpiece -->
+      <g class="voice" stroke={ENVLINE} stroke-width={W_FINE}>
+        <path d="M250 180 C244 184 244 192 250 196" />
+        <path d="M243 174 C235 181 235 195 243 202" />
+      </g>
+
+      <!-- ══ PLANE 4: the plant, cropping the corner ══ -->
+      <g class="leaves">
+        <path d={LEAF_BIG} fill={LEAF} transform="translate(-3 1.5)" />
+        <path d={LEAF_BIG} stroke={NAVY} stroke-width={W_ENV} />
+        <path d="M29 300 C6 286 -8 258 -2 244 C16 252 28 278 29 300 Z" fill={LEAF_LT} stroke={NAVY} stroke-width={W_ENV} />
+        <path d="M29 300 C46 286 54 262 50 250 C40 258 32 278 29 300 Z" fill={LEAF_LT} stroke={NAVY} stroke-width={W_ENV} />
+      </g>
+      <path d="M-6 300 L4 380 L54 380 L64 300 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M-10 300 H68" stroke={NAVY} stroke-width={W_SUBJ} />
+    </g>
+  </svg>
+
+  {caption && <figcaption class="line">{caption}</figcaption>}
+</figure>
+
+<style>
+  .reception {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.5rem;
+    padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-navy-700);
+  }
+  .chip-dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 999px;
+    background: #16a34a;
+    box-shadow: 0 0 0 3px rgb(22 163 74 / 0.14);
+  }
+  .scene {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .line {
+    max-width: 30ch;
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--color-navy-900);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* ── The call: one twelve-second loop ──
+       0–30 talking · 30–38 hang up · 38–42 paw off the handset · 42–55 quiet ·
+       55–62 ring · 62–65 · 65–72 ring · 72–75 · 75–79 reach · 79–87 lift ·
+       87–100 talking. The rig, grip, cord, rattle, light, arcs, voice and ear
+       all run on this one clock so they never drift apart. */
+    .rig,
+    .grip,
+    .cord,
+    .rattle {
+      transform-box: view-box;
+      transform-origin: 0 0;
+    }
+
+    /* handset + holding paw: ear ↔ cradle */
+    .rig {
+      animation: rig 12s ease-in-out infinite;
+    }
+    @keyframes rig {
+      0%,
+      30% {
+        transform: translate(268px, 210px) rotate(-14deg);
+      }
+      38%,
+      79% {
+        transform: translate(226px, 212px) rotate(-90deg);
+      }
+      87%,
+      100% {
+        transform: translate(268px, 210px) rotate(-14deg);
+      }
+    }
+
+    /* the paw lets go onto the counter, and later reaches back for the handset.
+       Both moves happen while the rig is parked, so the counter position is
+       fixed in rig coordinates: world (274, 236) = rig (-24, 48) at rotate -90 —
+       tucked under the chin, eight units in from the crouch's own paw and clear
+       of the handset's end. */
+    .grip {
+      animation: grip 12s ease-in-out infinite;
+    }
+    @keyframes grip {
+      0%,
+      38% {
+        transform: translate(-2px, 18px) rotate(0deg);
+      }
+      42%,
+      75% {
+        transform: translate(-24px, 48px) rotate(90deg);
+      }
+      79%,
+      100% {
+        transform: translate(-2px, 18px) rotate(0deg);
+      }
+    }
+
+    /* the cord swings from its anchor and stretches to the plug. The middle
+       keyframes are the plug's true position at 1/4, 1/2 and 3/4 of the rig's
+       ease-in-out (progress 0.129, 0.5, 0.871), so the two stay together. */
+    .cord {
+      animation: cord 12s linear infinite;
+    }
+    @keyframes cord {
+      0%,
+      30% {
+        transform: translate(240px, 236px) rotate(-4.58deg) scale(1, 1);
+      }
+      32% {
+        transform: translate(240px, 236px) rotate(-6.68deg) scale(0.9575, 1);
+      }
+      34% {
+        transform: translate(240px, 236px) rotate(-21.53deg) scale(0.8211, 1);
+      }
+      36% {
+        transform: translate(240px, 236px) rotate(-53.25deg) scale(0.7426, 1);
+      }
+      38%,
+      79% {
+        transform: translate(240px, 236px) rotate(-67.38deg) scale(0.7665, 1);
+      }
+      81% {
+        transform: translate(240px, 236px) rotate(-53.25deg) scale(0.7426, 1);
+      }
+      83% {
+        transform: translate(240px, 236px) rotate(-21.53deg) scale(0.8211, 1);
+      }
+      85% {
+        transform: translate(240px, 236px) rotate(-6.68deg) scale(0.9575, 1);
+      }
+      87%,
+      100% {
+        transform: translate(240px, 236px) rotate(-4.58deg) scale(1, 1);
+      }
+    }
+
+    /* the handset rattles in its cradle, two bursts, about four times a second */
+    .rattle {
+      animation: rattle 12s linear infinite;
+    }
+    @keyframes rattle {
+      0%,
+      55%,
+      62%,
+      65%,
+      72%,
+      100% {
+        transform: rotate(0deg);
+      }
+      56%,
+      58%,
+      60%,
+      66%,
+      68%,
+      70% {
+        transform: rotate(4deg);
+      }
+      57%,
+      59%,
+      61%,
+      67%,
+      69%,
+      71% {
+        transform: rotate(-4deg);
+      }
+    }
+
+    /* arcs either side of the handset, on for each burst */
+    .ring {
+      animation: ring 12s steps(1, end) infinite;
+    }
+    @keyframes ring {
+      0%,
+      62%,
+      72%,
+      100% {
+        opacity: 0;
+      }
+      55%,
+      65% {
+        opacity: 1;
+      }
+    }
+
+    /* the in-use light: on through the call, off on the hook, on with each ring */
+    .inuse {
+      animation: inuse 12s steps(1, end) infinite;
+    }
+    @keyframes inuse {
+      0%,
+      55%,
+      65%,
+      79%,
+      100% {
+        opacity: 1;
+      }
+      38%,
+      62%,
+      72% {
+        opacity: 0;
+      }
+    }
+
+    /* the caller's voice pulses while the handset is up */
+    .voice {
+      animation: voice 12s ease-in-out infinite;
+    }
+    @keyframes voice {
+      0%,
+      8%,
+      16%,
+      24%,
+      94%,
+      100% {
+        opacity: 1;
+      }
+      4%,
+      12%,
+      20% {
+        opacity: 0.25;
+      }
+      28%,
+      90% {
+        opacity: 0;
+      }
+    }
+
+    /* the near ear flicks towards the phone as each burst begins. The group is
+       mirrored, so a positive angle here tips the ear left on screen. */
+    .ear {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: flick 12s ease-in-out infinite;
+    }
+    @keyframes flick {
+      0%,
+      55%,
+      57%,
+      59%,
+      65%,
+      67%,
+      100% {
+        transform: rotate(0deg);
+      }
+      56% {
+        transform: rotate(14deg);
+      }
+      58% {
+        transform: rotate(9deg);
+      }
+      66% {
+        transform: rotate(12deg);
+      }
+    }
+
+    .breathe {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: breathe 4.6s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,
+      100% {
+        transform: scaleY(1);
+      }
+      50% {
+        transform: scaleY(1.03);
+      }
+    }
+
+    /* the raised tail sways from its root */
+    .tail {
+      transform-box: fill-box;
+      transform-origin: 90% 95%;
+      animation: sway-tail 5.2s ease-in-out infinite;
+    }
+    @keyframes sway-tail {
+      0%,
+      100% {
+        transform: rotate(-3deg);
+      }
+      50% {
+        transform: rotate(3deg);
+      }
+    }
+
+    .leaves {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: leaves 6.8s ease-in-out infinite;
+    }
+    @keyframes leaves {
+      0%,
+      100% {
+        transform: rotate(-1.8deg);
+      }
+      50% {
+        transform: rotate(1.8deg);
+      }
+    }
+  }
+</style>

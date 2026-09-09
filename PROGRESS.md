@@ -45,13 +45,14 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 24 | Our Mission illustration | ❌ | Abandoned 2026-09-07 | **Dropped.** Two iterations rejected by both Harshit and the client; the second passed all six countable gates and was still no good. `MissionScene.astro` and `/our-mission-preview` deleted 2026-09-07. `/our-mission` keeps QuietScene, now in technique B. The cause is now a standing rule, not an open question — no human figures (CLAUDE.md §5b) |
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
 | 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** in the `/our-mission` layout on `/company-preview`: precision statement as a blockquote, the illustration in a bordered panel with chip and caption. **No lamp** — clamp-arm crowded the corner, a pendant replaced it, then Harshit asked for none at all (2026-09-09). Passes all six gates, 52% curve ratio |
+| 27 | Careers cat — working, not sleeping | 🟡 | Awaiting verdict | **DeskSceneWorking** on `/careers-preview`: same room, cat crouched on the desk with a paw on the mouse, eyes on the screen, chair empty. The workshop play-crouch reused by one translate. Mug dropped. Live `/careers` still ships the sleeping DeskScene. Passes all six gates |
+| 28 | Contact page illustration | 🟡 | Awaiting verdict | **ReceptionScene** on `/contact-preview`: the cat at the front desk answering the phone. Twelve-second loop of 11 animations — the phone rings twice (handset rattles, arcs, light, ear flick), the paw reaches, the handset lifts to the ear, the caller's voice comes back, then it hangs up and the desk goes quiet. Visitor book and pen pot on the left; the mug would have been the fourth on the site. Panel sits above the direct channels; the service chips moved under the form to keep the columns level. Passes all six gates (curve ratio 48%) |
 
 ---
 
 ## What's actually blocking launch
 
-**One thing:** legal sign-off (#5) 
-| 27 | Careers cat — working, not sleeping | 🟡 | Awaiting verdict | **DeskSceneWorking** on `/careers-preview`: same room, cat crouched on the desk with a paw on the mouse, eyes on the screen, chair empty. The workshop play-crouch reused by one translate. Mug dropped. Live `/careers` still ships the sleeping DeskScene. Passes all six gates |on the privacy / terms / cookie pages. The
+**One thing:** legal sign-off (#5) on the privacy / terms / cookie pages. The
 text is real, carried over from the previous site, but nobody has reviewed it.
 
 Deployment (#16) is ready the moment the domain is pointed at the new build.
@@ -60,6 +61,32 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-09 (evening)
+- **Contact illustration, animated** (#28). Harshit asked for the phone near
+  the cat, ringing, and the cat picking up. The phone moved to within reach of
+  the paw. The handset and the paw that holds it share one animated group, so
+  the paw travels with the handset; the cord is anchored at the phone and
+  rotated + stretched to the plug, with keyframes sampled from the rig's
+  easing so the two stay within 1.6 units through the lift. Loop: talk → hang
+  up → paw down → quiet → ring twice (rattle, arcs, light, ear flick) → reach →
+  lift → talk. The reduced-motion still is the call in progress. The bell went
+  in the previous pass; the left of the counter now carries a visitor book and
+  a pot of pens — a mug would have been the fourth on the site.
+- Built as `ReceptionScene` (preview) on a sealed `/contact-preview`: the
+  panel above the direct channels, top-aligned with the form. With the chips
+  left where they were the left column ran ~600px past the form; moving the
+  "What we can help with" box under the form brings the columns within 120px.
+- Verified in the browser: 11 animations by name, every keyframe inside the
+  reduced-motion query, resting values equal the attribute state to two
+  decimals (CSS `transform-box: view-box; transform-origin: 0 0` reproduces
+  the attribute transforms exactly, on a viewBox whose min-y is 70), both
+  poses caught in live screenshots, no console or server errors, noindex, not
+  in the sitemap, build clean.
+- Housekeeping: row 27 of the table had been inserted inside the "blocking
+  launch" paragraph by the previous pass's script (stale offset after the row
+  26 rewrite). Moved back under row 26; the sentence it split is mended.
+  Lesson: recompute an index after replacing text ahead of it.
 
 ### 2026-09-09 (later still)
 - **Lamp removed from the workshop scene** at Harshit's request — cord, shade,

@@ -276,6 +276,15 @@ export const workshopBand = {
   caption: 'Every tool in its place. Nearly.',
 } as const;
 
+/**
+ * Copy for the ReceptionScene illustration (Contact page): the cat at the front
+ * desk, answering the phone.
+ */
+export const receptionBand = {
+  chip: 'Line open',
+  caption: 'Ring the desk. Someone picks up.',
+} as const;
+
 /** Closing call-to-action band. */
 export const closingCta = {
   heading: 'Ready to Future-Proof Your Business?',
