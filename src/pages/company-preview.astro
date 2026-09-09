@@ -3,21 +3,23 @@
  *  /company-preview — PREVIEW ONLY. Sealed off per CLAUDE.md §5: noindex, in no
  *  nav, linked from nowhere, excluded from the sitemap filter.
  *
- *  The Company page with WorkshopScene filling the empty right-hand side of the
- *  page header, beside "Company Overview". Everything else is a faithful copy
- *  of src/pages/company.astro.
+ *  The Company page laid out the way /our-mission is: a statement in large type
+ *  on the left, the illustration in a bordered panel on the right, with a chip
+ *  above and a caption below. Harshit asked for "the location of the image
+ *  something like the mission page" after seeing it in the page header.
  *
- *  Revised 2026-09-09: it was previously a band between "Core values" and
- *  "Why us". Harshit did not like that location and pointed at the header's
- *  negative space instead. `PageHeader` gained an optional `aside` slot for
- *  this; the four other pages that use it pass nothing and are unaffected.
+ *  The statement is the third overview paragraph — the one about "technical
+ *  precision and implementation clarity", which is what the picture is about.
+ *  It is promoted here and removed from the Overview section below so it does
+ *  not appear twice. Everything is Procedo's own copy from site.ts; nothing is
+ *  new.
  *
- *  No caption here. A caption under a page-header illustration reads as a
- *  strapline rather than a remark, and the header already has a subtitle doing
- *  that job. The empty hook has to carry the joke on its own.
+ *  Revision history for this placement: band between values and why-us
+ *  (disliked) → page-header aside (disliked) → this. PageHeader keeps its
+ *  optional `aside` slot; unused here, inert everywhere.
  *
  *  Once approved: move WorkshopScene out of components/preview/ into
- *  components/, add the slot to company.astro, then delete this page.
+ *  components/, port this section into company.astro, then delete this page.
  * ========================================================================== */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
@@ -27,40 +29,55 @@ import FeatureGrid from '../components/FeatureGrid.astro';
 import ClosingCta from '../components/ClosingCta.astro';
 import WorkshopScene from '../components/preview/WorkshopScene.astro';
 import { Icon } from 'astro-icon/components';
-import { company, whyUs, competencies } from '../data/site';
+import { company, whyUs, competencies, workshopBand } from '../data/site';
+
+const [overviewA, overviewB, statement] = company.overview;
 ---
 
 <BaseLayout title="Company — illustration preview" noindex>
   <div class="pv-banner">
     <Container>
       <p class="pv-banner-txt">
-        <strong>Internal preview.</strong> The Company page with the workshop illustration filling
-        the header’s empty right-hand side. Not linked from the site, not indexed.
+        <strong>Internal preview.</strong> The Company page with the workshop illustration in the Our
+        Mission layout — statement left, panel right. Not linked from the site, not indexed.
       </p>
     </Container>
   </div>
 
-  <!-- The illustration now fills the header's empty right-hand side rather than
-       sitting in a band further down. `aside` is an optional slot, so the other
-       four pages that use PageHeader are untouched. -->
   <PageHeader
     eyebrow="Company"
     title="Company Overview"
     subtitle="An infrastructure-first technology firm — bringing IT, security, AV, digital workplace and datacenter infrastructure together into systems that quietly work."
-  >
-    <WorkshopScene slot="aside" id="header" class="mx-auto max-w-md lg:max-w-none" />
-  </PageHeader>
+  />
 
-  <!-- Overview -->
+  <!-- Statement, with the illustration alongside — the /our-mission layout -->
   <section class="bg-cream py-16 lg:py-24">
+    <Container>
+      <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-7" data-reveal>
+          <blockquote
+            class="border-l-2 border-brand-500 pl-6 text-[clamp(1.35rem,2.6vw,1.85rem)] font-semibold leading-snug text-navy-950"
+          >
+            {statement}
+          </blockquote>
+        </div>
+
+        <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
+          <div class="rounded-2xl border border-line bg-band px-5 pt-7 pb-8">
+            <WorkshopScene id="company" chip={workshopBand.chip} caption={workshopBand.caption} />
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Overview: the first two paragraphs, and what we deliver -->
+  <section class="border-t border-line bg-cream py-16 lg:py-24">
     <Container>
       <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div class="max-w-3xl space-y-6 lg:col-span-7" data-reveal>
-          {
-            company.overview.map((p) => (
-              <p class="text-lg leading-relaxed text-slate-600">{p}</p>
-            ))
-          }
+          <p class="text-lg leading-relaxed text-slate-600">{overviewA}</p>
+          <p class="text-lg leading-relaxed text-slate-600">{overviewB}</p>
         </div>
 
         <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
@@ -113,7 +130,7 @@ import { company, whyUs, competencies } from '../data/site';
   </section>
 
   <!-- Why us -->
-  <section id="why-us" class="scroll-mt-24 border-t border-line bg-cream py-16 lg:py-24">
+  <section id="why-us" class="scroll-mt-24 bg-cream py-16 lg:py-24">
     <Container>
       <SectionHeading
         eyebrow="Why us?"
@@ -141,13 +158,5 @@ import { company, whyUs, competencies } from '../data/site';
   .pv-banner-txt strong {
     color: #fff;
     font-weight: 600;
-  }
-  .pv-tag {
-    margin: 0 0 2rem;
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-brand-600);
   }
 </style>

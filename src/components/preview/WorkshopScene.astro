@@ -23,13 +23,15 @@
  *  the rest is breathing, steam, lamplight and a slow sway on the hanging cable.
  * ========================================================================== */
 interface Props {
+  /** Small mono status label above the art, as on QuietScene. Omit for none. */
+  chip?: string;
   /** Caption below the art. Omit for none. */
   caption?: string;
   /** Unique per instance — the pattern, title and clip ids must not collide. */
   id: string;
   class?: string;
 }
-const { caption, id, class: className = '' } = Astro.props;
+const { chip, caption, id, class: className = '' } = Astro.props;
 const titleId = `workshop-title-${id}`;
 const pegId = `peg-${id}`;
 
@@ -83,6 +85,15 @@ const CRIMPER = 'M292 52 L308 52 L310 72 L300 80 L290 72 Z M298 82 C288 104 284 
 ---
 
 <figure class:list={['workshop', className]}>
+  {
+    chip && (
+      <p class="chip">
+        <span class="chip-dot" aria-hidden="true" />
+        {chip}
+      </p>
+    )
+  }
+
   <svg
     class="scene"
     viewBox="0 20 420 360"
@@ -181,20 +192,22 @@ const CRIMPER = 'M292 52 L308 52 L310 72 L300 80 L290 72 Z M298 82 C288 104 284 
       <rect x="26" y="278" width="394" height="14" fill={TIMBER_DK} stroke={NAVY} stroke-width={W_ENV} />
       <rect x="20" y="262" width="400" height="16" rx="3" fill={TIMBER} stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M40 271 C110 268 180 273 250 269 C310 266 360 272 408 270" stroke={TIMBER_DK} stroke-width={W_FINE} />
-      <ellipse class="glow" cx="232" cy="262" rx="112" ry="9" fill={WARM} opacity="0.55" />
+      <ellipse class="glow" cx="219" cy="262" rx="112" ry="9" fill={WARM} opacity="0.55" />
 
-      <!-- lamp: clamp, two arms, joint, shade, bulb, three rays -->
-      <path d="M392 250 L400 248 L356 138 L348 142 Z" fill={ARM} stroke={NAVY} stroke-width={W_ENV} />
-      <path d="M348 136 L356 144 L286 168 L280 158 Z" fill={ARM} stroke={NAVY} stroke-width={W_ENV} />
-      <circle cx="352" cy="140" r="6" fill={NAVY} />
-      <rect x="388" y="248" width="16" height="28" rx="2" fill={ARM} stroke={NAVY} stroke-width={W_ENV} />
+      <!-- lamp: a pendant on a cord from above the frame, hung over the middle of
+           the bench. It replaced a clamp-arm lamp on the right, which crowded
+           the cat's head, paw and screwdriver into one corner. The cord drops
+           through the gap between the pliers and the tester and crops at the
+           top edge. -->
+      <path d="M219 20 L219 167" stroke={NAVY} stroke-width={W_ENV} />
       <g class="rays" stroke={WARM} stroke-width="2" opacity="0.7">
-        <path d="M256 186 L238 256" />
-        <path d="M270 186 L270 256" />
-        <path d="M284 186 L302 256" />
+        <path d="M205 194 L190 256" />
+        <path d="M219 194 L219 256" />
+        <path d="M233 194 L248 256" />
       </g>
-      <path d="M244 178 Q270 138 296 178 Z" fill={SHADE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <circle class="bulb" cx="270" cy="180" r="4.5" fill={WARM} />
+      <path d="M193 186 Q219 148 245 186 Z" fill={SHADE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <circle cx="219" cy="167" r="3" fill={NAVY} />
+      <circle class="bulb" cx="219" cy="188" r="4.5" fill={WARM} />
 
       <!-- mug, still steaming -->
       <g class="steam" stroke="#CBD5E1" stroke-width={W_ENV}>
@@ -279,6 +292,30 @@ const CRIMPER = 'M292 52 L308 52 L310 72 L300 80 L290 72 Z M298 82 C288 104 284 
     align-items: center;
     text-align: center;
     margin: 0;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.5rem;
+    padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-navy-700);
+  }
+  .chip-dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 999px;
+    background: #16a34a;
+    box-shadow: 0 0 0 3px rgb(22 163 74 / 0.14);
   }
   .scene {
     display: block;

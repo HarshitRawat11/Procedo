@@ -44,13 +44,14 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 23 | Illustration technique — outline vs flat colour | ✅ | — | **Decided 2026-09-06: technique B.** Applied to all three QuietScene call sites 2026-09-07 — the 404, the contact-form success state and `/our-mission`. `QuietScene` takes a `palette` prop (`outline` default, `coloured`); every live instance now passes `coloured` |
 | 24 | Our Mission illustration | ❌ | Abandoned 2026-09-07 | **Dropped.** Two iterations rejected by both Harshit and the client; the second passed all six countable gates and was still no good. `MissionScene.astro` and `/our-mission-preview` deleted 2026-09-07. `/our-mission` keeps QuietScene, now in technique B. The cause is now a standing rule, not an open question — no human figures (CLAUDE.md §5b) |
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
-| 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** — "Every tool in its place. Nearly." A shadow board with every tool over its painted outline, one hook empty, the cat crouched on the bench with the missing screwdriver. Built 2026-09-09 as `src/components/preview/WorkshopScene.astro`; in place on `/company-preview` between Core values and Why us. Chosen over an asleep variant and over two earlier candidates ("Unpacked", "Dressed and labelled"). Passes all six countable gates with margin (curve 47%, spread 3.18) |
+| 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene**, now in the `/our-mission` layout on `/company-preview`: the "technical precision and implementation clarity" paragraph as a blockquote, the illustration in a bordered panel with chip and caption. Placement history: band (disliked) → header aside (disliked) → this. Lamp changed to a pendant to clear the right-hand side; **removal of the lamp altogether is queued.** Passes all six gates |
 
 ---
 
 ## What's actually blocking launch
 
-**One thing:** legal sign-off (#5) on the privacy / terms / cookie pages. The
+**One thing:** legal sign-off (#5) 
+| 27 | Careers cat — working, not sleeping | 🟡 | Awaiting verdict | **DeskSceneWorking** on `/careers-preview`: same room, cat crouched on the desk with a paw on the mouse, eyes on the screen, chair empty. The workshop play-crouch reused by one translate. Mug dropped. Live `/careers` still ships the sleeping DeskScene. Passes all six gates |on the privacy / terms / cookie pages. The
 text is real, carried over from the previous site, but nobody has reviewed it.
 
 Deployment (#16) is ready the moment the domain is pointed at the new build.
@@ -59,6 +60,27 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-09 (later)
+- **Company placement, third attempt.** Harshit did not like the illustration
+  in the header either and asked for "something like the mission page". It now
+  sits in a bordered panel with chip and caption beside a large-type statement —
+  the third overview paragraph, about precision, promoted to a blockquote and
+  removed from the Overview below. All Procedo's own copy, nothing new.
+- **Lamp de-cluttered.** The clamp-arm lamp crowded the cat's head, paw and
+  screwdriver into the right-hand corner. Swapped for a pendant on a cord from
+  above the frame, dropped through the gap between the pliers and the tester.
+  Harshit has since asked for the lamp to go entirely — queued as the next job.
+- **Careers cat at work** (#27). The workshop play-crouch, moved onto the desktop
+  with a single translate: paw on the mouse, eyes on the screen, chair empty.
+  First pass had the monitor cropped at the edge and the head over the screen —
+  cramped. Monitor pulled fully into frame, head given air, desk extended under
+  the rump. Mug dropped as clutter.
+- Lesson recorded: once a pose lands, **reuse its geometry verbatim and move it
+  with a transform** rather than redrawing. The desk cat cost one composition
+  fix and no anatomy fixes because the shape was already proven.
+- Both scenes gated on the BUILT output and verified in the browser: 13 and 6
+  animations, unique ids, noindex, no console errors, 16 pages clean.
 
 ### 2026-09-09
 - **WorkshopScene built and previewed for the Company page** (#26). The concept

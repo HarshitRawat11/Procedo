@@ -1,0 +1,279 @@
+---
+/* ============================================================================
+ *  DeskSceneWorking — "The seat's yours. The mouse is not." PREVIEW ONLY.
+ *
+ *  The Careers scene with the cat awake and at work: crouched on the desk in
+ *  front of the monitor, one paw on the mouse, eyes on the screen. The office
+ *  chair beside it stands empty — which, on a Careers page, is the point.
+ *
+ *  Same room as DeskScene (chair, desk, monitor, plant), so the two can be
+ *  swapped without the card around them changing. The mug is gone: with the
+ *  cat on the desk there was no clear place for it, and it was clutter.
+ *
+ *  The cat is the play-crouch that landed on the workshop scene, reused
+ *  geometry for geometry — long low body, rump highest, head low at the front,
+ *  tail up, paws emerging from under the chest, no legs drawn. It is placed by
+ *  a single group translate so nothing about the shape had to be re-derived.
+ *
+ *  Every animation sits inside prefers-reduced-motion: no-preference and every
+ *  resting value lives on an attribute, so a reduced-motion visitor gets a
+ *  complete still scene.
+ * ========================================================================== */
+interface Props {
+  /** Unique per instance — several on one page must not share a title id. */
+  id: string;
+  class?: string;
+}
+const { id, class: className = '' } = Astro.props;
+const titleId = `desk-working-${id}`;
+
+const NAVY = '#1B2A4A';
+const ENVLINE = '#A8BACF';
+const GREEN = '#16A34A';
+
+const CHAIR = '#C9D9EC';
+const CHAIR_DK = '#8FA8C8';
+const DESK = '#E4CBA8';
+const SCREEN = '#1B2A4A';
+const PALE = '#E8EEF6';
+const FLOOR = '#E3EAF3';
+const FUR = '#FFFFFF';
+const FUR_DK = '#B9C4D2';
+const FUR_MARK = '#93A3B8';
+const MOUSE = '#E8EEF6';
+const LEAF = '#4EB86B';
+const LEAF_LT = '#7DD87D';
+const POT = '#FCDCCF';
+
+const W_SUBJ = 2.4;
+const W_ENV = 1.6;
+const W_FINE = 1.1;
+
+/* Cat body: filled, shaded off-register, re-contoured (Gate 1 mis-registration #1). */
+const CAT_BODY = 'M178 262 C176 232 186 208 206 206 C228 204 250 216 268 228 C276 234 280 246 280 262 Z';
+const CAT_BACK = 'M186 262 C184 236 194 214 212 212 C234 210 254 220 268 232 C252 222 232 218 214 220 C198 222 190 240 190 262 Z';
+/* Tallest leaf, filled off-register (Gate 1 mis-registration #2). */
+const LEAF_BIG = 'M50 300 C36 274 40 246 50 238 C60 246 62 276 50 300 Z';
+---
+
+<figure class:list={['desk', className]}>
+  <svg
+    class="scene"
+    viewBox="0 116 400 264"
+    role="img"
+    aria-labelledby={titleId}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title id={titleId}>
+      A cat crouched on a desk with one paw on the mouse and its eyes on the monitor. The office
+      chair beside it is empty.
+    </title>
+
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <!-- ── Floor ── -->
+      <path d="M8 340 H400" stroke={ENVLINE} stroke-width={W_ENV} />
+      <ellipse cx="152" cy="338" rx="80" ry="6" fill={FLOOR} />
+      <ellipse cx="372" cy="335" rx="36" ry="5" fill={FLOOR} />
+
+      <!-- ══ DESK — runs behind the chair seat, crops at the right edge ══ -->
+      <rect x="150" y="210" width="250" height="11" rx="2" fill={DESK} stroke={NAVY} stroke-width={W_ENV} />
+      <rect x="366" y="221" width="12" height="112" rx="2" fill={DESK} stroke={ENVLINE} stroke-width={W_ENV} />
+
+      <!-- Monitor, fully in frame at the desk's right end. An earlier pass
+           cropped it at the edge with the cat's head over the screen, which
+           read as cramped. -->
+      <rect x="324" y="132" width="76" height="64" rx="5" fill={SCREEN} stroke={NAVY} stroke-width={W_ENV} />
+      <g stroke={PALE} stroke-width={W_FINE} opacity="0.85">
+        <path d="M334 146 H380" />
+        <path d="M334 156 H392" />
+        <path d="M334 166 H370" />
+        <path d="M334 176 H386" />
+      </g>
+      <rect class="caret" x="334" y="182" width="7" height="6" rx="1" fill={PALE} opacity="0.85" />
+      <circle class="pip" cx="392" cy="142" r="3" fill={GREEN} />
+      <path d="M362 196 L362 209" stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M346 210 C352 210 358 209 362 208 C366 209 372 210 378 210" stroke={NAVY} stroke-width={W_ENV} />
+
+      <!-- the mouse, clear of the stand, its lead running off toward it -->
+      <path d="M328 208 C338 206 344 202 350 199" stroke={ENVLINE} stroke-width={W_FINE} />
+      <path d="M296 210 C296 202 304 197 312 197 C321 197 328 203 328 210 Z" fill={MOUSE} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M312 197 L312 204" stroke={ENVLINE} stroke-width={W_FINE} />
+
+      <!-- ══ CHAIR — empty. The seat is the one on offer. ══ -->
+      <path
+        d="M68 254 C62 214 64 172 73 155 C80 142 101 140 110 153 C119 168 118 214 114 254 Z"
+        fill={CHAIR}
+        stroke={NAVY}
+        stroke-width={W_SUBJ}
+      />
+      <path
+        d="M78 248 C73 214 75 180 82 165 C86 156 96 154 102 161 C95 162 89 168 86 178 C82 196 81 224 84 248 Z"
+        fill={CHAIR_DK}
+      />
+      <path
+        d="M64 258 C64 254 68 252 74 252 L242 252 C252 252 258 260 256 268 C254 278 242 284 228 284 L90 284 C76 284 64 272 64 262 Z"
+        fill={CHAIR}
+        stroke={NAVY}
+        stroke-width={W_SUBJ}
+      />
+      <path d="M146 284 L146 314 L159 314 L159 284 Z" fill={CHAIR_DK} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M148 312 L108 332 L113 339 L153 318 Z" fill={CHAIR_DK} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M147 314 L145 336 L158 336 L156 314 Z" fill={CHAIR_DK} stroke={NAVY} stroke-width={W_ENV} />
+      <path d="M157 312 L197 332 L192 339 L152 318 Z" fill={CHAIR_DK} stroke={NAVY} stroke-width={W_ENV} />
+      <ellipse cx="110" cy="339" rx="6" ry="5" fill={NAVY} />
+      <ellipse cx="151" cy="339" rx="6" ry="5" fill={NAVY} />
+      <ellipse cx="195" cy="339" rx="6" ry="5" fill={NAVY} />
+
+      <!-- ══ CAT — on the desk, at the mouse. The workshop crouch, moved onto
+               the desktop by one translate. ══ -->
+      <g transform="translate(-10 -52)">
+        <path class="tail" d="M184 248 C168 240 156 222 162 204 C166 192 180 190 186 200 C180 202 176 208 178 216 C180 228 190 238 196 246 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <g class="breathe">
+          <path d={CAT_BODY} fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path d={CAT_BACK} fill={FUR_DK} transform="translate(3 2)" />
+          <path d={CAT_BODY} fill="none" stroke={NAVY} stroke-width={W_SUBJ} />
+          <g stroke={FUR_MARK} stroke-width={W_ENV}>
+            <path d="M212 224 C217 232 216 242 212 248" />
+            <path d="M236 226 C241 234 240 244 236 249" />
+          </g>
+        </g>
+        <path d="M278 216 L274 196 L292 208 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M300 208 L318 194 L316 216 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M272 232 C272 219 282 210 294 210 C306 210 316 219 316 232 C316 245 306 254 294 254 C282 254 272 245 272 232 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M275 224 C279 214 288 210 298 211 C287 214 279 220 276 229 Z" fill={FUR_DK} />
+        <!-- eyes open, pupils on the screen -->
+        <path d="M282 230 C285 226 291 226 294 230 C291 234 285 234 282 230 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+        <circle cx="291" cy="231" r="2.1" fill={NAVY} />
+        <path d="M298 230 C301 226 307 226 310 230 C307 234 301 234 298 230 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+        <circle cx="307" cy="231" r="2.1" fill={NAVY} />
+        <g stroke={NAVY} stroke-width={W_ENV}>
+          <path d="M297 239 L297 241" />
+          <path d="M293 244 Q297 247 301 244" />
+        </g>
+        <g stroke={ENVLINE} stroke-width={W_FINE}>
+          <path d="M270 236 L257 233" />
+          <path d="M270 242 L257 244" />
+          <path d="M318 236 L328 234" />
+          <path d="M318 241 L328 243" />
+        </g>
+        <!-- forepaws: the far one planted, the near one on the mouse -->
+        <path d="M286 254 C290 250 298 250 302 254 C304 258 300 262 294 262 C287 262 283 258 286 254 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+        <path class="paw" d="M310 249 C314 244 324 244 330 248 C333 253 328 259 320 259 C312 259 307 254 310 249 Z" fill={FUR} stroke={NAVY} stroke-width={W_ENV} />
+      </g>
+
+      <!-- ══ FOREGROUND PLANT — crops the bottom edge ══ -->
+      <g class="leaves">
+        <path d={LEAF_BIG} fill={LEAF} transform="translate(-3 1.5)" />
+        <path d={LEAF_BIG} stroke={NAVY} stroke-width={W_ENV} />
+        <path d="M50 300 C30 288 18 264 22 252 C36 258 48 282 50 300 Z" fill={LEAF_LT} stroke={NAVY} stroke-width={W_ENV} />
+        <path d="M50 300 C70 288 82 268 78 256 C64 262 52 282 50 300 Z" fill={LEAF_LT} stroke={NAVY} stroke-width={W_ENV} />
+      </g>
+      <path d="M18 300 L26 380 L74 380 L82 300 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M14 300 H86" stroke={NAVY} stroke-width={W_SUBJ} />
+    </g>
+  </svg>
+</figure>
+
+<style>
+  .desk {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+  }
+  .scene {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .breathe {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: breathe 4.6s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%,
+      100% {
+        transform: scaleY(1);
+      }
+      50% {
+        transform: scaleY(1.03);
+      }
+    }
+
+    .tail {
+      transform-box: fill-box;
+      transform-origin: 90% 95%;
+      animation: sway-tail 5.2s ease-in-out infinite;
+    }
+    @keyframes sway-tail {
+      0%,
+      100% {
+        transform: rotate(-3deg);
+      }
+      50% {
+        transform: rotate(3deg);
+      }
+    }
+
+    /* a click every five seconds */
+    .paw {
+      animation: click 5s ease-in-out infinite;
+    }
+    @keyframes click {
+      0%,
+      86%,
+      94%,
+      100% {
+        transform: translate(0, 0);
+      }
+      89% {
+        transform: translate(0, 1.5px);
+      }
+    }
+
+    .caret {
+      animation: caret 1.4s steps(1, end) infinite;
+    }
+    @keyframes caret {
+      0%,
+      50% {
+        opacity: 0.85;
+      }
+      51%,
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .pip {
+      animation: pip 2.6s ease-in-out infinite;
+    }
+    @keyframes pip {
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .leaves {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: sway 6.8s ease-in-out infinite;
+    }
+    @keyframes sway {
+      0%,
+      100% {
+        transform: rotate(-1.8deg);
+      }
+      50% {
+        transform: rotate(1.8deg);
+      }
+    }
+  }
+</style>

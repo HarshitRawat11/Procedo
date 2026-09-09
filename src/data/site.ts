@@ -272,6 +272,7 @@ export const uptimeBand = {
  * empty, and the cat on the bench with the missing screwdriver.
  */
 export const workshopBand = {
+  chip: 'One tool out',
   caption: 'Every tool in its place. Nearly.',
 } as const;
 
