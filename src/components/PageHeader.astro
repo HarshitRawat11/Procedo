@@ -9,11 +9,25 @@ interface Props {
   subtitle?: string;
 }
 const { eyebrow, title, subtitle } = Astro.props;
+
+/*
+ * The header is left-aligned with the subtitle capped at max-w-2xl for a
+ * readable measure, which leaves the right-hand side empty. That is deliberate
+ * and shared by every inner page.
+ *
+ * Pass an `aside` slot to fill it — the header then becomes a 7/5 grid. The
+ * grid classes go on the Container rather than a wrapper div, so a page that
+ * passes no aside emits markup identical to before this slot existed. Filling
+ * the space on one page therefore cannot disturb the other four.
+ */
+const hasAside = Astro.slots.has('aside');
+const pad = 'pt-14 pb-12 lg:pt-20 lg:pb-16';
+const layout = hasAside ? `${pad} grid items-center gap-10 lg:grid-cols-12 lg:gap-14` : pad;
 ---
 
 <section class="border-b border-line bg-cream">
-  <Container class="pt-14 pb-12 lg:pt-20 lg:pb-16">
-    <div data-reveal>
+  <Container class={layout}>
+    <div class:list={[hasAside && 'lg:col-span-7']} data-reveal>
       {
         eyebrow && (
           <p class="flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
@@ -31,5 +45,13 @@ const { eyebrow, title, subtitle } = Astro.props;
         )
       }
     </div>
+
+    {
+      hasAside && (
+        <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
+          <slot name="aside" />
+        </div>
+      )
+    }
   </Container>
 </section>

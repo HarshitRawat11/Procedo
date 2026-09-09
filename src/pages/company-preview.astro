@@ -3,18 +3,21 @@
  *  /company-preview — PREVIEW ONLY. Sealed off per CLAUDE.md §5: noindex, in no
  *  nav, linked from nowhere, excluded from the sitemap filter.
  *
- *  The Company page with WorkshopScene given a home: a quiet band between
- *  "Core values" and "Why us", centred, with its caption. Everything else is a
- *  faithful copy of src/pages/company.astro.
+ *  The Company page with WorkshopScene filling the empty right-hand side of the
+ *  page header, beside "Company Overview". Everything else is a faithful copy
+ *  of src/pages/company.astro.
  *
- *  Why this slot: the Overview section already carries the "What we deliver"
- *  list in its right column, and both grids below are full-width. A band
- *  between the values and the "why" reads as a breath between two lists, and
- *  the illustration's subject — precision, everything in its place — is the
- *  value the surrounding copy is making.
+ *  Revised 2026-09-09: it was previously a band between "Core values" and
+ *  "Why us". Harshit did not like that location and pointed at the header's
+ *  negative space instead. `PageHeader` gained an optional `aside` slot for
+ *  this; the four other pages that use it pass nothing and are unaffected.
+ *
+ *  No caption here. A caption under a page-header illustration reads as a
+ *  strapline rather than a remark, and the header already has a subtitle doing
+ *  that job. The empty hook has to carry the joke on its own.
  *
  *  Once approved: move WorkshopScene out of components/preview/ into
- *  components/, add the band to company.astro, then delete this page.
+ *  components/, add the slot to company.astro, then delete this page.
  * ========================================================================== */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
@@ -24,24 +27,29 @@ import FeatureGrid from '../components/FeatureGrid.astro';
 import ClosingCta from '../components/ClosingCta.astro';
 import WorkshopScene from '../components/preview/WorkshopScene.astro';
 import { Icon } from 'astro-icon/components';
-import { company, whyUs, competencies, workshopBand } from '../data/site';
+import { company, whyUs, competencies } from '../data/site';
 ---
 
 <BaseLayout title="Company — illustration preview" noindex>
   <div class="pv-banner">
     <Container>
       <p class="pv-banner-txt">
-        <strong>Internal preview.</strong> The Company page with the workshop illustration in a band
-        between the values and “Why us”. Not linked from the site, not indexed.
+        <strong>Internal preview.</strong> The Company page with the workshop illustration filling
+        the header’s empty right-hand side. Not linked from the site, not indexed.
       </p>
     </Container>
   </div>
 
+  <!-- The illustration now fills the header's empty right-hand side rather than
+       sitting in a band further down. `aside` is an optional slot, so the other
+       four pages that use PageHeader are untouched. -->
   <PageHeader
     eyebrow="Company"
     title="Company Overview"
     subtitle="An infrastructure-first technology firm — bringing IT, security, AV, digital workplace and datacenter infrastructure together into systems that quietly work."
-  />
+  >
+    <WorkshopScene slot="aside" id="header" class="mx-auto max-w-md lg:max-w-none" />
+  </PageHeader>
 
   <!-- Overview -->
   <section class="bg-cream py-16 lg:py-24">
@@ -101,16 +109,6 @@ import { company, whyUs, competencies, workshopBand } from '../data/site';
         subtitle={company.valuesIntro}
       />
       <FeatureGrid items={company.values} columns={3} class="mt-12" />
-    </Container>
-  </section>
-
-  <!-- ══ THE BAND — WorkshopScene, centred, with its caption ══ -->
-  <section class="border-t border-line bg-cream py-16 lg:py-20">
-    <Container>
-      <p class="pv-tag">Proposed — a breath between the values and “Why us”</p>
-      <div class="mx-auto max-w-lg" data-reveal>
-        <WorkshopScene id="company" caption={workshopBand.caption} />
-      </div>
     </Container>
   </section>
 
