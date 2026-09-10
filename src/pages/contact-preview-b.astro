@@ -1,19 +1,18 @@
 ---
 /* ============================================================================
- *  /contact-preview — PREVIEW ONLY (option A). Sealed off per CLAUDE.md §5:
+ *  /contact-preview-b — PREVIEW ONLY (option B). Sealed off per CLAUDE.md §5:
  *  noindex, in no nav, linked from nowhere, excluded from the sitemap filter.
  *
- *  The reception illustration in the /our-mission layout, straight under the
- *  header: the page's subtitle promoted to a statement in large type on the
- *  left, the panel on the right, then the direct channels and the form exactly
- *  as they are on the live page. The header drops its subtitle, as the mission
- *  page's does, so the sentence is not read twice.
+ *  The live Contact page kept as it is — header with its subtitle, the direct
+ *  channels and the form high on the page — and the reception illustration
+ *  closing the page beside the office address: the front desk drawn next to
+ *  where the front desk is. The address card leaves the channel list so the
+ *  address is not read twice. If the address were ever empty, the panel would
+ *  stand alone, centred (CLAUDE.md §3: missing data hides the feature).
  *
- *  Harshit liked the illustration but not its first position (top of the
- *  left-hand column, beside the form). Option B — the illustration closing the
- *  page beside the office address, with the form kept high — is at
- *  /contact-preview-b. One of the two gets ported into contact.astro; both
- *  preview pages are then deleted.
+ *  Option A — the illustration straight under the header in the Our Mission
+ *  layout — is at /contact-preview. One of the two gets ported into
+ *  contact.astro; both preview pages are then deleted.
  * ========================================================================== */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
@@ -42,43 +41,22 @@ const channels = [
 ];
 ---
 
-<BaseLayout title="Contact — illustration preview A" noindex>
+<BaseLayout title="Contact — illustration preview B" noindex>
   <div class="pv-banner">
     <Container>
       <p class="pv-banner-txt">
-        <strong>Internal preview — option A.</strong> The reception illustration straight under the
-        header in the Our Mission layout: statement left, panel right, channels and form below.
-        Option B, with the illustration closing the page beside the office address, is at
-        <a href="/contact-preview-b">/contact-preview-b</a>. Not linked from the site, not indexed.
+        <strong>Internal preview — option B.</strong> The live page as it is, with the reception
+        illustration closing it beside the office address. Option A, with the illustration straight
+        under the header, is at <a href="/contact-preview">/contact-preview</a>. Not linked from the
+        site, not indexed.
       </p>
     </Container>
   </div>
 
-  <PageHeader eyebrow="Contact" title="Let’s talk about your systems" />
+  <PageHeader eyebrow="Contact" title="Let’s talk about your systems" subtitle={contactStatement} />
 
-  <!-- Statement, with the illustration alongside — the /our-mission layout -->
+  <!-- Direct channels and the form, as on the live page (address moved below) -->
   <section class="bg-cream py-16 lg:py-24">
-    <Container>
-      <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-        <div class="lg:col-span-7" data-reveal>
-          <blockquote
-            class="border-l-2 border-brand-500 pl-6 text-[clamp(1.35rem,2.6vw,1.85rem)] font-semibold leading-snug text-navy-950"
-          >
-            {contactStatement}
-          </blockquote>
-        </div>
-
-        <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
-          <div class="rounded-2xl border border-line bg-band px-5 pt-7 pb-8">
-            <ReceptionScene id="contact" chip={receptionBand.chip} caption={receptionBand.caption} />
-          </div>
-        </div>
-      </div>
-    </Container>
-  </section>
-
-  <!-- Direct channels and the form, as on the live page -->
-  <section class="border-t border-line bg-cream py-16 lg:py-24">
     <Container>
       <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
         <div data-reveal>
@@ -101,24 +79,6 @@ const channels = [
                   </span>
                 </a>
               ))
-            }
-
-            {
-              contact.address && (
-                <div class="flex items-start gap-3.5 rounded-xl border border-line bg-white p-4 shadow-sm">
-                  <span class="grid size-10 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
-                    <Icon name="lucide:map-pin" class="size-5" aria-hidden="true" />
-                  </span>
-                  <span>
-                    <span class="block text-xs font-medium uppercase tracking-wider text-slate-500">
-                      Office
-                    </span>
-                    <span class="block font-medium leading-relaxed text-navy-900">
-                      {contact.address}
-                    </span>
-                  </span>
-                </div>
-              )
             }
           </div>
 
@@ -160,6 +120,39 @@ const channels = [
           </div>
         </div>
       </div>
+    </Container>
+  </section>
+
+  <!-- The front desk, beside the office address -->
+  <section class="border-t border-line bg-cream py-16 lg:py-24">
+    <Container>
+      {
+        contact.address ? (
+          <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+            <div class="lg:col-span-7" data-reveal>
+              <p class="flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
+                <span class="inline-block h-px w-7 bg-brand-500" aria-hidden="true" />
+                Office
+              </p>
+              <p class="mt-5 text-[clamp(1.35rem,2.6vw,1.85rem)] font-semibold leading-snug text-navy-950">
+                {contact.address}
+              </p>
+            </div>
+
+            <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
+              <div class="rounded-2xl border border-line bg-band px-5 pt-7 pb-8">
+                <ReceptionScene id="contact" chip={receptionBand.chip} caption={receptionBand.caption} />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div class="mx-auto max-w-xl" data-reveal>
+            <div class="rounded-2xl border border-line bg-band px-5 pt-7 pb-8">
+              <ReceptionScene id="contact" chip={receptionBand.chip} caption={receptionBand.caption} />
+            </div>
+          </div>
+        )
+      }
     </Container>
   </section>
 </BaseLayout>

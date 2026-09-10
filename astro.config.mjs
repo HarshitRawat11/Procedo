@@ -25,6 +25,7 @@ export default defineConfig({
           '/home-preview',
           '/company-preview',
           '/contact-preview',
+          '/contact-preview-b',
         ].some((p) => page.includes(p)),
     }),
     icon(), // build-time inlined Lucide icons (zero runtime JS)

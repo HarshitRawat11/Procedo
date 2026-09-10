@@ -46,7 +46,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
 | 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** in the `/our-mission` layout on `/company-preview`: precision statement as a blockquote, the illustration in a bordered panel with chip and caption. **No lamp** — clamp-arm crowded the corner, a pendant replaced it, then Harshit asked for none at all (2026-09-09). Passes all six gates, 52% curve ratio |
 | 27 | Careers cat — working, not sleeping | 🟡 | Awaiting verdict | **DeskSceneWorking** on `/careers-preview`: same room, cat crouched on the desk with a paw on the mouse, eyes on the screen, chair empty. The workshop play-crouch reused by one translate. Mug dropped. Live `/careers` still ships the sleeping DeskScene. Passes all six gates |
-| 28 | Contact page illustration | 🟡 | Liked; awaiting adoption | **ReceptionScene** on `/contact-preview`: the cat at the front desk answering the phone — twelve-second loop, the phone rings twice, the paw reaches, the handset lifts to the ear, the caller's voice comes back, then it hangs up. Harshit liked it (2026-09-10) and asked for the empty wall above the cat filled: now a **notice board** with three pinned notes and a visitor badge swinging on its lanyard. 12 animations. Named props run to **8, one over the Gate 0 budget** — flagged, not hidden; the visitor book is the one to drop if it reads busy. Passes all six gates (curve ratio 45%, 18 saturated fills) |
+| 28 | Contact page illustration | 🟡 | Liked; placement being chosen | **ReceptionScene** — the cat at the front desk answering the phone (twelve-second loop, 12 animations, notice board on the wall). Harshit liked the image (2026-09-10) but not its first position (top of the left column, beside the form). Two placements to choose from: **A** `/contact-preview` — the `/our-mission` layout straight under the header, statement left, panel right, channels and form below (form starts ~1100px down); **B** `/contact-preview-b` — the live page as it is, the illustration closing the page beside the office address (form stays at ~560px). Named props 8, one over the Gate 0 budget — flagged. Passes all six gates (curve ratio 45%) |
 
 ---
 
@@ -63,6 +63,22 @@ Nothing is blocked on code.
 ## Log
 
 ### 2026-09-10
+- **Contact scene placement, second attempt** (#28). Harshit liked the image
+  but not its position at the top of the left column beside the form. Two
+  options built instead of one, so the choice is a comparison rather than a
+  round trip: **A** (`/contact-preview`) puts it straight under the header in
+  the Our Mission layout — the header subtitle promoted to a blockquote
+  statement on the left, the panel on the right, channels and form below; the
+  header drops its subtitle as the mission page's does. **B**
+  (`/contact-preview-b`) keeps the live page as it is and closes it with the
+  illustration beside the office address, the address card leaving the channel
+  list so it is not read twice; if the address were ever empty the panel
+  stands alone (§3). A costs form visibility — the form card starts at ~1100px
+  against ~560px in B — and that is the trade-off to decide on.
+- The subtitle sentence now lives in `site.ts` as `contactStatement` and both
+  previews read it from there; contact.astro still carries its own copy until
+  one option is ported. Both pages sealed (noindex, out of the sitemap), 18
+  pages clean, no console errors, 12 animations on each.
 - **Contact scene: the wall filled** (#28). Harshit: *"i like the new image but
   there is negative space above the cat. can you fill it something with
   reception like."* A notice board now hangs on the right wall over the cat —

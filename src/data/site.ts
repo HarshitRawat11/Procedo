@@ -285,6 +285,14 @@ export const receptionBand = {
   caption: 'Ring the desk. Someone picks up.',
 } as const;
 
+/**
+ * The Contact page's one-line brief — today the header subtitle in
+ * contact.astro, and on /contact-preview promoted to the statement beside the
+ * reception illustration, in the Our Mission layout. One sentence, one place.
+ */
+export const contactStatement =
+  'Tell us what you’re planning — we’ll help you scope the right solution. No pressure, just expert guidance.';
+
 /** Closing call-to-action band. */
 export const closingCta = {
   heading: 'Ready to Future-Proof Your Business?',
