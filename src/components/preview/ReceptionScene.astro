@@ -3,8 +3,9 @@
  *  ReceptionScene — "Ring the desk. Someone picks up." PREVIEW ONLY.
  *
  *  A reception counter. A desk phone within reach of the cat, a visitor book
- *  and a pot of pens along the counter, a clock on the wall, the plant cropping
- *  the corner. The cat is the workshop crouch, mirrored to face the phone.
+ *  and a pot of pens along the counter, a clock and a notice board on the wall
+ *  (three pinned notes, a visitor badge on its lanyard), the plant cropping the
+ *  corner. The cat is the workshop crouch, mirrored to face the phone.
  *
  *  The resting pose — what a reduced-motion visitor sees — is the call in
  *  progress: handset at the ear, one paw holding it, the cord stretched across
@@ -14,7 +15,7 @@
  *  the ear, and the voice comes back.
  *
  *  Built under reference/illustration-loop.md, technique B. All six countable
- *  Gate 1 checks pass (curve ratio 48%, spread 2.91, 12 saturated fills).
+ *  Gate 1 checks pass (curve ratio 45%, spread 2.91, 18 saturated fills).
  *
  *  How the pickup is rigged: the handset and the paw that holds it share one
  *  group, `.rig`, so they travel together. `.grip` moves the paw between the
@@ -55,6 +56,7 @@ const CLOCK = '#E8EEF6';
 /* ── Things on the counter ── */
 const PLASTIC = '#33415C'; // the phone, its handset, the pen, the ribbon
 const KEYS = '#8FA8C8';
+const FELT = '#8FA8C8'; // the notice board, same blue as the keys
 const COVER = '#F7B9A3';
 const PAPER = '#FFFFFF';
 
@@ -100,7 +102,8 @@ const HANDSET = 'M-6 -19 C-6 -22 -3 -24 0 -24 C3 -24 6 -22 6 -19 L6 -13 C6 -11 4
     <title id={titleId}>
       A cat on a reception counter answering the telephone: the handset up at its ear, the coiled
       cord trailing back to the phone beside it. A visitor book and a pot of pens sit along the
-      counter, and a clock hangs on the wall above.
+      counter; a clock hangs on the wall, and a notice board holds three pinned notes and a
+      visitor badge on its lanyard.
     </title>
 
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -117,6 +120,31 @@ const HANDSET = 'M-6 -19 C-6 -22 -3 -24 0 -24 C3 -24 6 -22 6 -19 L6 -13 C6 -11 4
       <path d="M120 130 L103 119" stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M120 130 L137 107" stroke={NAVY} stroke-width={W_ENV} />
       <circle cx="120" cy="130" r="3" fill={NAVY} />
+
+      <!-- the notice board on the right wall: three pinned notes and a visitor
+           badge on its lanyard. mis-registration 4: the felt sits 2 right / 2 down
+           inside its frame -->
+      <rect x="278" y="80" width="124" height="80" rx="3" fill={TIMBER} stroke={NAVY} stroke-width={W_ENV} />
+      <rect x="284" y="86" width="116" height="72" fill={FELT} />
+      <g transform="rotate(-4 306 108)">
+        <path d="M293 93 L319 93 L319 115 C316 116 312 119 311 123 L293 123 Z" fill={PAPER} stroke={NAVY} stroke-width={W_ENV} />
+        <path d="M298 100 H314 M298 106 H314 M298 112 H309" stroke={ENVLINE} stroke-width={W_FINE} />
+      </g>
+      <circle cx="306" cy="95" r="2" fill={NAVY} />
+      <!-- mis-registration 5: the card's colour 2 right / 1.5 up of its outline -->
+      <g transform="rotate(3 344 106)">
+        <rect x="331" y="94.5" width="30" height="20" rx="1.5" fill={COVER} />
+        <rect x="329" y="96" width="30" height="20" rx="1.5" stroke={NAVY} stroke-width={W_ENV} />
+      </g>
+      <circle cx="344" cy="99" r="2" fill={NAVY} />
+      <path d="M336 128 L354 128 L354 146 L341 146 C339 143 337 141 336 138 Z" fill={LEAF_LT} stroke={NAVY} stroke-width={W_ENV} transform="rotate(-5 345 137)" />
+      <g class="badge">
+        <path d="M383 124 C382 110 385 98 389 91 C393 98 396 110 395 124" stroke={PLASTIC} stroke-width={W_ENV} />
+        <rect x="381" y="124" width="16" height="22" rx="2" fill={PAPER} stroke={NAVY} stroke-width={W_ENV} />
+        <path d="M381 129 V127 Q381 124 384 124 H394 Q397 124 397 127 V129 Z" fill={PLASTIC} />
+        <path d="M385 136 H393 M385 140 H390" stroke={ENVLINE} stroke-width={W_FINE} />
+      </g>
+      <circle cx="389" cy="91" r="2" fill={NAVY} />
 
       <!-- ══ PLANE 2: the counter ══ -->
       <rect x="36" y="262" width="384" height="88" fill={COUNTER} stroke={NAVY} stroke-width={W_ENV} />
@@ -496,6 +524,22 @@ const HANDSET = 'M-6 -19 C-6 -22 -3 -24 0 -24 C3 -24 6 -22 6 -19 L6 -13 C6 -11 4
       }
       66% {
         transform: rotate(12deg);
+      }
+    }
+
+    /* the visitor badge swings, just, on its lanyard */
+    .badge {
+      transform-box: fill-box;
+      transform-origin: 50% 0%;
+      animation: badge-sway 7s ease-in-out infinite;
+    }
+    @keyframes badge-sway {
+      0%,
+      100% {
+        transform: rotate(-1.5deg);
+      }
+      50% {
+        transform: rotate(1.5deg);
       }
     }
 

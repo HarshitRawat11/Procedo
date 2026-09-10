@@ -46,7 +46,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
 | 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** in the `/our-mission` layout on `/company-preview`: precision statement as a blockquote, the illustration in a bordered panel with chip and caption. **No lamp** — clamp-arm crowded the corner, a pendant replaced it, then Harshit asked for none at all (2026-09-09). Passes all six gates, 52% curve ratio |
 | 27 | Careers cat — working, not sleeping | 🟡 | Awaiting verdict | **DeskSceneWorking** on `/careers-preview`: same room, cat crouched on the desk with a paw on the mouse, eyes on the screen, chair empty. The workshop play-crouch reused by one translate. Mug dropped. Live `/careers` still ships the sleeping DeskScene. Passes all six gates |
-| 28 | Contact page illustration | 🟡 | Awaiting verdict | **ReceptionScene** on `/contact-preview`: the cat at the front desk answering the phone. Twelve-second loop of 11 animations — the phone rings twice (handset rattles, arcs, light, ear flick), the paw reaches, the handset lifts to the ear, the caller's voice comes back, then it hangs up and the desk goes quiet. Visitor book and pen pot on the left; the mug would have been the fourth on the site. Panel sits above the direct channels; the service chips moved under the form to keep the columns level. Passes all six gates (curve ratio 48%) |
+| 28 | Contact page illustration | 🟡 | Liked; awaiting adoption | **ReceptionScene** on `/contact-preview`: the cat at the front desk answering the phone — twelve-second loop, the phone rings twice, the paw reaches, the handset lifts to the ear, the caller's voice comes back, then it hangs up. Harshit liked it (2026-09-10) and asked for the empty wall above the cat filled: now a **notice board** with three pinned notes and a visitor badge swinging on its lanyard. 12 animations. Named props run to **8, one over the Gate 0 budget** — flagged, not hidden; the visitor book is the one to drop if it reads busy. Passes all six gates (curve ratio 45%, 18 saturated fills) |
 
 ---
 
@@ -61,6 +61,22 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-10
+- **Contact scene: the wall filled** (#28). Harshit: *"i like the new image but
+  there is negative space above the cat. can you fill it something with
+  reception like."* A notice board now hangs on the right wall over the cat —
+  timber frame, blue felt laid 2/2 off inside it, a white sheet with a curled
+  corner, a peach card with its colour off-register, a green sticky, and a
+  visitor badge on a lanyard that swings from its pin (the 12th animation). It
+  answers the clock on the left; 18 units of wall stay clear above the ears.
+- Gate 0 honesty: named props are now **eight** against the budget of seven
+  (clock, board, counter, floor, book, pot, phone, plant). Added at Harshit's
+  request rather than blocked on the count; the visitor book is the weakest
+  prop if it ever needs trimming. Gate 1 on the built output: curve ratio 45%
+  (from 48%), 18 saturated fills (from 12), one orange, all six pass.
+- Verified live: 12 animations by name, the badge's pin stays fixed while the
+  badge swings ±1.4 units, no console errors, 17 pages clean.
 
 ### 2026-09-09 (evening)
 - **Contact illustration, animated** (#28). Harshit asked for the phone near
