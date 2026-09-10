@@ -7,12 +7,17 @@ import ClosingCta from '../components/ClosingCta.astro';
 import DeskScene from '../components/DeskScene.astro';
 import { Icon } from 'astro-icon/components';
 import { careers } from '../data/site';
+import { graph, breadcrumbs } from '../lib/schema';
+
+const schema = graph(breadcrumbs([{ name: 'Careers', path: '/careers' }]));
 ---
 
 <BaseLayout
   title="Careers"
   description="Join Procedo Infosystems — engineers and specialists building scalable digital infrastructure, secure smart environments and immersive communication spaces."
 >
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
+
   <PageHeader eyebrow="Careers" title="Build systems that matter" subtitle={careers.intro} />
 
   <!-- Why work with us -->

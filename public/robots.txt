@@ -1,0 +1,13 @@
+# Procedo Infosystems — https://www.procedoinfo.com
+#
+# Everything is public and crawlable. Concept and preview routes are excluded
+# from the sitemap and carry <meta name="robots" content="noindex, nofollow">,
+# which is what actually keeps them out of an index; they are not listed here,
+# because a Disallow line would advertise the very paths it hides.
+#
+# The client preview deploy is kept out of search by an X-Robots-Tag header in
+# netlify.toml, which overrides this file on that host.
+User-agent: *
+Allow: /
+
+Sitemap: https://www.procedoinfo.com/sitemap-index.xml

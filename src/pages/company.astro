@@ -7,12 +7,17 @@ import FeatureGrid from '../components/FeatureGrid.astro';
 import ClosingCta from '../components/ClosingCta.astro';
 import { Icon } from 'astro-icon/components';
 import { company, whyUs, competencies } from '../data/site';
+import { graph, breadcrumbs } from '../lib/schema';
+
+const schema = graph(breadcrumbs([{ name: 'Company', path: '/company' }]));
 ---
 
 <BaseLayout
   title="Company"
   description="Procedo Infosystems is an infrastructure-first technology firm delivering integrated IT infrastructure, facilities security and audio-visual systems."
 >
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
+
   <PageHeader
     eyebrow="Company"
     title="Company Overview"

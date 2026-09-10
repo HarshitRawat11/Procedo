@@ -8,38 +8,15 @@ import Button from '../components/Button.astro';
 import Hero from '../components/home/Hero.astro';
 import ServicesPreview from '../components/home/ServicesPreview.astro';
 import { Icon } from 'astro-icon/components';
-import { whyUs, mission, company, site, contact, competencies } from '../data/site';
+import { whyUs, mission, company } from '../data/site';
+import { graph, organization, website } from '../lib/schema';
 
-// Organization + WebSite structured data for search engines.
-const schema = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': `${site.url}/#organization`,
-      name: site.legalName,
-      alternateName: site.name,
-      url: site.url,
-      logo: `${site.url}/assets/procedo-logo.png`,
-      description: site.description,
-      email: contact.email,
-      telephone: contact.phone,
-      ...(contact.address ? { address: { '@type': 'PostalAddress', streetAddress: contact.address } } : {}),
-      makesOffer: competencies.map((c) => ({
-        '@type': 'Offer',
-        itemOffered: { '@type': 'Service', name: c.title, description: c.tagline },
-      })),
-    },
-    {
-      '@type': 'WebSite',
-      '@id': `${site.url}/#website`,
-      url: site.url,
-      name: site.name,
-      description: site.description,
-      publisher: { '@id': `${site.url}/#organization` },
-    },
-  ],
-};
+/*
+ * Organization + WebSite for search engines. The nodes live in src/lib/schema.ts
+ * so the other pages can refer to the same @id rather than restating the
+ * company on every page.
+ */
+const schema = graph(organization, website);
 ---
 
 <BaseLayout headerOverlap>

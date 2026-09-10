@@ -14,10 +14,15 @@ const ready = contactForm.web3formsKey.trim().length > 0;
 /*
  * Optional `aside` slot: decoration pinned to the form's bottom-right, beside
  * the Send button — hidden below the sm breakpoint, inert to the pointer, and a
- * child of the form so it hides with the form on success. The -24px offset is
- * not arbitrary: it is the distance from the reception vignette's bottom edge
- * up to the counter surface, so the drawing's desk line lands on the button's
- * bottom edge and the two read as standing on the same shelf. A page that passes
+ * child of the form so it hides with the form on success.
+ *
+ * The width and offset are both derived from the drawing, not chosen. The
+ * offset is the distance from the vignette's bottom edge up to the counter
+ * surface at this scale (15 units * 224/256 = 13px), so the desk line lands on
+ * the button's bottom edge and the two read as standing on the same shelf. The
+ * width is capped by the gap above: the cat's ears sit 73 units above that
+ * counter surface and there are only 72px between the textarea and the button,
+ * so 224px is the widest that still clears the textarea — by 8px. A page that passes
  * nothing gets markup identical to before the slot existed (class:list drops
  * the false entry; the conditional renders nothing).
  */
@@ -144,7 +149,7 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
   {
     hasAside && (
       <div
-        class="cf-aside pointer-events-none absolute -bottom-6 right-0 hidden w-64 sm:block"
+        class="cf-aside pointer-events-none absolute -bottom-[13px] right-0 hidden w-56 sm:block"
         aria-hidden="true"
       >
         <slot name="aside" />

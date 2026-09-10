@@ -38,15 +38,20 @@ interface Props {
   class?: string;
   /**
    * `scene` is the whole desk. `vignette` crops the same drawing to the cat,
-   * the phone and the handset — 256 x 100 units — for tucking beside a button;
+   * the phone and the handset — 256 x 101 units — for tucking beside a button;
    * chip and caption are not rendered. The animation is untouched: every
    * keyframe is in user units, which the viewBox does not change.
    *
    * The crop is measured, not guessed. Tail 388.6-429.5 x 176.2-235.0 with its
-   * stroke; ear tips from 176.2; the voice arcs reach y 174; the phone starts
-   * at x 184. So x 178-434 y 170-270 holds every part of the action with a
-   * margin, and its bottom edge shows a slice of the counter front. The notice
-   * board ends at y 160.9, nine units clear of the top edge.
+   * stroke; ear tips from 176.2; the paws reach y 249; the voice arcs reach
+   * y 174; the phone starts at x 184; the counter surface is y 246 and its
+   * bottom edge y 262. So x 178-434 y 163-264.
+   *
+   * The vertical balance is deliberate: 13 units of wall above the cat, 15
+   * below its feet. The first crop had 6 above and 21 below and looked bottom
+   * heavy, which Harshit called on 2026-09-10. The top cannot go higher than
+   * y 162 — the notice board's frame ends at y 160.9 and would show as a stray
+   * line.
    */
   variant?: 'scene' | 'vignette';
   /**
@@ -69,7 +74,7 @@ const {
 const titleId = `reception-title-${id}`;
 const vignette = variant === 'vignette';
 const hungup = state === 'hungup';
-const viewBox = vignette ? '178 170 256 100' : '0 70 420 310';
+const viewBox = vignette ? '178 163 256 101' : '0 70 420 310';
 
 /* Resting transforms per state. These are the same values the keyframes use at
    0% (oncall) and 38-79% (hungup), so the still and the loop cannot disagree. */

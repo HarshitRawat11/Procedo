@@ -5,12 +5,22 @@ import PageHeader from '../components/PageHeader.astro';
 import ClosingCta from '../components/ClosingCta.astro';
 import { Icon } from 'astro-icon/components';
 import { competencies, competenciesIntro } from '../data/site';
+import { graph, breadcrumbs, services, organizationRef } from '../lib/schema';
+
+/* The five competencies as Service nodes, each anchored to its own section. */
+const schema = graph(
+  breadcrumbs([{ name: 'Services', path: '/services' }]),
+  services(),
+  organizationRef,
+);
 ---
 
 <BaseLayout
   title="Services"
   description="Five core competencies — IT infrastructure, facilities security, AV & conferencing, digital workplace services, and datacenter infrastructure — engineered as one."
 >
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
+
   <PageHeader
     eyebrow={competenciesIntro.eyebrow}
     title={competenciesIntro.title}

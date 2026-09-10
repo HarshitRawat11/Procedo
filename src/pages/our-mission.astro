@@ -8,17 +8,22 @@ import ClosingCta from '../components/ClosingCta.astro';
 import QuietScene from '../components/QuietScene.astro';
 import { Icon } from 'astro-icon/components';
 import { mission } from '../data/site';
+import { graph, breadcrumbs } from '../lib/schema';
 
 const panels = [
   { label: 'Vision', icon: 'lucide:eye', ...mission.vision },
   { label: 'Mission', icon: 'lucide:target', ...mission.purpose },
 ];
+
+const schema = graph(breadcrumbs([{ name: 'Our Mission', path: '/our-mission' }]));
 ---
 
 <BaseLayout
   title="Our Mission"
   description="We believe technology should enable, not complicate — integrated IT, security and AV solutions that empower organizations to thrive."
 >
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
+
   <PageHeader eyebrow="Our mission" title="Technology that gets out of the way" />
 
   <!-- Mission statement, with the illustration alongside -->
