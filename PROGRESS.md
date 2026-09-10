@@ -47,6 +47,8 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** in the `/our-mission` layout on `/company-preview`: precision statement as a blockquote, the illustration in a bordered panel with chip and caption. **No lamp** — clamp-arm crowded the corner, a pendant replaced it, then Harshit asked for none at all (2026-09-09). Passes all six gates, 52% curve ratio |
 | 27 | Careers cat — working, not sleeping | 🟡 | Awaiting verdict | **DeskSceneWorking** on `/careers-preview`: same room, cat crouched on the desk with a paw on the mouse, eyes on the screen, chair empty. The workshop play-crouch reused by one translate. Mug dropped. Live `/careers` still ships the sleeping DeskScene. Passes all six gates |
 | 28 | Contact page illustration | 🟡 | Placement being chosen | **ReceptionScene** — the cat at the front desk answering the phone. Three placements: **A** `/contact-preview` (the `/our-mission` layout under the header), **B** `/contact-preview-b` (closing the page beside the office address), **C** `/contact-preview-c` (a 256 × 100 crop beside the form's Send button, nothing else moved — Harshit's idea, and the one he is leaning to). C also finishes the story: on a successful send the card shows the **same cat with the handset back on its cradle**. Named props 8, one over the Gate 0 budget — flagged. Passes all six gates (curve ratio 45%) |
+| 29 | Home hero illustration | 🟡 | Awaiting verdict | **RackScene** on `/hero-preview`: a rack face — patch panel, cables dressed both ways, a hank of spare cable, a switch, a blank filler — and the cat asleep in the one empty rack unit. Chip "One U spare", caption "Always leave room to grow." It replaces the competency index card in the hero; the same five links are full cards in ServicesPreview immediately below, so no navigation is lost. `Hero` gained an optional `aside` slot; the live home page renders identically. Passes all six gates (curve ratio 43%, 15 saturated fills, 7 animations) |
+| 30 | Blog / MDX plumbing | ✅ | — | **Removed 2026-09-10** on Harshit's call ("no blog for now"). `@astrojs/mdx` and `@astrojs/rss` are out of `package.json`, the lockfile and `astro.config.mjs`; there was never an `.mdx` document or an RSS route to lose |
 
 ---
 
@@ -61,6 +63,48 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-10 (evening)
+- **A hero illustration** (#29), the one thing Harshit left entirely open
+  ("can you suprise me with it"). **RackScene**: a rack face seen close up —
+  patch panel with nine of twelve ports patched and the cables dressed away to
+  both sides, a hank of spare cable tied to the rail, a switch with its link
+  lights, a blank filler cropped by the bottom edge — and in the one empty
+  rack unit, the cat asleep. Chip "One U spare", caption "Always leave room to
+  grow." The picture is the sales point and the joke at once: good design
+  leaves headroom, and something always moves into it.
+- Two firsts for this site's illustrations. The **loaf pose** — one dome, a
+  head at the right, two paws under the chin, no legs at all — so the pose
+  cannot fail the way every articulated cat here has. And **real colour**: six
+  patch cables in blue, green, light green, peach and grey, every hue already
+  in use elsewhere, no new one invented. 15 saturated fills against
+  ReceptionScene's 15 and the workshop's 24, but the cables read as colour in
+  a way fills do not.
+- Mounting holes and patch ports are `<pattern>` tiles, not 42 rects. Tidier,
+  and it keeps the curve ratio honest — the measurement script counts every
+  drawn element, and the first pass **failed at 32%** because the hardware
+  outnumbered the drawing. Fixed by adding what the picture actually wanted
+  (two more patched cables, the coiled hank, inner ears, a haunch, a third
+  back marking, tail rings), never by padding: 43% on the built output.
+- The tail fault turned up again — hanging white shape reads as a hook. Fixed
+  with **two rings** across it, the first time that fix has been used here.
+  Worth carrying forward.
+- Placement: it replaces the competency index card in the hero. That card's
+  five links are repeated as full cards in ServicesPreview, the very next
+  section, so nothing is lost. `Hero` gained an optional `aside` slot on the
+  PageHeader pattern; reverting just that file and diffing the built home page
+  shows only the changed HTML comment and one whitespace character.
+- **Blog plumbing removed** (#30): `@astrojs/mdx` and `@astrojs/rss` gone from
+  package.json, the lockfile and the config. Nothing referenced them.
+- **Office card, live page**: a "Get directions" link derived from the address
+  (so the two cannot disagree, and it hides if the address is ever emptied),
+  and a reach line — *Working with clients across India* — recorded in
+  `site.ts` as confirmed by Harshit on 2026-09-10, not inferred.
+- Not done from the suggestion list, and worth naming: richer structured data
+  (ContactPoint, per-service Service, breadcrumbs), a rendered social-share
+  image, view transitions, and a vignette per service card. There is also no
+  `public/robots.txt` — a 404 today, which crawlers read as "allow all", but
+  it should point at the sitemap before launch.
 
 ### 2026-09-10 (later)
 - **Vignette fixed on two counts** Harshit raised. The tail was clipped on two

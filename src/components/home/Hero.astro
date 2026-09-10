@@ -9,6 +9,18 @@ import { Icon } from 'astro-icon/components';
 import { hero, competencies } from '../../data/site';
 
 const badgeIcons = ['lucide:shield-check', 'lucide:clock'];
+
+/*
+ * The right-hand column holds a competency index card. Pass an `aside` slot to
+ * put something else there instead — the home hero preview passes an
+ * illustration. The column wrapper and its classes are outside the branch, so a
+ * page that passes nothing emits markup identical to before this slot existed.
+ *
+ * Worth knowing before choosing: the five links on that card are repeated as
+ * full cards in ServicesPreview, the very next section, so replacing it costs
+ * no navigation.
+ */
+const hasAside = Astro.slots.has('aside');
 ---
 
 <section class="relative overflow-hidden bg-cream">
@@ -47,8 +59,10 @@ const badgeIcons = ['lucide:shield-check', 'lucide:clock'];
         </div>
       </div>
 
-      <!-- Competency index -->
+      <!-- Competency index, or whatever the page puts in its place -->
       <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
+        {hasAside && <slot name="aside" />}
+        {!hasAside && (
         <div class="overflow-hidden rounded-xl border border-line bg-white shadow-sm shadow-navy-950/[0.04]">
           <p class="border-b border-line px-6 py-4 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
             Core competencies
@@ -77,6 +91,7 @@ const badgeIcons = ['lucide:shield-check', 'lucide:clock'];
             }
           </ul>
         </div>
+        )}
       </div>
     </div>
   </Container>

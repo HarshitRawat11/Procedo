@@ -29,7 +29,20 @@ export const contact = {
   phone: '+91 9958896172',
   /** Registered office. Leave empty to hide the Contact address card entirely. */
   address: '324 Guru Ram Das Nagar, Laxmi Nagar, Delhi – 110092',
+  /**
+   * Where Procedo takes on work. Confirmed by Harshit on 2026-09-10: anywhere
+   * in India, not only Delhi NCR. Leave empty to hide the line.
+   */
+  reach: 'Working with clients across India',
 } as const;
+
+/**
+ * Maps link for the office, derived from the address so the two can never
+ * disagree. Empty when there is no address, which hides the link (§3).
+ */
+export const directionsHref = contact.address
+  ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`
+  : '';
 
 /**
  * Social links. TODO: replace `#` with the real profile URL.
@@ -264,6 +277,16 @@ export const competencies: Competency[] = [
 export const uptimeBand = {
   chip: 'On backup power',
   caption: 'Power cut at 3am. Nobody noticed.',
+} as const;
+
+/**
+/**
+ * Copy for the RackScene illustration on the home hero: the cat asleep in the
+ * one empty rack unit, because every good design leaves headroom.
+ */
+export const heroBand = {
+  chip: 'One U spare',
+  caption: 'Always leave room to grow.',
 } as const;
 
 /**

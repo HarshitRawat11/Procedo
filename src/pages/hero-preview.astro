@@ -1,0 +1,128 @@
+---
+/* ============================================================================
+ *  /hero-preview — PREVIEW ONLY. Sealed off per CLAUDE.md §5: noindex, in no
+ *  nav, linked from nowhere, excluded from the sitemap filter.
+ *
+ *  The home page with an illustration in the hero: RackScene, the cat asleep in
+ *  the one empty rack unit, where the competency index card sits today. Harshit
+ *  asked for a hero and left the subject open.
+ *
+ *  Nothing else on the page changes, and nothing is lost by the swap: the five
+ *  links on that index card are repeated as full cards in ServicesPreview, the
+ *  very next section down.
+ *
+ *  This page is a copy of index.astro with one line different — the Hero call.
+ *  Once approved: move RackScene out of components/preview/, pass the aside on
+ *  index.astro, then delete this page.
+ * ========================================================================== */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import ClosingCta from '../components/ClosingCta.astro';
+import Button from '../components/Button.astro';
+import Hero from '../components/home/Hero.astro';
+import ServicesPreview from '../components/home/ServicesPreview.astro';
+import RackScene from '../components/preview/RackScene.astro';
+import { Icon } from 'astro-icon/components';
+import { whyUs, mission, company, heroBand } from '../data/site';
+---
+
+<BaseLayout title="Home — hero illustration preview" noindex headerOverlap>
+  <Hero>
+    <RackScene slot="aside" id="hero" chip={heroBand.chip} caption={heroBand.caption} />
+  </Hero>
+
+  <div class="pv-banner">
+    <Container>
+      <p class="pv-banner-txt">
+        <strong>Internal preview.</strong> The home hero with an illustration in place of the
+        competency index card — the same five links are full cards in the section below. The cat is
+        asleep in the one empty rack unit. Not linked from the site, not indexed.
+      </p>
+    </Container>
+  </div>
+
+  <ServicesPreview />
+
+  <!-- Who we are / mission teaser -->
+  <section class="bg-cream py-20 lg:py-28">
+    <Container>
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-6" data-reveal>
+          <SectionHeading eyebrow="Who we are" title="An infrastructure-first technology firm" />
+          <p class="mt-6 text-lg leading-relaxed text-slate-600">{company.overview[0]}</p>
+          <p class="mt-4 leading-relaxed text-slate-600">{company.overview[1]}</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button href="/company" chevron>Company Overview</Button>
+            <Button href="/our-mission" variant="secondary">Our Mission</Button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6" data-reveal style="--reveal-delay:120ms">
+          <div class="rounded-2xl border border-line bg-white p-7 shadow-sm sm:p-9">
+            <span
+              class="grid size-11 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100"
+            >
+              <Icon name="lucide:quote" class="size-5" aria-hidden="true" />
+            </span>
+            <blockquote class="mt-6 text-lg font-medium leading-relaxed text-navy-900">
+              {mission.statement}
+            </blockquote>
+
+            <div class="mt-7 border-t border-line pt-6">
+              <h3 class="font-mono text-xs uppercase tracking-wider text-navy-700">
+                {mission.purpose.listTitle}
+              </h3>
+              <ul class="mt-3.5 flex flex-wrap gap-2">
+                {
+                  mission.purpose.items.map((it) => (
+                    <li class="inline-flex items-center gap-1.5 rounded-full border border-line bg-band px-3 py-1.5 text-sm text-navy-800">
+                      <Icon
+                        name="lucide:check"
+                        class="size-3.5 shrink-0 text-brand-500"
+                        aria-hidden="true"
+                      />
+                      {it}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Why partner with us -->
+  <section class="border-t border-line bg-band py-20 lg:py-28">
+    <Container>
+      <SectionHeading
+        eyebrow="Why Procedo"
+        title="Why partner with Procedo?"
+        subtitle="Experience the future of infrastructure-driven success with industry-leading expertise."
+      />
+      <FeatureGrid items={whyUs} columns={4} class="mt-12" />
+    </Container>
+  </section>
+
+  <ClosingCta />
+</BaseLayout>
+
+<style>
+  .pv-banner {
+    background: var(--color-navy-950);
+    color: #fff;
+    padding: 0.75rem 0;
+  }
+  .pv-banner-txt {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgb(255 255 255 / 0.78);
+  }
+  .pv-banner-txt strong {
+    color: #fff;
+    font-weight: 600;
+  }
+</style>

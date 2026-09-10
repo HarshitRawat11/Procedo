@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "private": true,
-  "description": "Marketing website for Procedo InfoSystems — IT infrastructure, facilities security, AV, telecom and power & precision systems.",
+  "description": "Marketing website for Procedo Infosystems — digital workplace services, datacenter infrastructure, IT infrastructure, facilities security and AV conferencing.",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -14,8 +14,6 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
-    "@astrojs/mdx": "^6.0.3",
-    "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/inter": "^5.2.8",
     "@fontsource/ibm-plex-mono": "^5.2.7",

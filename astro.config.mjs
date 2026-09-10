@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 
@@ -11,7 +10,8 @@ export default defineConfig({
   site: 'https://www.procedoinfo.com',
 
   integrations: [
-    mdx(), // Markdown + components for blog posts
+    // No MDX and no RSS: there is no blog and none is planned (Harshit,
+    // 2026-09-10). Both packages were removed rather than left installed.
     // Auto-generates /sitemap-index.xml for SEO. The routes listed below are
     // standalone concept pages, not part of the real site, so they are kept out
     // of the sitemap (they are also marked noindex and linked from nowhere).
@@ -27,6 +27,7 @@ export default defineConfig({
           '/contact-preview',
           '/contact-preview-b',
           '/contact-preview-c',
+          '/hero-preview',
         ].some((p) => page.includes(p)),
     }),
     icon(), // build-time inlined Lucide icons (zero runtime JS)
