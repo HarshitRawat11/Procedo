@@ -14,11 +14,21 @@ const ready = contactForm.web3formsKey.trim().length > 0;
 /*
  * Optional `aside` slot: decoration pinned to the form's bottom-right, beside
  * the Send button — hidden below the sm breakpoint, inert to the pointer, and a
- * child of the form so it hides with the form on success. A page that passes
+ * child of the form so it hides with the form on success. The -24px offset is
+ * not arbitrary: it is the distance from the reception vignette's bottom edge
+ * up to the counter surface, so the drawing's desk line lands on the button's
+ * bottom edge and the two read as standing on the same shelf. A page that passes
  * nothing gets markup identical to before the slot existed (class:list drops
  * the false entry; the conditional renders nothing).
  */
 const hasAside = Astro.slots.has('aside');
+
+/*
+ * Optional `success-art` slot: the illustration shown in place of the form
+ * after a message actually sends. Pass nothing and it stays QuietScene, exactly
+ * as the live page has it.
+ */
+const hasSuccessArt = Astro.slots.has('success-art');
 
 const field =
   'w-full rounded-lg border border-line bg-white px-4 py-2.5 text-navy-900 placeholder:text-slate-400 transition-colors focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-band disabled:text-slate-400';
@@ -134,7 +144,7 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
   {
     hasAside && (
       <div
-        class="cf-aside pointer-events-none absolute -bottom-10 right-0 hidden w-64 sm:block"
+        class="cf-aside pointer-events-none absolute -bottom-6 right-0 hidden w-64 sm:block"
         aria-hidden="true"
       >
         <slot name="aside" />
@@ -150,13 +160,21 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
   <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-slate-600">
     It’s landed with the right team. We’ll be in touch shortly — nothing else needed from you.
   </p>
-  <QuietScene
-    chip="Enquiry logged"
-    lines={['Consider it handled. Go put the kettle on.']}
-    surface="bare"
-    palette="coloured"
-    class="mt-6"
-  />
+  {
+    hasSuccessArt ? (
+      <div class="mt-6">
+        <slot name="success-art" />
+      </div>
+    ) : (
+      <QuietScene
+        chip="Enquiry logged"
+        lines={['Consider it handled. Go put the kettle on.']}
+        surface="bare"
+        palette="coloured"
+        class="mt-6"
+      />
+    )
+  }
 </div>
 
 <script>

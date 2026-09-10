@@ -8,12 +8,18 @@
  *  empty space beside the form's Send button. Nothing else on the page moves.
  *
  *  Mechanics: ReceptionScene's `vignette` variant crops the same SVG (same
- *  animation, same twelve-second loop) to 248 x 90 units, and ContactForm's new
+ *  animation, same twelve-second loop) to 256 x 100 units, and ContactForm's new
  *  `aside` slot pins it to the form's bottom-right, hidden below the sm
  *  breakpoint. Because it is a child of the form it disappears with the form on
- *  a successful send, so the "Message received" cat never shares the card with
- *  it; the rule below hides it whenever the form shows a status message, so it
- *  never sits over an error.
+ *  a successful send; the rule below also hides it whenever the form shows a
+ *  status message, so it never sits over an error.
+ *
+ *  The story finishes on the success card. Where the live page shows the rack
+ *  cat asleep, this one shows the SAME cat with the handset back on its cradle
+ *  and the line light out — the call taken, the enquiry logged. That is
+ *  ContactForm's new `success-art` slot plus ReceptionScene's `state="hungup"`,
+ *  which parks the handset and stops the call sequence while the cat keeps
+ *  breathing. Preview only: pass neither and the live page is unchanged.
  *
  *  Options A (illustration under the header) and B (closing the page beside
  *  the office address) are at /contact-preview and /contact-preview-b.
@@ -24,7 +30,7 @@ import PageHeader from '../components/PageHeader.astro';
 import ContactForm from '../components/ContactForm.astro';
 import ReceptionScene from '../components/preview/ReceptionScene.astro';
 import { Icon } from 'astro-icon/components';
-import { contact, competencies, contactStatement } from '../data/site';
+import { contact, competencies, contactStatement, receptionBand } from '../data/site';
 
 const telHref = 'tel:' + contact.phone.replace(/[^+\d]/g, '');
 
@@ -50,10 +56,12 @@ const channels = [
     <Container>
       <p class="pv-banner-txt">
         <strong>Internal preview — option C.</strong> The live page as it is, with a small crop of
-        the cat picking up the phone beside the form's Send button. Option A (under the header) is
-        at <a href="/contact-preview">/contact-preview</a>, option B (closing the page beside the
-        office address) at <a href="/contact-preview-b">/contact-preview-b</a>. Not linked from the
-        site, not indexed.
+        the cat picking up the phone beside the form's Send button — and the same cat with the
+        handset back down on the success card. Send the form to see it, or
+        <button type="button" data-pv-done>show the success state</button>. Option A (under the
+        header) is at <a href="/contact-preview">/contact-preview</a>, option B (closing the page
+        beside the office address) at <a href="/contact-preview-b">/contact-preview-b</a>. Not
+        linked from the site, not indexed.
       </p>
     </Container>
   </div>
@@ -141,6 +149,13 @@ const channels = [
           <div class="mt-7">
             <ContactForm>
               <ReceptionScene slot="aside" variant="vignette" id="contact-form" />
+              <ReceptionScene
+                slot="success-art"
+                state="hungup"
+                id="contact-done"
+                chip={receptionBand.doneChip}
+                caption={receptionBand.doneCaption}
+              />
             </ContactForm>
           </div>
         </div>
@@ -174,4 +189,29 @@ const channels = [
   .form-card :global(form:has(#cf-status:not([hidden])) .cf-aside) {
     display: none;
   }
+
+  /* Preview-only control in the banner, so the success card can be seen
+     without posting a real enquiry to the client's inbox. */
+  .pv-banner-txt button {
+    font: inherit;
+    color: #fff;
+    background: none;
+    border: 0;
+    padding: 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
 </style>
+
+<script>
+  // Preview only: swap the form for its success card without sending anything.
+  document.querySelector("[data-pv-done]")?.addEventListener("click", () => {
+    const form = document.getElementById("contact-form");
+    const done = document.getElementById("cf-success");
+    if (!form || !done) return;
+    form.hidden = true;
+    done.hidden = false;
+    done.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+</script>

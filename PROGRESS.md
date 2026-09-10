@@ -46,7 +46,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
 | 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** in the `/our-mission` layout on `/company-preview`: precision statement as a blockquote, the illustration in a bordered panel with chip and caption. **No lamp** — clamp-arm crowded the corner, a pendant replaced it, then Harshit asked for none at all (2026-09-09). Passes all six gates, 52% curve ratio |
 | 27 | Careers cat — working, not sleeping | 🟡 | Awaiting verdict | **DeskSceneWorking** on `/careers-preview`: same room, cat crouched on the desk with a paw on the mouse, eyes on the screen, chair empty. The workshop play-crouch reused by one translate. Mug dropped. Live `/careers` still ships the sleeping DeskScene. Passes all six gates |
-| 28 | Contact page illustration | 🟡 | Liked; placement being chosen | **ReceptionScene** — the cat at the front desk answering the phone (twelve-second loop, 12 animations, notice board on the wall). Harshit liked the image (2026-09-10) but not its first position. Three placements to choose from: **A** `/contact-preview` — the `/our-mission` layout under the header (form starts ~1100px down); **B** `/contact-preview-b` — the live page, the illustration closing it beside the office address; **C** `/contact-preview-c` — Harshit's idea, a 248 × 90 crop of the cat picking up the phone tucked beside the form's Send button, nothing else moved. Named props 8, one over the Gate 0 budget — flagged. Passes all six gates (curve ratio 45%) |
+| 28 | Contact page illustration | 🟡 | Placement being chosen | **ReceptionScene** — the cat at the front desk answering the phone. Three placements: **A** `/contact-preview` (the `/our-mission` layout under the header), **B** `/contact-preview-b` (closing the page beside the office address), **C** `/contact-preview-c` (a 256 × 100 crop beside the form's Send button, nothing else moved — Harshit's idea, and the one he is leaning to). C also finishes the story: on a successful send the card shows the **same cat with the handset back on its cradle**. Named props 8, one over the Gate 0 budget — flagged. Passes all six gates (curve ratio 45%) |
 
 ---
 
@@ -61,6 +61,29 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-10 (later)
+- **Vignette fixed on two counts** Harshit raised. The tail was clipped on two
+  sides — it runs to x 429.5 in a 420-wide canvas — and the desk sat 21px below
+  the Send button. Now: the counter and floor are drawn out to x 440, which the
+  full scene's own viewBox clips away, so the vignette's right edge is counter
+  rather than air; the crop is x 178-434 y 170-270 from measured extents (tail
+  388.6-429.5, ear tips from 176.2, voice arcs to y 174), and the aside's -24px
+  offset is exactly the vignette's bottom-edge-to-counter distance. Measured
+  live: the desk line and the button's bottom edge are the same pixel, and the
+  whole tail sits 6px inside the box.
+- **The story now finishes** (Harshit's request, preview only). ContactForm
+  gained a `success-art` slot and ReceptionScene a `state` prop; the success
+  card shows the same cat with the handset back on its cradle, the paw on the
+  counter, the line light out and the call sequence stopped — only breathing,
+  tail, leaves and badge keep running. Pass neither and the live page keeps
+  QuietScene, byte for byte.
+- Lesson worth keeping: `astro dev` served a **stale component stylesheet** —
+  the new rule was absent from the dev CSS while present and correctly scoped
+  in the build, so the preview showed the cat still on the call. Verified
+  against `astro preview` (the built output) instead, where it is right. When
+  a style change appears not to apply, check the dev server is serving it
+  before touching the CSS.
 
 ### 2026-09-10
 - **Contact scene placement, second attempt** (#28). Harshit liked the image
