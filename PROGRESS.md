@@ -49,6 +49,9 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 28 | Contact page illustration | 🟡 | Placement being chosen | **ReceptionScene** — the cat at the front desk answering the phone. Three placements: **A** `/contact-preview` (the `/our-mission` layout under the header), **B** `/contact-preview-b` (closing the page beside the office address), **C** `/contact-preview-c` (a 256 × 100 crop beside the form's Send button, nothing else moved — Harshit's idea, and the one he is leaning to). C also finishes the story: on a successful send the card shows the **same cat with the handset back on its cradle**. Named props 8, one over the Gate 0 budget — flagged. Passes all six gates (curve ratio 45%) |
 | 29 | Home hero illustration | 🟡 | Awaiting verdict | **RackScene** on `/hero-preview`: a rack face — patch panel, cables dressed both ways, a hank of spare cable, a switch, a blank filler — and the cat asleep in the one empty rack unit. Chip "One U spare", caption "Always leave room to grow." It replaces the competency index card in the hero; the same five links are full cards in ServicesPreview immediately below, so no navigation is lost. `Hero` gained an optional `aside` slot; the live home page renders identically. Passes all six gates (curve ratio 43%, 15 saturated fills, 7 animations) |
 | 30 | Blog / MDX plumbing | ✅ | — | **Removed 2026-09-10** on Harshit's call ("no blog for now"). `@astrojs/mdx` and `@astrojs/rss` are out of `package.json`, the lockfile and `astro.config.mjs`; there was never an `.mdx` document or an RSS route to lose |
+| 31 | Structured data | ✅ | — | Builders in `src/lib/schema.ts`, so no page restates the company. Organization now carries **contactPoint** (support and sales) and **areaServed: India**; Services carries its five competencies as **Service** nodes anchored to their sections, with an Organization stub so the `provider` reference resolves in-document; Company, Our Mission, Careers and Contact each carry a **BreadcrumbList**. Verified on the built output: one block per page, all in `<head>`, all parse |
+| 32 | `robots.txt` | ✅ | — | Added 2026-09-10; it was a 404. Allow all, plus the sitemap. Names no preview paths deliberately — a `Disallow` line advertises the routes it hides — and the Netlify preview's `X-Robots-Tag` header overrides it on that host |
+| 33 | View transitions | ⏸️ | Declined for now — needs a decision | Astro's `ClientRouter` would need three scripts converted to `astro:page-load`: the reveal observer, the header (scroll + mobile toggle) and the **contact form**. If the form's handler failed to attach the form would native-POST to Web3Forms and the visitor would land on Web3Forms' own page instead of the success card — a silent regression on the only conversion path, while the client is reviewing previews. Worth doing as an isolated change with its own verification pass, not folded into other work |
 
 ---
 
@@ -63,6 +66,29 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-10 (evening, later)
+- **Vignette rebalanced.** Harshit: too much room below the cat, too little
+  above. Measured: 6 units above, 21 below. Now 13 and 15, with the counter's
+  front face cropped away. The width drops 256px → 224px and that is forced
+  arithmetic, not taste: the ears sit 73 units above the counter surface, there
+  are only 72px between the textarea and the Send button, and the desk line is
+  pinned to the button's bottom edge — so 224px is the widest crop that still
+  clears the textarea, by 8px. Verified: 14px above, 15px below, desk within
+  2px of the button's line.
+- **Structured data** (#31) and **robots.txt** (#32) — see the table.
+- **Correction to an earlier suggestion of mine.** I listed "a proper
+  social-share image" as a gap. It is not: `public/og-default.png` already
+  exists — logo, tagline, brand colours, 1200×630, properly set in Inter. It
+  did not need making. Putting the cat on it is an option, not a fix.
+- **View transitions declined for now** (#33), with reasons in the table. The
+  short version: three scripts would need converting and one of them is the
+  contact form, whose failure mode is silent and costs an enquiry.
+- Still open from the ideas list, and needing Harshit or the client rather than
+  code: proof (client names, project stories, OEM partners — he has none to
+  share yet), the engagement-process section and FAQ, WhatsApp Business,
+  analytics, and the LinkedIn URL. One design bet also parked: **a vignette per
+  service card**, now that the cat is formally the mascot.
 
 ### 2026-09-10 (evening)
 - **A hero illustration** (#29), the one thing Harshit left entirely open
