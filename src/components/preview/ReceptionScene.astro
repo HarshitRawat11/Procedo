@@ -24,6 +24,9 @@
  *  rotated + stretched to the handset's plug; its keyframes are sampled from
  *  the rig's ease-in-out so the plug stays within a pixel of the handset
  *  mid-lift. Every resting value is an attribute; the CSS only ever overrides.
+ *
+ *  `variant="vignette"` crops the same SVG to the cat, phone and handset so the
+ *  scene can sit beside the contact form's Send button (/contact-preview-c).
  * ========================================================================== */
 interface Props {
   /** Small mono status label above the art, as on QuietScene. Omit for none. */
@@ -33,9 +36,18 @@ interface Props {
   /** Unique per instance — the title id must not collide. */
   id: string;
   class?: string;
+  /**
+   * `scene` is the whole desk. `vignette` crops the same drawing to the cat, the
+   * phone and the handset — 248 x 90 units — for tucking beside a button; chip
+   * and caption are not rendered. The animation is untouched: every keyframe is
+   * in user units, which the viewBox does not change.
+   */
+  variant?: 'scene' | 'vignette';
 }
-const { chip, caption, id, class: className = '' } = Astro.props;
+const { chip, caption, id, class: className = '', variant = 'scene' } = Astro.props;
 const titleId = `reception-title-${id}`;
+const vignette = variant === 'vignette';
+const viewBox = vignette ? '172 174 248 90' : '0 70 420 310';
 
 /* ── Contours ── */
 const NAVY = '#1B2A4A';
@@ -82,9 +94,9 @@ const LEAF_BIG = 'M29 300 C14 272 18 238 29 228 C40 238 44 272 29 300 Z';
 const HANDSET = 'M-6 -19 C-6 -22 -3 -24 0 -24 C3 -24 6 -22 6 -19 L6 -13 C6 -11 4.5 -10.5 3 -10 L3 10 C4.5 10.5 6 11 6 13 L6 19 C6 22 3 24 0 24 C-3 24 -6 22 -6 19 L-6 13 C-6 11 -4.5 10.5 -3 10 L-3 -10 C-4.5 -10.5 -6 -11 -6 -13 Z';
 ---
 
-<figure class:list={['reception', className]}>
+<figure class:list={['reception', vignette && 'reception-vignette', className]}>
   {
-    chip && (
+    !vignette && chip && (
       <p class="chip">
         <span class="chip-dot" aria-hidden="true" />
         {chip}
@@ -94,16 +106,17 @@ const HANDSET = 'M-6 -19 C-6 -22 -3 -24 0 -24 C3 -24 6 -22 6 -19 L6 -13 C6 -11 4
 
   <svg
     class="scene"
-    viewBox="0 70 420 310"
+    viewBox={viewBox}
     role="img"
     aria-labelledby={titleId}
     xmlns="http://www.w3.org/2000/svg"
   >
     <title id={titleId}>
-      A cat on a reception counter answering the telephone: the handset up at its ear, the coiled
-      cord trailing back to the phone beside it. A visitor book and a pot of pens sit along the
-      counter; a clock hangs on the wall, and a notice board holds three pinned notes and a
-      visitor badge on its lanyard.
+      {
+        vignette
+          ? 'The cat at the front desk, picking up the phone.'
+          : 'A cat on a reception counter answering the telephone: the handset up at its ear, the coiled cord trailing back to the phone beside it. A visitor book and a pot of pens sit along the counter; a clock hangs on the wall, and a notice board holds three pinned notes and a visitor badge on its lanyard.'
+      }
     </title>
 
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -264,7 +277,7 @@ const HANDSET = 'M-6 -19 C-6 -22 -3 -24 0 -24 C3 -24 6 -22 6 -19 L6 -13 C6 -11 4
     </g>
   </svg>
 
-  {caption && <figcaption class="line">{caption}</figcaption>}
+  {!vignette && caption && <figcaption class="line">{caption}</figcaption>}
 </figure>
 
 <style>

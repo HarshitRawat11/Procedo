@@ -46,7 +46,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
 | 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** in the `/our-mission` layout on `/company-preview`: precision statement as a blockquote, the illustration in a bordered panel with chip and caption. **No lamp** — clamp-arm crowded the corner, a pendant replaced it, then Harshit asked for none at all (2026-09-09). Passes all six gates, 52% curve ratio |
 | 27 | Careers cat — working, not sleeping | 🟡 | Awaiting verdict | **DeskSceneWorking** on `/careers-preview`: same room, cat crouched on the desk with a paw on the mouse, eyes on the screen, chair empty. The workshop play-crouch reused by one translate. Mug dropped. Live `/careers` still ships the sleeping DeskScene. Passes all six gates |
-| 28 | Contact page illustration | 🟡 | Liked; placement being chosen | **ReceptionScene** — the cat at the front desk answering the phone (twelve-second loop, 12 animations, notice board on the wall). Harshit liked the image (2026-09-10) but not its first position (top of the left column, beside the form). Two placements to choose from: **A** `/contact-preview` — the `/our-mission` layout straight under the header, statement left, panel right, channels and form below (form starts ~1100px down); **B** `/contact-preview-b` — the live page as it is, the illustration closing the page beside the office address (form stays at ~560px). Named props 8, one over the Gate 0 budget — flagged. Passes all six gates (curve ratio 45%) |
+| 28 | Contact page illustration | 🟡 | Liked; placement being chosen | **ReceptionScene** — the cat at the front desk answering the phone (twelve-second loop, 12 animations, notice board on the wall). Harshit liked the image (2026-09-10) but not its first position. Three placements to choose from: **A** `/contact-preview` — the `/our-mission` layout under the header (form starts ~1100px down); **B** `/contact-preview-b` — the live page, the illustration closing it beside the office address; **C** `/contact-preview-c` — Harshit's idea, a 248 × 90 crop of the cat picking up the phone tucked beside the form's Send button, nothing else moved. Named props 8, one over the Gate 0 budget — flagged. Passes all six gates (curve ratio 45%) |
 
 ---
 
@@ -79,6 +79,20 @@ Nothing is blocked on code.
   previews read it from there; contact.astro still carries its own copy until
   one option is ported. Both pages sealed (noindex, out of the sitemap), 18
   pages clean, no console errors, 12 animations on each.
+- **Option C — Harshit's idea.** A small crop of the scene beside the form's
+  Send button (`/contact-preview-c`). `ReceptionScene` gained a `vignette`
+  variant: same SVG, same animation, viewBox cropped to the cat, phone and
+  handset (248 × 90). `ContactForm` gained an optional `aside` slot pinned to
+  the form's bottom-right, hidden below `sm`, inert to the pointer; as a child
+  of the form it disappears with the form on success, and a rule on the page
+  hides it while a status message shows. Measured live: 256 × 93 px, 20 px
+  clear of the textarea, 61 px from the button, flush with the card's inner
+  right edge; rig origin still (268, 210) under the cropped viewBox; 12
+  animations; no console errors.
+- Proof the live Contact page is untouched: built with and without the change
+  (git stash) and diffed the `<form>` fragment — identical bar one whitespace
+  character before `</form>`. The page's stylesheet hash changes, as it does
+  for any new utility class anywhere; that is the bundle, not the page.
 - **Contact scene: the wall filled** (#28). Harshit: *"i like the new image but
   there is negative space above the cat. can you fill it something with
   reception like."* A notice board now hangs on the right wall over the cat —
