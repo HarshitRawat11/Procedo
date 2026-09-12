@@ -80,16 +80,26 @@ const isActive = (href: string) =>
 </header>
 
 <script>
-  const header = document.getElementById('site-header');
+  // The router replaces the header on every navigation, so nothing here may
+  // hold on to an element. The scroll handler re-queries, and the menu button
+  // is handled by delegation from the document, which survives a swap.
+  let header: HTMLElement | null = null;
   const onScroll = () => header?.classList.toggle('border-line', window.scrollY > 8);
-  onScroll();
+
+  const sync = () => {
+    header = document.getElementById('site-header');
+    onScroll();
+  };
+  sync();
+  document.addEventListener('astro:page-load', sync);
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  const toggle = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-  toggle?.addEventListener('click', () => {
+  document.addEventListener('click', (e) => {
+    const toggle = (e.target as HTMLElement | null)?.closest?.('#menu-toggle');
+    if (!(toggle instanceof HTMLElement)) return;
     const open = toggle.getAttribute('aria-expanded') === 'true';
     toggle.setAttribute('aria-expanded', String(!open));
-    if (menu) (menu as HTMLElement).hidden = open;
+    const menu = document.getElementById('mobile-menu');
+    if (menu) menu.hidden = open;
   });
 </script>

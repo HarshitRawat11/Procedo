@@ -45,6 +45,28 @@ export const directionsHref = contact.address
   : '';
 
 /**
+ * Analytics (#18). OFF until a provider is chosen — nothing is emitted while
+ * `provider` is 'none' or `id` is empty.
+ *
+ *   plausible  id = the domain registered with Plausible, e.g. 'procedoinfo.com'
+ *   umami      id = the website id from the Umami dashboard
+ *   ga4        id = the measurement id, e.g. 'G-XXXXXXXXXX'
+ *
+ * `host` is only for a self-hosted Plausible or Umami; leave it empty for the
+ * hosted service.
+ *
+ * Note: plausible and umami are cookieless and need no consent banner. GA4
+ * sets cookies, so choosing it means a cookie consent banner has to be built
+ * first — the site does not have one.
+ */
+export type AnalyticsProvider = 'none' | 'plausible' | 'umami' | 'ga4';
+export const analytics: { provider: AnalyticsProvider; id: string; host: string } = {
+  provider: 'none',
+  id: '',
+  host: '',
+};
+
+/**
  * Social links. TODO: replace `#` with the real profile URL.
  * Links still pointing at `#` are automatically hidden in the footer.
  */

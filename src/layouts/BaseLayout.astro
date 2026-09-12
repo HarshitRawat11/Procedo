@@ -6,6 +6,8 @@ import '@fontsource-variable/inter'; // single sans for all type (GitHub-style)
 import '@fontsource/ibm-plex-mono/400.css'; // mono — small eyebrow labels only
 import '@fontsource/ibm-plex-mono/500.css';
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import Analytics from '../components/Analytics.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
@@ -62,6 +64,23 @@ const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.t
 
     <slot name="head" />
 
+    <Analytics />
+
+    {/*
+      Client-side routing, so navigation cross-fades instead of flashing white.
+      About 10 kB of JS — the only runtime cost on the site beyond the three
+      small scripts below.
+
+      It swaps <body>, so anything holding a reference to an element must
+      re-bind on `astro:page-load`. Three scripts do: the reveal observer
+      below, Header, and ContactForm. ContactForm is the one that matters —
+      its module would otherwise execute only once, and a second visit to
+      /contact in the same session would leave the form unbound, native-POST
+      to Web3Forms and take the visitor off the site instead of showing the
+      success card.
+    */}
+    <ClientRouter />
+
     <!-- Enable scroll-reveal only when motion is allowed AND it's supported.
          Runs synchronously before paint so content never flashes hidden. -->
     <script is:inline>
@@ -93,6 +112,9 @@ const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.t
       // Add `.is-visible` as elements enter the viewport. Only runs when the
       // `.reveal` class is present (set by the inline head script above);
       // otherwise content is already visible, so there is nothing to do.
+      //
+      // One observer for the life of the tab; `scan()` re-runs after every
+      // client-side navigation, since the router replaces the elements.
       if (document.documentElement.classList.contains('reveal')) {
         const io = new IntersectionObserver(
           (entries) => {
@@ -105,7 +127,10 @@ const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.t
           },
           { rootMargin: '0px 0px -10% 0px', threshold: 0.05 },
         );
-        document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+        const scan = () =>
+          document.querySelectorAll('[data-reveal]:not(.is-visible)').forEach((el) => io.observe(el));
+        scan();
+        document.addEventListener('astro:page-load', scan);
       }
     </script>
   </body>

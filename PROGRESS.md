@@ -36,9 +36,9 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. Four scenes exist: QuietScene (404, contact success, `/our-mission`), UptimeScene (`/uptime`), the kept Power/Datacenter concept, and **DeskScene**, adopted on **Careers** 2026-09-07 — first illustration to clear the loop end to end |
 | 16 | Deployment | 🟡 | Needs you to connect the repo | **Client preview deploy prepared 2026-09-07.** `netlify.toml` committed: build config plus `X-Robots-Tag: noindex, nofollow` on every response, so the preview can never be indexed while the legal pages are unreviewed. Connect `HarshitRawat11/Procedo` at app.netlify.com and it auto-deploys on push. Production on procedoinfo.com is still a separate, later decision — host unknown |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
-| 18 | Analytics | ⏸️ | Parked 2026-08-30 | Recommendation on record: Cloudflare Web Analytics (free, cookieless, no consent banner needed). ~5 min to add whenever you want it |
+| 18 | Analytics | 🟡 | Wired; waiting on a provider | Wiring done 2026-09-12: `analytics` in `site.ts` plus `Analytics.astro`, supporting **Plausible**, **Umami** and **GA4**. Emits nothing at all while `provider` is `'none'` — turning it on is a two-line edit, no code change. Plausible/Umami are cookieless; **GA4 would require a cookie consent banner that does not exist**, so it must not be switched on without building one first. Provider choice is on the client (see `CLIENT-PENDING.txt`) |
 | 19 | Photography / real imagery | ✅ | — | **Decided 2026-08-30: no photography.** The illustration-and-icon style is a deliberate choice, not a gap. Revisit only if real project photos become available |
-| 20 | Dark mode | ⏸️ | Parked 2026-08-30 — client decision | Big change; user will raise with the client. No `prefers-color-scheme` handling exists today |
+| 20 | Dark mode | ❌ | **Rejected by the client 2026-09-12** | Closed. The site stays light-only; no `prefers-color-scheme` handling anywhere, and none is to be added |
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
 | 22 | `/uptime` illustration concept ("power cut at 3am, nobody noticed") | 🟡 | Not yet matching the bar — see below | 2026-08-30 verdict: "better than the previous 5" but still short of `/quiet` and the Google references. Parked, not reworked — see `procedo-illustration-approach` memory for a color/frame-share theory to test on the next attempt |
 | 23 | Illustration technique — outline vs flat colour | ✅ | — | **Decided 2026-09-06: technique B.** Applied to all three QuietScene call sites 2026-09-07 — the 404, the contact-form success state and `/our-mission`. `QuietScene` takes a `palette` prop (`outline` default, `coloured`); every live instance now passes `coloured` |
@@ -51,7 +51,9 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 30 | Blog / MDX plumbing | ✅ | — | **Removed 2026-09-10** on Harshit's call ("no blog for now"). `@astrojs/mdx` and `@astrojs/rss` are out of `package.json`, the lockfile and `astro.config.mjs`; there was never an `.mdx` document or an RSS route to lose |
 | 31 | Structured data | ✅ | — | Builders in `src/lib/schema.ts`, so no page restates the company. Organization now carries **contactPoint** (support and sales) and **areaServed: India**; Services carries its five competencies as **Service** nodes anchored to their sections, with an Organization stub so the `provider` reference resolves in-document; Company, Our Mission, Careers and Contact each carry a **BreadcrumbList**. Verified on the built output: one block per page, all in `<head>`, all parse |
 | 32 | `robots.txt` | ✅ | — | Added 2026-09-10; it was a 404. Allow all, plus the sitemap. Names no preview paths deliberately — a `Disallow` line advertises the routes it hides — and the Netlify preview's `X-Robots-Tag` header overrides it on that host |
-| 33 | View transitions | ⏸️ | Declined for now — needs a decision | Astro's `ClientRouter` would need three scripts converted to `astro:page-load`: the reveal observer, the header (scroll + mobile toggle) and the **contact form**. If the form's handler failed to attach the form would native-POST to Web3Forms and the visitor would land on Web3Forms' own page instead of the success card — a silent regression on the only conversion path, while the client is reviewing previews. Worth doing as an isolated change with its own verification pass, not folded into other work |
+| 33 | View transitions | ✅ | — | Done 2026-09-12. `ClientRouter` in `BaseLayout`, ~15.9 kB of JS (the only runtime JS on the site). All three element-holding scripts rebound on `astro:page-load`: the reveal observer re-scans, `Header` re-queries and delegates its menu click, and **ContactForm binds per page load** with a `data-bound` guard — the silent failure this was declined for last time. Verified live: second client-side visit to `/contact` binds and intercepts the submit |
+| 34 | Preview pages parked | ✅ | — | 2026-09-12, on Harshit's instruction: all ten concept/preview routes prefixed with `_` so Astro excludes them from routing. Nothing deleted; the build drops from 20 pages to 10. The sitemap filter is kept as a safety net for un-parking |
+| 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
 
 ---
 
@@ -66,6 +68,39 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-12
+- **Preview pages parked** (#34). All ten prefixed with `_`; Astro drops them
+  from routing, so the build goes 20 pages → 10 and none is reachable even
+  locally. Nothing deleted, nothing rewritten — un-parking is removing one
+  character. The sitemap filter stays as a net.
+- **`CLIENT-PENDING.txt`** (#35) — one page for the client, in plain language:
+  the legal sign-off that is blocking launch, then domain, analytics choice,
+  LinkedIn, proof, engagement process, FAQs, WhatsApp. It also lists what is
+  already decided (dark mode rejected, no blog, no photography) so those do
+  not get reopened.
+- **View transitions done** (#33), having declined them two days ago. The
+  reason for declining was real and is now closed out: with client-side
+  routing an ES module executes once, so a second visit to `/contact` in the
+  same session would have left the form unbound — it would have native-POSTed
+  to Web3Forms and taken the visitor off the site. All three scripts now bind
+  on `astro:page-load`: the reveal observer re-scans for
+  `[data-reveal]:not(.is-visible)`, Header re-queries its element and handles
+  the menu button by delegation from `document`, and ContactForm binds per
+  page load behind a `data-bound` guard.
+- **Analytics wired** (#18) — Plausible, Umami or GA4, off until a provider is
+  named. GA4 carries a condition worth repeating: it sets cookies, so it must
+  not be enabled before a consent banner exists.
+- **Dark mode closed** (#20) — rejected by the client.
+- Verified on the built output: second client-side visit to `/contact` has
+  `data-bound="true"` and intercepts a dispatched submit; nav active state
+  follows the router; no console errors; 10 pages, 0/0/0.
+- **A mistake worth recording.** To prove the submit handler was attached I
+  dispatched a real `submit` event, which ran the real handler and POSTed an
+  empty enquiry to Web3Forms. It was accepted, so a blank enquiry landed in
+  `contact@procedoinfo.com` at about 21:13 IST on 2026-09-12. Reported to
+  Harshit to delete. `form.dataset.bound` already answered the question;
+  never fire a live endpoint to check a listener exists.
 
 ### 2026-09-10 (evening, later)
 - **Vignette rebalanced.** Harshit: too much room below the cat, too little

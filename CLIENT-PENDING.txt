@@ -1,0 +1,93 @@
+PROCEDO INFOSYSTEMS — WEBSITE: WHAT WE NEED FROM YOU
+Updated 12 September 2026
+
+The site is built and complete. Everything below is waiting on your side.
+Nothing on this list is blocked on development work.
+
+
+BLOCKING LAUNCH — 1 ITEM
+------------------------------------------------------------------------
+1. LEGAL SIGN-OFF
+   The Privacy Policy, Terms of Use and Cookie Policy pages carry the text
+   from your previous website. Nobody has reviewed it against the current
+   site. Your legal advisor needs to read all three and either approve
+   them or send corrections.
+
+   This is the only thing standing between the site and going live.
+
+
+NEEDED TO GO LIVE
+------------------------------------------------------------------------
+2. DOMAIN
+   Confirmation to point procedoinfo.com at the new build, and access to
+   the DNS records. The build is ready; this is a 15-minute change once
+   you say go.
+
+3. ANALYTICS — YOUR CHOICE OF TOOL
+   The site is wired for analytics but switched off until you pick one.
+   Two options:
+
+     a) Plausible or Umami — no cookies, no consent banner needed,
+        paid (roughly USD 9/month) or self-hosted.
+     b) Google Analytics 4 — free, but it sets cookies, so the site
+        would then need a cookie consent banner to stay compliant.
+
+   Tell us which, and send the account/site ID. Our recommendation is
+   (a): it keeps the site free of consent pop-ups.
+
+
+NEEDED TO FINISH THE CONTENT
+------------------------------------------------------------------------
+4. LINKEDIN URL
+   The footer has a LinkedIn icon ready. It stays hidden until you send
+   the profile URL.
+
+5. PROOF — ANY OF THE FOLLOWING
+   The site currently makes no claims it cannot back up, which is correct
+   but means there is no third-party proof anywhere. Whatever you can
+   share helps:
+     - Client names or logos we are permitted to display
+     - Two or three short project stories (what was needed, what was
+       delivered, what changed)
+     - OEM partnerships, authorisations or certifications
+     - Any certifications the company holds (ISO, MSME, etc.)
+
+   If none of this can be shared publicly yet, say so and we will leave
+   the section out rather than pad it.
+
+6. HOW A PROJECT ACTUALLY RUNS
+   Four to six steps, in your words — for example: site survey, design
+   and BOQ, procurement, installation and commissioning, handover, AMC.
+   Prospective clients ask "what happens after I call you", and the site
+   has no answer today.
+
+7. FIVE OR SIX FAQs
+   The questions you are actually asked on a first call, with your
+   answers. Typical ones: minimum project size, geographic coverage,
+   support/SLA terms, AMC options, lead times.
+
+8. WHATSAPP
+   Is +91 9958896172 a WhatsApp Business number? If yes, we will add a
+   WhatsApp button. If a different number is used for enquiries, send it.
+
+
+ALREADY DECIDED — NO ACTION NEEDED
+------------------------------------------------------------------------
+   Dark mode                      Rejected. Closed.
+   Photography                    Not used. Illustrations instead.
+   Blog                           Not wanted. Removed.
+   Services copy revision         Applied in full.
+   Office address, phone, email   In place and working.
+   Contact form                   Live and tested with real submissions.
+
+
+ILLUSTRATIONS
+------------------------------------------------------------------------
+   Five illustrations are drawn and ready. They sit on internal preview
+   pages for now and are not on the public site. We will bring them
+   forward for your review once the items above are moving.
+
+
+QUESTIONS
+------------------------------------------------------------------------
+   contact@procedoinfo.com

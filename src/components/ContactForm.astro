@@ -183,11 +183,21 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
 </div>
 
 <script>
-  const form = document.getElementById('contact-form') as HTMLFormElement | null;
-  const status = document.getElementById('cf-status');
-  const labelEl = form?.querySelector('[data-submit-label]');
+  // Bound on every page load, not once per module. With client-side routing an
+  // ES module executes only the first time it is fetched, so a second visit to
+  // /contact in the same session would otherwise leave the form unbound: it
+  // would native-POST to Web3Forms and the visitor would land on Web3Forms'
+  // own page instead of the success card. `astro:page-load` fires on the
+  // first load too, and `data-bound` keeps the handler to one per element.
+  const bindContactForm = () => {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const status = document.getElementById('cf-status');
+    const labelEl = form?.querySelector('[data-submit-label]');
 
-  if (form && status && labelEl && form.dataset.ready === 'true') {
+    if (!form || !status || !labelEl) return;
+    if (form.dataset.ready !== 'true' || form.dataset.bound === 'true') return;
+    form.dataset.bound = 'true';
+
     const show = (msg: string, ok: boolean) => {
       status.textContent = msg;
       status.hidden = false;
@@ -229,5 +239,8 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
         labelEl.textContent = original;
       }
     });
-  }
+  };
+
+  bindContactForm();
+  document.addEventListener('astro:page-load', bindContactForm);
 </script>

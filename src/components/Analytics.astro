@@ -1,0 +1,46 @@
+---
+/* ============================================================================
+ *  Analytics — off until a provider is chosen (#18).
+ *
+ *  Renders nothing at all while `analytics.provider` is 'none' or the id is
+ *  empty, which is the CLAUDE.md §3 pattern: missing data hides the feature
+ *  rather than emitting a broken tag. Turning it on is a two-line edit in
+ *  src/data/site.ts — no code change here.
+ *
+ *  Which to choose:
+ *    plausible / umami — cookieless, so no consent banner is required.
+ *    ga4              — free, but it sets cookies; switching it on means the
+ *                       site also needs a cookie consent banner to stay
+ *                       compliant, which does not exist yet. Do not enable
+ *                       GA4 without building that first.
+ *
+ *  All three track client-side navigations on their own (the site uses
+ *  Astro's ClientRouter), so no manual pageview call is wired here. Worth
+ *  confirming in the provider's dashboard on the day it is switched on:
+ *  visit two pages via the nav and check both appear.
+ * ========================================================================== */
+import { analytics } from '../data/site';
+
+const { provider, id, host } = analytics;
+const enabled = provider !== 'none' && id.trim() !== '';
+
+const plausibleSrc = `${host || 'https://plausible.io'}/js/script.js`;
+const umamiSrc = `${host || 'https://cloud.umami.is'}/script.js`;
+const ga4Src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+---
+
+{enabled && provider === 'plausible' && <script is:inline defer data-domain={id} src={plausibleSrc} />}
+
+{enabled && provider === 'umami' && <script is:inline defer data-website-id={id} src={umamiSrc} />}
+
+{
+  enabled && provider === 'ga4' && (
+    <>
+      <script is:inline async src={ga4Src} />
+      <script
+        is:inline
+        set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${id}');`}
+      />
+    </>
+  )
+}

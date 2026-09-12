@@ -12,9 +12,13 @@ export default defineConfig({
   integrations: [
     // No MDX and no RSS: there is no blog and none is planned (Harshit,
     // 2026-09-10). Both packages were removed rather than left installed.
-    // Auto-generates /sitemap-index.xml for SEO. The routes listed below are
-    // standalone concept pages, not part of the real site, so they are kept out
-    // of the sitemap (they are also marked noindex and linked from nowhere).
+    // Auto-generates /sitemap-index.xml for SEO.
+    //
+    // The routes listed below are standalone concept and preview pages. As of
+    // 2026-09-12 they are PARKED: each file in src/pages/ carries a leading
+    // underscore, which Astro excludes from routing, so none of them is built
+    // at all. The filter stays as a safety net for whenever one is un-parked
+    // (drop the underscore) — without it a preview would walk into the sitemap.
     sitemap({
       filter: (page) =>
         ![

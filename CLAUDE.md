@@ -73,13 +73,24 @@ or branch protection — **confirm before deleting or overwriting anything**, an
 prefer additive changes. Preview work goes in a new file, never on top of a live
 page. Uncommitted work still has no undo.
 
-### 5. Concept and preview pages must be sealed off
+### 5. Concept and preview pages must be sealed off — and are currently parked
 Anything not part of the real site must be: not in `nav`, linked from nowhere,
 marked `noindex`, and excluded from the sitemap filter in `astro.config.mjs`.
-Current examples: `/uptime`, `/illustrations-preview`, `/404-preview`,
-`/careers-preview`. (`/quiet` and `/our-mission-preview` existed under this rule
-and were deleted — the first once its illustration was adopted, the second when
-its illustration was rejected outright on 2026-09-07.)
+
+**As of 2026-09-12 every one of them is PARKED**, on Harshit's instruction.
+Each file in `src/pages/` carries a leading underscore (`_hero-preview.astro`),
+which Astro excludes from routing, so none is built and none is reachable even
+locally. Nothing was deleted. To bring one back, drop the underscore — the
+sitemap filter still lists them, deliberately, so an un-parked page cannot walk
+into the sitemap by accident.
+
+Parked: `_404-preview`, `_careers-preview`, `_company-preview`,
+`_contact-preview`, `_contact-preview-b`, `_contact-preview-c`,
+`_hero-preview`, `_home-preview`, `_illustrations-preview`, `_uptime`.
+Their components stay in `src/components/preview/`.
+(`/quiet` and `/our-mission-preview` existed under this rule and were deleted —
+the first once its illustration was adopted, the second when its illustration
+was rejected outright on 2026-09-07.)
 
 ### 5b. No human figures in illustrations
 **Hard rule, set by Harshit on 2026-09-07.** Illustrations carry animal or
