@@ -55,7 +55,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 34 | Preview pages — parked, then reviewed | ✅ | — | Parked 2026-09-12; reviewed 2026-09-13. **Deleted:** `illustrations-preview`, `contact-preview` ×3, `hero-preview`, `home-preview` (recoverable from `3caa023`). **Still parked:** `_company-preview`, `_careers-preview` (pending refinement), `_404-preview`, `_uptime`. Every illustration component was kept — the pages went, the images did not |
 | 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
 | 36 | WhatsApp channel | ✅ | — | Number confirmed by Harshit 2026-09-13 — the same line as the phone. `contact.whatsapp` in `site.ts` with a derived `whatsappHref`; the channel drops out entirely if the number is ever cleared (§3). Live on the Contact page |
-| 37 | Illustration weight — the "subtle" pass | 🟡 | 1 of 5 refined | Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **And scale**: apparent size is subject width over CANVAS width — match the 420-wide canvas or the same cat draws larger. Standing: QuietScene 80.9/3.4 · **ReceptionScene 90.3/2.0 — done 2026-09-13** · DeskSceneWorking 61.7/9.6 · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
+| 37 | Illustration weight — the "subtle" pass | 🟡 | 2 of 5 refined | Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **And scale**: apparent size is subject width over CANVAS width — match the 420-wide canvas or the same cat draws larger. Standing: QuietScene 80.9/3.4 · **ReceptionScene 90.3/2.0 — done 2026-09-13** · **CareersScene 86.8/2.6 — done 2026-09-14, awaiting sign-off** · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
 
 ---
 
@@ -70,6 +70,37 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-14 — the careers scene, rebuilt
+- *"let us move to the careers image."* `DeskSceneWorking` passed Gate 1 but
+  failed Gate 1b at **9.6% dark against a 5% ceiling**, and was drawn in a
+  different hand from the 404. New component `CareersScene`; the old one is
+  left on disk until this is approved.
+- **Where the dark went.** The monitor was a solid navy rectangle, 76x64 on a
+  400x264 canvas — **4.6% of the frame in flat fill, on a budget of 5%**. Nearly
+  the whole allowance in one shape. The screen is now the 404 rack's pale blue
+  with a navy outline: weight carried by line.
+- **Four things ran off the edge** — desk (x150→400 on a 400 canvas), monitor
+  (324→400), floor line (8→400), pot (y300→380). Nothing in the new one touches
+  an edge; the ground line is 81% of the width, which is the 404's own ratio.
+- **Scale.** The old cat spanned 172 units of a 400 canvas: **43%**, against the
+  404's 20.4%. The new one is QuietScene's cat verbatim at 20.4%, and the desk
+  is ReceptionScene's desk unchanged — careers and contact are the same room.
+- Harshit chose the composition himself: desk as the single hero object, the
+  empty chair kept but dropped to prop scale (42 units, between the 404's mug at
+  34 and its plant at 36). The joke survives; the frame goes quiet.
+- **Gate 1b: 86.8% cream / 2.6% dark** against 61.7 / 9.6. Quieter than the
+  benchmark itself. Gate 1 all pass — curve 45%, spread 2.50, four widths.
+- **The paw had to break the mouse's outline.** The first cut had it wholly
+  inside, and it read as a hole cut in the mouse rather than a paw resting on
+  one. Recorded in the component.
+- **The card is the real problem, and it is not the drawing's fault.** careers.astro
+  gives the illustration `w-44 sm:w-52` — **176px / 208px**. At 208px this cat
+  renders **42px** wide against the 404's 78px, and the monitor, mouse and chair
+  stop reading altogether. Rendered at 176 / 208 / 288 / 352 to show it. The
+  parked preview page is set to 288px, which is the narrowest that holds
+  together; **the live page is untouched pending Harshit's call.** If it must
+  stay at 208px it needs a different, tighter drawing — not this one shrunk.
 
 ### 2026-09-13 (night, after sign-off) — three from Harshit, all measured
 - *"too much negative space in the contact form reduce it."* — and it was not the
