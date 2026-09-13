@@ -84,9 +84,16 @@ the sitemap filter still lists them, deliberately, so an un-parked page cannot
 walk into the sitemap by accident.
 
 Still parked, on Harshit's review of 2026-09-13:
-`_company-preview` and `_careers-preview` — both illustrations need the Gate 1b
-weight pass before they can be adopted; `_404-preview` and `_uptime` — older
-concept pages, no verdict yet.
+`_company-preview` — its illustration still needs the Gate 1b weight pass before
+it can be adopted; `_404-preview` and `_uptime` — older concept pages, no
+verdict yet.
+
+**Live, deliberately:** `careers-preview` (no underscore), un-parked 2026-09-14
+so the rebuilt `CareersScene` can be reviewed in context. Sealed exactly as
+everything else in §5 — noindex, in no nav, linked from nowhere, named in the
+sitemap filter. Its illustration box is `w-56 sm:w-72` where the live page has
+`w-44 sm:w-52`; that difference is the open question about card width, not an
+oversight. **Park it again once the scene is signed off.**
 
 **Parked 2026-09-13, after sign-off:** `_contact-animation-preview`. Added the
 same day at Harshit's request, and parked the moment he approved the sequence

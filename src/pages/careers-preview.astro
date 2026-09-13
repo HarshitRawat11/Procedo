@@ -3,13 +3,21 @@
  *  /careers-preview — PREVIEW ONLY. Sealed off per CLAUDE.md §5: noindex, in no
  *  nav, linked from nowhere, excluded from the sitemap filter.
  *
- *  The live Careers page, with DeskSceneWorking in the open application card in
- *  place of the sleeping DeskScene that ships today. Harshit asked for the cat
- *  "working rather than sleeping". Everything else is a faithful copy of
- *  src/pages/careers.astro; the live page is untouched.
+ *  The live Careers page, with CareersScene in the open application card in
+ *  place of the sleeping DeskScene that ships today. Everything else is a
+ *  faithful copy of src/pages/careers.astro; the live page is untouched.
  *
- *  Once approved: move DeskSceneWorking out of components/preview/, swap it in
- *  on careers.astro, retire DeskScene, then delete this page.
+ *  UN-PARKED 2026-09-14 so Harshit can look at the rebuilt illustration in
+ *  context. Sealed exactly as before — noindex, in no nav, linked from nowhere,
+ *  named in the sitemap filter. Park it again (leading underscore) once the
+ *  scene is signed off.
+ *
+ *  NOTE the illustration box here is w-56 / sm:w-72, which is WIDER than the
+ *  live page's w-44 / sm:w-52. That is the open question, not an oversight:
+ *  at 208px this drawing renders a 42px cat against the 404's 78px.
+ *
+ *  Once approved: move CareersScene out of components/preview/, swap it in on
+ *  careers.astro, retire DeskScene and DeskSceneWorking, then delete this page.
  * ========================================================================== */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
@@ -25,8 +33,10 @@ import { careers } from '../data/site';
   <div class="pv-banner">
     <Container>
       <p class="pv-banner-txt">
-        <strong>Internal preview.</strong> The Careers page with the cat at work rather than asleep.
-        Not linked from the site, not indexed.
+        <strong>Internal preview.</strong> The Careers page with <code>CareersScene</code> — the cat
+        at work, rebuilt in the 404's hand: 88.4% bare cream, 3.9% dark, against 61.7% / 9.6% before.
+        The illustration box is 288px here against the live page's 208px. Not linked from the site,
+        not indexed.
       </p>
     </Container>
   </div>

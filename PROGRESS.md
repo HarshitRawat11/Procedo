@@ -71,6 +71,22 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-14 (later still) — careers preview un-parked
+- *"add this to preview first."* `_careers-preview` → `careers-preview`: the
+  underscore comes off, which is the whole mechanism. Reachable at
+  `/careers-preview`.
+- Sealed exactly as §5 requires, and verified against the built output rather
+  than assumed: **noindex, nofollow** in the head; **absent from
+  sitemap-0.xml**; **no other page links to it**; already named in the sitemap
+  filter, so it could not have walked in by accident.
+- Verified in the browser: the scene renders at **288px** in its `sm:w-72` box,
+  viewBox `0 125 420 240`, five animations live (breathe, click, pip, sway,
+  tail), dark screen present, no chair, no console errors.
+- The box is deliberately wider than the live page's `sm:w-52`, and both the
+  page header and the on-page banner say so, so the difference cannot be
+  mistaken for an oversight.
+- **Park it again once the scene is signed off.** CLAUDE.md §5 updated to say so.
+
 ### 2026-09-14 (later) — chair out, screen black again
 - *"remove the chair completely and make the monitor screen black like before."*
   Both done. The chair is gone, not shrunk — and the component says so, because
