@@ -91,10 +91,13 @@ concept pages, no verdict yet.
 **Live, deliberately:** `contact-animation-preview` (no underscore), added
 2026-09-13 at Harshit's request. The reception sequence plays once and is
 triggered on the real site by actually sending a message, so there was no way to
-watch it twice without filing a real enquiry each time; this page gives it a
-replay button, a scrubber and beat jumps. It renders the real `ContactForm` in
-the real column, and its replay uses the production mechanism rather than
-imitating it. Everything else in §5 still applies to it — noindex, in no nav,
+watch it twice, or to walk the submission that leads to it, without filing a real
+enquiry each time. The page renders the real `ContactForm` in the real column
+and gives it a replay button, a scrubber, beat jumps and four answers the server
+can give: accepted, rejected, network failure, and a genuine live send behind a
+`confirm()`. **Only `window.fetch` is stubbed**, and only for the Web3Forms
+host — the submit handler, the "Sending…" label, `form.reset()`, the swap to the
+card and both error panels are the production code running for real. Everything else in §5 still applies to it — noindex, in no nav,
 linked from nowhere, listed in the sitemap filter. **Delete it once the sequence
 is signed off.**
 

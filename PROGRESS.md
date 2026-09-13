@@ -71,6 +71,40 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-13 (night, later) — the submission flow, walkable
+- *"i want to check in the contact form submission as well. give me that preview"*
+  → `/contact-animation-preview` now opens on the **form**, not the card, so the
+  whole journey can be walked end to end.
+- **Only `window.fetch` is stubbed, and only for the Web3Forms host.**
+  ContactForm's submit handler is not touched, wrapped or re-implemented — so
+  the disabled state, the "Sending…" label, the JSON parse, `form.reset()`, the
+  swap to the card and both error branches are the production code path. The one
+  thing that does not happen is the packet leaving the machine.
+- Four answers, chosen before submitting: **accepted · rejected · network fails ·
+  live**. Verified each on the built page:
+  · accepted → label goes "Send message" → "Sending…" → back; card appears,
+    form hides, fields reset, **16 animations at currentTime 0** — the sequence
+    starts by itself through the real handler, not by anything the page does.
+  · rejected → 422 with a message; red panel, card stays hidden, form keeps
+    what was typed.
+  · network fails → the fetch rejects; the real fallback appears, pointing at
+    contact@procedoinfo.com.
+  · Confirmed by `read_network_requests`: **no request to web3forms was made at
+    any point**.
+- **Live mode really does email the inbox**, so it sits behind a `confirm()` that
+  names the address, wired as a capture listener on `document` — which runs
+  before the form's own handler, so declining stops the event ever reaching it.
+  Tested the decline path with a hard fetch blocker in place so a broken guard
+  could not have sent anything: confirm asked, network never reached, form
+  untouched.
+- The card's reveal is watched with a `MutationObserver` on its `hidden`
+  attribute rather than by hooking the submit handler, so the timeline controls
+  arm themselves however the card arrives — real submit or "Skip to the card".
+- Timeline controls are disabled while the form is up, and the primary button
+  reads "Skip to the card" or "Replay" depending on what is on screen.
+- Native validation still blocks an empty form (name, email, message). Build
+  clean: 51 files, 0 errors / 0 warnings / 0 hints, no console errors.
+
 ### 2026-09-13 (night) — a preview page for the sequence
 - *"give me a preview page of this new contact animation"* → `/contact-animation-preview`,
   live rather than parked so it is actually reachable, and sealed per CLAUDE.md

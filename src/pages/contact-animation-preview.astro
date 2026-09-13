@@ -22,6 +22,16 @@
  *  max-width of its own where QuietScene caps at 22rem. The controls occupy the
  *  left column, which is the contact details on the real page.
  *
+ *  THE SUBMISSION FLOW. The page opens on the form, not the card, so the
+ *  whole journey can be walked. ContactForm's own submit handler is NOT
+ *  touched — only `window.fetch` is stubbed, and only for the Web3Forms host.
+ *  So the disabled-button state, the "Sending…" label, the JSON parse,
+ *  `form.reset()`, the swap to the card and both error panels are the
+ *  production code running for real; the only thing that does not happen is
+ *  the packet leaving the machine. Four answers can be chosen: accepted,
+ *  rejected, network failure, and a genuine live send, which is behind a
+ *  confirm() because it really does email contactForm.deliversTo.
+ *
  *  Once the sequence is signed off: delete this page. The illustration stays.
  * ========================================================================== */
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -29,7 +39,7 @@ import Container from '../components/Container.astro';
 import ContactForm from '../components/ContactForm.astro';
 import ReceptionScene from '../components/ReceptionScene.astro';
 import QuietScene from '../components/QuietScene.astro';
-import { receptionBand } from '../data/site';
+import { contactForm, receptionBand } from '../data/site';
 
 /** The beats, in milliseconds. These mirror the keyframe percentages in
  *  ReceptionScene — 5200ms total. If the component's timeline changes, change
@@ -47,9 +57,9 @@ const BEATS = [
   <div class="pv-banner">
     <Container>
       <p class="pv-banner-txt">
-        <strong>Internal preview.</strong> The contact success card with its five-second sequence, in
-        the real component and at the real width. The form itself is hidden on load — nothing on this
-        page can send an enquiry. Not linked from the site, not indexed.
+        <strong>Internal preview.</strong> The real contact form and the real success card, at the
+        real width. Submitting runs the whole production path with only the network call stubbed,
+        so nothing is sent unless you pick <em>live</em>. Not linked from the site, not indexed.
       </p>
     </Container>
   </div>
@@ -58,18 +68,34 @@ const BEATS = [
     <Container>
       <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
         <!-- Controls. On the live page this column holds the contact details. -->
-        <div id="pv-controls">
+        <div id="pv-controls" data-delivers={contactForm.deliversTo}>
           <h1 class="text-[clamp(1.6rem,3.2vw,2.1rem)] font-semibold leading-tight text-navy-950">
             It sleeps, it rings, it answers
           </h1>
           <p class="mt-3 max-w-md text-sm leading-relaxed text-slate-600">
-            5.2 seconds, played once, held on the last frame. On the live site it starts by itself the
-            moment a message sends, because the card is <code>hidden</code> until then and
-            <code>display: none</code> cancels CSS animations. Replay does the same thing.
+            Fill the form in and send it. The sequence starts by itself the moment the card takes
+            over, because the card is <code>hidden</code> until then and <code>display: none</code>
+            cancels CSS animations — 5.2 seconds, played once, held on the last frame.
           </p>
 
-          <div class="pv-row mt-7">
-            <button id="pv-replay" type="button" class="pv-btn pv-btn-solid">Replay</button>
+          <p class="pv-lab mt-8">On submit, have the server say</p>
+          <div class="pv-row">
+            <button type="button" class="pv-btn pv-btn-sm is-on" data-mode="ok">accepted</button>
+            <button type="button" class="pv-btn pv-btn-sm" data-mode="error">rejected</button>
+            <button type="button" class="pv-btn pv-btn-sm" data-mode="network">network fails</button>
+            <button type="button" class="pv-btn pv-btn-sm pv-btn-live" data-mode="live">
+              live — really sends
+            </button>
+          </div>
+          <p id="pv-mode-note" class="pv-note mt-3" />
+
+          <div class="pv-row mt-5">
+            <button id="pv-primary" type="button" class="pv-btn pv-btn-solid">Skip to the card</button>
+            <button id="pv-back" type="button" class="pv-btn">Back to the form</button>
+          </div>
+
+          <p class="pv-lab mt-8">The sequence</p>
+          <div class="pv-row">
             <button id="pv-play" type="button" class="pv-btn">Pause</button>
             <span id="pv-time" class="pv-time">0.00s</span>
           </div>
@@ -204,6 +230,15 @@ const BEATS = [
     outline: 2px solid var(--color-brand-500);
     outline-offset: 2px;
   }
+  .pv-btn:disabled,
+  .pv-scrub:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .pv-btn:disabled:hover {
+    border-color: var(--color-line);
+    color: var(--color-navy-800);
+  }
   .pv-btn-sm {
     padding: 0.35rem 0.7rem;
     font-size: 0.8125rem;
@@ -217,6 +252,19 @@ const BEATS = [
     background: var(--color-navy-900);
     border-color: var(--color-navy-900);
     color: #fff;
+  }
+  .pv-btn-live {
+    border-color: #d97706;
+    color: #b45309;
+  }
+  .pv-btn-live.is-on {
+    background: #fffbeb;
+    border-color: #d97706;
+    color: #b45309;
+  }
+  .pv-note-live {
+    border-left-color: #d97706;
+    color: #92400e;
   }
   .pv-btn.is-on {
     border-color: var(--color-brand-500);
@@ -292,6 +340,16 @@ const BEATS = [
      an ES module runs only the first time it is fetched, so a second visit in
      the same session would leave the controls dead. */
   const TOTAL = 5200;
+  const ENDPOINT = 'api.web3forms.com';
+
+  type Mode = 'ok' | 'error' | 'network' | 'live';
+
+  const NOTES: Record<Mode, string> = {
+    ok: 'Nothing leaves this machine. The form’s own handler runs end to end — the button says “Sending…”, the fields reset, the card takes over and the sequence begins — with only the network call stubbed out.',
+    error: 'The stub answers 422 with a message, so you get the red panel and the form stays put with everything you typed still in it.',
+    network: 'The request rejects outright, so you get the network-error fallback that points at the email address.',
+    live: 'This one really posts to Web3Forms, and a real enquiry really lands in the inbox. You will be asked to confirm each time.',
+  };
 
   const bindPreview = () => {
     const panel = document.getElementById('pv-controls');
@@ -300,36 +358,119 @@ const BEATS = [
     if (!panel || !card || !form || panel.dataset.bound === 'true') return;
     panel.dataset.bound = 'true';
 
-    /* Exactly what the live submit handler does once a message has sent. */
-    form.hidden = true;
-    card.hidden = false;
-
     const scrub = document.getElementById('pv-scrub') as HTMLInputElement | null;
     const readout = document.getElementById('pv-time');
-    const playBtn = document.getElementById('pv-play');
-    const replayBtn = document.getElementById('pv-replay');
+    const playBtn = document.getElementById('pv-play') as HTMLButtonElement | null;
+    const primary = document.getElementById('pv-primary') as HTMLButtonElement | null;
+    const backBtn = document.getElementById('pv-back') as HTMLButtonElement | null;
+    const modeNote = document.getElementById('pv-mode-note');
     const note = document.getElementById('pv-note');
-    if (!scrub || !readout || !playBtn || !replayBtn || !note) return;
+    if (!scrub || !readout || !playBtn || !primary || !backBtn || !modeNote || !note) return;
 
     /* Scoped to this one card, so the 404 cat further down is untouched. */
     const anims = () => card.getAnimations({ subtree: true });
     /* `pickup` is the clock: it is the one-shot that spans the whole story. */
     const clock = () => anims().find((a) => (a as CSSAnimation).animationName === 'pickup');
 
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
       note.hidden = false;
-      panel.querySelectorAll('button, input').forEach((el) => {
-        (el as HTMLButtonElement | HTMLInputElement).disabled = true;
-      });
       readout.textContent = 'still';
-      return;
     }
 
+    /* ──────────────────────────────────────────────────────────────────────
+       THE SUBMISSION STUB
+
+       ContactForm's handler is not touched, wrapped or re-implemented. The one
+       thing replaced is `window.fetch`, and only for requests to the Web3Forms
+       host — so the disabled state, the "Sending…" label, the JSON parse,
+       `form.reset()`, the swap to the card and both error branches are the
+       real code path. Anything else the page fetches goes out normally.
+       ────────────────────────────────────────────────────────────────────── */
+    const REAL_FETCH = window.fetch.bind(window);
+    let mode: Mode = 'ok';
+
+    window.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
+      const url = typeof input === 'string' ? input : input instanceof Request ? input.url : String(input);
+      if (mode === 'live' || !url.includes(ENDPOINT)) return REAL_FETCH(input, init);
+
+      return new Promise<Response>((resolve, reject) => {
+        /* a beat of latency, or the "Sending…" label is never seen */
+        window.setTimeout(() => {
+          if (mode === 'network') {
+            reject(new TypeError('Preview: simulated network failure'));
+            return;
+          }
+          const ok = mode === 'ok';
+          resolve(
+            new Response(
+              JSON.stringify({
+                success: ok,
+                message: ok
+                  ? 'Preview: accepted. Nothing was sent.'
+                  : 'Preview: the server rejected this message (simulated).',
+              }),
+              { status: ok ? 200 : 422, headers: { 'Content-Type': 'application/json' } },
+            ),
+          );
+        }, 650);
+      });
+    }) as typeof window.fetch;
+
+    /* A live send is a real email to a real inbox, so it is confirmed every
+       time. Capture phase on `document`, which runs before the form's own
+       handler, and `stopPropagation` keeps the event from ever reaching it. */
+    const delivers = panel.dataset.delivers ?? 'the inbox';
+    document.addEventListener(
+      'submit',
+      (e) => {
+        if (mode !== 'live' || e.target !== form) return;
+        if (window.confirm('This really posts to Web3Forms and really emails ' + delivers + '.\n\nSend it?')) return;
+        e.preventDefault();
+        e.stopPropagation();
+      },
+      true,
+    );
+
+    /* ── controls ── */
     let rate = 1;
     let scrubbing = false;
 
+    const showingCard = () => !card.hidden;
+    const timeline = () => [
+      playBtn,
+      scrub,
+      ...Array.from(panel.querySelectorAll<HTMLButtonElement>('[data-beat], [data-rate]')),
+    ];
+
     const paint = (t: number) => {
-      readout.textContent = (t / 1000).toFixed(2) + 's';
+      if (!reduced) readout.textContent = (t / 1000).toFixed(2) + 's';
+    };
+
+    const syncMode = () => {
+      panel.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) => {
+        b.classList.toggle('is-on', b.dataset.mode === mode);
+      });
+      modeNote.textContent = NOTES[mode];
+      modeNote.classList.toggle('pv-note-live', mode === 'live');
+    };
+
+    const syncState = () => {
+      const on = showingCard();
+      primary.textContent = on ? 'Replay' : 'Skip to the card';
+      backBtn.disabled = !on;
+      timeline().forEach((el) => {
+        el.disabled = !on || reduced;
+      });
+    };
+
+    const started = () => {
+      anims().forEach((a) => {
+        a.playbackRate = rate;
+      });
+      playBtn.textContent = 'Pause';
+      paint(0);
+      scrub.value = '0';
     };
 
     const seek = (t: number) => {
@@ -343,26 +484,35 @@ const BEATS = [
       paint(t);
     };
 
-    replayBtn.addEventListener('click', () => {
+    primary.addEventListener('click', () => {
       /* Hiding the card takes it out of the box tree, which CANCELS its
          animations; showing it again creates them afresh at time zero. That is
-         the production mechanism - it is how the sequence starts when a message
-         sends - and nothing here imitates it.
+         the production mechanism — it is how the sequence starts when a message
+         sends — and nothing here imitates it.
          Reading offsetHeight in between forces the style and layout pass that
          makes the cancellation actually happen. Without it the two writes can
          be coalesced into one frame and nothing restarts; measured in a context
          that was not painting, the animations survived at their old currentTime.
          With the forced reflow: 15 animations before, 0 while hidden, 16 at
          currentTime 0 after. */
-      card.hidden = true;
-      void card.offsetHeight;
+      if (showingCard()) {
+        card.hidden = true;
+        void card.offsetHeight;
+      }
+      form.hidden = true;
       card.hidden = false;
       void card.offsetHeight;
-      anims().forEach((a) => {
-        a.playbackRate = rate;
-      });
-      playBtn.textContent = 'Pause';
+      started();
+      syncState();
+    });
+
+    backBtn.addEventListener('click', () => {
+      card.hidden = true;
+      form.hidden = false;
+      void form.offsetHeight;
       paint(0);
+      scrub.value = '0';
+      syncState();
     });
 
     playBtn.addEventListener('click', () => {
@@ -387,6 +537,13 @@ const BEATS = [
       });
     });
 
+    panel.querySelectorAll<HTMLButtonElement>('[data-mode]').forEach((b) => {
+      b.addEventListener('click', () => {
+        mode = (b.dataset.mode ?? 'ok') as Mode;
+        syncMode();
+      });
+    });
+
     scrub.addEventListener('input', () => {
       scrubbing = true;
       seek(Number(scrub.value));
@@ -395,13 +552,23 @@ const BEATS = [
       scrubbing = false;
     });
 
+    /* The form's own handler is what reveals the card after a real submit, so
+       watch the attribute rather than trying to hook the handler. */
+    new MutationObserver(() => {
+      if (showingCard() && playBtn.textContent !== 'Pause') started();
+      syncState();
+    }).observe(card, { attributes: true, attributeFilter: ['hidden'] });
+
     const tick = () => {
       const c = clock();
       const t = Math.max(0, Math.min(TOTAL, Number(c?.currentTime ?? 0)));
-      if (!scrubbing) scrub.value = String(t);
-      paint(t);
+      if (!scrubbing && showingCard()) scrub.value = String(t);
+      if (showingCard()) paint(t);
       requestAnimationFrame(tick);
     };
+
+    syncMode();
+    syncState();
     tick();
   };
 
