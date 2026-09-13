@@ -71,6 +71,25 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-13 (night, last) — the grass was not touching the pot, it was on it
+- *"on the left the grass and plant is touching almost, can you create a bit of
+  a gap"* — and it was worse than "almost". The rightmost blade ended at x=105
+  with a 3.5 stroke and a round cap, so its ink reached **106.75**; the pot rim
+  starts at x=106 with a 2 stroke, so its ink starts at **105**. They overlapped
+  by 1.75 units and read as one green blob.
+- **Cause:** QuietScene's plant lives on the RIGHT of its canvas, a clear 5 units
+  from the grass there. Bringing it over by `translate(-206 8)` set it down on
+  top of the left tuft, which nobody had moved to match.
+- **Fix:** move the tuft 12 units left, not the plant — the plant has only 8
+  units to the desk leg on its other side, so moving it right would have traded
+  one collision for another. Now 10.25 units of clear cream, about 9.5 at full
+  sway (both sway, and they lean towards each other at the extremes — checked).
+- The right side is unchanged and stays tighter at ~7 units of cream, which is
+  fine: a thin vertical desk leg beside grass reads as two things. A pot beside
+  grass does not.
+- Gates unchanged, as they should be for ink that only moved: 90.3% cream, 2.0%
+  dark, curve ratio 50%. Grid coordinates 20% → 19%. Build clean.
+
 ### 2026-09-13 (night, later) — the submission flow, walkable
 - *"i want to check in the contact form submission as well. give me that preview"*
   → `/contact-animation-preview` now opens on the **form**, not the card, so the

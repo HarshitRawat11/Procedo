@@ -258,10 +258,16 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
 
       <!-- ── Grass both sides, as on the 404 scene ── -->
       <g stroke={GRASS} stroke-width="3.5">
+        <!-- Shifted 12 units left of where a straight mirror of QuietScene would
+             put it. The plant came over by translate(-206 8) and landed on this
+             tuft: ink to 106.75 against a pot rim starting at 105, so they
+             overlapped and read as one blob. 12 units buys 10.25 of clear cream,
+             about 9 even at full sway. The plant could not move instead - it has
+             only 8 units to the desk leg on its other side. -->
         <g class="grass grass-b">
-          <path d="M92 300 C91 292 94 285 99 280" />
-          <path d="M99 300 C99 292 101 286 105 282" />
-          <path d="M105 300 C105 293 104 288 102 284" />
+          <path d="M80 300 C79 292 82 285 87 280" />
+          <path d="M87 300 C87 292 89 286 93 282" />
+          <path d="M93 300 C93 293 92 288 90 284" />
         </g>
         <g class="grass">
           <path d="M308 300 C307 292 310 285 315 280" />
