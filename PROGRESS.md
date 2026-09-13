@@ -85,18 +85,18 @@ Nothing is blocked on code.
   the same size on screen. That is the number that was missing.
 - **The cat is now literally the 404 cat** — QuietScene's own paths, moved by
   one translate. Circle head, closed eyes, one whisker each side, tucked-paw
-  ellipse, open-stroke tail, markings back to the pale  from the
-  darker  this scene had drifted to. Verified on the built pages:
+  ellipse, open-stroke tail, markings back to the pale `#CBD5E1` from the
+  darker `#93A3B8` this scene had drifted to. Verified on the built pages:
   both carry the identical body path and head circle. The animation timings are
   QuietScene's too — the scenes should move alike as well as look alike.
 - Everything else shrank to suit: desk 174 units against the 404 rack's 152,
   phone at mug scale, plant and grass tufts QuietScene's own and unscaled.
   90.4% cream, 2.0% dark.
-- **Working code deleted, deliberately**: the  state and the
+- **Working code deleted, deliberately**: the `oncall` state and the
   twelve-second ring-and-pickup loop. It needed an articulated paw to grip a
   handset and a body big enough to hold it at the ear; this cat has an
   eight-unit tucked paw and is asleep. The loop also had no caller left — the
-  success card only ever showed the hung-up still. Recoverable at .
+  success card only ever showed the hung-up still. Recoverable at `b3386c4`.
 - Lesson: Gate 1b needs a companion. Emptiness and scale are different
   failures, and passing one says nothing about the other.
 
