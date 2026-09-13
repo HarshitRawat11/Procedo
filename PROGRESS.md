@@ -55,7 +55,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 34 | Preview pages — parked, then reviewed | ✅ | — | Parked 2026-09-12; reviewed 2026-09-13. **Deleted:** `illustrations-preview`, `contact-preview` ×3, `hero-preview`, `home-preview` (recoverable from `3caa023`). **Still parked:** `_company-preview`, `_careers-preview` (pending refinement), `_404-preview`, `_uptime`. Every illustration component was kept — the pages went, the images did not |
 | 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
 | 36 | WhatsApp channel | ✅ | — | Number confirmed by Harshit 2026-09-13 — the same line as the phone. `contact.whatsapp` in `site.ts` with a derived `whatsappHref`; the channel drops out entirely if the number is ever cleared (§3). Live on the Contact page |
-| 37 | Illustration weight — the "subtle" pass | 🟡 | 1 of 5 refined | **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark, calibrated from QuietScene. Standing: QuietScene 80.9/3.4 PASS · **ReceptionScene 76.0/3.2 PASS — refined 2026-09-13** · DeskSceneWorking 61.7/9.6 (dark only) · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
+| 37 | Illustration weight — the "subtle" pass | 🟡 | 1 of 5 refined | **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. But weight was only half of it — apparent size is the subject width over the **canvas** width, so a scene on a narrower canvas draws the same cat larger. Standing: QuietScene 80.9/3.4 · **ReceptionScene 90.4/2.0 — rebuilt 2026-09-13** · DeskSceneWorking 61.7/9.6 · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
 
 ---
 
@@ -70,6 +70,35 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-13 (later still) — the pass corrected
+- **The first refinement was half a fix.** Harshit: *"see the 404 every
+  component is minisized and not loud. in the contact the cat is too big and
+  even the plant is also big. due to this you have to make desk and phone
+  big. colouring and design of the cat on the 404 and contact is different too
+  make them same."* All three points held.
+- **Apparent size is subject ÷ CANVAS width.** Gate 1b measures emptiness and
+  says nothing about scale, so the first pass hit 76% cream with a cat taking
+  45% of a 292-wide canvas — quiet by the metric, loud on the page. The 404
+  cat is 85.5 units on a **420**-wide canvas, 20.4%. This scene is now the same
+  canvas width and the same 20.4%, so at equal rendered width the two cats are
+  the same size on screen. That is the number that was missing.
+- **The cat is now literally the 404 cat** — QuietScene's own paths, moved by
+  one translate. Circle head, closed eyes, one whisker each side, tucked-paw
+  ellipse, open-stroke tail, markings back to the pale  from the
+  darker  this scene had drifted to. Verified on the built pages:
+  both carry the identical body path and head circle. The animation timings are
+  QuietScene's too — the scenes should move alike as well as look alike.
+- Everything else shrank to suit: desk 174 units against the 404 rack's 152,
+  phone at mug scale, plant and grass tufts QuietScene's own and unscaled.
+  90.4% cream, 2.0% dark.
+- **Working code deleted, deliberately**: the  state and the
+  twelve-second ring-and-pickup loop. It needed an articulated paw to grip a
+  handset and a body big enough to hold it at the ear; this cat has an
+  eight-unit tucked paw and is asleep. The loop also had no caller left — the
+  success card only ever showed the hung-up still. Recoverable at .
+- Lesson: Gate 1b needs a companion. Emptiness and scale are different
+  failures, and passing one says nothing about the other.
 
 ### 2026-09-13 (later) — the refinement pass begins
 - **ReceptionScene refined**, the first of five, and the only one live so the
