@@ -88,6 +88,16 @@ Still parked, on Harshit's review of 2026-09-13:
 weight pass before they can be adopted; `_404-preview` and `_uptime` — older
 concept pages, no verdict yet.
 
+**Live, deliberately:** `contact-animation-preview` (no underscore), added
+2026-09-13 at Harshit's request. The reception sequence plays once and is
+triggered on the real site by actually sending a message, so there was no way to
+watch it twice without filing a real enquiry each time; this page gives it a
+replay button, a scrubber and beat jumps. It renders the real `ContactForm` in
+the real column, and its replay uses the production mechanism rather than
+imitating it. Everything else in §5 still applies to it — noindex, in no nav,
+linked from nowhere, listed in the sitemap filter. **Delete it once the sequence
+is signed off.**
+
 **Deleted 2026-09-13** on his instruction, after review: `illustrations-preview`,
 `contact-preview`, `contact-preview-b`, `contact-preview-c`, `hero-preview`,
 `home-preview`. *The pages went; the illustrations did not.* Every scene

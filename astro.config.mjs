@@ -14,11 +14,15 @@ export default defineConfig({
     // 2026-09-10). Both packages were removed rather than left installed.
     // Auto-generates /sitemap-index.xml for SEO.
     //
-    // The routes listed below are standalone concept and preview pages. As of
-    // 2026-09-12 they are PARKED: each file in src/pages/ carries a leading
-    // underscore, which Astro excludes from routing, so none of them is built
-    // at all. The filter stays as a safety net for whenever one is un-parked
-    // (drop the underscore) — without it a preview would walk into the sitemap.
+    // The routes listed below are standalone concept and preview pages, none of
+    // which may reach the sitemap. Most are PARKED: the file in src/pages/
+    // carries a leading underscore, which Astro excludes from routing, so it is
+    // not built at all. The exception as of 2026-09-13 is
+    // /contact-animation-preview, which is live and reachable so Harshit can
+    // replay the reception sequence without filing a real enquiry each time —
+    // it is noindex and linked from nowhere, and this filter is what keeps it
+    // out of the sitemap. Entries stay listed after a page is parked again, as
+    // a safety net for whenever one is un-parked.
     sitemap({
       filter: (page) =>
         ![
@@ -32,6 +36,7 @@ export default defineConfig({
           '/contact-preview-b',
           '/contact-preview-c',
           '/hero-preview',
+          '/contact-animation-preview',
         ].some((p) => page.includes(p)),
     }),
     icon(), // build-time inlined Lucide icons (zero runtime JS)

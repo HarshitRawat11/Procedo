@@ -1,0 +1,409 @@
+---
+/* ============================================================================
+ *  /contact-animation-preview — PREVIEW ONLY. Sealed off per CLAUDE.md §5:
+ *  noindex, in no nav, linked from nowhere, excluded from the sitemap filter.
+ *
+ *  WHY IT EXISTS. The reception sequence plays once and holds on its last
+ *  frame, and on the real site it is triggered by actually sending a message.
+ *  So there was no way to watch it twice without filing a real enquiry each
+ *  time. This page gives it a replay button and a scrubber.
+ *
+ *  IT IS THE REAL COMPONENT, NOT A COPY. `ContactForm` is rendered whole, and
+ *  the script does exactly what the live submit handler does on success:
+ *  `form.hidden = true; success.hidden = false`. The replay button then hides
+ *  and re-shows that same card — which is the actual mechanism the sequence
+ *  relies on, since `display: none` cancels CSS animations and showing the
+ *  element again starts them from zero. Nothing here simulates anything.
+ *
+ *  THE COLUMN IS THE PRODUCTION COLUMN. Same `Container`, same
+ *  `grid gap-12 lg:grid-cols-2 lg:gap-16`, same white panel — so the drawing
+ *  renders at the width it renders at on /contact, whatever the viewport. That
+ *  width is fluid: 367px at 1024, 495px at 1280, because ReceptionScene has no
+ *  max-width of its own where QuietScene caps at 22rem. The controls occupy the
+ *  left column, which is the contact details on the real page.
+ *
+ *  Once the sequence is signed off: delete this page. The illustration stays.
+ * ========================================================================== */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import ContactForm from '../components/ContactForm.astro';
+import ReceptionScene from '../components/ReceptionScene.astro';
+import QuietScene from '../components/QuietScene.astro';
+import { receptionBand } from '../data/site';
+
+/** The beats, in milliseconds. These mirror the keyframe percentages in
+ *  ReceptionScene — 5200ms total. If the component's timeline changes, change
+ *  these with it. */
+const BEATS = [
+  { t: 300, label: 'asleep' },
+  { t: 1250, label: 'it rings' },
+  { t: 2950, label: 'wakes' },
+  { t: 3750, label: 'in the air' },
+  { t: 4400, label: 'on the call' },
+];
+---
+
+<BaseLayout title="Contact animation — preview" noindex>
+  <div class="pv-banner">
+    <Container>
+      <p class="pv-banner-txt">
+        <strong>Internal preview.</strong> The contact success card with its five-second sequence, in
+        the real component and at the real width. The form itself is hidden on load — nothing on this
+        page can send an enquiry. Not linked from the site, not indexed.
+      </p>
+    </Container>
+  </div>
+
+  <section class="bg-cream py-16 lg:py-24">
+    <Container>
+      <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <!-- Controls. On the live page this column holds the contact details. -->
+        <div id="pv-controls">
+          <h1 class="text-[clamp(1.6rem,3.2vw,2.1rem)] font-semibold leading-tight text-navy-950">
+            It sleeps, it rings, it answers
+          </h1>
+          <p class="mt-3 max-w-md text-sm leading-relaxed text-slate-600">
+            5.2 seconds, played once, held on the last frame. On the live site it starts by itself the
+            moment a message sends, because the card is <code>hidden</code> until then and
+            <code>display: none</code> cancels CSS animations. Replay does the same thing.
+          </p>
+
+          <div class="pv-row mt-7">
+            <button id="pv-replay" type="button" class="pv-btn pv-btn-solid">Replay</button>
+            <button id="pv-play" type="button" class="pv-btn">Pause</button>
+            <span id="pv-time" class="pv-time">0.00s</span>
+          </div>
+
+          <label class="pv-lab mt-6" for="pv-scrub">Scrub the timeline</label>
+          <input
+            id="pv-scrub"
+            class="pv-scrub"
+            type="range"
+            min="0"
+            max="5200"
+            step="10"
+            value="0"
+            aria-label="Scrub the animation timeline"
+          />
+
+          <p class="pv-lab mt-6">Jump to a beat</p>
+          <div class="pv-row">
+            {
+              BEATS.map((b) => (
+                <button type="button" class="pv-btn pv-btn-sm" data-beat={b.t}>
+                  <span class="pv-ms">{(b.t / 1000).toFixed(2)}s</span>
+                  {b.label}
+                </button>
+              ))
+            }
+          </div>
+
+          <p class="pv-lab mt-6">Speed</p>
+          <div class="pv-row">
+            <button type="button" class="pv-btn pv-btn-sm is-on" data-rate="1">1&times;</button>
+            <button type="button" class="pv-btn pv-btn-sm" data-rate="0.5">&frac12;&times;</button>
+            <button type="button" class="pv-btn pv-btn-sm" data-rate="0.25">&frac14;&times;</button>
+          </div>
+
+          <p id="pv-note" class="pv-note mt-7" hidden>
+            This browser is set to reduce motion, so the sequence does not run here — the card shows
+            its resting frame, which is the picture at the bottom of this page.
+          </p>
+        </div>
+
+        <!-- The production panel, verbatim from contact.astro -->
+        <div class="rounded-2xl border border-line bg-white p-6 shadow-sm sm:p-8">
+          <h2 class="text-xl font-semibold text-navy-950">Send us a message</h2>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">
+            Share a few details and the right engineer will get back to you.
+          </p>
+          <div class="mt-7">
+            <ContactForm />
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- ── The resting frames, which is what reduced motion gets ──────────────
+       `data-still` suppresses the whole motion block, transform-box and
+       transform-origin included. Killing the animation alone would NOT be the
+       same thing: those two properties change how the SVG `transform`
+       attribute is interpreted, so a handset that looks right under
+       prefers-reduced-motion would fly off the desk here. See the style block
+       at the foot of this file. ── -->
+  <section class="border-t border-line bg-white py-16 lg:py-20">
+    <Container>
+      <h2 class="text-xl font-semibold text-navy-950">The resting frame, beside the 404</h2>
+      <p class="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+        Both scenes still and both capped to 22rem — QuietScene's own cap, and how wide the 404 cat
+        draws on its page. So this is a like-for-like comparison of drawing and scale: the head
+        measures 20.1px in both. Note that the contact panel above is fluid and ReceptionScene caps
+        at nothing, so on a wide screen the same cat renders larger there than the 404 one does —
+        352px here against 495px in the card at a 1280px viewport. The left picture is also exactly
+        what a visitor with reduced motion turned on sees after sending a message: the last frame of
+        the story, never the middle of it.
+      </p>
+      <div class="mt-10 grid gap-10 sm:grid-cols-2 sm:gap-14" data-still>
+        <div class="mx-auto w-full max-w-[22rem]">
+          <ReceptionScene id="pv-still" chip={receptionBand.doneChip} caption={receptionBand.doneCaption} />
+          <p class="pv-cap">ReceptionScene — /contact, after sending</p>
+        </div>
+        <div class="mx-auto w-full max-w-[22rem]">
+          <QuietScene chip="All other systems nominal" surface="bare" palette="coloured" />
+          <p class="pv-cap">QuietScene — /404, the benchmark</p>
+        </div>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<style>
+  .pv-banner {
+    background: var(--color-navy-950);
+    color: #fff;
+    padding: 0.75rem 0;
+  }
+  .pv-banner-txt {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: rgb(255 255 255 / 0.78);
+  }
+  .pv-banner-txt strong {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .pv-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pv-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.5rem;
+    background: #fff;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-navy-800);
+    cursor: pointer;
+    transition:
+      border-color 0.15s,
+      color 0.15s;
+  }
+  .pv-btn:hover {
+    border-color: var(--color-brand-300);
+    color: var(--color-brand-700);
+  }
+  .pv-btn:focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+  }
+  .pv-btn-sm {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8125rem;
+  }
+  .pv-btn-solid {
+    background: var(--color-navy-950);
+    border-color: var(--color-navy-950);
+    color: #fff;
+  }
+  .pv-btn-solid:hover {
+    background: var(--color-navy-900);
+    border-color: var(--color-navy-900);
+    color: #fff;
+  }
+  .pv-btn.is-on {
+    border-color: var(--color-brand-500);
+    color: var(--color-brand-700);
+    background: var(--color-brand-50);
+  }
+  .pv-ms {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-slate-500, #64748b);
+  }
+  .pv-time {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--color-navy-700);
+    font-variant-numeric: tabular-nums;
+  }
+  .pv-lab {
+    display: block;
+    margin: 0 0 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-navy-700);
+  }
+  .pv-scrub {
+    width: 100%;
+    max-width: 26rem;
+    accent-color: var(--color-brand-500);
+  }
+  .pv-note {
+    border-left: 2px solid var(--color-brand-400);
+    padding-left: 0.9rem;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--color-navy-800);
+  }
+  .pv-cap {
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-navy-700);
+    text-align: center;
+  }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+</style>
+
+<style is:global>
+  /* The honest way to show a reduced-motion still.
+     ReceptionScene puts `transform-box` and `transform-origin` INSIDE
+     @media (prefers-reduced-motion: no-preference), together with the
+     keyframes — deliberately, because those two properties also change how the
+     SVG `transform` ATTRIBUTE is read. Cancel only the animation and the
+     handset's `rotate(16 223.5 224.5)` gets rotated about an extra origin and
+     lands off the desk. Restoring the SVG defaults alongside is what makes this
+     equal to the real thing. `*` rather than a class list so a new animated
+     part cannot escape it. */
+  [data-still] * {
+    animation: none !important;
+    transform-box: view-box !important;
+    transform-origin: 0 0 !important;
+  }
+</style>
+
+<script>
+  /* Bound on `astro:page-load`, not at module scope: with client-side routing
+     an ES module runs only the first time it is fetched, so a second visit in
+     the same session would leave the controls dead. */
+  const TOTAL = 5200;
+
+  const bindPreview = () => {
+    const panel = document.getElementById('pv-controls');
+    const card = document.getElementById('cf-success');
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    if (!panel || !card || !form || panel.dataset.bound === 'true') return;
+    panel.dataset.bound = 'true';
+
+    /* Exactly what the live submit handler does once a message has sent. */
+    form.hidden = true;
+    card.hidden = false;
+
+    const scrub = document.getElementById('pv-scrub') as HTMLInputElement | null;
+    const readout = document.getElementById('pv-time');
+    const playBtn = document.getElementById('pv-play');
+    const replayBtn = document.getElementById('pv-replay');
+    const note = document.getElementById('pv-note');
+    if (!scrub || !readout || !playBtn || !replayBtn || !note) return;
+
+    /* Scoped to this one card, so the 404 cat further down is untouched. */
+    const anims = () => card.getAnimations({ subtree: true });
+    /* `pickup` is the clock: it is the one-shot that spans the whole story. */
+    const clock = () => anims().find((a) => (a as CSSAnimation).animationName === 'pickup');
+
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      note.hidden = false;
+      panel.querySelectorAll('button, input').forEach((el) => {
+        (el as HTMLButtonElement | HTMLInputElement).disabled = true;
+      });
+      readout.textContent = 'still';
+      return;
+    }
+
+    let rate = 1;
+    let scrubbing = false;
+
+    const paint = (t: number) => {
+      readout.textContent = (t / 1000).toFixed(2) + 's';
+    };
+
+    const seek = (t: number) => {
+      anims().forEach((a) => {
+        a.pause();
+        a.currentTime = t;
+      });
+      playBtn.textContent = 'Play';
+      /* rAF is throttled in a hidden or background tab, so paint now rather
+         than waiting for a frame that may not come. */
+      paint(t);
+    };
+
+    replayBtn.addEventListener('click', () => {
+      /* Hiding the card takes it out of the box tree, which CANCELS its
+         animations; showing it again creates them afresh at time zero. That is
+         the production mechanism - it is how the sequence starts when a message
+         sends - and nothing here imitates it.
+         Reading offsetHeight in between forces the style and layout pass that
+         makes the cancellation actually happen. Without it the two writes can
+         be coalesced into one frame and nothing restarts; measured in a context
+         that was not painting, the animations survived at their old currentTime.
+         With the forced reflow: 15 animations before, 0 while hidden, 16 at
+         currentTime 0 after. */
+      card.hidden = true;
+      void card.offsetHeight;
+      card.hidden = false;
+      void card.offsetHeight;
+      anims().forEach((a) => {
+        a.playbackRate = rate;
+      });
+      playBtn.textContent = 'Pause';
+      paint(0);
+    });
+
+    playBtn.addEventListener('click', () => {
+      const running = anims().some((a) => a.playState === 'running');
+      anims().forEach((a) => (running ? a.pause() : a.play()));
+      playBtn.textContent = running ? 'Play' : 'Pause';
+    });
+
+    panel.querySelectorAll<HTMLButtonElement>('[data-beat]').forEach((b) => {
+      b.addEventListener('click', () => seek(Number(b.dataset.beat)));
+    });
+
+    panel.querySelectorAll<HTMLButtonElement>('[data-rate]').forEach((b) => {
+      b.addEventListener('click', () => {
+        rate = Number(b.dataset.rate);
+        anims().forEach((a) => {
+          a.playbackRate = rate;
+        });
+        panel
+          .querySelectorAll('[data-rate]')
+          .forEach((other) => other.classList.toggle('is-on', other === b));
+      });
+    });
+
+    scrub.addEventListener('input', () => {
+      scrubbing = true;
+      seek(Number(scrub.value));
+    });
+    scrub.addEventListener('change', () => {
+      scrubbing = false;
+    });
+
+    const tick = () => {
+      const c = clock();
+      const t = Math.max(0, Math.min(TOTAL, Number(c?.currentTime ?? 0)));
+      if (!scrubbing) scrub.value = String(t);
+      paint(t);
+      requestAnimationFrame(tick);
+    };
+    tick();
+  };
+
+  document.addEventListener('astro:page-load', bindPreview);
+</script>

@@ -71,6 +71,48 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-13 (night) — a preview page for the sequence
+- *"give me a preview page of this new contact animation"* → `/contact-animation-preview`,
+  live rather than parked so it is actually reachable, and sealed per CLAUDE.md
+  §5 otherwise: noindex + nofollow, in no nav, linked from nowhere, in the
+  sitemap filter. Verified against the built output — the sitemap lists nine
+  real pages and not this one.
+- **It renders the real `ContactForm`, not a copy**, and on load does exactly
+  what the live submit handler does on success: `form.hidden = true;
+  success.hidden = false`. Same `Container`, same
+  `grid gap-12 lg:grid-cols-2 lg:gap-16`, same white panel — so the drawing is
+  at production width and the controls sit where the contact details sit.
+- Controls: replay · play/pause · a scrubber over the 5.2s · five beat jumps ·
+  1x / 0.5x / 0.25x. Beats sample *inside* each beat, not on its boundary — the
+  first cut had "wakes" at 2900ms, 12ms short of the eye swap at 2912, so the
+  button showed the frame before the thing it names.
+- **Replay is the production mechanism, and the pane made it better.** It hides
+  the card and shows it again, because `display: none` cancels CSS animations.
+  The first version scheduled the two writes across two `requestAnimationFrame`
+  calls; in a context that was not painting, they coalesced and nothing
+  restarted — 15 animations survived at their old `currentTime`. Forcing a
+  reflow between the writes makes it synchronous and frame-independent:
+  measured 15 animations before, **0** while hidden, **16 at currentTime 0**
+  after, running, at whatever playback rate was selected.
+- **The comparison section was lying by 60% until it was measured.** QuietScene
+  caps its own `.scene` at 22rem; ReceptionScene caps at nothing, so in a 564px
+  grid cell the reception cat drew far larger than the benchmark it exists to be
+  compared against. Both are now capped at 22rem and **the cat's head measures
+  20.1px in each** — same drawing, same size, finally provable on one screen.
+- That cap also surfaced something about the live page: the contact panel is
+  fluid and the component has no max-width, so at a 1280px viewport the scene
+  renders **495px against the 404's 352px**. Same cat, 40% larger on a wide
+  screen. Flagged to Harshit; a one-line `max-width: 22rem` on
+  `ReceptionScene`'s `.scene` would match them, but it changes the live page so
+  it is his call.
+- `[data-still]` shows the reduced-motion frame honestly: it suppresses
+  `transform-box` and `transform-origin` as well as the keyframes, because
+  ReceptionScene keeps all three inside the media query and those two change how
+  the `transform` ATTRIBUTE is read. Cancelling only the animation puts the
+  handset off the desk. Verified: still handset at x 215–232 y 210–239, which is
+  the animated last frame to the pixel.
+- Build clean: 51 files, 0 errors / 0 warnings / 0 hints, no console errors.
+
 ### 2026-09-13 (evening, later) — the cat answers the phone
 - *"i liked the draft. the image should be cat sleeping, phone ringing then cat
   waking up and picking up the phone."* So the still becomes a sequence.
