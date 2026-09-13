@@ -77,17 +77,28 @@ page. Uncommitted work still has no undo.
 Anything not part of the real site must be: not in `nav`, linked from nowhere,
 marked `noindex`, and excluded from the sitemap filter in `astro.config.mjs`.
 
-**As of 2026-09-12 every one of them is PARKED**, on Harshit's instruction.
-Each file in `src/pages/` carries a leading underscore (`_hero-preview.astro`),
-which Astro excludes from routing, so none is built and none is reachable even
-locally. Nothing was deleted. To bring one back, drop the underscore — the
-sitemap filter still lists them, deliberately, so an un-parked page cannot walk
-into the sitemap by accident.
+**Parked** pages carry a leading underscore in `src/pages/`
+(`_company-preview.astro`), which Astro excludes from routing, so they are not
+built and not reachable even locally. To bring one back, drop the underscore —
+the sitemap filter still lists them, deliberately, so an un-parked page cannot
+walk into the sitemap by accident.
 
-Parked: `_404-preview`, `_careers-preview`, `_company-preview`,
-`_contact-preview`, `_contact-preview-b`, `_contact-preview-c`,
-`_hero-preview`, `_home-preview`, `_illustrations-preview`, `_uptime`.
-Their components stay in `src/components/preview/`.
+Still parked, on Harshit's review of 2026-09-13:
+`_company-preview` and `_careers-preview` — both illustrations need the Gate 1b
+weight pass before they can be adopted; `_404-preview` and `_uptime` — older
+concept pages, no verdict yet.
+
+**Deleted 2026-09-13** on his instruction, after review: `illustrations-preview`,
+`contact-preview`, `contact-preview-b`, `contact-preview-c`, `hero-preview`,
+`home-preview`. *The pages went; the illustrations did not.* Every scene
+component survives — `RackScene`, `WorkshopScene`, `DeskSceneWorking` and
+`SceneVariant` in `src/components/preview/`, `UptimeScene` in
+`src/components/` — because all of them are to be refined, not discarded. The
+deleted pages are recoverable from commit `3caa023` if ever needed.
+
+`ReceptionScene` was **adopted** in the same review and moved to
+`src/components/`. It appears in exactly one place: the contact form's success
+card, in `state="hungup"`. The image is the reward for having sent something.
 (`/quiet` and `/our-mission-preview` existed under this rule and were deleted —
 the first once its illustration was adopted, the second when its illustration
 was rejected outright on 2026-09-07.)

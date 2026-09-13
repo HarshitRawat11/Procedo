@@ -6,8 +6,8 @@
 // If no access key is set yet, the form renders disabled with a clear
 // direct-email fallback rather than silently failing on submit.
 import { Icon } from 'astro-icon/components';
-import QuietScene from './QuietScene.astro';
-import { contactForm, contact, site } from '../data/site';
+import ReceptionScene from './ReceptionScene.astro';
+import { contactForm, contact, site, receptionBand } from '../data/site';
 
 const ready = contactForm.web3formsKey.trim().length > 0;
 
@@ -171,11 +171,11 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
         <slot name="success-art" />
       </div>
     ) : (
-      <QuietScene
-        chip="Enquiry logged"
-        lines={['Consider it handled. Go put the kettle on.']}
-        surface="bare"
-        palette="coloured"
+      <ReceptionScene
+        id="cf-done"
+        state="hungup"
+        chip={receptionBand.doneChip}
+        caption={receptionBand.doneCaption}
         class="mt-6"
       />
     )

@@ -199,6 +199,48 @@ its output. Then answer the two items it cannot measure.
 
 ---
 
+## Gate 1b — Visual weight **[count]**
+
+Added 2026-09-13, and it is the gate that would have caught the last three
+illustrations. Harshit put the 404 image beside the newer ones and said the
+404's elements are *"subtle, not as large and bold as they are"*. He was right,
+and the cause is not stroke weight. It is how much of the frame the drawing
+leaves alone:
+
+| | bare cream | dark pixels |
+|---|---|---|
+| `QuietScene` (404) — the one he likes | **80.9%** | 3.4% |
+| `ReceptionScene` (contact) | 41.3% | 6.6% |
+| `RackScene` (hero) | **0.2%** | 30.0% |
+
+`QuietScene` is four fifths empty cream. `RackScene` has essentially no cream
+in it at all — the rack fills the frame edge to edge. That is the whole
+difference, and it is measurable:
+
+```bash
+node scripts/measure-density.cjs <file.svg>
+```
+
+- **Bare cream: at least 60% of the frame.** The subject sits *in* the canvas;
+  it does not fill it.
+- **Mid-to-dark pixels: at most 5%.** A dark faceplate, counter or wall of
+  equipment is weight that outlines should be carrying.
+
+Both floors are set from `QuietScene` with margin, per the rule at the top of
+this document: a threshold that fails the benchmark is mis-calibrated, not
+strict.
+
+Two corollaries that follow from the numbers, and are easier to check by eye:
+
+- **Draw objects, not walls.** Nothing may span the full canvas width. A
+  counter or rack that runs edge to edge stops being a prop and becomes a
+  backdrop, and the cream share collapses. `QuietScene`'s rack is an object
+  with ground visible all round it.
+- **Colour is punctuation.** Status pips, a mug, leaves. Not six coloured
+  cables crossing the frame, and not a large tinted panel.
+
+---
+
 ## Gate 2 — Render and compare **[count]**
 
 Build logs cannot see any of this.
@@ -272,6 +314,9 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
 - One illustration at a time. Never batch.
 - **No human figures.** Animal or machine subjects only. See Gate 0.
 - Draw the calm moment the service creates, not the equipment that creates it.
+- **Leave the frame mostly empty.** 60% bare cream, 5% dark, measured — see
+  Gate 1b. This is the constraint the site's own benchmark passes most easily
+  and that every illustration drawn after it has failed.
 - Flat colour **and** outlines together. These are not rival techniques.
   (See `reference/inspiration/ANALYSIS.md` §1, corrected 2026-09-05.)
 - Animation only inside `@media (prefers-reduced-motion: no-preference)`, with the
@@ -325,7 +370,18 @@ any countable gate fails. The floors live at the top of that file and are
 calibrated against `QuietScene`; changing one means re-running both live scenes
 and confirming the calibration in the table above still holds.
 
-It also reports how many fills carry saturated colour versus near-white.
+A companion script measures the rendered result rather than the source:
+
+```bash
+node scripts/measure-density.cjs <file.svg>
+```
+
+It renders on cream and reports the bare-cream and dark-pixel shares for Gate
+1b, exiting non-zero if either floor is missed. Give it a plain `.svg` or
+markup pulled out of `dist/`; an `.astro` component whose fills are
+expressions will not render.
+
+`measure-svg.cjs` also reports how many fills carry saturated colour versus near-white.
 **That figure is informational and is not a gate.** `QuietScene` is roughly half
 near-white and is the illustration that was loved, so there is no defensible floor
 to set — the number is printed because the gap against the references is real and

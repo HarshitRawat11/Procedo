@@ -4,7 +4,7 @@ import Container from '../components/Container.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { Icon } from 'astro-icon/components';
-import { contact, competencies, directionsHref } from '../data/site';
+import { contact, competencies, directionsHref, whatsappHref } from '../data/site';
 import { graph, breadcrumbs } from '../lib/schema';
 
 const telHref = 'tel:' + contact.phone.replace(/[^+\d]/g, '');
@@ -23,6 +23,18 @@ const channels = [
     href: `mailto:${contact.salesEmail}`,
   },
   { icon: 'lucide:phone', label: 'Phone', value: contact.phone, href: telHref },
+  /* Same line as the phone, so it is listed as a channel rather than repeated
+     as a number. Drops out entirely if the number is ever removed (§3). */
+  ...(whatsappHref
+    ? [
+        {
+          icon: 'lucide:message-circle',
+          label: 'WhatsApp',
+          value: 'Start a chat',
+          href: whatsappHref,
+        },
+      ]
+    : []),
 ];
 
 const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));

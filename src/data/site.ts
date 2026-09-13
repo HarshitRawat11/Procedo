@@ -27,6 +27,12 @@ export const contact = {
   /** Sales enquiries. */
   salesEmail: 'sales@procedoinfo.com',
   phone: '+91 9958896172',
+  /**
+   * WhatsApp Business number, confirmed by Harshit on 2026-09-13 — the same
+   * line as the phone above. Digits only, with country code, no plus: that is
+   * the format wa.me expects. Leave empty to hide the WhatsApp channel.
+   */
+  whatsapp: '919958896172',
   /** Registered office. Leave empty to hide the Contact address card entirely. */
   address: '324 Guru Ram Das Nagar, Laxmi Nagar, Delhi – 110092',
   /**
@@ -40,6 +46,16 @@ export const contact = {
  * Maps link for the office, derived from the address so the two can never
  * disagree. Empty when there is no address, which hides the link (§3).
  */
+/**
+ * WhatsApp deep link. Empty when no number is set, which hides the channel (§3).
+ * The prefilled text is a neutral opener the visitor can replace.
+ */
+export const whatsappHref = contact.whatsapp
+  ? `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(
+      'Hello Procedo — I would like to discuss a requirement.',
+    )}`
+  : '';
+
 export const directionsHref = contact.address
   ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(contact.address)}`
   : '';

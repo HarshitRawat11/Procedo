@@ -1,0 +1,85 @@
+You are helping me finish the content for my company's new website. My web team
+has asked me a set of questions. I want you to interview me one topic at a
+time, then produce a single tidy reply I can send straight back to them.
+
+ABOUT MY COMPANY
+Procedo Infosystems Pvt. Ltd., an infrastructure-first technology firm based in
+Delhi, working with clients across India. Five service areas: Digital Workplace
+Services & Field Operations, Datacenter Infrastructure, IT Infrastructure,
+Facilities Security, and Audio & Video Conferencing.
+
+HOW TO WORK WITH ME
+- Ask me about ONE numbered topic at a time, in the order below. Wait for my
+  answer before moving to the next.
+- If my answer is vague or too short to use on a website, ask one follow-up
+  question to sharpen it. Do not accept "we are the best" or "quality service"
+  as an answer — push for something specific.
+- Never invent anything on my behalf. No dates, no client names, no numbers, no
+  certifications. If I do not know something, write "NOT AVAILABLE" against it
+  and move on.
+- Keep my voice. Tidy the grammar, do not turn it into marketing fluff.
+- Write in Indian English.
+- At the end, output everything as a single plain-text reply under the heading
+  "ANSWERS FOR THE WEB TEAM", with the same numbering, ready to paste into an
+  email.
+
+THE QUESTIONS
+
+1. LEGAL SIGN-OFF
+   The Privacy Policy, Terms of Use and Cookie Policy on the new site carry the
+   text from our old website. Has anyone reviewed it? Ask me: who is reviewing
+   it, and by when. If nobody has been asked yet, say so plainly in the reply —
+   this is the only item holding up the launch.
+
+2. DOMAIN
+   Ask me whether we are ready to point procedoinfo.com at the new site, who
+   controls the DNS records, and when we want it done.
+
+3. ANALYTICS
+   We need to pick a tool. Explain the choice to me in one short paragraph,
+   then ask which I want:
+     (a) Plausible or Umami — no cookies, no consent banner needed, roughly
+         USD 9 per month, or free if self-hosted.
+     (b) Google Analytics 4 — free, but it sets cookies, so the site will also
+         need a cookie consent pop-up.
+   Get the choice, and the account ID if I already have one.
+
+4. LINKEDIN
+   Ask for the company LinkedIn page URL. The footer icon stays hidden until we
+   have it.
+
+5. PROOF
+   Our website currently makes no claim it cannot back up. That is honest, but
+   it also means there is nothing on the site that shows we have done this work
+   before. Ask me for whatever I can share:
+     - Client names or logos we are allowed to display publicly
+     - Two or three short project stories. For each, ask me three things: what
+       the client needed, what we installed or delivered, and what changed
+       afterwards. No client name is needed if it cannot be shared — "a
+       logistics firm in Gurugram" is fine.
+     - OEM partnerships, dealerships or authorisations we hold
+     - Certifications the company holds (ISO, MSME, GeM, or any other)
+   If I cannot share any of it publicly, record that clearly so the team leaves
+   the section out rather than padding it.
+
+6. HOW A PROJECT ACTUALLY RUNS
+   Ask me to describe, in four to six steps, what happens from the moment a
+   client first calls us to the point where the system is running and
+   supported. Prompt me with examples if I get stuck — site survey, design and
+   BOQ, procurement, installation and commissioning, handover and training,
+   AMC — but make me put it in my own words and correct anything that does not
+   match how we actually work.
+
+7. FAQs
+   Ask me for the five or six questions we are genuinely asked on a first call,
+   with my answers. If I stall, prompt me with these and ask whether they come
+   up: smallest project we take on, which cities we cover, response and
+   resolution times, whether we do AMC, typical lead time for delivery and
+   installation, whether we work with the client's existing vendors.
+   Keep each answer to two or three sentences.
+
+8. ANYTHING WE HAVE MISSED
+   Finally, ask me whether there is anything about the business a prospective
+   client usually wants to know that is not covered above.
+
+Begin with question 1.

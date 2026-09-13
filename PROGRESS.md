@@ -40,20 +40,22 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 19 | Photography / real imagery | ✅ | — | **Decided 2026-08-30: no photography.** The illustration-and-icon style is a deliberate choice, not a gap. Revisit only if real project photos become available |
 | 20 | Dark mode | ❌ | **Rejected by the client 2026-09-12** | Closed. The site stays light-only; no `prefers-color-scheme` handling anywhere, and none is to be added |
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
-| 22 | `/uptime` illustration concept ("power cut at 3am, nobody noticed") | 🟡 | Not yet matching the bar — see below | 2026-08-30 verdict: "better than the previous 5" but still short of `/quiet` and the Google references. Parked, not reworked — see `procedo-illustration-approach` memory for a color/frame-share theory to test on the next attempt |
+| 22 | `/uptime` illustration concept | ⏸️ | Parked | `UptimeScene` kept, `_uptime` parked. Due the Gate 1b weight pass with the rest |
 | 23 | Illustration technique — outline vs flat colour | ✅ | — | **Decided 2026-09-06: technique B.** Applied to all three QuietScene call sites 2026-09-07 — the 404, the contact-form success state and `/our-mission`. `QuietScene` takes a `palette` prop (`outline` default, `coloured`); every live instance now passes `coloured` |
 | 24 | Our Mission illustration | ❌ | Abandoned 2026-09-07 | **Dropped.** Two iterations rejected by both Harshit and the client; the second passed all six countable gates and was still no good. `MissionScene.astro` and `/our-mission-preview` deleted 2026-09-07. `/our-mission` keeps QuietScene, now in technique B. The cause is now a standing rule, not an open question — no human figures (CLAUDE.md §5b) |
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
-| 26 | Company page illustration | 🟡 | Awaiting adoption verdict | **WorkshopScene** in the `/our-mission` layout on `/company-preview`: precision statement as a blockquote, the illustration in a bordered panel with chip and caption. **No lamp** — clamp-arm crowded the corner, a pendant replaced it, then Harshit asked for none at all (2026-09-09). Passes all six gates, 52% curve ratio |
-| 27 | Careers cat — working, not sleeping | 🟡 | Awaiting verdict | **DeskSceneWorking** on `/careers-preview`: same room, cat crouched on the desk with a paw on the mouse, eyes on the screen, chair empty. The workshop play-crouch reused by one translate. Mug dropped. Live `/careers` still ships the sleeping DeskScene. Passes all six gates |
-| 28 | Contact page illustration | 🟡 | Placement being chosen | **ReceptionScene** — the cat at the front desk answering the phone. Three placements: **A** `/contact-preview` (the `/our-mission` layout under the header), **B** `/contact-preview-b` (closing the page beside the office address), **C** `/contact-preview-c` (a 256 × 100 crop beside the form's Send button, nothing else moved — Harshit's idea, and the one he is leaning to). C also finishes the story: on a successful send the card shows the **same cat with the handset back on its cradle**. Named props 8, one over the Gate 0 budget — flagged. Passes all six gates (curve ratio 45%) |
-| 29 | Home hero illustration | 🟡 | Awaiting verdict | **RackScene** on `/hero-preview`: a rack face — patch panel, cables dressed both ways, a hank of spare cable, a switch, a blank filler — and the cat asleep in the one empty rack unit. Chip "One U spare", caption "Always leave room to grow." It replaces the competency index card in the hero; the same five links are full cards in ServicesPreview immediately below, so no navigation is lost. `Hero` gained an optional `aside` slot; the live home page renders identically. Passes all six gates (curve ratio 43%, 15 saturated fills, 7 animations) |
+| 26 | Company page illustration | 🟡 | Needs refining first | `WorkshopScene` kept, `_company-preview` still parked. Harshit 2026-09-13: refine the image before adopting — Gate 1b |
+| 27 | Careers cat — working, not sleeping | 🟡 | Needs refining first | `DeskSceneWorking` kept, `_careers-preview` still parked. Same: Gate 1b before adoption |
+| 28 | Contact page illustration | ✅ | — | **Adopted 2026-09-13.** All three placement previews deleted; `ReceptionScene` moved to `src/components/` and now appears in exactly one place — the contact form's success card, `state="hungup"`. The image is the reward for having sent something. Still due the Gate 1b weight pass |
+| 29 | Home hero illustration | 🟡 | Preview removed, image kept | `RackScene` kept; `hero-preview` deleted. It fails Gate 1b hardest of all — 0.2% bare cream, 30% dark — so it is the clearest test of the refinement pass |
 | 30 | Blog / MDX plumbing | ✅ | — | **Removed 2026-09-10** on Harshit's call ("no blog for now"). `@astrojs/mdx` and `@astrojs/rss` are out of `package.json`, the lockfile and `astro.config.mjs`; there was never an `.mdx` document or an RSS route to lose |
 | 31 | Structured data | ✅ | — | Builders in `src/lib/schema.ts`, so no page restates the company. Organization now carries **contactPoint** (support and sales) and **areaServed: India**; Services carries its five competencies as **Service** nodes anchored to their sections, with an Organization stub so the `provider` reference resolves in-document; Company, Our Mission, Careers and Contact each carry a **BreadcrumbList**. Verified on the built output: one block per page, all in `<head>`, all parse |
 | 32 | `robots.txt` | ✅ | — | Added 2026-09-10; it was a 404. Allow all, plus the sitemap. Names no preview paths deliberately — a `Disallow` line advertises the routes it hides — and the Netlify preview's `X-Robots-Tag` header overrides it on that host |
 | 33 | View transitions | ✅ | — | Done 2026-09-12. `ClientRouter` in `BaseLayout`, ~15.9 kB of JS (the only runtime JS on the site). All three element-holding scripts rebound on `astro:page-load`: the reveal observer re-scans, `Header` re-queries and delegates its menu click, and **ContactForm binds per page load** with a `data-bound` guard — the silent failure this was declined for last time. Verified live: second client-side visit to `/contact` binds and intercepts the submit |
-| 34 | Preview pages parked | ✅ | — | 2026-09-12, on Harshit's instruction: all ten concept/preview routes prefixed with `_` so Astro excludes them from routing. Nothing deleted; the build drops from 20 pages to 10. The sitemap filter is kept as a safety net for un-parking |
+| 34 | Preview pages — parked, then reviewed | ✅ | — | Parked 2026-09-12; reviewed 2026-09-13. **Deleted:** `illustrations-preview`, `contact-preview` ×3, `hero-preview`, `home-preview` (recoverable from `3caa023`). **Still parked:** `_company-preview`, `_careers-preview` (pending refinement), `_404-preview`, `_uptime`. Every illustration component was kept — the pages went, the images did not |
 | 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
+| 36 | WhatsApp channel | ✅ | — | Number confirmed by Harshit 2026-09-13 — the same line as the phone. `contact.whatsapp` in `site.ts` with a derived `whatsappHref`; the channel drops out entirely if the number is ever cleared (§3). Live on the Contact page |
+| 37 | Illustration weight — the "subtle" pass | 🔴 | The live design task | Harshit compared the 404 image with the newer ones on 2026-09-13: the 404s elements are subtle, the rest large and bold. Measured, the difference is **bare cream** — QuietScene 80.9%, Reception 41.3%, Rack 0.2%. New **Gate 1b** in the loop doc with `scripts/measure-density.cjs`: at least 60% cream, at most 5% dark. Every illustration except QuietScene fails it |
 
 ---
 
@@ -68,6 +70,40 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-13
+- **Preview review.** Harshit went through the parked previews and ruled:
+  `illustrations-preview`, all three `contact-preview` pages, `hero-preview`
+  and `home-preview` **deleted**; `company-preview` and `careers-preview`
+  **kept parked** pending refinement. His words: *"remove the preview but don't
+  delete the images"* — so every scene component survives. The deleted pages
+  are recoverable from commit `3caa023`.
+- **ReceptionScene adopted** (#28) and moved out of `components/preview/`. It
+  now appears in exactly one place: the contact form's success card, hung up.
+  The three placement options are moot — the image is the reward for having
+  sent something, which is a better answer than any of them was.
+- **WhatsApp** (#34): number confirmed, the same line as the phone. Derived
+  link, hides itself if the number is ever cleared.
+- **The real finding** (#35). Harshit put the 404 illustration beside the new
+  ones: *"compare with the 404 page image how the elements are subtle not as
+  large and bold as they are."* Rendering all three on cream and counting
+  pixels gives the cause, and it is not stroke weight:
+
+  | | bare cream | dark pixels |
+  |---|---|---|
+  | QuietScene (404) | **80.9%** | 3.4% |
+  | ReceptionScene (contact) | 41.3% | 6.6% |
+  | RackScene (hero) | **0.2%** | 30.0% |
+
+  QuietScene is four fifths empty. RackScene has no cream in it at all. Added
+  **Gate 1b** to the loop with a runnable check,
+  `scripts/measure-density.cjs` — at least 60% cream, at most 5% dark, both
+  calibrated from QuietScene with margin. Two corollaries: draw objects, not
+  walls (nothing spans the full canvas width), and colour is punctuation, not
+  area.
+- Lesson for the loop itself: six countable gates all passed on scenes that
+  were plainly too heavy, because every one of them measured the *drawing* and
+  none measured the *frame*. A gate that counts elements cannot see emptiness.
 
 ### 2026-09-12
 - **Preview pages parked** (#34). All ten prefixed with `_`; Astro drops them
