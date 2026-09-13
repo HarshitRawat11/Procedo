@@ -1,47 +1,46 @@
 ---
 /* ============================================================================
- *  ReceptionScene — the cat asleep on the front desk, the call finished.
+ *  ReceptionScene — the cat on the desk, taking the call.
  *
- *  WHERE IT IS USED: the contact form's success card, and nowhere else.
- *  Harshit's call on 2026-09-13 — the three placement options were dropped and
- *  the image now appears only once the visitor has actually sent something.
+ *  WHERE IT IS USED: the contact form's success card, and nowhere else. The
+ *  image is the reward for having sent something — you wrote in, and somebody
+ *  picked up.
  *
- *  ── REBUILT 2026-09-13, second pass ─────────────────────────────────────────
- *  The first pass fixed the emptiness and left the objects loud. Harshit:
- *  *"see the 404 every component is minisized and not loud. in the contact the
- *  cat is too big and even the plant is also big. due to this you have to make
- *  desk and phone big. colouring and design of the cat on the 404 and contact
- *  is different too make them same."* All three points were right.
+ *  ── THE DESIGN RULE, and how it was got wrong twice ─────────────────────────
+ *  Harshit's instruction was to copy the 404 illustration's **design and
+ *  colour**, not the job its cat is doing. So:
  *
- *  · THE CAT IS NOW THE 404 CAT. Not a lookalike — the same paths, lifted from
- *    QuietScene and moved onto the desk with one translate. Same circle head,
- *    same closed eyes, same single whisker each side, same tucked-paw ellipse,
- *    same open-stroke tail, and the markings back to the pale `#CBD5E1` they
- *    are there rather than the darker `#93A3B8` this scene had drifted to. Two
- *    pages, one cat.
+ *    · SAME DRAWING. The body mound, the off-register shading, the pale
+ *      `#CBD5E1` markings, the circle head at r=12, the ears behind the head,
+ *      the open-stroke tail curl, the tucked-paw ellipse, the 2.0 / 1.8 / 1.4
+ *      stroke weights — all QuietScene's own paths, moved here by one
+ *      translate. Two pages, one cat.
+ *    · DIFFERENT JOB. The eyes are open with a lid line over each, and the far
+ *      paw is up holding a handset to the ear. That is the whole difference,
+ *      and it is the only part that should differ.
  *
- *  · THE CANVAS IS 420 WIDE, exactly as QuietScene's is. This is the part that
- *    actually governs how big the cat *looks*: apparent size is the cat's width
- *    divided by the CANVAS width, not by anything in the drawing. Both cats are
- *    85.5 units on a 420 canvas — 20.4% — so at the same rendered width they
- *    are the same size on screen. The earlier pass had the same cat in units
- *    but on a 292-wide canvas, which drew it half again as large.
+ *  Attempt one copied the weights but kept the scene twice the size — quiet by
+ *  the metric, loud on the page. Attempt two fixed the size but copied the
+ *  sleeping pose as well, which was never the ask.
  *
- *  · EVERYTHING ELSE SHRANK TO SUIT. The desk is 174 units against the 404
- *    rack's 152; the phone is at mug scale; the plant and the grass tufts are
- *    QuietScene's own, unscaled.
+ *  ── SCALE ───────────────────────────────────────────────────────────────────
+ *  Apparent size is the subject's width over the CANVAS width, not over
+ *  anything in the drawing. QuietScene is 85.5 units of cat on a 420-wide
+ *  canvas — 20.4%. This canvas is also 420 wide and also 20.4%, so at the same
+ *  rendered width the two cats are the same size on screen.
  *
- *  Gate 1b: 90.4% bare cream, 2.0% dark, against floors of 60% and 5%. The
- *  benchmark is 80.9% and 3.4%, so this sits a shade quieter still.
- *  Gate 1: curve ratio 44%, spread 2.5, four widths, 23% grid coordinates.
+ *  ── THINGS THAT MUST STAY TRUE ──────────────────────────────────────────────
+ *  · The desk's top SURFACE is y=236. Everything standing on it has its base at
+ *    236 and nothing crosses that line. An earlier version had the phone at
+ *    222–246, sunk ten units into the slab.
+ *  · The phone reads as a telephone because of the notch in its top, where the
+ *    handset would sit, and the 2x3 keypad. A flat box reads as a router; a
+ *    wedge reads as a keyboard. Both were tried.
+ *
+ *  Gate 1b: 90.3% bare cream, 2.0% dark, against floors of 60% and 5%. The 404
+ *  benchmark is 80.9% and 3.4%.
+ *  Gate 1: curve ratio 43%, spread 2.5, four widths, 20% grid coordinates.
  *      node scripts/measure-density.cjs <file.svg>
- *
- *  WHAT WENT, and it was working code: the `oncall` state and the twelve-second
- *  ring-and-pickup loop. That animation needed an articulated paw to grip the
- *  handset and a body big enough to hold it at the ear. This cat has a tucked
- *  paw ellipse eight units across and is asleep. The two cannot coexist, and
- *  the loop had no caller left anyway — the success card only ever showed the
- *  hung-up still. It is in git at b3386c4 if it is ever wanted back.
  * ========================================================================== */
 interface Props {
   /** Small mono status label above the art, as on QuietScene. Omit for none. */
@@ -66,8 +65,8 @@ const W_FINE = 1.4;
 const TIMBER = '#E4CBA8';
 const GROUND = '#E3EAF3';
 const DEVICE = '#C9D9EC'; // the 404 rack's own blue
-const DEVICE_DK = '#8FA8C8';
-const CUSHION = '#FCDCCF';
+const KEYS = '#8FA8C8';
+const HANDSET_C = '#8FA8C8';
 const FUR = '#FFFFFF';
 const FUR_SHADE = '#B9C4D2';
 const LEAF_A = '#7DD87D';
@@ -75,15 +74,18 @@ const LEAF_B = '#4EB86B';
 const POT = '#FCDCCF';
 const GRASS = '#3FAE5F';
 
-/* The one hit of orange: a message waiting, which is what you just left. */
+/* The one hit of orange: the line is in use. */
 const ORANGE = '#F24E1E';
 
-/* QuietScene's cat, verbatim. Body, the off-register back shading, and the
-   head shade — the three shapes that give it its particular softness. */
+/* QuietScene's cat, verbatim — body, the off-register back shading, and the
+   head shade, the three shapes that give it its particular softness. */
 const CAT_BODY = 'M180 128 C178 110 190 98 208 98 C226 98 242 106 244 128 Z';
 const CAT_BACK =
   'M180 128 C178 110 190 98 208 98 C218 98 227 101 233 107 C214 104 192 112 186 128 Z';
 const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113 Z';
+/* The phone: a base with a notch where the handset sits when it is down. */
+const PHONE_BASE =
+  'M254 236 L254 222 C254 220.5 255 219.5 256.5 219.5 L266 219.5 C268 219.5 269 221 271 221.8 C273 222.6 275 222.6 277 221.8 C279 221 280 219.5 282 219.5 L290.5 219.5 C292 219.5 293 220.5 293 222 L293 236 Z';
 ---
 
 <figure class:list={['reception', className]}>
@@ -104,8 +106,8 @@ const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113
     xmlns="http://www.w3.org/2000/svg"
   >
     <title id={titleId}>
-      A cat curled up asleep on a desk beside a telephone, its handset back on the cradle and the
-      message light lit.
+      A cat on a desk with a telephone handset held up to its ear, eyes open, the coiled cord
+      running back to the phone beside it.
     </title>
 
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -113,33 +115,36 @@ const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113
       <ellipse cx="224" cy="302" rx="100" ry="7" fill={GROUND} />
       <path d="M128 300 H322" stroke={ENVLINE} stroke-width={W_SUBJ} />
 
-      <!-- ── The desk: 174 units, where the 404 rack is 152. mis-registration 1:
-           the timber colour sits 3 right / 2 down of its own outline. ── -->
+      <!-- ── The desk. Its top SURFACE is y=236; everything on it stands on
+           that line and nothing crosses it. mis-registration 1: the timber
+           colour sits 3 right / 2 down of its own outline. ── -->
       <rect x="141" y="238" width="174" height="10" rx="2" fill={TIMBER} />
       <rect x="138" y="236" width="174" height="10" rx="2" stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M150 246 V300" stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M298 246 V300" stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M150 286 H298" stroke={ENVLINE} stroke-width={W_SUBJ} />
 
-      <!-- ── The telephone, at the 404 mug's scale. The handset sits up on two
-           cradle nubs so daylight shows under it — that is what reads as a
-           telephone at this size, not detail. ── -->
-      <rect x="252" y="232" width="46" height="14" rx="3" fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d="M258 232 V227 M292 232 V227" stroke={NAVY} stroke-width={W_SUBJ} />
-      <g fill={DEVICE_DK}>
-        <rect x="258" y="237" width="7" height="4" rx="1" />
-        <rect x="268" y="237" width="7" height="4" rx="1" />
-        <rect x="278" y="237" width="7" height="4" rx="1" />
+      <!-- ── The telephone, standing on the surface. The notch in the top is
+           where the handset sits when it is down; it is up at the ear. ── -->
+      <path d={PHONE_BASE} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <g fill={KEYS}>
+        <rect x="263" y="226" width="5" height="3.2" rx="1" />
+        <rect x="271" y="226" width="5" height="3.2" rx="1" />
+        <rect x="279" y="226" width="5" height="3.2" rx="1" />
+        <rect x="263" y="231" width="5" height="3.2" rx="1" />
+        <rect x="271" y="231" width="5" height="3.2" rx="1" />
+        <rect x="279" y="231" width="5" height="3.2" rx="1" />
       </g>
-      <circle cx="291" cy="239" r="2.5" fill={ORANGE} />
-      <path class="cord" d="M300 224 c8 0 12 5 9 9 c-3 4 1 8 5 10 c4 2 5 7 2 11" stroke={ENVLINE} stroke-width={W_SUBJ} />
-      <rect x="250" y="219" width="50" height="9" rx="4.5" fill={DEVICE_DK} stroke={NAVY} stroke-width={W_SUBJ} />
+      <circle class="inuse" cx="258" cy="228.5" r="2.3" fill={ORANGE} />
+
+      <!-- the coiled cord, from the phone across to the handset -->
+      <path d="M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1" stroke={ENVLINE} stroke-width={W_SUBJ} />
 
       <!-- ── The cat: QuietScene's own drawing, moved onto the desk by one
-           translate. Same paths, same weights, same closed eyes, same pale
-           markings — so the two pages carry one cat, not two. ── -->
-      <ellipse cx="198" cy="238" rx="40" ry="8" fill={CUSHION} />
-      <g transform="translate(-14 108)">
+           translate. Body, shading, markings, ears, tail and tucked paw are its
+           paths unchanged. The only differences are the two the job asks for —
+           the eyes are open, and the far paw is up holding the handset. ── -->
+      <g transform="translate(-30 108)">
         <path class="tail" d="M182 126 C170 128 164 120 170 113 C174 108 181 110 181 116" stroke={NAVY} stroke-width={W_SUBJ} />
         <g class="breathe">
           <path d={CAT_BODY} fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
@@ -156,8 +161,11 @@ const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113
         <path d="M241 103.5 L248 97 L247.5 110 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
         <circle cx="236" cy="116" r="12" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
         <path d={HEAD_SHADE} fill={FUR_SHADE} />
-        <path d="M228 114 Q231 117 234 114" stroke={NAVY} stroke-width={W_FACE} />
-        <path d="M239 114 Q242 117 245 114" stroke={NAVY} stroke-width={W_FACE} />
+        <!-- awake: the 404 face with its eyes open, and a lid line over each -->
+        <circle cx="231" cy="114" r="1.9" fill={NAVY} />
+        <circle cx="242" cy="114" r="1.9" fill={NAVY} />
+        <path d="M228.5 111 Q231 109.3 233.5 111" stroke={NAVY} stroke-width={W_FACE} />
+        <path d="M239.5 111 Q242 109.3 244.5 111" stroke={NAVY} stroke-width={W_FACE} />
         <path d="M236 119.5 L236 121" stroke={NAVY} stroke-width={W_FACE} />
         <g stroke={ENVLINE} stroke-width={W_FINE}>
           <path d="M227 119 L222.5 118" />
@@ -165,7 +173,13 @@ const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113
         </g>
       </g>
 
-      <!-- ── The plant: QuietScene's own, unscaled, beside the desk ── -->
+      <!-- ── The handset, up at the ear, and the paw holding it ── -->
+      <g transform="rotate(16 223.5 224.5)">
+        <rect x="219" y="211" width="9" height="27" rx="4.5" fill={HANDSET_C} stroke={NAVY} stroke-width={W_SUBJ} />
+      </g>
+      <ellipse cx="228" cy="233" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+
+      <!-- ── The plant: the 404 scene's own, unscaled ── -->
       <g class="leaves" transform="translate(-206 8)">
         <path d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
         <path d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z" fill={LEAF_B} stroke={NAVY} stroke-width={W_SUBJ} />
@@ -174,7 +188,7 @@ const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113
       <path d="M108 282 L112 300 H136 L140 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M106 282 H142" stroke={NAVY} stroke-width={W_SUBJ} />
 
-      <!-- ── Grass both sides, as on the 404 scene, so the ground is not a bare line ── -->
+      <!-- ── Grass both sides, as on the 404 scene ── -->
       <g stroke={GRASS} stroke-width="3.5">
         <g class="grass grass-b">
           <path d="M92 300 C91 292 94 285 99 280" />
@@ -273,6 +287,20 @@ const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113
       }
       93% {
         transform: rotate(4deg);
+      }
+    }
+
+    /* the line light, breathing slowly: the call is live */
+    .inuse {
+      animation: inuse 3.4s ease-in-out infinite;
+    }
+    @keyframes inuse {
+      0%,
+      100% {
+        opacity: 0.45;
+      }
+      50% {
+        opacity: 1;
       }
     }
 

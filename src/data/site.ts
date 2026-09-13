@@ -344,9 +344,9 @@ export const workshopBand = {
 export const receptionBand = {
   chip: 'Line open',
   caption: 'Ring the desk. Someone picks up.',
-  /** The same scene after a message sends: handset down, call finished. */
+  /** The same scene after a message sends: the cat has picked the call up. */
   doneChip: 'Enquiry logged',
-  doneCaption: 'Handset down. It’s with the right engineer.',
+  doneCaption: 'Someone has already picked it up.',
 } as const;
 
 /**

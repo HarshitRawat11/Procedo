@@ -55,7 +55,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 34 | Preview pages — parked, then reviewed | ✅ | — | Parked 2026-09-12; reviewed 2026-09-13. **Deleted:** `illustrations-preview`, `contact-preview` ×3, `hero-preview`, `home-preview` (recoverable from `3caa023`). **Still parked:** `_company-preview`, `_careers-preview` (pending refinement), `_404-preview`, `_uptime`. Every illustration component was kept — the pages went, the images did not |
 | 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
 | 36 | WhatsApp channel | ✅ | — | Number confirmed by Harshit 2026-09-13 — the same line as the phone. `contact.whatsapp` in `site.ts` with a derived `whatsappHref`; the channel drops out entirely if the number is ever cleared (§3). Live on the Contact page |
-| 37 | Illustration weight — the "subtle" pass | 🟡 | 1 of 5 refined | **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. But weight was only half of it — apparent size is the subject width over the **canvas** width, so a scene on a narrower canvas draws the same cat larger. Standing: QuietScene 80.9/3.4 · **ReceptionScene 90.4/2.0 — rebuilt 2026-09-13** · DeskSceneWorking 61.7/9.6 · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
+| 37 | Illustration weight — the "subtle" pass | 🟡 | 1 of 5 refined | Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **And scale**: apparent size is subject width over CANVAS width — match the 420-wide canvas or the same cat draws larger. Standing: QuietScene 80.9/3.4 · **ReceptionScene 90.3/2.0 — done 2026-09-13** · DeskSceneWorking 61.7/9.6 · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
 
 ---
 
@@ -70,6 +70,35 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-13 (evening) — the cat wakes up
+- Two faults, both Harshit's: *"phone is colliding with the table. it is in the
+  table not above it. and the cat should be wake up getting the phone call not
+  sleeping. i just told to copy the design and color not the task it is doing."*
+- **The collision was real and measurable.** The desk's top surface is y=236;
+  the phone's base was drawn 232–246, so ten of its fourteen units were inside
+  the slab. It now spans 222–236 and stands on the surface. Written into the
+  component's header as a rule: everything on the desk has its base at 236 and
+  nothing crosses that line.
+- **Copying the design is not copying the job.** The second pass took
+  QuietScene's cat wholesale, sleeping pose and closed eyes included, when the
+  instruction was the drawing language only. The cat is still QuietScene's
+  paths — body mound, off-register shading, pale markings, circle head, ears
+  behind, open-stroke tail, tucked-paw ellipse, the 2.0 / 1.8 / 1.4 weights —
+  but its eyes are open with a lid line over each, and the far paw is up
+  holding a handset to its ear. That is the only difference, and it is the only
+  one that should be.
+- **The phone took three tries to read.** A flat box reads as a router; a wedge
+  reads as a keyboard. What says telephone at 10% of the frame is the notch in
+  the top — where the handset sits when it is down — plus a 2x3 keypad. Noted
+  in the component so it is not rediscovered.
+- Removing the voice arcs dropped load-bearing stroke widths to one, because
+  they were the only other user of 1.4. Fixed by the lid lines, which the face
+  wanted anyway — bare pupils read blank. Gate 1 all pass, curve ratio 43%.
+- 90.3% bare cream, 2.0% dark. Caption follows the picture: the handset is up,
+  so "Someone has already picked it up."
+- Verified on the built page: phone base 222→236, two filled pupils, no
+  closed-eye arcs left, six animations, no console errors.
 
 ### 2026-09-13 (later still) — the pass corrected
 - **The first refinement was half a fix.** Harshit: *"see the 404 every
