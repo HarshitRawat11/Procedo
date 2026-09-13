@@ -55,7 +55,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 34 | Preview pages — parked, then reviewed | ✅ | — | Parked 2026-09-12; reviewed 2026-09-13. **Deleted:** `illustrations-preview`, `contact-preview` ×3, `hero-preview`, `home-preview` (recoverable from `3caa023`). **Still parked:** `_company-preview`, `_careers-preview` (pending refinement), `_404-preview`, `_uptime`. Every illustration component was kept — the pages went, the images did not |
 | 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
 | 36 | WhatsApp channel | ✅ | — | Number confirmed by Harshit 2026-09-13 — the same line as the phone. `contact.whatsapp` in `site.ts` with a derived `whatsappHref`; the channel drops out entirely if the number is ever cleared (§3). Live on the Contact page |
-| 37 | Illustration weight — the "subtle" pass | 🔴 | The live design task | Harshit compared the 404 image with the newer ones on 2026-09-13: the 404s elements are subtle, the rest large and bold. Measured, the difference is **bare cream** — QuietScene 80.9%, Reception 41.3%, Rack 0.2%. New **Gate 1b** in the loop doc with `scripts/measure-density.cjs`: at least 60% cream, at most 5% dark. Every illustration except QuietScene fails it |
+| 37 | Illustration weight — the "subtle" pass | 🟡 | 1 of 5 refined | **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark, calibrated from QuietScene. Standing: QuietScene 80.9/3.4 PASS · **ReceptionScene 76.0/3.2 PASS — refined 2026-09-13** · DeskSceneWorking 61.7/9.6 (dark only) · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
 
 ---
 
@@ -70,6 +70,32 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-13 (later) — the refinement pass begins
+- **ReceptionScene refined**, the first of five, and the only one live so the
+  natural place to start. Before 41.3% cream / 6.6% dark; after **76.0 / 3.2**,
+  against the 404 benchmark's 80.9 / 3.4. What actually moved the numbers:
+  - the full-width counter became a **desk** — an object that ends inside the
+    frame, with a drawer unit anchoring it and cream either side. A counter
+    running edge to edge is a backdrop, not a prop, and it alone was costing
+    about 30 points of cream.
+  - the wall went: notice board, clock, visitor book and pen pot. Four props,
+    including the two biggest slabs.
+  - nothing is dark now.  faceplates are gone; the phone and handset
+    carry their weight in the outline.
+  - contours thinned to the 404 scene's own values — subject 2.0 (was 2.6),
+    environment 1.4 (was 1.7), fine 1.0 — and the environment colour to the
+    palest .
+- The handset had to be **re-angled to -30°** to stay legible once it lost its
+  dark fill, which meant re-deriving the cord keyframes from the rig's path.
+  Verified live: the cord's end and the handset's plug are the **same point**,
+  gap 0.00.
+- The vignette variant went with the previews that used it — its crop
+  coordinates would have pointed at empty desk after the redraw. Dead code that
+  would have rotted silently.
+- Four still to go: DeskSceneWorking (dark only, the easiest), UptimeScene,
+  WorkshopScene, and RackScene — which at 0.2% cream needs rethinking rather
+  than lightening.
 
 ### 2026-09-13
 - **Preview review.** Harshit went through the parked previews and ruled:
