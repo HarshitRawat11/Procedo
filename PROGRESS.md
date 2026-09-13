@@ -71,6 +71,44 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-13 (evening, later) — the cat answers the phone
+- *"i liked the draft. the image should be cat sleeping, phone ringing then cat
+  waking up and picking up the phone."* So the still becomes a sequence.
+- **5.2 seconds, played once.** Asleep · four rings from 1.1s · wakes on the
+  fourth at 2.9s · the handset leaves the cradle at 3.3s and reaches the ear at
+  4.3s · held there. It is not a loop: a loop would put the cat back to sleep
+  and hang the call up every five seconds, against both the caption and the
+  reason the card is on screen.
+- **It starts when the visitor sees it, with no JavaScript.** The success card
+  carries `hidden` until a message sends, and `display: none` cancels CSS
+  animations — measured on the built page: 0 animations exist while the card is
+  hidden, 15 the moment it is shown, all at `currentTime` 0.
+- **Every attribute in the markup is the last frame**, and the keyframes rewind
+  to the sleeping state at 0%. So reduced motion gets the finished picture, the
+  gate scripts measure the picture that matters, and nothing that belongs only
+  to the story can leak into the still. Gate 1b is unchanged at 90.3 / 2.0,
+  which is the proof.
+- New parts, all invisible at rest: QuietScene's closed eyes on a hard cut
+  against the open ones, symmetric ring arcs either side of the phone (one side
+  only reads as steam), a coiled cord swapped for the drawn one, and a head that
+  droops while it sleeps and over-corrects when it startles.
+- **A bug that had shipped twice.** A CSS animation's `transform` *replaces* the
+  element's `transform` attribute. The plant carried `translate(-206 8)` and
+  animated `sway`, so in every real browser the foliage drew 206 units right of
+  its pot — measured at x 324–336 against a pot at 108–140. Every still I had
+  measured was right, because sharp renders attributes and ignores CSS. Fixed by
+  moving the translate to a static parent; the leaves now sit at 106.6–140.4
+  with their base at y 282.5 on a rim at 282. Written into the loop as a
+  standing rule: **the gates cannot see this class of fault, only the browser
+  can.**
+- The paw is retimed to be **in place and waiting** at 76% with the handset
+  landing at 83%. Arriving together made the handset look as though it flew
+  there by itself — the cat's body ends 40 units short of the cradle, so a
+  literal reach is not available at this scale.
+- Gate 1 improved on the way past: curve ratio 43% → 50%, load-bearing widths
+  2 → 3. Build clean: 10 pages, 0 errors / 0 warnings / 0 hints, no console
+  errors.
+
 ### 2026-09-13 (evening) — the cat wakes up
 - Two faults, both Harshit's: *"phone is colliding with the table. it is in the
   table not above it. and the cat should be wake up getting the phone call not

@@ -14,14 +14,32 @@
  *      `#CBD5E1` markings, the circle head at r=12, the ears behind the head,
  *      the open-stroke tail curl, the tucked-paw ellipse, the 2.0 / 1.8 / 1.4
  *      stroke weights — all QuietScene's own paths, moved here by one
- *      translate. Two pages, one cat.
- *    · DIFFERENT JOB. The eyes are open with a lid line over each, and the far
- *      paw is up holding a handset to the ear. That is the whole difference,
- *      and it is the only part that should differ.
+ *      translate. Two pages, one cat. Even the closed eyes are QuietScene's,
+ *      because for the first second of the sequence this cat is asleep too.
+ *    · DIFFERENT JOB. It wakes up and answers the telephone.
  *
- *  Attempt one copied the weights but kept the scene twice the size — quiet by
- *  the metric, loud on the page. Attempt two fixed the size but copied the
- *  sleeping pose as well, which was never the ask.
+ *  ── THE SEQUENCE, and why it is a one-shot ──────────────────────────────────
+ *  Over 5.2 seconds: the cat sleeps · the phone rings four times · it wakes on
+ *  the fourth · the handset comes up to its ear · it stays there.
+ *
+ *  It plays ONCE and holds on the last frame. It is not a loop, because a loop
+ *  would put the cat back to sleep and hang the call up again every five
+ *  seconds, which contradicts both the caption and the reason the card is on
+ *  screen at all. The success card is `hidden` until a message actually sends,
+ *  and `display: none` cancels CSS animations — so the sequence starts from the
+ *  beginning at the moment the visitor is shown it. That is the whole trick;
+ *  no JavaScript is involved.
+ *
+ *  ── THE RESTING STATE IS THE LAST FRAME ─────────────────────────────────────
+ *  Every SVG *attribute* in the markup below describes the END of the story:
+ *  eyes open, handset at the ear, ring arcs invisible. The keyframes rewind to
+ *  the sleeping state at 0% and play forward to it. Three things fall out of
+ *  that, all wanted:
+ *    · `prefers-reduced-motion` gets the finished picture, not a broken one.
+ *    · The gate scripts, which render attributes and ignore CSS, measure the
+ *      picture that matters.
+ *    · Nothing that is only part of the story can leak into the still.
+ *  So: if you change the resting pose, change the attribute, not the keyframe.
  *
  *  ── SCALE ───────────────────────────────────────────────────────────────────
  *  Apparent size is the subject's width over the CANVAS width, not over
@@ -34,12 +52,26 @@
  *    236 and nothing crosses that line. An earlier version had the phone at
  *    222–246, sunk ten units into the slab.
  *  · The phone reads as a telephone because of the notch in its top, where the
- *    handset would sit, and the 2x3 keypad. A flat box reads as a router; a
- *    wedge reads as a keyboard. Both were tried.
+ *    handset sits when it is down, and the 2x3 keypad. A flat box reads as a
+ *    router; a wedge reads as a keyboard. Both were tried.
+ *  · NEVER put a static `transform` attribute on an element you also animate.
+ *    A presentation attribute loses to an animation, so the CSS transform
+ *    replaces it outright rather than composing with it. `.leaves` carried
+ *    translate(-206 8) and animated `sway`, and the foliage drew 206 units
+ *    right of its own pot in every real browser — invisible to me for two
+ *    commits, because sharp renders attributes and ignores CSS, so every
+ *    still I measured was right. Hang the static transform on a parent.
+ *    The one exception is `.handset`, where the attribute and the 100%
+ *    keyframe are deliberately the same pose, so the still and the last
+ *    frame agree.
+ *  · Animated transforms use `transform-box: fill-box` with percentage origins,
+ *    and never nest inside one another — a transformed child moves its parent's
+ *    fill-box, which moves the parent's origin, which is a feedback loop. A
+ *    static parent is fine; it is two animated boxes that bite.
  *
  *  Gate 1b: 90.3% bare cream, 2.0% dark, against floors of 60% and 5%. The 404
  *  benchmark is 80.9% and 3.4%.
- *  Gate 1: curve ratio 43%, spread 2.5, four widths, 20% grid coordinates.
+ *  Gate 1: curve ratio 50%, spread 2.5, four widths, 20% grid coordinates.
  *      node scripts/measure-density.cjs <file.svg>
  * ========================================================================== */
 interface Props {
@@ -74,7 +106,8 @@ const LEAF_B = '#4EB86B';
 const POT = '#FCDCCF';
 const GRASS = '#3FAE5F';
 
-/* The one hit of orange: the line is in use. */
+/* The one hit of orange: the line. Dark asleep, flashing on the ring, lit on
+   the call. */
 const ORANGE = '#F24E1E';
 
 /* QuietScene's cat, verbatim — body, the off-register back shading, and the
@@ -86,6 +119,12 @@ const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113
 /* The phone: a base with a notch where the handset sits when it is down. */
 const PHONE_BASE =
   'M254 236 L254 222 C254 220.5 255 219.5 256.5 219.5 L266 219.5 C268 219.5 269 221 271 221.8 C273 222.6 275 222.6 277 221.8 C279 221 280 219.5 282 219.5 L290.5 219.5 C292 219.5 293 220.5 293 222 L293 236 Z';
+/* Two cords, swapped rather than tweened. Tweening `d` would be prettier but it
+   is the one part of this rig that has no sound fallback: where path
+   interpolation is unsupported the cord would sit stretched across an empty
+   desk for the whole of the sleeping phase. */
+const CORD_COILED = 'M254 233 c-3 -3 -6 3 -9 0 c-3 -3 -6 3 -9 0';
+const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
 ---
 
 <figure class:list={['reception', className]}>
@@ -106,8 +145,8 @@ const PHONE_BASE =
     xmlns="http://www.w3.org/2000/svg"
   >
     <title id={titleId}>
-      A cat on a desk with a telephone handset held up to its ear, eyes open, the coiled cord
-      running back to the phone beside it.
+      A cat asleep on a desk beside a telephone. The phone rings, the cat wakes, and it lifts the
+      handset to its ear.
     </title>
 
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -124,8 +163,17 @@ const PHONE_BASE =
       <path d="M298 246 V300" stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M150 286 H298" stroke={ENVLINE} stroke-width={W_SUBJ} />
 
+      <!-- ── The ring. Symmetric arcs, because arcs on one side only read as
+           steam. Invisible at rest; they exist for two seconds. ── -->
+      <g class="rings" opacity="0" stroke={NAVY} stroke-width={W_FINE}>
+        <path d="M252 216 Q246 221 252 226" />
+        <path d="M250 212 Q241 221 250 230" />
+        <path d="M295 216 Q301 221 295 226" />
+        <path d="M297 212 Q306 221 297 230" />
+      </g>
+
       <!-- ── The telephone, standing on the surface. The notch in the top is
-           where the handset sits when it is down; it is up at the ear. ── -->
+           where the handset sits when it is down. ── -->
       <path d={PHONE_BASE} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
       <g fill={KEYS}>
         <rect x="263" y="226" width="5" height="3.2" rx="1" />
@@ -137,13 +185,14 @@ const PHONE_BASE =
       </g>
       <circle class="inuse" cx="258" cy="228.5" r="2.3" fill={ORANGE} />
 
-      <!-- the coiled cord, from the phone across to the handset -->
-      <path d="M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1" stroke={ENVLINE} stroke-width={W_SUBJ} />
+      <!-- the cord: coiled on the desk while the handset is docked, drawn out
+           across to the paw once it is up -->
+      <path class="cord-coiled" d={CORD_COILED} opacity="0" stroke={ENVLINE} stroke-width={W_SUBJ} />
+      <path class="cord-drawn" d={CORD_DRAWN} stroke={ENVLINE} stroke-width={W_SUBJ} />
 
       <!-- ── The cat: QuietScene's own drawing, moved onto the desk by one
            translate. Body, shading, markings, ears, tail and tucked paw are its
-           paths unchanged. The only differences are the two the job asks for —
-           the eyes are open, and the far paw is up holding the handset. ── -->
+           paths unchanged. ── -->
       <g transform="translate(-30 108)">
         <path class="tail" d="M182 126 C170 128 164 120 170 113 C174 108 181 110 181 116" stroke={NAVY} stroke-width={W_SUBJ} />
         <g class="breathe">
@@ -157,33 +206,52 @@ const PHONE_BASE =
           </g>
         </g>
         <ellipse cx="213" cy="124.5" rx="8.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
-        <path d="M227.5 108 L228 96 L237 103.5 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
-        <path d="M241 103.5 L248 97 L247.5 110 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
-        <circle cx="236" cy="116" r="12" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
-        <path d={HEAD_SHADE} fill={FUR_SHADE} />
-        <!-- awake: the 404 face with its eyes open, and a lid line over each -->
-        <circle cx="231" cy="114" r="1.9" fill={NAVY} />
-        <circle cx="242" cy="114" r="1.9" fill={NAVY} />
-        <path d="M228.5 111 Q231 109.3 233.5 111" stroke={NAVY} stroke-width={W_FACE} />
-        <path d="M239.5 111 Q242 109.3 244.5 111" stroke={NAVY} stroke-width={W_FACE} />
-        <path d="M236 119.5 L236 121" stroke={NAVY} stroke-width={W_FACE} />
-        <g stroke={ENVLINE} stroke-width={W_FINE}>
-          <path d="M227 119 L222.5 118" />
-          <path d="M245 119 L249.5 118" />
+
+        <!-- The head, ears and face travel together: the whole thing is drooped
+             while the cat sleeps and snaps up when it hears the phone. Nothing
+             inside this group may carry a transform of its own. -->
+        <g class="head">
+          <path d="M227.5 108 L228 96 L237 103.5 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path d="M241 103.5 L248 97 L247.5 110 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+          <circle cx="236" cy="116" r="12" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path d={HEAD_SHADE} fill={FUR_SHADE} />
+          <!-- asleep: QuietScene's own closed, contented eyes -->
+          <g class="eyes-shut" opacity="0" stroke={NAVY} stroke-width={W_FACE}>
+            <path d="M228 114 Q231 117 234 114" />
+            <path d="M239 114 Q242 117 245 114" />
+          </g>
+          <!-- awake: pupils, and a lid line over each so they do not read blank -->
+          <g class="eyes-open">
+            <circle cx="231" cy="114" r="1.9" fill={NAVY} />
+            <circle cx="242" cy="114" r="1.9" fill={NAVY} />
+            <path d="M228.5 111 Q231 109.3 233.5 111" stroke={NAVY} stroke-width={W_FACE} />
+            <path d="M239.5 111 Q242 109.3 244.5 111" stroke={NAVY} stroke-width={W_FACE} />
+          </g>
+          <path d="M236 119.5 L236 121" stroke={NAVY} stroke-width={W_FACE} />
+          <g stroke={ENVLINE} stroke-width={W_FINE}>
+            <path d="M227 119 L222.5 118" />
+            <path d="M245 119 L249.5 118" />
+          </g>
         </g>
       </g>
 
-      <!-- ── The handset, up at the ear, and the paw holding it ── -->
-      <g transform="rotate(16 223.5 224.5)">
+      <!-- ── The handset and the paw that holds it. Both rest where the story
+           ends; the keyframes put them in the cradle and under the chin.
+           The attribute rotation and the 100% keyframe are the same pose, so
+           reduced motion loses the journey and keeps the picture. ── -->
+      <g class="handset" transform="rotate(16 223.5 224.5)">
         <rect x="219" y="211" width="9" height="27" rx="4.5" fill={HANDSET_C} stroke={NAVY} stroke-width={W_SUBJ} />
       </g>
-      <ellipse cx="228" cy="233" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+      <ellipse class="paw" cx="228" cy="233" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
 
-      <!-- ── The plant: the 404 scene's own, unscaled ── -->
-      <g class="leaves" transform="translate(-206 8)">
-        <path d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
-        <path d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z" fill={LEAF_B} stroke={NAVY} stroke-width={W_SUBJ} />
-        <path d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
+      <!-- ── The plant: the 404 scene's own paths, unscaled. The translate is
+           on the static parent, NOT on the swaying group — see the header. ── -->
+      <g transform="translate(-206 8)">
+        <g class="leaves">
+          <path d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z" fill={LEAF_B} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
+        </g>
       </g>
       <path d="M108 282 L112 300 H136 L140 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M106 282 H142" stroke={NAVY} stroke-width={W_SUBJ} />
@@ -253,9 +321,238 @@ const PHONE_BASE =
     color: var(--color-navy-900);
   }
 
-  /* The timings are QuietScene's as well — the two scenes should not only look
-     alike, they should move alike. */
   @media (prefers-reduced-motion: no-preference) {
+    /* ── THE SEQUENCE ──────────────────────────────────────────────────────
+       One 5.2s timeline, played once. Every keyframe percentage below is a
+       moment in it, and they must stay in step with each other:
+
+           0.00s    0%     asleep
+           1.10s   21%     the phone starts ringing — four pulses of 0.55s
+           2.90s   56%     it wakes on the fourth: eyes open, head comes up
+           3.30s   63.5%   ringing stops, the handset leaves the cradle
+           3.80s   73%     mid-air
+           4.30s   83%     handset at the ear, line lit
+           5.20s  100%     held here for as long as the card is on screen
+
+       `both` fill is what holds the last frame. Change a beat here and change
+       it everywhere — the flashing light and the ring arcs are timed in
+       seconds, not percentages, because they repeat. ── */
+
+    /* the handset: in the cradle, shivering on each ring, then up and over */
+    .handset {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: pickup 5.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+    @keyframes pickup {
+      /* docked: rotated flat and carried across into the notch */
+      0%,
+      21% {
+        transform: translate(49.5px, -7.5px) rotate(90deg);
+      }
+      22% {
+        transform: translate(49.5px, -9px) rotate(85deg);
+      }
+      26% {
+        transform: translate(49.5px, -7.5px) rotate(90deg);
+      }
+      33% {
+        transform: translate(49.5px, -9px) rotate(95deg);
+      }
+      36.5% {
+        transform: translate(49.5px, -7.5px) rotate(90deg);
+      }
+      43% {
+        transform: translate(49.5px, -9px) rotate(85deg);
+      }
+      47% {
+        transform: translate(49.5px, -7.5px) rotate(90deg);
+      }
+      54% {
+        transform: translate(49.5px, -9px) rotate(95deg);
+      }
+      57.5%,
+      63.5% {
+        transform: translate(49.5px, -7.5px) rotate(90deg);
+      }
+      /* the lift: up and over, not dragged along the desk */
+      73% {
+        transform: translate(30px, -20px) rotate(52deg);
+      }
+      83%,
+      100% {
+        transform: rotate(16deg);
+      }
+    }
+
+    /* the far paw: tucked beside the near one, then up and WAITING - it is in
+       place at 76% and the handset lands into it at 83%. Arriving together
+       made the handset look as though it flew there by itself. */
+    .paw {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: reach 5.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+    @keyframes reach {
+      0%,
+      63.5% {
+        transform: translate(-32px, -0.5px);
+      }
+      71% {
+        transform: translate(-13px, -6px);
+      }
+      76%,
+      100% {
+        transform: translate(0, 0);
+      }
+    }
+
+    /* the eyes: a hard cut, not a fade. Cats do not dissolve. */
+    .eyes-shut {
+      animation: shut 5.2s linear both;
+    }
+    @keyframes shut {
+      0%,
+      55.9% {
+        opacity: 1;
+      }
+      56%,
+      100% {
+        opacity: 0;
+      }
+    }
+    .eyes-open {
+      animation: waken 5.2s linear both;
+    }
+    @keyframes waken {
+      0%,
+      55.9% {
+        opacity: 0;
+      }
+      56%,
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* the head: drooped while it sleeps, over-corrected when it startles */
+    .head {
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: rouse 5.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+    @keyframes rouse {
+      0%,
+      52% {
+        transform: rotate(5deg);
+      }
+      56% {
+        transform: rotate(-4deg);
+      }
+      63% {
+        transform: rotate(1deg);
+      }
+      70%,
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+
+    /* the ring itself: four pulses of 0.55s from 1.1s */
+    .rings {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: ringpulse 0.55s ease-out 1.1s 4 both;
+    }
+    @keyframes ringpulse {
+      0% {
+        opacity: 0;
+        transform: scale(0.82);
+      }
+      22% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      65% {
+        opacity: 0.85;
+        transform: scale(1.09);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.2);
+      }
+    }
+
+    /* the cord: coiled one swapped for drawn one while the handset is in the
+       air, so neither is ever attached to nothing */
+    .cord-coiled {
+      animation: coiled 5.2s linear both;
+    }
+    @keyframes coiled {
+      0%,
+      70% {
+        opacity: 1;
+      }
+      70.1%,
+      100% {
+        opacity: 0;
+      }
+    }
+    .cord-drawn {
+      animation: drawn 5.2s linear both;
+    }
+    @keyframes drawn {
+      0%,
+      80% {
+        opacity: 0;
+      }
+      80.1%,
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* the line light. Three animations, latest-wins: the envelope runs the
+       whole timeline, the flashes override it while the phone rings, and the
+       slow breathe takes over for good once the call is live. */
+    .inuse {
+      animation:
+        linelight 5.2s linear both,
+        ringflash 0.55s linear 1.1s 4,
+        inuse 3.4s ease-in-out 4.3s infinite;
+    }
+    @keyframes linelight {
+      0%,
+      63.5% {
+        opacity: 0.12;
+      }
+      83%,
+      100% {
+        opacity: 1;
+      }
+    }
+    @keyframes ringflash {
+      0%,
+      40% {
+        opacity: 1;
+      }
+      42%,
+      100% {
+        opacity: 0.12;
+      }
+    }
+    @keyframes inuse {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    /* ── The ambient loops, which are QuietScene's and run for ever: the two
+         scenes should not only look alike, they should move alike. ── */
     .breathe {
       transform-box: fill-box;
       transform-origin: 50% 100%;
@@ -287,20 +584,6 @@ const PHONE_BASE =
       }
       93% {
         transform: rotate(4deg);
-      }
-    }
-
-    /* the line light, breathing slowly: the call is live */
-    .inuse {
-      animation: inuse 3.4s ease-in-out infinite;
-    }
-    @keyframes inuse {
-      0%,
-      100% {
-        opacity: 0.45;
-      }
-      50% {
-        opacity: 1;
       }
     }
 

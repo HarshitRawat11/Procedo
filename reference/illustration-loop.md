@@ -322,13 +322,37 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
 - Animation only inside `@media (prefers-reduced-motion: no-preference)`, with the
   resting value on an SVG attribute — never inside the media query, or
   reduced-motion visitors get the mid-animation state.
-- Animating a *transform*: keep the resting `transform` on the attribute and
-  drive the motion with CSS `transform` keyframes on the same element, declared
-  with `transform-box: view-box; transform-origin: 0 0` (the SVG defaults, but
-  stated so nobody has to wonder). Verified 2026-09-09 on `ReceptionScene`: the
-  CSS values reproduce the attribute transform to two decimals, on a viewBox
-  whose min-y is 70. Nest groups when two things must travel together (the
-  handset and the paw holding it) rather than matching two separate paths.
+- **A CSS animation's `transform` REPLACES the element's `transform`
+  attribute — it does not compose with it.** A presentation attribute is the
+  lowest-priority source of a CSS property, so the moment an animation touches
+  `transform`, the attribute is gone. Corollary: never put a static positioning
+  transform on an element you also animate. Hang it on a parent instead.
+  Found the hard way on 2026-09-13: `ReceptionScene`'s plant carried
+  `translate(-206 8)` and animated `sway`, so the foliage drew 206 units right
+  of its own pot in every real browser, and survived two commits — because
+  **sharp renders attributes and ignores CSS**, every still measured by the gate
+  scripts was correct. The gates cannot see this class of fault. Only the
+  browser can.
+- Animating a *transform*: keep the resting pose on the attribute and drive the
+  motion with CSS `transform` keyframes on the same element, with the final
+  keyframe reproducing the attribute exactly — so the still and the last frame
+  agree, and reduced motion loses only the journey. Use
+  `transform-box: fill-box` with percentage origins (`50% 100%` for anything
+  hinged at its base); it is immune to any translate on an ancestor, which
+  `view-box` is not. Two animated fill-boxes must never nest: a transformed
+  child moves its parent's bounding box, which moves the parent's origin. A
+  static parent is fine.
+- **Put the whole motion block inside the media query — `transform-box` and
+  `transform-origin` included.** They change how an *attribute* transform is
+  interpreted too, so a reduced-motion visitor who inherits them without the
+  keyframes gets a pose that is double-offset and wrong. Verified 2026-09-13:
+  zero `transform-box`, `transform-origin` or `animation` declarations exist in
+  `ReceptionScene`'s built CSS before `@media (prefers-reduced-motion)`.
+- A sequence that tells a story (`ReceptionScene`: sleeps · rings · wakes ·
+  answers) plays **once** with `animation-fill-mode: both`, and every SVG
+  attribute describes the *last* frame — the keyframes rewind to the start and
+  play forward. It restarts on its own because the card holding it is `hidden`
+  until it is needed, and `display: none` cancels animations. No JavaScript.
 - `role="img"` and a `<title>` with a unique `id`; pure decoration gets
   `aria-hidden`. Several instances on one page must not share an id.
 - Preview work goes in a new file, sealed off per `CLAUDE.md` §5. Never overwrite
