@@ -71,6 +71,39 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-14 (night) — the prop kit, and a real responsive bug
+- *"coffee cup should be there in both contact and careers image. we will follow
+  this theme all across the site. we have the cat, plant, grass and coffee mug
+  all of them with same color and design."* So the four props are now a fixed
+  kit, written into `reference/illustration-loop.md` as a standing constraint.
+- The mug is QuietScene's, path for path — body, rim, handle, the one `#F24E1E`
+  band, both steam wisps and their 4s timing — moved by one translate on a
+  **static** parent, because the steam is animated and a CSS transform replaces a
+  transform attribute rather than composing with it. Same rule as the plant.
+- Both scenes now read **grass · plant · desk · mug · grass**; the 404 reads
+  grass · mug · rack · plant · grass. One family, one hand.
+- **New tool: `scripts/measure-balance.cjs`.** Adding a prop on the right pushed
+  both compositions off-centre, and neither gate can see framing — which is
+  exactly the fault Harshit caught by eye on the contact scene weeks ago. The
+  script renders the scene, finds the bounding box of every non-cream pixel and
+  prints the viewBox that centres it. Contact moved to `22 136 420 240` and
+  careers to `13 127 420 240`; both now measure **off by 0.0, 0.0**.
+- Gates after: contact **89.2% cream / 2.3% dark**, curve 52%. Careers **87.6% /
+  4.2%**, curve 46%. All pass.
+- **A real bug, on the live page, not just the preview.** Harshit resized his
+  window and the open-application card's text and button came apart. Measured on
+  the preview at 288px art: at 960px the text column is 216px; at 880px it is
+  136px and the heading breaks to two lines; at **760px it is 66px, the heading
+  is on three lines and the button sits 34px past the card**; at 660px the button
+  is 134px past and **the page scrolls sideways**. The card went to a row at
+  `sm:` (640px), but the art, the gaps and a 255px button need ~660px before the
+  text gets a single pixel.
+- `careers.astro` had the same defect with its 208px art, about 80px later — so
+  this was **shipping**, not something the preview introduced. Fixed on both:
+  the row now holds until `lg:` (1024px), and the text column gets `min-w-0` so
+  a flex child cannot push its siblings out of the box. Re-measured at 660, 760,
+  900 and 1100: one heading line everywhere, no overflow, no sideways scroll.
+
 ### 2026-09-14 (later still) — careers preview un-parked
 - *"add this to preview first."* `_careers-preview` → `careers-preview`: the
   underscore comes off, which is the whole mechanism. Reachable at

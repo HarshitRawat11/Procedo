@@ -121,7 +121,7 @@ import { careers } from '../data/site';
 
       <!-- Open application — the cat at work, chair free -->
       <div
-        class="mt-10 flex flex-col items-start justify-between gap-5 rounded-2xl border border-line bg-white p-7 shadow-sm sm:flex-row sm:items-center sm:gap-8"
+        class="mt-10 flex flex-col items-start justify-between gap-5 rounded-2xl border border-line bg-white p-7 shadow-sm lg:flex-row lg:items-center lg:gap-8"
         data-reveal
       >
         <!-- WIDER THAN THE LIVE PAGE, deliberately. careers.astro still has
@@ -131,10 +131,10 @@ import { careers } from '../data/site';
              reading at all. 288px is the narrowest that holds together.
              If Harshit wants the illustration to stay at 208px it needs to be a
              different, tighter drawing - not this one shrunk. -->
-        <div class="w-56 shrink-0 self-center sm:w-72">
+        <div class="w-56 shrink-0 self-center lg:w-72">
           <CareersScene id="careers" />
         </div>
-        <div class="sm:flex-1">
+        <div class="min-w-0 lg:flex-1">
           <h2 class="text-base font-semibold text-navy-950">Don’t see your role?</h2>
           <p class="mt-1.5 text-sm leading-relaxed text-slate-600">
             Send us your CV and a short note on what you’d like to build. We keep good people in

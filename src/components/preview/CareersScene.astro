@@ -72,6 +72,8 @@ const LEAF_A = '#7DD87D';
 const LEAF_B = '#4EB86B';
 const POT = '#FCDCCF';
 const GRASS = '#3FAE5F';
+const MUG = '#F7B9A3'; // QuietScene's mug, to the digit
+const ORANGE = '#F24E1E'; // and its one band of Procedo orange
 const GREEN = '#3FAE5F'; // the status dot, the 404 rack's LED colour
 
 /* QuietScene's cat, verbatim. */
@@ -87,7 +89,7 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
 <figure class:list={['careers', className]}>
   <svg
     class="scene"
-    viewBox="0 125 420 240"
+    viewBox="13 127 420 240"
     role="img"
     aria-labelledby={titleId}
     xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +102,7 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
       <!-- ── Ground: the 404's own line, 81% of the canvas and touching neither
            edge ── -->
       <ellipse cx="224" cy="302" rx="100" ry="7" fill={GROUND} />
-      <path d="M52 300 H362" stroke={ENVLINE} stroke-width={W_SUBJ} />
+      <path d="M52 300 H394" stroke={ENVLINE} stroke-width={W_SUBJ} />
 
       <!-- ══ DESK — ReceptionScene's desk, unchanged. Its top SURFACE is y=236.
                mis-registration 1: the timber colour sits 3 right / 2 down of
@@ -181,6 +183,28 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
       <path d="M90 282 L94 300 H118 L122 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M88 282 H124" stroke={NAVY} stroke-width={W_SUBJ} />
 
+      <!-- ══ MUG — QuietScene's own mug, verbatim: body, rim, handle, the one
+               orange band and both steam wisps. Fourth of the four props the
+               whole site shares — cat, plant, grass, mug — same colour and
+               design wherever it appears. On a STATIC parent, because the steam
+               is animated and a CSS transform replaces a transform attribute
+               rather than composing with it. ══ -->
+      <g transform="translate(234 8)">
+        <g class="steam" stroke={ENVLINE} stroke-width={W_SUBJ}>
+          <path class="wisp wisp-1" d="M103 262 C100 256 108 252 105 246" />
+          <path class="wisp wisp-2" d="M112 262 C109 256 117 252 114 246" />
+        </g>
+        <path
+          d="M96 268 L96 286 Q96 292 102 292 L114 292 Q120 292 120 286 L120 268 Z"
+          fill={MUG}
+          stroke={NAVY}
+          stroke-width={W_SUBJ}
+        />
+        <rect x="97" y="278" width="22" height="5" fill={ORANGE} opacity="0.9" />
+        <path d="M96 273 H120" stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M120 275 C130 275 130 287 120 287" stroke={NAVY} stroke-width={W_SUBJ} />
+      </g>
+
       <!-- ══ GRASS — both sides, as on the 404 ══ -->
       <g stroke={GRASS} stroke-width="3.5">
         <g class="grass grass-b">
@@ -189,9 +213,9 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
           <path d="M75 300 C75 293 74 288 72 284" />
         </g>
         <g class="grass">
-          <path d="M330 300 C329 292 332 285 337 280" />
-          <path d="M337 300 C337 292 339 286 343 282" />
-          <path d="M343 300 C343 293 342 288 340 284" />
+          <path d="M372 300 C371 292 374 285 379 280" />
+          <path d="M379 300 C379 292 381 286 385 282" />
+          <path d="M385 300 C385 293 384 288 382 284" />
         </g>
       </g>
     </g>
@@ -278,6 +302,28 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
       }
       50% {
         opacity: 1;
+      }
+    }
+
+    /* the steam, QuietScene's own timings */
+    .wisp {
+      opacity: 0;
+      animation: wisp 4s ease-in-out infinite;
+    }
+    .wisp-2 {
+      animation-delay: 1.6s;
+    }
+    @keyframes wisp {
+      0% {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      40% {
+        opacity: 0.75;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-10px);
       }
     }
 

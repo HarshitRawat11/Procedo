@@ -105,6 +105,7 @@ const LEAF_A = '#7DD87D';
 const LEAF_B = '#4EB86B';
 const POT = '#FCDCCF';
 const GRASS = '#3FAE5F';
+const MUG = '#F7B9A3'; // QuietScene's mug, to the digit
 
 /* The one hit of orange: the line. Dark asleep, flashing on the ring, lit on
    the call. */
@@ -139,7 +140,7 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
 
   <svg
     class="scene"
-    viewBox="0 134 420 240"
+    viewBox="22 136 420 240"
     role="img"
     aria-labelledby={titleId}
     xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +153,7 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
       <!-- ── Ground: the 404 scene's own line and tone ── -->
       <ellipse cx="224" cy="302" rx="100" ry="7" fill={GROUND} />
-      <path d="M128 300 H322" stroke={ENVLINE} stroke-width={W_SUBJ} />
+      <path d="M70 300 H394" stroke={ENVLINE} stroke-width={W_SUBJ} />
 
       <!-- ── The desk. Its top SURFACE is y=236; everything on it stands on
            that line and nothing crosses it. mis-registration 1: the timber
@@ -256,6 +257,28 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
       <path d="M108 282 L112 300 H136 L140 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M106 282 H142" stroke={NAVY} stroke-width={W_SUBJ} />
 
+      <!-- ══ MUG — QuietScene's own mug, verbatim: body, rim, handle, the one
+               orange band and both steam wisps. Fourth of the four props the
+               whole site shares — cat, plant, grass, mug — same colour and
+               design wherever it appears. On a STATIC parent, because the steam
+               is animated and a CSS transform replaces a transform attribute
+               rather than composing with it. ══ -->
+      <g transform="translate(234 8)">
+        <g class="steam" stroke={ENVLINE} stroke-width={W_SUBJ}>
+          <path class="wisp wisp-1" d="M103 262 C100 256 108 252 105 246" />
+          <path class="wisp wisp-2" d="M112 262 C109 256 117 252 114 246" />
+        </g>
+        <path
+          d="M96 268 L96 286 Q96 292 102 292 L114 292 Q120 292 120 286 L120 268 Z"
+          fill={MUG}
+          stroke={NAVY}
+          stroke-width={W_SUBJ}
+        />
+        <rect x="97" y="278" width="22" height="5" fill={ORANGE} opacity="0.9" />
+        <path d="M96 273 H120" stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M120 275 C130 275 130 287 120 287" stroke={NAVY} stroke-width={W_SUBJ} />
+      </g>
+
       <!-- ── Grass both sides, as on the 404 scene ── -->
       <g stroke={GRASS} stroke-width="3.5">
         <!-- Shifted 12 units left of where a straight mirror of QuietScene would
@@ -270,9 +293,9 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
           <path d="M93 300 C93 293 92 288 90 284" />
         </g>
         <g class="grass">
-          <path d="M308 300 C307 292 310 285 315 280" />
-          <path d="M315 300 C315 292 317 286 321 282" />
-          <path d="M321 300 C321 293 320 288 318 284" />
+          <path d="M372 300 C371 292 374 285 379 280" />
+          <path d="M379 300 C379 292 381 286 385 282" />
+          <path d="M385 300 C385 293 384 288 382 284" />
         </g>
       </g>
     </g>
@@ -595,6 +618,28 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
       }
       93% {
         transform: rotate(4deg);
+      }
+    }
+
+    /* the steam, QuietScene's own timings */
+    .wisp {
+      opacity: 0;
+      animation: wisp 4s ease-in-out infinite;
+    }
+    .wisp-2 {
+      animation-delay: 1.6s;
+    }
+    @keyframes wisp {
+      0% {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      40% {
+        opacity: 0.75;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-10px);
       }
     }
 

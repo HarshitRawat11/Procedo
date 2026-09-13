@@ -312,6 +312,17 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
 ## Standing constraints
 
 - One illustration at a time. Never batch.
+- **The prop kit is fixed: cat, plant, grass, coffee mug.** Same paths, same
+  colours, same stroke weights, in every scene that has them — set by Harshit on
+  2026-09-14: *"we will follow this theme all across the site."* Copy them from
+  `QuietScene` verbatim and move them with a translate on a STATIC parent; do not
+  redraw them and do not re-colour them. The mug is `#F7B9A3` with one
+  `#F24E1E` band, and it carries two steam wisps.
+- **Measure the balance, do not eyeball it.** `node scripts/measure-balance.cjs
+  <file.svg>` renders the scene, finds the bounding box of every non-cream pixel,
+  and prints the viewBox that would centre it. Neither Gate 1 nor Gate 1b can see
+  framing, and it is what produced *"too much space below cat and too little
+  above it"* the first time. Set the viewBox from the number it gives you.
 - **No human figures.** Animal or machine subjects only. See Gate 0.
 - Draw the calm moment the service creates, not the equipment that creates it.
 - **Leave the frame mostly empty.** 60% bare cream, 5% dark, measured — see
