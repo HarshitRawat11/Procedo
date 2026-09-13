@@ -54,7 +54,11 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
 
   <section class="bg-cream py-16 lg:py-24">
     <Container>
-      <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <!-- lg:items-start matters: without it the grid stretches the white
+           panel to match the taller details column, which left 176px of
+           dead white under the Send button and 185px under the success
+           card. Measured at 1440px on 2026-09-13. -->
+      <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
         <!-- Direct channels -->
         <div data-reveal>
           <h2 class="text-xl font-semibold text-navy-950">Reach us directly</h2>

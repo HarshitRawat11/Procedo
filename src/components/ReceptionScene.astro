@@ -316,6 +316,11 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
   .scene {
     display: block;
     width: 100%;
+    /* QuietScene caps its own .scene at 22rem. Without the same cap here the
+       contact panel — which is fluid — drew the SAME cat at 495px against the
+       404's 352px on a 1280 screen: 40% larger, on two pages that are meant to
+       look like one hand drew them. Harshit called it on 2026-09-13. */
+    max-width: 22rem;
     height: auto;
   }
   .line {

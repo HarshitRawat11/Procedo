@@ -88,8 +88,11 @@ Still parked, on Harshit's review of 2026-09-13:
 weight pass before they can be adopted; `_404-preview` and `_uptime` — older
 concept pages, no verdict yet.
 
-**Live, deliberately:** `contact-animation-preview` (no underscore), added
-2026-09-13 at Harshit's request. The reception sequence plays once and is
+**Parked 2026-09-13, after sign-off:** `_contact-animation-preview`. Added the
+same day at Harshit's request, and parked the moment he approved the sequence
+(*"i like it"*). Kept rather than deleted because it is the only way to walk the
+submission without filing a real enquiry — drop the underscore to bring it back.
+What it does: The reception sequence plays once and is
 triggered on the real site by actually sending a message, so there was no way to
 watch it twice, or to walk the submission that leads to it, without filing a real
 enquiry each time. The page renders the real `ContactForm` in the real column
@@ -99,7 +102,8 @@ can give: accepted, rejected, network failure, and a genuine live send behind a
 host — the submit handler, the "Sending…" label, `form.reset()`, the swap to the
 card and both error panels are the production code running for real. Everything else in §5 still applies to it — noindex, in no nav,
 linked from nowhere, listed in the sitemap filter. **Delete it once the sequence
-is signed off.**
+is signed off.** It is parked, not deleted, so that stays true in reverse: if
+the sequence is reopened, un-park it rather than rebuilding it.
 
 **Deleted 2026-09-13** on his instruction, after review: `illustrations-preview`,
 `contact-preview`, `contact-preview-b`, `contact-preview-c`, `hero-preview`,

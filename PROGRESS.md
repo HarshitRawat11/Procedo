@@ -71,6 +71,27 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-13 (night, after sign-off) — three from Harshit, all measured
+- *"too much negative space in the contact form reduce it."* — and it was not the
+  form, it was the **grid**. `lg:grid-cols-2` stretches its items to equal
+  height, so the white panel grew to match the taller contact-details column
+  beside it: **766px of panel around 590px of form**. 176px of dead white under
+  the Send button, 185px under the success card. `lg:items-start` lets the panel
+  be its own height. Measured after: panel 590 (form) / 495 (success), slack
+  below the content **21px and 1px**. Holds at 1440, 1280, 1100 and 1024.
+- *"cap ReceptionScene at 22rem - yes."* Done, matching the cap QuietScene
+  already had on its own `.scene`. The contact panel is fluid, so without it the
+  same cat drew **495px against the 404's 352px** on a 1280 screen — 40% larger,
+  on two pages meant to look like one hand drew them. Now 352px at every width.
+- *"/contact-animation-preview - park it."* Renamed with the leading underscore,
+  so Astro no longer routes or builds it — confirmed absent from `dist/`. Kept,
+  not deleted: it is the only way to walk the submission without filing a real
+  enquiry, and it comes back by removing one character. Its entry stays in the
+  sitemap filter as the safety net that config describes. CLAUDE.md §5 updated.
+- Sign-off recorded: *"i like it"* on the reception sequence, 2026-09-13. The
+  page was parked the same hour.
+- Build clean: 51 files, 0 errors / 0 warnings / 0 hints, no console errors.
+
 ### 2026-09-13 (night, last) — the grass was not touching the pot, it was on it
 - *"on the left the grass and plant is touching almost, can you create a bit of
   a gap"* — and it was worse than "almost". The rightmost blade ended at x=105
