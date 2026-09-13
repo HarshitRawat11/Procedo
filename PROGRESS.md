@@ -55,7 +55,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 34 | Preview pages — parked, then reviewed | ✅ | — | Parked 2026-09-12; reviewed 2026-09-13. **Deleted:** `illustrations-preview`, `contact-preview` ×3, `hero-preview`, `home-preview` (recoverable from `3caa023`). **Still parked:** `_company-preview`, `_careers-preview` (pending refinement), `_404-preview`, `_uptime`. Every illustration component was kept — the pages went, the images did not |
 | 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
 | 36 | WhatsApp channel | ✅ | — | Number confirmed by Harshit 2026-09-13 — the same line as the phone. `contact.whatsapp` in `site.ts` with a derived `whatsappHref`; the channel drops out entirely if the number is ever cleared (§3). Live on the Contact page |
-| 37 | Illustration weight — the "subtle" pass | 🟡 | 2 of 5 refined | Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **And scale**: apparent size is subject width over CANVAS width — match the 420-wide canvas or the same cat draws larger. Standing: QuietScene 80.9/3.4 · **ReceptionScene 90.3/2.0 — done 2026-09-13** · **CareersScene 86.8/2.6 — done 2026-09-14, awaiting sign-off** · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
+| 37 | Illustration weight — the "subtle" pass | 🟡 | 2 of 5 refined | Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **And scale**: apparent size is subject width over CANVAS width — match the 420-wide canvas or the same cat draws larger. Standing: QuietScene 80.9/3.4 · **ReceptionScene 90.3/2.0 — done 2026-09-13** · **CareersScene 88.4/3.9 — done 2026-09-14, awaiting sign-off** · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
 
 ---
 
@@ -70,6 +70,27 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-14 (later) — chair out, screen black again
+- *"remove the chair completely and make the monitor screen black like before."*
+  Both done. The chair is gone, not shrunk — and the component says so, because
+  it was there for a reason and should not come back by accident.
+- **The black screen is affordable now, and it was not before.** The old monitor
+  was 76x64 on a 400x264 canvas: **4.6% of the frame in flat dark** against a 5%
+  ceiling, which is most of why the old scene failed. This one is 50x42 on a 420
+  canvas: **2.1%**. Same decision, less than half the cost, because the scale was
+  fixed first. Gate 1b now **88.4% cream / 3.9% dark** — still inside the
+  ceiling, with about a point of headroom. Gate 1 all pass, curve 44%.
+- It also reads far better small. At 176px the pale screen was a faint square;
+  the dark one is unmistakably a monitor. That was worth knowing.
+- **Removing the chair unbalanced the frame**, which is not something the gates
+  can see: it left a hole on the left, a stranded grass tuft at the far edge, and
+  all the weight on the right, where the dark screen already sits. So the plant
+  moved into the chair's slot as the counterweight, and the right grass and the
+  ground line came in to match. Ink now spans x 51–363 on a 420 canvas, centred
+  at 207 against a canvas centre of 210.
+- The picture no longer contains the "the seat's yours" joke, because the seat is
+  no longer in it. That reading has to come from the card's copy now.
 
 ### 2026-09-14 — the careers scene, rebuilt
 - *"let us move to the careers image."* `DeskSceneWorking` passed Gate 1 but

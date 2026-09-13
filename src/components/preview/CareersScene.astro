@@ -1,6 +1,6 @@
 ---
 /* ============================================================================
- *  CareersScene — "The seat's yours. The mouse is not." PREVIEW ONLY.
+ *  CareersScene — the cat at the desk, working. PREVIEW ONLY.
  *
  *  Replaces DeskSceneWorking, which failed Gate 1b at 9.6% dark against a 5%
  *  ceiling and was drawn in a different hand from the 404. That component is
@@ -8,8 +8,9 @@
  *
  *  ── WHAT WAS WRONG, measured ────────────────────────────────────────────────
  *  · The monitor was a solid navy rectangle, 76x64 on a 400x264 canvas — 4.6%
- *    of the frame in flat dark, on a budget of 5%. Here the screen is the 404
- *    rack's own pale blue with a navy outline: weight carried by line, not fill.
+ *    of the frame in flat dark, on a budget of 5%. The screen here is dark too,
+ *    by request, but it is 50x42 on a 420 canvas: 2.1%. The fix was the scale,
+ *    not the colour.
  *  · Four things ran off the edge — desk, monitor, floor line and pot. Nothing
  *    here touches an edge. "Draw objects, not walls."
  *  · The cat spanned 172 units of a 400 canvas: 43%, against the 404's 20.4%.
@@ -29,9 +30,12 @@
  *    animated: a presentation attribute loses to an animation, so the CSS
  *    transform replaces it rather than composing with it. Static transforms go
  *    on a parent. This cost two commits on ReceptionScene.
- *  · The chair is a PROP, at prop scale — 42 units wide, like the 404's mug at
- *    34 and its plant at 36. It is the thing on offer, so it stays empty, but it
- *    is not the subject.
+ *  · THERE IS NO CHAIR. One was drawn at prop scale and removed on Harshit's
+ *    instruction, 2026-09-14. The scene is a cat at a desk; the "the seat's
+ *    yours" reading now has to come from the copy beside it, not the picture.
+ *    Do not put it back without asking.
+ *  · The screen is the ONE flat dark shape. Re-run Gate 1b whenever its size
+ *    changes — at 50x42 it is 2.1% of the frame, and the ceiling is 5%.
  *  · The working paw must BREAK the mouse's outline, not sit inside it. The
  *    first cut had it wholly within, and it read as a hole cut in the mouse
  *    rather than a paw resting on one.
@@ -55,6 +59,13 @@ const TIMBER = '#E4CBA8';
 const GROUND = '#E3EAF3';
 const DEVICE = '#C9D9EC'; // the 404 rack's own blue — screen, mouse, chair
 const KEYS = '#8FA8C8';
+/* Deliberately the same value as NAVY, and named separately because it is the
+   one flat dark shape in the scene and the gate has to be re-run whenever it
+   changes size. Harshit asked for the black screen back on 2026-09-14; it is
+   affordable now only because the monitor is 50x42 on a 420 canvas (2.1% of the
+   frame) where the old one was 76x64 on a 400 canvas (4.6%). Same decision,
+   less than half the cost, because the scale was fixed first. */
+const SCREEN = '#1B2A4A';
 const FUR = '#FFFFFF';
 const FUR_SHADE = '#B9C4D2';
 const LEAF_A = '#7DD87D';
@@ -82,34 +93,14 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
     xmlns="http://www.w3.org/2000/svg"
   >
     <title id={titleId}>
-      A cat sitting on a desk with one paw on the mouse, watching the monitor. The office chair
-      beside the desk is empty.
+      A cat sitting on a desk with one paw on the mouse, watching the monitor.
     </title>
 
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
       <!-- ── Ground: the 404's own line, 81% of the canvas and touching neither
            edge ── -->
       <ellipse cx="224" cy="302" rx="100" ry="7" fill={GROUND} />
-      <path d="M56 300 H396" stroke={ENVLINE} stroke-width={W_SUBJ} />
-
-      <!-- ══ CHAIR — a prop, 42 units wide, and empty. That is the point. ══ -->
-      <g class="chair">
-        <path
-          d="M88 282 C84 268 85 252 89 246 C93 241 101 241 104 247 C107 254 106 270 104 282 Z"
-          fill={DEVICE}
-          stroke={NAVY}
-          stroke-width={W_SUBJ}
-        />
-        <path d="M92 278 C89 266 90 254 93 249 C95 246 99 246 101 248 C97 250 95 256 94 264 C93 270 93 274 94 278 Z" fill={KEYS} />
-        <path
-          d="M80 284 C80 280 83 278 88 278 L116 278 C122 278 125 282 124 286 C123 291 117 294 110 294 L90 294 C84 294 80 290 80 286 Z"
-          fill={DEVICE}
-          stroke={NAVY}
-          stroke-width={W_SUBJ}
-        />
-        <path d="M102 294 V300" stroke={NAVY} stroke-width={W_SUBJ} />
-        <path d="M90 300 L102 296 L114 300" stroke={NAVY} stroke-width={W_SUBJ} />
-      </g>
+      <path d="M52 300 H362" stroke={ENVLINE} stroke-width={W_SUBJ} />
 
       <!-- ══ DESK — ReceptionScene's desk, unchanged. Its top SURFACE is y=236.
                mis-registration 1: the timber colour sits 3 right / 2 down of
@@ -124,15 +115,15 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
                a solid navy slab and was most of the dark budget on its own. ══ -->
       <path d="M281 228 V236" stroke={NAVY} stroke-width={W_SUBJ} />
       <path d="M268 236 C273 236 277 235 281 234 C285 235 289 236 294 236" stroke={NAVY} stroke-width={W_SUBJ} />
-      <rect x="256" y="186" width="50" height="42" rx="3" fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <g stroke={KEYS} stroke-width={W_FINE}>
+      <rect x="256" y="186" width="50" height="42" rx="3" fill={SCREEN} stroke={NAVY} stroke-width={W_SUBJ} />
+      <g stroke={DEVICE} stroke-width={W_FINE}>
         <path d="M263 195 H296" />
         <path d="M263 202 H288" />
         <path d="M263 209 H293" />
       </g>
       <!-- the one saturated hit: a build that is passing, as on the 404's rack -->
       <circle class="pip" cx="265" cy="218" r="2.2" fill={GREEN} />
-      <path d="M271 218 H289" stroke={KEYS} stroke-width={W_FINE} />
+      <path d="M271 218 H289" stroke={DEVICE} stroke-width={W_FINE} />
 
       <!-- ══ MOUSE — under the paw, its lead running to the monitor foot ══ -->
       <path d="M252 232 C257 231 261 233 266 235" stroke={ENVLINE} stroke-width={W_FINE} />
@@ -175,17 +166,20 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
       <!-- the working paw, out on the mouse -->
       <ellipse class="paw" cx="228" cy="228" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
 
-      <!-- ══ PLANT — the 404's own paths, on a static parent so the sway cannot
-               wipe the translate ══ -->
-      <g transform="translate(30 8)">
+      <!-- ══ PLANT — the 404's own paths, standing where the chair used to.
+               It is here rather than on the right because the dark screen is the
+               heaviest shape in the frame and sits right of centre; the plant is
+               the counterweight. On a static parent, so the sway cannot wipe the
+               translate. ══ -->
+      <g transform="translate(-224 8)">
         <g class="leaves">
           <path d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
           <path d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z" fill={LEAF_B} stroke={NAVY} stroke-width={W_SUBJ} />
           <path d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
         </g>
       </g>
-      <path d="M344 282 L348 300 H372 L376 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d="M342 282 H378" stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M90 282 L94 300 H118 L122 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M88 282 H124" stroke={NAVY} stroke-width={W_SUBJ} />
 
       <!-- ══ GRASS — both sides, as on the 404 ══ -->
       <g stroke={GRASS} stroke-width="3.5">
@@ -195,9 +189,9 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
           <path d="M75 300 C75 293 74 288 72 284" />
         </g>
         <g class="grass">
-          <path d="M386 300 C385 292 388 285 393 280" />
-          <path d="M393 300 C393 292 395 286 399 282" />
-          <path d="M399 300 C399 293 398 288 396 284" />
+          <path d="M330 300 C329 292 332 285 337 280" />
+          <path d="M337 300 C337 292 339 286 343 282" />
+          <path d="M343 300 C343 293 342 288 340 284" />
         </g>
       </g>
     </g>
