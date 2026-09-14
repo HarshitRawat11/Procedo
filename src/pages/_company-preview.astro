@@ -18,14 +18,20 @@
  *  (disliked) → page-header aside (disliked) → this. PageHeader keeps its
  *  optional `aside` slot; unused here, inert everywhere.
  *
- *  UN-PARKED 2026-09-14 so the rebuilt illustration can be seen in context.
- *  It now carries CompanyScene, not WorkshopScene: the old one failed Gate 1b
- *  at 29.7% cream / 7.2% dark because its shadow board was a wall over 54% of
- *  the frame. Sealed exactly as CLAUDE.md §5 requires — noindex, in no nav,
- *  linked from nowhere, named in the sitemap filter. Park it again on sign-off.
+ *  PARKED AGAIN 2026-09-14, on adoption. It was un-parked earlier the same day
+ *  so the rebuilt CompanyScene could be reviewed in context; Harshit signed the
+ *  scene off, this section now ships on the real /company page, and the scene
+ *  itself has moved to components/. So the page duplicates the live one and the
+ *  underscore is back.
  *
- *  Once approved: move CompanyScene out of components/preview/ into
- *  components/, port this section into company.astro, then delete this page.
+ *  Kept rather than deleted, deliberately and for the same reason as
+ *  _careers-preview: it is the rehearsal space for the next change to that
+ *  band. Drop the underscore to bring it back, and remember it then needs the
+ *  live section copied into it — this file has drifted from company.astro the
+ *  moment either one is edited.
+ *
+ *  The sitemap filter in astro.config.mjs still names '/company-preview', also
+ *  deliberately, so an un-parked page cannot walk into the sitemap by accident.
  * ========================================================================== */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
@@ -33,7 +39,7 @@ import PageHeader from '../components/PageHeader.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import FeatureGrid from '../components/FeatureGrid.astro';
 import ClosingCta from '../components/ClosingCta.astro';
-import CompanyScene from '../components/preview/CompanyScene.astro';
+import CompanyScene from '../components/CompanyScene.astro';
 import { Icon } from 'astro-icon/components';
 import { company, whyUs, competencies, workshopBand } from '../data/site';
 

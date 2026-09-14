@@ -5,11 +5,19 @@ import PageHeader from '../components/PageHeader.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import FeatureGrid from '../components/FeatureGrid.astro';
 import ClosingCta from '../components/ClosingCta.astro';
+import CompanyScene from '../components/CompanyScene.astro';
 import { Icon } from 'astro-icon/components';
-import { company, whyUs, competencies } from '../data/site';
+import { company, whyUs, competencies, workshopBand } from '../data/site';
 import { graph, breadcrumbs } from '../lib/schema';
 
 const schema = graph(breadcrumbs([{ name: 'Company', path: '/company' }]));
+
+/* The third overview paragraph — the one about "technical precision and
+   implementation clarity" — is promoted to the statement beside the
+   illustration, because that is what the picture is about. It is therefore
+   dropped from the Overview section below rather than printed twice. Adopted
+   from /company-preview 2026-09-14 after sign-off; that page is now parked. */
+const [overviewA, overviewB, statement] = company.overview;
 ---
 
 <BaseLayout
@@ -24,16 +32,34 @@ const schema = graph(breadcrumbs([{ name: 'Company', path: '/company' }]));
     subtitle="An infrastructure-first technology firm — bringing IT, security, AV, digital workplace and datacenter infrastructure together into systems that quietly work."
   />
 
-  <!-- Overview -->
+  <!-- Statement, with the illustration alongside — the /our-mission layout -->
   <section class="bg-cream py-12 lg:py-16">
+    <Container>
+      <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-7" data-reveal>
+          <blockquote
+            class="border-l-2 border-brand-500 pl-6 text-[clamp(1.35rem,2.6vw,1.85rem)] font-semibold leading-snug text-navy-950"
+          >
+            {statement}
+          </blockquote>
+        </div>
+
+        <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
+          <div class="rounded-2xl border border-line bg-band px-5 pt-7 pb-8">
+            <CompanyScene id="company" chip={workshopBand.chip} caption={workshopBand.caption} />
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Overview: the first two paragraphs, and what we deliver -->
+  <section class="border-t border-line bg-cream py-12 lg:py-16">
     <Container>
       <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div class="max-w-3xl space-y-6 lg:col-span-7" data-reveal>
-          {
-            company.overview.map((p) => (
-              <p class="text-lg leading-relaxed text-slate-600">{p}</p>
-            ))
-          }
+          <p class="text-lg leading-relaxed text-slate-600">{overviewA}</p>
+          <p class="text-lg leading-relaxed text-slate-600">{overviewB}</p>
         </div>
 
         <!-- What we deliver, at a glance -->

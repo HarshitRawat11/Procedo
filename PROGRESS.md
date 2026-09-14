@@ -71,6 +71,32 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-14 (last, after the push) — CompanyScene goes live
+- *"adopt CompanyScene on the live /company page and park the preview."* Done,
+  and the moves are the ones CLAUDE.md §5 prescribes rather than anything new.
+- `src/components/preview/CompanyScene.astro` → `src/components/CompanyScene.astro`
+  (`git mv`, so the history follows it). Header comment rewritten: it no longer
+  says PREVIEW ONLY and now carries a `WHERE IT IS USED` line, like the other
+  three adopted scenes.
+- `company.astro` gains the statement band the preview was built to try: the
+  /our-mission layout, blockquote left, illustration right in a `bg-band` panel,
+  chip and caption from `workshopBand` in site.ts. The **third** overview
+  paragraph is the blockquote, so the Overview section below now prints only the
+  first two — destructured as `[overviewA, overviewB, statement]` rather than
+  mapped, which is what stops it appearing twice. Overview also gains
+  `border-t border-line`, because it is no longer the first band under the
+  header.
+- `company-preview.astro` → `_company-preview.astro`. Kept, not deleted, for the
+  same reason `_careers-preview` was: it is the rehearsal space for the next
+  change to that band. Its header now warns that it has drifted from the live
+  page and must be re-synced before it is any use.
+- Verified: `/company-preview/index.html` is no longer built, the sitemap
+  contains only `/company/`, the scene renders at 352px on the live page with
+  all 12 animations running, and 375px shows no overflow — panel 20→355 inside a
+  375 viewport, `body.scrollWidth` 375.
+- `WorkshopScene` is now superseded and used nowhere. Left on disk per §4; noted
+  in §5 alongside `DeskScene` and `DeskSceneWorking` so nobody copies from it.
+
 ### 2026-09-14 (last) — one vertical scale for the whole site
 - *"now do the whitespace fix across the site."* Measured first, at 1280, as the
   run of empty pixels between one block's last ink and the next block's first:
@@ -131,6 +157,8 @@ Nothing is blocked on code.
   that frame was empty, the mug then took the only free side, and careers and
   company copied contact. The 404 reads grass·mug·rack·plant·grass; the other
   three read grass·plant·object·mug·grass. One line each to flip if he wants it.
+- **Done: `CompanyScene` is live on `/company`** and `_company-preview` is
+  parked again. Nothing is un-parked without an underscore any more.
 - **Done: the whitespace across the site.** See the log entry for
   2026-09-14 (last). One scale, `py-12 lg:py-16`, on every band; gaps between
   blocks went from 161–329px to 48–166px and every main page lost 11–12% of its

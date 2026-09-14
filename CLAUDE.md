@@ -87,14 +87,19 @@ Still parked: `_404-preview` and `_uptime` — older concept pages, no verdict
 yet. `_uptime` is the only home `UptimeScene` has, and that scene has no slot on
 the real site at all.
 
-**Live, deliberately:** `company-preview` (no underscore), un-parked 2026-09-14
-so the rebuilt `CompanyScene` can be reviewed in context. Sealed exactly as
-everything else in §5 — noindex, in no nav, linked from nowhere, named in the
-sitemap filter. **Park it again once the scene is signed off.**
+**Parked again 2026-09-14, on adoption:** `_careers-preview` and
+`_company-preview`. `CareersScene` ships on the real Careers page and
+`CompanyScene` on the real Company page, so both previews only duplicate what is
+live. Kept rather than deleted, as the rehearsal space for the next change to
+each page. Note that a parked preview **drifts from its live page the moment
+either is edited** — un-parking one means copying the live section back into it
+first, not trusting what is in the file.
 
-**Parked again 2026-09-14, on adoption:** `_careers-preview`. `CareersScene`
-now ships on the real Careers page, so the preview only duplicates it. Kept
-rather than deleted, as a rehearsal space for the next change to that page.
+**Nothing is currently live without an underscore that should not be.** If you
+un-park a page to review something, put the underscore back in the same commit
+that adopts the work. The sitemap filter in `astro.config.mjs` still names every
+one of these paths, deliberately, so an un-parked page cannot walk into the
+sitemap by accident.
 
 **Parked 2026-09-13, after sign-off:** `_contact-animation-preview`. Added the
 same day at Harshit's request, and parked the moment he approved the sequence
@@ -127,6 +132,20 @@ card, in `state="hungup"`. The image is the reward for having sent something.
 (`/quiet` and `/our-mission-preview` existed under this rule and were deleted —
 the first once its illustration was adopted, the second when its illustration
 was rejected outright on 2026-09-07.)
+
+**An adopted scene moves out of `components/preview/` into `components/`** in
+the commit that adopts it, and its header comment gains a `WHERE IT IS USED`
+line. Four have made that trip: `QuietScene` (404 and /our-mission),
+`ReceptionScene` (the contact success card), `CareersScene` (the Careers
+open-application card) and `CompanyScene` (the Company statement band, adopted
+2026-09-14). What is left in `components/preview/` is therefore exactly the set
+that has no home yet.
+
+**Superseded but not deleted:** `WorkshopScene` (replaced by `CompanyScene`),
+`DeskScene` and `DeskSceneWorking` (replaced by `CareersScene`). All three are
+on disk and used nowhere. They are kept because deleting is a destructive change
+and §4 says ask first — but do not mistake them for live work, and do not copy
+from them: both failed Gate 1b, which is why they were replaced.
 
 ### 5b. No human figures in illustrations
 **Hard rule, set by Harshit on 2026-09-07.** Illustrations carry animal or
