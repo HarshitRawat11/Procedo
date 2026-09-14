@@ -17,33 +17,53 @@
  *  tools, and you could not see anything was missing. A 136x142 board with the
  *  cat on the floor in front read fine but squashed the cat to a lump.
  *
+ *  ── COLOUR: THE SCREWDRIVER SETS IT ─────────────────────────────────────────
+ *  Harshit, 2026-09-14: "tools has no color except screwdriver, to make it
+ *  simple follow the color theme of the screw driver for all the tools."
+ *  He was describing a real fault. Every tool was filled DEVICE — the SAME
+ *  colour as the board behind it — so only a navy contour separated a tool from
+ *  its own backing, and the painted outlines (FUR_SHADE, darker than the board)
+ *  read as the solid objects. Exactly backwards.
+ *
+ *  So the screwdriver's two colours are now the whole kit's: ORANGE for whatever
+ *  you hold, KEYS for whatever does the work. Both are darker than the board, so
+ *  a tool reads as an object and its ghost recedes behind it. DEVICE is now the
+ *  board and the holes punched through tools, and nothing else.
+ *
  *  ── THE JOKE ────────────────────────────────────────────────────────────────
- *  Six slots, two rows of three. Every tool hangs over its own painted outline;
- *  slot two is bare, because that screwdriver is up top under a paw. site.ts
- *  carries the caption, so the bare outline must stay legible at 352px — that
- *  constraint sets the tool size, not the other way round.
+ *  Six slots, two rows of three, on a 160-wide board: columns at 172/224/276,
+ *  which leaves ~20 units of cream between neighbours. The first cut spaced them
+ *  34 apart and the second row touched — a 32-wide hammer and a 32-wide tape
+ *  measure cannot share a 34-unit pitch, and the ghosts' 2-unit offset closed
+ *  what little was left. Slot two is bare, because that screwdriver is up top
+ *  under a paw, and it stays bare for the whole loop: the caption is true at
+ *  every frame, which it was not when the tool went home to its hook.
  *
  *  ── THE LOOP ────────────────────────────────────────────────────────────────
- *  16 seconds, on Harshit's brief: the cat sleeps with every tool in its place ·
- *  it wakes · it takes the screwdriver off the board and plays with it · it
- *  knocks it off the edge · it goes back to sleep · the screwdriver puts itself
- *  back · repeat. The percentages are in the style block and they must stay in
- *  step with each other.
+ *  16 seconds, on Harshit's brief: the cat sleeps with the screwdriver lying
+ *  beside it · it wakes · it plays with the screwdriver, walking it toward the
+ *  edge · it knocks it off · it goes back to sleep · the screwdriver comes back
+ *  up to the cat, where it started · repeat. It returns TO THE CAT, not to its
+ *  hook — the loop closes on the frame it opened on.
  *
  *  ── THE RESTING STATE IS THE CAPTION'S MOMENT ───────────────────────────────
  *  Every SVG *attribute* describes the frame the caption is about: eyes open,
  *  screwdriver up top under the paw, slot two bare. Reduced motion gets that;
  *  so do the gate scripts, which render attributes and ignore CSS. The tool's
- *  attribute transform and its 26%/52% keyframe are deliberately the same pose.
+ *  attribute transform and the 0%/26% keyframe are deliberately the same pose.
  *
  *  ── THINGS THAT MUST STAY TRUE ──────────────────────────────────────────────
  *  · The GROUND is y=300 and the board's base sits on it. Nothing crosses it.
- *  · A tool is OUTLINED (pale fill, navy contour). Its painted outline is FLAT
- *    (one fill, no stroke), offset 2 left / 2 down. That contrast is the only
- *    thing telling a viewer which slot is empty — never stroke the outlines.
- *  · The screwdriver is drawn ONCE, vertical, at its slot. Everywhere else it
- *    goes is a transform, so the tool and its own painted outline can never
- *    drift apart.
+ *  · A tool is FILLED (KEYS body, ORANGE grip, navy contour). Its painted
+ *    outline is FLAT (one fill, no stroke, no orange), offset 2 left / 2 down.
+ *    That contrast is the only thing telling a viewer which slot is empty —
+ *    never stroke the outlines and never colour them.
+ *  · Each silhouette is declared ONCE as a const and used TWICE: flat for the
+ *    ghost, filled for the tool. Grips and holes are overlays on top of it, so a
+ *    tool can never drift off its own outline.
+ *  · The screwdriver is drawn ONCE, vertical, at its slot, and is ALWAYS
+ *    transformed away from it. Its fill-box centre is (224, 163); every pose
+ *    below rotates about that.
  *  · Breathing, the tail, the steam, the wind and the cloud's drift are NOT
  *    here. They are shared by every scene and live in
  *    src/styles/scene-motion.css; this svg opts in with `data-scene`.
@@ -68,8 +88,8 @@ const W_FACE = 1.8;
 const W_FINE = 1.4;
 
 const GROUND = '#E3EAF3';
-const DEVICE = '#C9D9EC'; // the 404 rack's own blue — the board and its tools
-const KEYS = '#8FA8C8';
+const DEVICE = '#C9D9EC'; // the 404 rack's own blue — the board, and holes in tools
+const KEYS = '#8FA8C8'; // every working end: jaws, heads, shafts, blades
 const FUR = '#FFFFFF';
 const FUR_SHADE = '#B9C4D2'; // and the painted outlines: flat, never stroked
 const LEAF_A = '#7DD87D';
@@ -78,7 +98,7 @@ const POT = '#FCDCCF';
 const GRASS = '#3FAE5F';
 const MUG = '#F7B9A3';
 const CLOUD = '#FFFFFF';
-const ORANGE = '#F24E1E'; // the screwdriver's handle, and nothing else
+const ORANGE = '#F24E1E'; // every part you hold: grips, handles, the tape case
 
 /* QuietScene's cat, verbatim. */
 const CAT_BODY = 'M180 128 C178 110 190 98 208 98 C226 98 242 106 244 128 Z';
@@ -86,29 +106,47 @@ const CAT_BACK =
   'M180 128 C178 110 190 98 208 98 C218 98 227 101 233 107 C214 104 192 112 186 128 Z';
 const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113 Z';
 
-/* ── The six slots. Each shape is declared once and used twice: flat as the
-      painted outline, then outlined as the tool. Columns at 186 / 220 / 254,
-      rows at 136–190 and 214–268. ── */
+/* ── The six slots. Columns 172 / 224 / 276 on a board spanning 144–304; rows at
+      136–190 and 214–268. Each silhouette below is the ghost AND the tool body;
+      grips, holes and details are drawn over it. ── */
+
+/* row 1 · ring spanner — a ring on a shaft, so it cannot be read as a torch */
 const SPANNER =
-  'M181 190 L181 157 C174 154 170 148 170 141 C170 132 177 126 186 126 C195 126 202 132 202 141 C202 148 198 154 191 157 L191 190 C191 193 181 193 181 190 Z';
-const PLIER_HEAD = 'M247 136 L261 136 L263 152 L254 158 L245 152 Z';
-const PLIER_LEFT = 'M249 160 C246 170 244 180 244 190 L250 190 C250 180 252 170 255 162 Z';
-const PLIER_RIGHT = 'M259 160 C262 170 264 180 264 190 L258 190 C258 180 256 170 253 162 Z';
+  'M161 147 C161 141 166 136 172 136 C178 136 183 141 183 147 C183 152 180 156 176 158 L176 188 C176 190 168 190 168 188 L168 158 C164 156 161 152 161 147 Z';
+const SPANNER_GRIP = 'M168 170 L176 170 L176 188 C176 190 168 190 168 188 Z';
+
+/* row 1 · pliers — one head, two legs, and the legs are the grips */
+const PLIER_HEAD = 'M269 136 L283 136 L285 152 L276 158 L267 152 Z';
+const PLIER_LEFT = 'M271 160 C268 170 266 180 266 190 L272 190 C272 180 274 170 277 162 Z';
+const PLIER_RIGHT = 'M281 160 C284 170 286 180 286 190 L280 190 C280 180 278 170 275 162 Z';
+
+/* row 2 · hammer */
 const HAMMER =
-  'M172 216 L200 216 C202 216 202 218 202 220 L202 224 C202 226 202 228 200 228 L191 228 L191 266 C191 269 181 269 181 266 L181 228 L172 228 C170 228 170 226 170 224 L170 220 C170 218 170 216 172 216 Z';
-const TAPE_BODY = 'M213 214 L227 214 C234 214 236 219 236 227 L236 235 C236 243 234 248 227 248 L213 248 C206 248 204 243 204 235 L204 227 C204 219 206 214 213 214 Z';
-const TAPE_TONGUE = 'M215 248 L225 248 L225 262 L215 262 Z';
+  'M160 214 L184 214 C187 214 188 216 188 219 L188 223 C188 226 187 228 184 228 L177 228 L177 265 Q177 268 172 268 Q167 268 167 265 L167 228 L160 228 C157 228 156 226 156 223 L156 219 C156 216 157 214 160 214 Z';
+const HAMMER_GRIP = 'M167 236 L177 236 L177 265 Q177 268 172 268 Q167 268 167 265 Z';
+
+/* row 2 · tape measure — case, blade straight down, end hook across the foot.
+   The first cut ran the blade down and then right, into an L, and at 28px that
+   reads as a boot. Symmetry is what makes it a tape measure. */
+const TAPE_BODY =
+  'M215 214 L233 214 C238 214 240 217 240 222 L240 236 C240 241 238 244 233 244 L215 244 C210 244 208 241 208 236 L208 222 C208 217 210 214 215 214 Z';
+const TAPE_TONGUE = 'M219 244 L229 244 L229 260 L235 260 L235 268 L213 268 L213 260 L219 260 Z';
+
+/* row 2 · coiled cable, hung as a hank with a tie round it. The first cut was a
+   fat oval with a bar across, which read as an eye. Narrow is what makes it
+   cable: the hole has to look like two strands side by side, not a ring. */
 const COIL_OUTER =
-  'M254 214 C266 214 269 226 269 240 C269 254 266 266 254 266 C242 266 239 254 239 240 C239 226 242 214 254 214 Z';
+  'M276 214 C285 214 289 221 289 232 L289 250 C289 261 285 268 276 268 C267 268 263 261 263 250 L263 232 C263 221 267 214 276 214 Z';
 const COIL_INNER =
-  'M254 225 C259 225 261 232 261 240 C261 248 259 255 254 255 C249 255 247 248 247 240 C247 232 249 225 254 225 Z';
+  'M276 226 C280 226 281 230 281 234 L281 248 C281 252 280 256 276 256 C272 256 271 252 271 248 L271 234 C271 230 272 226 276 226 Z';
 
 /* Slot two's tool: drawn ONCE, vertical, in its slot. Its bounding box is
-   x 211–229, y 132–190, so its centre is (220, 161) — every transform below
-   rotates about that. */
-const SD_HANDLE = 'M211 137 C211 132 229 132 229 137 L229 163 C229 168 211 168 211 163 Z';
-const SD_SHAFT = 'M217 168 L223 168 L222.5 184 L217.5 184 Z';
-const SD_BLADE = 'M215.5 184 L224.5 184 L224.5 190 L215.5 190 Z';
+   x 215–233, y 136–190, so its centre is (224, 163) — every transform below
+   rotates about that. The flat handle top and the quadratic skirt are chosen so
+   the box is exactly those numbers; a cubic would undershoot and move it. */
+const SD_HANDLE = 'M215 136 L233 136 L233 159 Q233 164 224 164 Q215 164 215 159 Z';
+const SD_SHAFT = 'M221.5 164 L226.5 164 L226 182 L222 182 Z';
+const SD_BLADE = 'M218.5 182 L229.5 182 L229.5 190 L218.5 190 Z';
 ---
 
 <figure class:list={['company', className]}>
@@ -149,18 +187,36 @@ const SD_BLADE = 'M215.5 184 L224.5 184 L224.5 190 L215.5 190 Z';
       <path d="M52 300 H394" stroke={ENVLINE} stroke-width={W_SUBJ} />
 
       <!-- ══ THE BOARD — the hero object, the job the rack does on the 404.
-               136 x 180, with cream on every side of it. ══ -->
-      <rect x="152" y="120" width="136" height="180" rx="4" fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
+               160 x 180, widened from 136 so the second row stops touching. ══ -->
+      <rect
+        x="144"
+        y="120"
+        width="160"
+        height="180"
+        rx="4"
+        fill={DEVICE}
+        stroke={NAVY}
+        stroke-width={W_SUBJ}
+      />
       <g fill={KEYS}>
-        <circle cx="161" cy="129" r="1.5" />
-        <circle cx="279" cy="129" r="1.5" />
-        <circle cx="161" cy="291" r="1.5" />
-        <circle cx="279" cy="291" r="1.5" />
+        <circle cx="153" cy="129" r="1.5" />
+        <circle cx="295" cy="129" r="1.5" />
+        <circle cx="153" cy="291" r="1.5" />
+        <circle cx="295" cy="291" r="1.5" />
       </g>
 
-      <!-- The painted outlines. FLAT — one fill, no stroke — because that is the
-           only thing that tells a tool apart from the space where one should be.
-           Laid 2 left / 2 down: a real shadow board is mis-registered too. -->
+      <!-- ══ THE RACK. Everything hung on the board sits inside this one static
+               translate, which buys the bottom row its margin: the slots are
+               authored at 136–190 and 214–268, which left 16 units of clear
+               board above the first row and 32 below the last. Shifting the lot
+               down 8 makes that 16 above and 24 below, without touching a single
+               tool path. The screwdriver is NOT in here — it never visits its
+               slot, so it keeps its own coordinates. ══ -->
+      <g transform="translate(0 8)">
+      <!-- The painted outlines. FLAT — one fill, no stroke, no orange — because
+           that is the only thing that tells a tool apart from the space where
+           one should be. Laid 2 left / 2 down: a real shadow board is
+           mis-registered too. -->
       <g fill={FUR_SHADE} transform="translate(-2 2)">
         <path d={SPANNER} />
         <path d={PLIER_HEAD} />
@@ -170,7 +226,7 @@ const SD_BLADE = 'M215.5 184 L224.5 184 L224.5 190 L215.5 190 Z';
         <path d={TAPE_BODY} />
         <path d={TAPE_TONGUE} />
         <path d={COIL_OUTER} />
-        <!-- SLOT TWO. Nothing hangs here while the cat has it. The caption
+        <!-- SLOT TWO. Nothing hangs here for the whole loop. The caption
              depends on this outline being visible. -->
         <path d={SD_HANDLE} />
         <path d={SD_SHAFT} />
@@ -179,43 +235,62 @@ const SD_BLADE = 'M215.5 184 L224.5 184 L224.5 190 L215.5 190 Z';
 
       <!-- hooks: two rows of three -->
       <g stroke={NAVY} stroke-width={W_FINE}>
-        <path d="M186 128 L186 136" />
-        <path d="M220 128 L220 136" />
-        <path d="M254 128 L254 136" />
-        <path d="M186 206 L186 214" />
-        <path d="M220 206 L220 214" />
-        <path d="M254 206 L254 214" />
+        <path d="M172 128 L172 136" />
+        <path d="M224 128 L224 136" />
+        <path d="M276 128 L276 136" />
+        <path d="M172 206 L172 214" />
+        <path d="M224 206 L224 214" />
+        <path d="M276 206 L276 214" />
       </g>
 
-      <!-- row 1 · ring spanner -->
-      <path d={SPANNER} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <circle cx="186" cy="141" r="6" fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
+      <!-- row 1 · ring spanner: steel body, orange grip, a hole you see through -->
+      <path d={SPANNER} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
+      <circle cx="172" cy="147" r="5" fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
+      <path d={SPANNER_GRIP} fill={ORANGE} />
+      <path d="M168 170 H176" stroke={NAVY} stroke-width={W_FINE} />
 
       <!-- row 1 · slot two: nothing. The screwdriver is up top. -->
 
-      <!-- row 1 · pliers -->
-      <path d={PLIER_HEAD} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d={PLIER_LEFT} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d={PLIER_RIGHT} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <circle cx="254" cy="159" r="2.4" fill={NAVY} />
+      <!-- row 1 · pliers: steel jaws, orange handles -->
+      <path d={PLIER_LEFT} fill={ORANGE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d={PLIER_RIGHT} fill={ORANGE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d={PLIER_HEAD} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
+      <circle cx="276" cy="157" r="2.4" fill={NAVY} />
 
-      <!-- row 2 · hammer -->
-      <path d={HAMMER} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d="M170 222 H202" stroke={NAVY} stroke-width={W_FINE} />
+      <!-- row 2 · hammer: steel head, orange grip -->
+      <path d={HAMMER} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d={HAMMER_GRIP} fill={ORANGE} />
+      <path d="M167 236 H177" stroke={NAVY} stroke-width={W_FINE} />
+      <path d="M156 222 H188" stroke={NAVY} stroke-width={W_FINE} />
 
-      <!-- row 2 · tape measure -->
-      <path d={TAPE_BODY} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d={TAPE_TONGUE} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <circle cx="220" cy="231" r="6" fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
+      <!-- row 2 · tape measure: orange case, steel blade -->
+      <path d={TAPE_TONGUE} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d={TAPE_BODY} fill={ORANGE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <circle cx="224" cy="229" r="8" fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
 
-      <!-- row 2 · a coiled cable -->
-      <path d={COIL_OUTER} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <!-- row 2 · a coiled cable: steel hank, orange tie round the middle -->
+      <path d={COIL_OUTER} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
       <path d={COIL_INNER} fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
-      <rect x="245" y="236" width="18" height="7" rx="2" fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
+      <rect
+        x="262"
+        y="235"
+        width="28"
+        height="9"
+        rx="2"
+        fill={ORANGE}
+        stroke={NAVY}
+        stroke-width={W_FINE}
+      />
+      </g>
 
       <!-- ══ CAT — QuietScene's own drawing, on top of the board ══ -->
-      <g transform="translate(8 -8)">
-        <path class="tail" d="M182 126 C170 128 164 120 170 113 C174 108 181 110 181 116" stroke={NAVY} stroke-width={W_SUBJ} />
+      <g transform="translate(14 -8)">
+        <path
+          class="tail"
+          d="M182 126 C170 128 164 120 170 113 C174 108 181 110 181 116"
+          stroke={NAVY}
+          stroke-width={W_SUBJ}
+        />
         <g class="breathe">
           <path d={CAT_BODY} fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
           <!-- mis-registration: the back shading, laid inside and short of its contour -->
@@ -254,15 +329,15 @@ const SD_BLADE = 'M215.5 184 L224.5 184 L224.5 190 L215.5 190 Z';
 
       <!-- ══ THE SCREWDRIVER. Drawn once, vertical, in its slot; the attribute
                transform is the pose the caption is about — up top, horizontal,
-               half over the edge — and the 26%/52% keyframe repeats it exactly.
-               Everywhere else it goes is another transform, so the tool and its
-               own painted outline can never drift apart. ══ -->
-      <g class="tool" transform="translate(71 -50) rotate(-90 220 161)">
+               blade out past the edge — and the 0%/26% keyframe repeats it
+               exactly. Everywhere else it goes is another transform, so the tool
+               and its own painted outline can never drift apart. ══ -->
+      <g class="tool" transform="translate(72 -52) rotate(-90 224 163)">
         <path d={SD_HANDLE} fill={ORANGE} stroke={NAVY} stroke-width={W_SUBJ} />
         <path d={SD_SHAFT} fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
         <path d={SD_BLADE} fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
       </g>
-      <ellipse class="paw" cx="270" cy="105" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+      <ellipse class="paw" cx="282" cy="108" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
 
       <!-- ══ MUG — the shared prop, on a static parent so the steam animation
                cannot wipe the translate ══ -->
@@ -285,9 +360,24 @@ const SD_BLADE = 'M215.5 184 L224.5 184 L224.5 190 L215.5 190 Z';
       <!-- ══ PLANT — the shared prop, static parent, same reason ══ -->
       <g transform="translate(-224 8)">
         <g class="leaves">
-          <path d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
-          <path d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z" fill={LEAF_B} stroke={NAVY} stroke-width={W_SUBJ} />
-          <path d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path
+            d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z"
+            fill={LEAF_A}
+            stroke={NAVY}
+            stroke-width={W_SUBJ}
+          />
+          <path
+            d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z"
+            fill={LEAF_B}
+            stroke={NAVY}
+            stroke-width={W_SUBJ}
+          />
+          <path
+            d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z"
+            fill={LEAF_A}
+            stroke={NAVY}
+            stroke-width={W_SUBJ}
+          />
         </g>
       </g>
       <path d="M90 282 L94 300 H118 L122 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
@@ -365,19 +455,21 @@ const SD_BLADE = 'M215.5 184 L224.5 184 L224.5 190 L215.5 190 Z';
        16 seconds, and the three animations below are one gesture split three
        ways, so their percentages must stay in step:
 
-            0%   0.0s   asleep, every tool in its place
+            0%   0.0s   asleep · the screwdriver lying beside the cat
            22%   3.5s   it wakes
-           27%   4.3s   the screwdriver is off the board and under the paw
-        33–47%   5–7.5s three bats
-           54%   8.6s   the push that knocks it off
-           56%   9.0s   it lands
-           65%  10.4s   back to sleep, the screwdriver on the floor
-        82–88%  13–14s  the screwdriver puts itself back
-          100%  16.0s   loop
+           27%   4.3s   the paw comes down on the handle
+        33–47%   5–7.5s three bats, walking the tool toward the edge
+           54%   8.6s   the push, and it tips
+           56%   9.0s   falling, end over end
+           58%   9.3s   it lands on the floor
+           65%  10.4s   back to sleep, the screwdriver still down there
+        82–88%  13–14s  it comes back up TO THE CAT, where it started
+          100%  16.0s   loop, on the frame it opened on
 
-       Breathing, the tail, the steam, the wind and the cloud are shared with
-       every other scene — src/styles/scene-motion.css. Nothing here duplicates
-       them. ── */
+       It never returns to its hook: slot two is bare at every frame, so the
+       caption is true at every frame. Breathing, the tail, the steam, the wind
+       and the cloud are shared with every other scene —
+       src/styles/scene-motion.css. Nothing here duplicates them. ── */
 
     .tool {
       transform-box: fill-box;
@@ -386,31 +478,34 @@ const SD_BLADE = 'M215.5 184 L224.5 184 L224.5 190 L215.5 190 Z';
     }
     @keyframes journey {
       0%,
-      20% {
-        transform: translate(0, 0) rotate(0deg);
-      }
       26% {
-        transform: translate(71px, -50px) rotate(-90deg);
+        transform: translate(72px, -52px) rotate(-90deg);
       }
       33% {
-        transform: translate(71px, -50px) rotate(-84deg);
+        transform: translate(74px, -52px) rotate(-84deg);
       }
       39% {
-        transform: translate(71px, -50px) rotate(-96deg);
+        transform: translate(77px, -52px) rotate(-96deg);
       }
       45% {
-        transform: translate(71px, -50px) rotate(-85deg);
+        transform: translate(80px, -52px) rotate(-85deg);
       }
       52% {
-        transform: translate(71px, -50px) rotate(-90deg);
+        transform: translate(82px, -52px) rotate(-90deg);
       }
-      56%,
+      54% {
+        transform: translate(86px, -48px) rotate(-76deg);
+      }
+      56% {
+        transform: translate(78px, 40px) rotate(-170deg);
+      }
+      58%,
       82% {
-        transform: translate(-3px, 129px) rotate(-90deg);
+        transform: translate(66px, 127px) rotate(-270deg);
       }
       88%,
       100% {
-        transform: translate(0, 0) rotate(0deg);
+        transform: translate(72px, -52px) rotate(-90deg);
       }
     }
 
@@ -422,32 +517,32 @@ const SD_BLADE = 'M215.5 184 L224.5 184 L224.5 190 L215.5 190 Z';
     @keyframes reach {
       0%,
       21% {
-        transform: translate(-38px, 11px);
+        transform: translate(-32px, 11px);
       }
       27% {
         transform: translate(0, 0);
       }
       33% {
-        transform: translate(0, 2.6px);
+        transform: translate(2px, 2.6px);
       }
       37% {
-        transform: translate(0, 0);
+        transform: translate(2px, 0);
       }
       43% {
-        transform: translate(0, 2.6px);
+        transform: translate(5px, 2.6px);
       }
       47% {
-        transform: translate(0, 0);
+        transform: translate(5px, 0);
       }
       54% {
-        transform: translate(4px, 3px);
+        transform: translate(12px, 3px);
       }
       58% {
-        transform: translate(0, 0);
+        transform: translate(6px, 0);
       }
       64%,
       100% {
-        transform: translate(-38px, 11px);
+        transform: translate(-32px, 11px);
       }
     }
 

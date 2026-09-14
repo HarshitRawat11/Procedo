@@ -323,6 +323,15 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
   number. The company board passed every gate at 100x72 and was a blank blue
   rectangle at 352px. Two of its tools had to be redrawn for the same reason: a
   capsule read as a torch, a triangular tip read as an arrowhead.
+- **An object filled with the colour of the surface behind it has no colour.**
+  Every tool on the company board was `DEVICE`, and so was the board — leaving a
+  contour to do all the work, while the flat ghosts (a shade darker than the
+  board) read as the solid objects. Harshit's note was *"tools has no color
+  except screwdriver"*, and he was describing exactly that. The fix is an order,
+  not a palette: the object must be darker than its backing, and its ghost must
+  sit between the two. Pick the colours off whichever element in the scene
+  already reads correctly — here the screwdriver, whose orange grip and steel
+  blade became the whole kit's two colours.
 - **Shared motion is declared once**, in `src/styles/scene-motion.css`, and
   opted into with `data-scene` on the scene's `<svg>`. Breathing, the tail, the
   steam, the wind — all of it. A scene's own `<style>` holds only motion unique
