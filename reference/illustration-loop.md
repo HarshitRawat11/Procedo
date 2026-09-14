@@ -318,6 +318,22 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
   `QuietScene` verbatim and move them with a translate on a STATIC parent; do not
   redraw them and do not re-colour them. The mug is `#F7B9A3` with one
   `#F24E1E` band, and it carries two steam wisps.
+- **The prop ORDER is fixed too, and it is the 404's.** Cloud top left; then,
+  along the ground, **grass · MUG · subject · PLANT · grass**. Set by Harshit on
+  2026-09-14: *"this will make all the images similar with too little to change
+  in each."* It overrides per-scene composition arguments — the careers plant
+  stood left as a counterweight to the dark screen, and it still moved. Each prop
+  goes on ONE static parent holding both its halves (leaves *and* pot; mug, band,
+  handle *and* steam), so relocating it is one translate rather than re-typed
+  geometry. A cloud counts: put it on a static parent too, because its drift is
+  animated and a CSS transform replaces a transform attribute.
+- **Procedo orange is an accent, not a material.** `#F24E1E` appears once per
+  scene — the band on the mug — and that is the whole budget. Seven orange tool
+  grips on the company board read as a different illustration set; in navy
+  (`#1B2A4A`, the monitor screen's own value) they read as the same one. Harshit,
+  2026-09-14: *"orange tools is breaking the colour harmony."* A grip is a
+  contour thickened into a solid. Watch Gate 1b when you do this: navy grips took
+  that scene from 3.4% dark to 4.5% against a 5% ceiling.
 - **Legibility is not a gate, and the gates will pass things nobody can read.**
   Render the scene at the width the card ACTUALLY gives it before believing any
   number. The company board passed every gate at 100x72 and was a blank blue

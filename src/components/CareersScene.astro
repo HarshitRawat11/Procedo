@@ -83,6 +83,7 @@ const LEAF_B = '#4EB86B';
 const POT = '#FCDCCF';
 const GRASS = '#3FAE5F';
 const MUG = '#F7B9A3'; // QuietScene's mug, to the digit
+const CLOUD = '#FFFFFF'; // QuietScene's cloud, top left of every scene
 const ORANGE = '#F24E1E'; // and its one band of Procedo orange
 const GREEN = '#3FAE5F'; // the status dot, the 404 rack's LED colour
 
@@ -110,6 +111,23 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
     </title>
 
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <!-- ── Cloud: QuietScene's own path, top left, as on every scene. Added
+           2026-09-14 when Harshit set the one prop order for the whole site:
+           cloud top left, then grass · mug · subject · plant · grass. The
+           translate puts it 54 units in from this frame's left edge and 16 down
+           from its top, matching the 404. It is on a STATIC parent because the
+           drift is animated and a CSS transform replaces a transform attribute
+           rather than composing with it. ── -->
+      <g transform="translate(13 87)">
+        <path
+          class="cloud"
+          d="M60 80 C55 80 54 71 61 69 C62 60 74 57 80 63 C86 56 99 59 100 68 C108 68 110 79 104 80 Z"
+          fill={CLOUD}
+          stroke={NAVY}
+          stroke-width={W_SUBJ}
+        />
+      </g>
+
       <!-- ── Ground: the 404's own line, 81% of the canvas and touching neither
            edge ── -->
       <ellipse cx="224" cy="302" rx="100" ry="7" fill={GROUND} />
@@ -179,28 +197,31 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
       <!-- the working paw, out on the mouse -->
       <ellipse class="paw" cx="228" cy="228" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
 
-      <!-- ══ PLANT — the 404's own paths, standing where the chair used to.
-               It is here rather than on the right because the dark screen is the
-               heaviest shape in the frame and sits right of centre; the plant is
-               the counterweight. On a static parent, so the sway cannot wipe the
-               translate. ══ -->
-      <g transform="translate(-224 8)">
+      <!-- ══ PLANT — RIGHT, between the desk and the grass. It stood on the left
+               until 2026-09-14, as a counterweight to the dark screen, which
+               sits right of centre. Harshit's site-wide order replaces that
+               judgement: mug left, plant right, everywhere, so the four scenes
+               read as one family. Leaves AND pot are the 404's paths untouched,
+               inside one static parent — static so the sway cannot wipe the
+               translate, one parent so the plant moves as a number. ══ -->
+      <g transform="translate(11 8)">
         <g class="leaves">
           <path d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
           <path d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z" fill={LEAF_B} stroke={NAVY} stroke-width={W_SUBJ} />
           <path d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
         </g>
+        <path d="M314 274 L318 292 H342 L346 274 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M312 274 H348" stroke={NAVY} stroke-width={W_SUBJ} />
       </g>
-      <path d="M90 282 L94 300 H118 L122 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d="M88 282 H124" stroke={NAVY} stroke-width={W_SUBJ} />
 
       <!-- ══ MUG — QuietScene's own mug, verbatim: body, rim, handle, the one
                orange band and both steam wisps. Fourth of the four props the
                whole site shares — cat, plant, grass, mug — same colour and
-               design wherever it appears. On a STATIC parent, because the steam
-               is animated and a CSS transform replaces a transform attribute
-               rather than composing with it. ══ -->
-      <g transform="translate(234 8)">
+               design wherever it appears — and from 2026-09-14, always on the
+               LEFT, between the grass and the desk. On a STATIC parent, because
+               the steam is animated and a CSS transform replaces a transform
+               attribute rather than composing with it. ══ -->
+      <g transform="translate(-8 8)">
         <g class="steam" stroke={ENVLINE} stroke-width={W_SUBJ}>
           <path class="wisp wisp-1" d="M103 262 C100 256 108 252 105 246" />
           <path class="wisp wisp-2" d="M112 262 C109 256 117 252 114 246" />

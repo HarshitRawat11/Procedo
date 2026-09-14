@@ -25,10 +25,14 @@
  *  its own backing, and the painted outlines (FUR_SHADE, darker than the board)
  *  read as the solid objects. Exactly backwards.
  *
- *  So the screwdriver's two colours are now the whole kit's: ORANGE for whatever
- *  you hold, KEYS for whatever does the work. Both are darker than the board, so
- *  a tool reads as an object and its ghost recedes behind it. DEVICE is now the
- *  board and the holes punched through tools, and nothing else.
+ *  So the screwdriver's two colours became the whole kit's: one colour for
+ *  whatever you hold, KEYS for whatever does the work. Both are darker than the
+ *  board, so a tool reads as an object and its ghost recedes behind it. DEVICE is
+ *  now the board and the holes punched through tools, and nothing else.
+ *
+ *  The held colour was orange for one revision and is now NAVY — the monitor
+ *  screen's own #1B2A4A — because seven orange tools fought the one orange band
+ *  on the mug, which is the site's only accent. See the GRIP const below.
  *
  *  ── THE JOKE ────────────────────────────────────────────────────────────────
  *  Six slots, two rows of three, on a 160-wide board: columns at 172/224/276,
@@ -54,10 +58,15 @@
  *
  *  ── THINGS THAT MUST STAY TRUE ──────────────────────────────────────────────
  *  · The GROUND is y=300 and the board's base sits on it. Nothing crosses it.
- *  · A tool is FILLED (KEYS body, ORANGE grip, navy contour). Its painted
- *    outline is FLAT (one fill, no stroke, no orange), offset 2 left / 2 down.
- *    That contrast is the only thing telling a viewer which slot is empty —
- *    never stroke the outlines and never colour them.
+ *  · A tool is FILLED (KEYS body, GRIP where you hold it, navy contour). Its
+ *    painted outline is FLAT (one fill, no stroke, no grip), offset 2 left /
+ *    2 down. That contrast is the only thing telling a viewer which slot is
+ *    empty — never stroke the outlines and never colour them.
+ *  · The props sit in the site's one order: cloud top left, then grass · MUG ·
+ *    subject · PLANT · grass. Set by Harshit on 2026-09-14 so every scene is the
+ *    same picture with the middle swapped out. QuietScene (the 404) is the
+ *    reference; this scene's mug and plant are its paths verbatim, each on one
+ *    static translate, so matching a future change is one number.
  *  · Each silhouette is declared ONCE as a const and used TWICE: flat for the
  *    ghost, filled for the tool. Grips and holes are overlays on top of it, so a
  *    tool can never drift off its own outline.
@@ -98,7 +107,13 @@ const POT = '#FCDCCF';
 const GRASS = '#3FAE5F';
 const MUG = '#F7B9A3';
 const CLOUD = '#FFFFFF';
-const ORANGE = '#F24E1E'; // every part you hold: grips, handles, the tape case
+const ORANGE = '#F24E1E'; // the mug's band, and nothing else in this scene
+/* Every part of a tool you hold. Harshit, 2026-09-14: "orange tools is breaking
+   the colour harmony. make it dark navy instead of orange just like the computer
+   screen." It IS the computer screen — CareersScene's SCREEN is #1B2A4A, the
+   same navy every contour in every scene is drawn in. So a grip is a contour
+   thickened into a solid, which is why it sits on the board without shouting. */
+const GRIP = '#1B2A4A';
 
 /* QuietScene's cat, verbatim. */
 const CAT_BODY = 'M180 128 C178 110 190 98 208 98 C226 98 242 106 244 128 Z';
@@ -115,10 +130,17 @@ const SPANNER =
   'M161 147 C161 141 166 136 172 136 C178 136 183 141 183 147 C183 152 180 156 176 158 L176 188 C176 190 168 190 168 188 L168 158 C164 156 161 152 161 147 Z';
 const SPANNER_GRIP = 'M168 170 L176 170 L176 188 C176 190 168 190 168 188 Z';
 
-/* row 1 · pliers — one head, two legs, and the legs are the grips */
+/* row 1 · pliers — one head and two legs, gripped on the lower half only. In
+   navy the full-length legs read as a pair of trousers; real pliers are sleeved
+   from about the midpoint down, and that is what breaks the shape back up. The
+   two grips are the exact lower halves of the legs, split at t=0.5 by de
+   Casteljau, so they sit on the curve rather than near it. */
 const PLIER_HEAD = 'M269 136 L283 136 L285 152 L276 158 L267 152 Z';
 const PLIER_LEFT = 'M271 160 C268 170 266 180 266 190 L272 190 C272 180 274 170 277 162 Z';
 const PLIER_RIGHT = 'M281 160 C284 170 286 180 286 190 L280 190 C280 180 278 170 275 162 Z';
+const PLIER_LEFT_GRIP = 'M267.4 175 C266.5 180 266 185 266 190 L272 190 C272 185 272.5 180 273.4 175.3 Z';
+const PLIER_RIGHT_GRIP =
+  'M284.6 175 C285.5 180 286 185 286 190 L280 190 C280 185 279.5 180 278.6 175.3 Z';
 
 /* row 2 · hammer */
 const HAMMER =
@@ -173,14 +195,19 @@ const SD_BLADE = 'M218.5 182 L229.5 182 L229.5 190 L218.5 190 Z';
     </title>
 
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
-      <!-- ── Cloud: QuietScene's own, as a shared prop ── -->
-      <path
-        class="cloud"
-        d="M60 80 C55 80 54 71 61 69 C62 60 74 57 80 63 C86 56 99 59 100 68 C108 68 110 79 104 80 Z"
-        fill={CLOUD}
-        stroke={NAVY}
-        stroke-width={W_SUBJ}
-      />
+      <!-- ── Cloud: QuietScene's own, top left, as on every scene. The translate
+           is the viewBox offset, so it sits exactly where the 404's does
+           relative to the frame. On a static parent because the drift is
+           animated and a CSS transform replaces a transform attribute. ── -->
+      <g transform="translate(13 18)">
+        <path
+          class="cloud"
+          d="M60 80 C55 80 54 71 61 69 C62 60 74 57 80 63 C86 56 99 59 100 68 C108 68 110 79 104 80 Z"
+          fill={CLOUD}
+          stroke={NAVY}
+          stroke-width={W_SUBJ}
+        />
+      </g>
 
       <!-- ── Ground: the 404's own line, and it reaches neither edge ── -->
       <ellipse cx="224" cy="302" rx="100" ry="7" fill={GROUND} />
@@ -246,26 +273,28 @@ const SD_BLADE = 'M218.5 182 L229.5 182 L229.5 190 L218.5 190 Z';
       <!-- row 1 · ring spanner: steel body, orange grip, a hole you see through -->
       <path d={SPANNER} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
       <circle cx="172" cy="147" r="5" fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
-      <path d={SPANNER_GRIP} fill={ORANGE} />
+      <path d={SPANNER_GRIP} fill={GRIP} />
       <path d="M168 170 H176" stroke={NAVY} stroke-width={W_FINE} />
 
       <!-- row 1 · slot two: nothing. The screwdriver is up top. -->
 
-      <!-- row 1 · pliers: steel jaws, orange handles -->
-      <path d={PLIER_LEFT} fill={ORANGE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d={PLIER_RIGHT} fill={ORANGE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <!-- row 1 · pliers: steel jaws and arms, sleeved grips below the midpoint -->
+      <path d={PLIER_LEFT} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d={PLIER_RIGHT} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d={PLIER_LEFT_GRIP} fill={GRIP} />
+      <path d={PLIER_RIGHT_GRIP} fill={GRIP} />
       <path d={PLIER_HEAD} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
       <circle cx="276" cy="157" r="2.4" fill={NAVY} />
 
       <!-- row 2 · hammer: steel head, orange grip -->
       <path d={HAMMER} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d={HAMMER_GRIP} fill={ORANGE} />
+      <path d={HAMMER_GRIP} fill={GRIP} />
       <path d="M167 236 H177" stroke={NAVY} stroke-width={W_FINE} />
       <path d="M156 222 H188" stroke={NAVY} stroke-width={W_FINE} />
 
       <!-- row 2 · tape measure: orange case, steel blade -->
       <path d={TAPE_TONGUE} fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d={TAPE_BODY} fill={ORANGE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d={TAPE_BODY} fill={GRIP} stroke={NAVY} stroke-width={W_SUBJ} />
       <circle cx="224" cy="229" r="8" fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
 
       <!-- row 2 · a coiled cable: steel hank, orange tie round the middle -->
@@ -277,7 +306,7 @@ const SD_BLADE = 'M218.5 182 L229.5 182 L229.5 190 L218.5 190 Z';
         width="28"
         height="9"
         rx="2"
-        fill={ORANGE}
+        fill={GRIP}
         stroke={NAVY}
         stroke-width={W_FINE}
       />
@@ -333,15 +362,17 @@ const SD_BLADE = 'M218.5 182 L229.5 182 L229.5 190 L218.5 190 Z';
                exactly. Everywhere else it goes is another transform, so the tool
                and its own painted outline can never drift apart. ══ -->
       <g class="tool" transform="translate(72 -52) rotate(-90 224 163)">
-        <path d={SD_HANDLE} fill={ORANGE} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d={SD_HANDLE} fill={GRIP} stroke={NAVY} stroke-width={W_SUBJ} />
         <path d={SD_SHAFT} fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
         <path d={SD_BLADE} fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
       </g>
       <ellipse class="paw" cx="282" cy="108" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
 
-      <!-- ══ MUG — the shared prop, on a static parent so the steam animation
-               cannot wipe the translate ══ -->
-      <g transform="translate(234 8)">
+      <!-- ══ MUG — LEFT, between the grass and the board. QuietScene's paths on
+               one static parent: static because the steam is animated and a CSS
+               transform replaces a transform attribute rather than composing
+               with it. ══ -->
+      <g transform="translate(-8 8)">
         <g class="steam" stroke={ENVLINE} stroke-width={W_SUBJ}>
           <path class="wisp wisp-1" d="M103 262 C100 256 108 252 105 246" />
           <path class="wisp wisp-2" d="M112 262 C109 256 117 252 114 246" />
@@ -357,8 +388,11 @@ const SD_BLADE = 'M218.5 182 L229.5 182 L229.5 190 L218.5 190 Z';
         <path d="M120 275 C130 275 130 287 120 287" stroke={NAVY} stroke-width={W_SUBJ} />
       </g>
 
-      <!-- ══ PLANT — the shared prop, static parent, same reason ══ -->
-      <g transform="translate(-224 8)">
+      <!-- ══ PLANT — RIGHT, between the board and the grass. Leaves AND pot are
+               QuietScene's paths untouched, inside one static parent, so the
+               whole plant moves as a number rather than as re-typed geometry.
+               The swaying group carries no transform of its own. ══ -->
+      <g transform="translate(11 8)">
         <g class="leaves">
           <path
             d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z"
@@ -379,9 +413,9 @@ const SD_BLADE = 'M218.5 182 L229.5 182 L229.5 190 L218.5 190 Z';
             stroke-width={W_SUBJ}
           />
         </g>
+        <path d="M314 274 L318 292 H342 L346 274 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M312 274 H348" stroke={NAVY} stroke-width={W_SUBJ} />
       </g>
-      <path d="M90 282 L94 300 H118 L122 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d="M88 282 H124" stroke={NAVY} stroke-width={W_SUBJ} />
 
       <!-- ══ GRASS — both sides, as on the 404 ══ -->
       <g stroke={GRASS} stroke-width="3.5">

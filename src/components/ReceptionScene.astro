@@ -106,6 +106,7 @@ const LEAF_B = '#4EB86B';
 const POT = '#FCDCCF';
 const GRASS = '#3FAE5F';
 const MUG = '#F7B9A3'; // QuietScene's mug, to the digit
+const CLOUD = '#FFFFFF'; // QuietScene's cloud, top left of every scene
 
 /* The one hit of orange: the line. Dark asleep, flashing on the ring, lit on
    the call. */
@@ -152,6 +153,23 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
     </title>
 
     <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <!-- ── Cloud: the 404 scene's own path, top left, as on every scene. Added
+           2026-09-14 when Harshit set the one prop order for the whole site:
+           cloud top left, then grass · mug · subject · plant · grass. The
+           translate puts it 54 units in from this frame's left edge and 16 down
+           from its top, matching the 404. It is on a STATIC parent because the
+           drift is animated and a CSS transform replaces a transform attribute
+           rather than composing with it. ── -->
+      <g transform="translate(22 96)">
+        <path
+          class="cloud"
+          d="M60 80 C55 80 54 71 61 69 C62 60 74 57 80 63 C86 56 99 59 100 68 C108 68 110 79 104 80 Z"
+          fill={CLOUD}
+          stroke={NAVY}
+          stroke-width={W_SUBJ}
+        />
+      </g>
+
       <!-- ── Ground: the 404 scene's own line and tone ── -->
       <ellipse cx="224" cy="302" rx="100" ry="7" fill={GROUND} />
       <path d="M70 300 H394" stroke={ENVLINE} stroke-width={W_SUBJ} />
@@ -246,25 +264,30 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
       </g>
       <ellipse class="paw" cx="228" cy="233" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
 
-      <!-- ── The plant: the 404 scene's own paths, unscaled. The translate is
-           on the static parent, NOT on the swaying group — see the header. ── -->
-      <g transform="translate(-206 8)">
+      <!-- ── The plant: RIGHT of the desk since 2026-09-14, when Harshit set one
+           prop order for the whole site. Leaves AND pot are the 404 scene's own
+           paths, unscaled and untouched, inside ONE static parent — static
+           because the sway is animated and a CSS transform replaces a transform
+           attribute (see the header), one parent so the plant moves as a number
+           rather than as re-typed geometry. ── -->
+      <g transform="translate(11 8)">
         <g class="leaves">
           <path d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
           <path d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z" fill={LEAF_B} stroke={NAVY} stroke-width={W_SUBJ} />
           <path d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
         </g>
+        <path d="M314 274 L318 292 H342 L346 274 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M312 274 H348" stroke={NAVY} stroke-width={W_SUBJ} />
       </g>
-      <path d="M108 282 L112 300 H136 L140 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d="M106 282 H142" stroke={NAVY} stroke-width={W_SUBJ} />
 
       <!-- ══ MUG — QuietScene's own mug, verbatim: body, rim, handle, the one
                orange band and both steam wisps. Fourth of the four props the
                whole site shares — cat, plant, grass, mug — same colour and
-               design wherever it appears. On a STATIC parent, because the steam
-               is animated and a CSS transform replaces a transform attribute
-               rather than composing with it. ══ -->
-      <g transform="translate(234 8)">
+               design wherever it appears — and from 2026-09-14, always on the
+               LEFT, between the grass and the desk. On a STATIC parent, because
+               the steam is animated and a CSS transform replaces a transform
+               attribute rather than composing with it. ══ -->
+      <g transform="translate(10 8)">
         <g class="steam" stroke={ENVLINE} stroke-width={W_SUBJ}>
           <path class="wisp wisp-1" d="M103 262 C100 256 108 252 105 246" />
           <path class="wisp wisp-2" d="M112 262 C109 256 117 252 114 246" />
@@ -283,11 +306,12 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
       <!-- ── Grass both sides, as on the 404 scene ── -->
       <g stroke={GRASS} stroke-width="3.5">
         <!-- Shifted 12 units left of where a straight mirror of QuietScene would
-             put it. The plant came over by translate(-206 8) and landed on this
-             tuft: ink to 106.75 against a pot rim starting at 105, so they
-             overlapped and read as one blob. 12 units buys 10.25 of clear cream,
-             about 9 even at full sway. The plant could not move instead - it has
-             only 8 units to the desk leg on its other side. -->
+             put it. That was for the plant, which used to stand here and landed
+             on this tuft: ink to 106.75 against a pot rim starting at 105, so
+             they read as one blob. The plant is on the right now and the mug has
+             taken the spot — narrower, and it does not sway — so the clearance
+             is 13 units of cream and the shift could come out. It stays: moving
+             it back would leave one unit to the mug rim. -->
         <g class="grass grass-b">
           <path d="M80 300 C79 292 82 285 87 280" />
           <path d="M87 300 C87 292 89 286 93 282" />
