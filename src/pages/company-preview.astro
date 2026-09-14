@@ -18,7 +18,13 @@
  *  (disliked) → page-header aside (disliked) → this. PageHeader keeps its
  *  optional `aside` slot; unused here, inert everywhere.
  *
- *  Once approved: move WorkshopScene out of components/preview/ into
+ *  UN-PARKED 2026-09-14 so the rebuilt illustration can be seen in context.
+ *  It now carries CompanyScene, not WorkshopScene: the old one failed Gate 1b
+ *  at 29.7% cream / 7.2% dark because its shadow board was a wall over 54% of
+ *  the frame. Sealed exactly as CLAUDE.md §5 requires — noindex, in no nav,
+ *  linked from nowhere, named in the sitemap filter. Park it again on sign-off.
+ *
+ *  Once approved: move CompanyScene out of components/preview/ into
  *  components/, port this section into company.astro, then delete this page.
  * ========================================================================== */
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -27,7 +33,7 @@ import PageHeader from '../components/PageHeader.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import FeatureGrid from '../components/FeatureGrid.astro';
 import ClosingCta from '../components/ClosingCta.astro';
-import WorkshopScene from '../components/preview/WorkshopScene.astro';
+import CompanyScene from '../components/preview/CompanyScene.astro';
 import { Icon } from 'astro-icon/components';
 import { company, whyUs, competencies, workshopBand } from '../data/site';
 
@@ -64,7 +70,7 @@ const [overviewA, overviewB, statement] = company.overview;
 
         <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
           <div class="rounded-2xl border border-line bg-band px-5 pt-7 pb-8">
-            <WorkshopScene id="company" chip={workshopBand.chip} caption={workshopBand.caption} />
+            <CompanyScene id="company" chip={workshopBand.chip} caption={workshopBand.caption} />
           </div>
         </div>
       </div>

@@ -83,10 +83,14 @@ built and not reachable even locally. To bring one back, drop the underscore —
 the sitemap filter still lists them, deliberately, so an un-parked page cannot
 walk into the sitemap by accident.
 
-Still parked, on Harshit's review of 2026-09-13:
-`_company-preview` — its illustration still needs the Gate 1b weight pass before
-it can be adopted; `_404-preview` and `_uptime` — older concept pages, no
-verdict yet.
+Still parked: `_404-preview` and `_uptime` — older concept pages, no verdict
+yet. `_uptime` is the only home `UptimeScene` has, and that scene has no slot on
+the real site at all.
+
+**Live, deliberately:** `company-preview` (no underscore), un-parked 2026-09-14
+so the rebuilt `CompanyScene` can be reviewed in context. Sealed exactly as
+everything else in §5 — noindex, in no nav, linked from nowhere, named in the
+sitemap filter. **Park it again once the scene is signed off.**
 
 **Parked again 2026-09-14, on adoption:** `_careers-preview`. `CareersScene`
 now ships on the real Careers page, so the preview only duplicates it. Kept

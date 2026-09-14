@@ -55,7 +55,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 34 | Preview pages — parked, then reviewed | ✅ | — | Parked 2026-09-12; reviewed 2026-09-13. **Deleted:** `illustrations-preview`, `contact-preview` ×3, `hero-preview`, `home-preview` (recoverable from `3caa023`). **Still parked:** `_company-preview`, `_careers-preview` (pending refinement), `_404-preview`, `_uptime`. Every illustration component was kept — the pages went, the images did not |
 | 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
 | 36 | WhatsApp channel | ✅ | — | Number confirmed by Harshit 2026-09-13 — the same line as the phone. `contact.whatsapp` in `site.ts` with a derived `whatsappHref`; the channel drops out entirely if the number is ever cleared (§3). Live on the Contact page |
-| 37 | Illustration weight — the "subtle" pass | 🟡 | 2 of 5 refined | Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **And scale**: apparent size is subject width over CANVAS width — match the 420-wide canvas or the same cat draws larger. Standing: QuietScene 80.9/3.4 · **ReceptionScene 90.3/2.0 — done 2026-09-13** · **CareersScene 88.4/3.9 — done 2026-09-14, awaiting sign-off** · UptimeScene 32.1/6.7 · WorkshopScene 29.7/7.2 · RackScene 0.2/30.0 |
+| 37 | Illustration weight — the "subtle" pass | 🟡 | 3 of 5 refined | Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **Balance** (`scripts/measure-balance.cjs`): the ink centred in the frame, which neither gate can see. **And scale**: apparent size is subject width over CANVAS width. Standing: QuietScene 80.9/3.4 · **ReceptionScene 89.2/2.3 — live** · **CareersScene 88.4/3.9 — live** · **CompanyScene 80.2/2.9 — done 2026-09-14, awaiting sign-off** · RackScene 0.2/30.0 · UptimeScene 32.1/6.7 *(no slot on the real site — lowest priority)* |
 
 ---
 
@@ -70,6 +70,40 @@ Nothing is blocked on code.
 ---
 
 ## Log
+
+### 2026-09-14 — the company scene, and three goes at one joke
+- *"move on to the next image."* I took **company** rather than uptime, and said
+  why: `WorkshopScene` has a slot waiting (`/company` carries no illustration
+  today), `RackScene` has the home hero, and `UptimeScene` has **nowhere to go**
+  — its only home is the parked `_uptime` concept page.
+- `WorkshopScene` failed Gate 1b on both counts: **29.7% cream / 7.2% dark**.
+  The cause was one shape — a pegboard **340x240 on a 420x360 canvas, 54% of the
+  frame in a single flat panel**. Six tools with `#33415C` heads carried the
+  dark, the bench ran x20→420 edge to edge, and the plant cropped x=-10.
+- **The joke is worth keeping**: every tool over its own painted outline, one
+  outline bare, and the missing screwdriver under a paw. site.ts already carries
+  the caption — *"Every tool in its place. Nearly."* — so the bare outline has to
+  be legible at the size the card gives it. That constraint drove three attempts:
+  1. **Board on a bench, 100x72.** Quiet, gate-passing, and **unreadable**: at
+     352px the board was 84px wide with 7px tools. You could not see anything
+     was missing. Rendered it at real size rather than trusting the gates.
+  2. **Board as hero, 136x142, cat on the floor in front.** The joke read; the
+     cat became a lump at the base.
+  3. **The 404's own composition** — a 136x100 board with the cat ON TOP of it.
+     Stacking is the only arrangement that fits a board big enough for legible
+     tools and a cat at full 20.4% size; side by side they need over 200 units
+     and the props have nowhere left to stand. It doubles the joke too: the bare
+     outline on the board, and the stolen screwdriver up top, half over the edge.
+- Two tool shapes had to be redrawn after looking at them at 352px: the spanner
+  read as a torch (now a **ring** spanner — a circle on a bar, unmistakable at
+  any size) and the screwdriver read as an **arrow** (the triangular tip is now
+  a flat blade).
+- **80.2% cream / 2.9% dark**, curve ratio 48%, ink centred to 0.0 — against
+  29.7 / 7.2. The cat, plant, grass and mug are the shared kit; motion comes
+  from `scene-motion.css` plus two of its own, `bat` and `rock`.
+- `company-preview` un-parked to review it. It renders at **352px at both 1280
+  and 1440** — the 22rem cap holds, so there is no card-width question here, as
+  there was on careers.
 
 ### 2026-09-14 (night, later) — one set of timings, and careers goes live
 - *"not only the design but animation of the common elements should be same

@@ -1,0 +1,369 @@
+---
+/* ============================================================================
+ *  CompanyScene — "Every tool in its place. Nearly." PREVIEW ONLY.
+ *
+ *  Replaces WorkshopScene, which kept the joke but failed Gate 1b on both
+ *  counts: 29.7% bare cream against a floor of 60, and 7.2% dark against a
+ *  ceiling of 5. That component is left on disk until this one is approved.
+ *
+ *  ── THE JOKE, AND WHY THE BOARD IS THE HERO ─────────────────────────────────
+ *  A shadow board: every tool hangs over its own painted outline, and the
+ *  middle outline is bare — because that screwdriver is on the floor with a paw
+ *  on it. site.ts carries the caption ("Every tool in its place. Nearly."), so
+ *  the bare outline is the one thing in this drawing that must never be tidied
+ *  away, and it has to be legible at the size the card actually gives it.
+ *
+ *  That is what killed the first attempt. The board sat on a bench at 100x72,
+ *  which is quiet and gate-passing and completely unreadable: at 352px it came
+ *  out 84px wide with 7px tools, and you could not see anything was missing.
+ *
+ *  The second attempt made the board the hero at 136x142 and put the cat on the
+ *  floor in front of it. The joke read; the cat became a lump at the base.
+ *
+ *  This is the third, and it is the 404's own composition: a tall object with
+ *  the cat ON TOP of it. Stacking is the only arrangement that fits a board big
+ *  enough for legible tools AND a cat at full 20.4% size — side by side they
+ *  need over 200 units and the props have nowhere left to stand. It also
+ *  doubles the joke: the bare outline on the board, and the missing screwdriver
+ *  up top under a paw, half over the edge.
+ *
+ *  ── WHAT WAS WRONG WITH WorkshopScene, measured ─────────────────────────────
+ *  · The board was a WALL: 340x240 on a 420x360 canvas, one flat panel over 54%
+ *    of the frame. It is an object now, with cream on every side.
+ *  · Six tools with #33415C heads carried the 7.2% dark. Two now, in the 404
+ *    rack's own pale blue with navy outlines: weight on the line, not the fill.
+ *    The only saturated thing left is the screwdriver's handle, which is what
+ *    the picture is about.
+ *  · The bench ran x 20 to 420 on a 420 canvas — edge to edge — and the plant
+ *    cropped the left edge at x=-10. Nothing here touches an edge.
+ *  · The cat was a different cat in a different hand: a rounded head-path,
+ *    almond eyes, 2.6 / 1.7 / 1.1 strokes, #93A3B8 markings.
+ *
+ *  ── SAME HAND AS THE OTHER THREE ────────────────────────────────────────────
+ *  The cat is QuietScene's, path for path, placed by one translate. Strokes are
+ *  2.0 / 1.8 / 1.4, markings #CBD5E1. The plant, grass and mug are the shared
+ *  prop kit, copied and translated, never redrawn.
+ *
+ *  ── THINGS THAT MUST STAY TRUE ──────────────────────────────────────────────
+ *  · The GROUND is y=300. The board, the cat, the plant and the mug all stand
+ *    on it and nothing crosses it.
+ *  · A tool is OUTLINED (pale fill, navy contour). Its painted outline is FLAT
+ *    (one fill, no stroke). That contrast is the only thing telling a viewer
+ *    which slot is empty — do not give the outlines a stroke.
+ *  · Tools stop at y=234 because the cat's back reaches y=270. Lengthen one and
+ *    it disappears behind the cat.
+ *  · The paw must BREAK the screwdriver handle's outline, not sit inside it —
+ *    inside, it reads as a hole cut in the handle.
+ *  · Breathing, the tail, the steam and the wind are NOT here. They are shared
+ *    by every scene and live in src/styles/scene-motion.css; this svg opts in
+ *    with `data-scene`. Change a shared timing there, never here.
+ * ========================================================================== */
+interface Props {
+  /** Small mono status label above the art, as on QuietScene. Omit for none. */
+  chip?: string;
+  /** Caption below the art. Omit for none. */
+  caption?: string;
+  /** Unique per instance — the title id must not collide. */
+  id: string;
+  class?: string;
+}
+const { chip, caption, id, class: className = '' } = Astro.props;
+const titleId = `company-scene-${id}`;
+
+/* ── QuietScene's weights and palette, deliberately. ── */
+const NAVY = '#1B2A4A';
+const ENVLINE = '#CBD5E1';
+const W_SUBJ = 2;
+const W_FACE = 1.8;
+const W_FINE = 1.4;
+
+const GROUND = '#E3EAF3';
+const DEVICE = '#C9D9EC'; // the 404 rack's own blue — the board and its tools
+const KEYS = '#8FA8C8';
+const FUR = '#FFFFFF';
+const FUR_SHADE = '#B9C4D2'; // and the painted outlines: flat, never stroked
+const LEAF_A = '#7DD87D';
+const LEAF_B = '#4EB86B';
+const POT = '#FCDCCF';
+const GRASS = '#3FAE5F';
+const MUG = '#F7B9A3';
+const ORANGE = '#F24E1E'; // the screwdriver's handle, and nothing else
+
+/* QuietScene's cat, verbatim. */
+const CAT_BODY = 'M180 128 C178 110 190 98 208 98 C226 98 242 106 244 128 Z';
+const CAT_BACK =
+  'M180 128 C178 110 190 98 208 98 C218 98 227 101 233 107 C214 104 192 112 186 128 Z';
+const HEAD_SHADE = 'M226 110 C229 104 235 102 239 104 C233 105.5 228 108 226 113 Z';
+
+/* Slot 1: a spanner. Slot 3: pliers. Each is drawn twice — once flat as its
+   painted outline, once outlined as the tool itself, the second offset 2 right
+   and 2 up of the first. */
+const SPANNER =
+  'M181 276 L181 238 C175 236 171 231 171 225 C171 217 177 211 186 211 C195 211 201 217 201 225 C201 231 197 236 191 238 L191 276 C191 279 181 279 181 276 Z';
+const PLIER_HEAD = 'M247 216 L261 216 L263 232 L254 238 L245 232 Z';
+
+/* Slot 2: the shape of the missing tool, drawn ONCE, flat, and never given a
+   tool to sit under. This is the joke. */
+const GHOST_HANDLE = 'M209 216 C209 212 227 212 227 216 L227 244 C227 248 209 248 209 244 Z';
+const GHOST_SHAFT = 'M215 248 L221 248 L220 276 L216 276 Z';
+---
+
+<figure class:list={['company', className]}>
+  {
+    chip && (
+      <p class="chip">
+        <span class="chip-dot" aria-hidden="true" />
+        {chip}
+      </p>
+    )
+  }
+
+  <svg
+    class="scene"
+    data-scene
+    viewBox="13 113 420 250"
+    role="img"
+    aria-labelledby={titleId}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title id={titleId}>
+      A workshop shadow board with each tool hanging over its own painted outline, and the middle
+      outline bare. On the floor in front of it, a cat rests a paw on the missing screwdriver.
+    </title>
+
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <!-- ── Ground: the 404's own line, and it reaches neither edge ── -->
+      <ellipse cx="224" cy="302" rx="100" ry="7" fill={GROUND} />
+      <path d="M52 300 H394" stroke={ENVLINE} stroke-width={W_SUBJ} />
+
+      <!-- ══ THE BOARD — the hero object, the job the rack does on the 404.
+               136 wide on a 420 canvas, with cream on every side of it. ══ -->
+      <rect x="152" y="200" width="136" height="100" rx="4" fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <g fill={KEYS}>
+        <circle cx="162" cy="212" r="1.5" />
+        <circle cx="162" cy="288" r="1.5" />
+        <circle cx="278" cy="212" r="1.5" />
+        <circle cx="278" cy="288" r="1.5" />
+      </g>
+
+      <!-- The painted outlines. FLAT — one fill, no stroke — because that is the
+           only thing that tells a tool apart from the space where one should be.
+           Laid 2 left / 2 down of the tool above them: a real shadow board is
+           mis-registered too. -->
+      <g fill={FUR_SHADE}>
+        <g transform="translate(-2 2)">
+          <path d={SPANNER} />
+          <path d={PLIER_HEAD} />
+          <path d="M249 240 C246 250 244 262 244 276 L250 276 C250 262 252 252 255 242 Z" />
+          <path d="M259 240 C262 250 264 262 264 276 L258 276 C258 262 256 252 253 242 Z" />
+        </g>
+        <!-- SLOT TWO. Nothing hangs here. The caption depends on it. -->
+        <path d={GHOST_HANDLE} />
+        <path d={GHOST_SHAFT} />
+      </g>
+
+      <!-- hooks -->
+      <g stroke={NAVY} stroke-width={W_FINE}>
+        <path d="M186 206 L186 214" />
+        <path d="M218 206 L218 214" />
+        <path d="M254 206 L254 214" />
+      </g>
+
+      <!-- 1. a spanner -->
+      <path d={SPANNER} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <circle cx="186" cy="225" r="5.5" fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
+
+      <!-- 2. nothing. The screwdriver is on the floor. -->
+
+      <!-- 3. pliers -->
+      <path d={PLIER_HEAD} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M249 240 C246 250 244 262 244 276 L250 276 C250 262 252 252 255 242 Z" fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M259 240 C262 250 264 262 264 276 L258 276 C258 262 256 252 253 242 Z" fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
+      <circle cx="254" cy="239" r="2.4" fill={NAVY} />
+
+      <!-- ══ CAT — QuietScene's own drawing, on the floor in front of the board,
+               which is what lets a 136-wide board and an 85-wide cat share the
+               frame without either shrinking. ══ -->
+      <g transform="translate(-2 72)">
+        <path class="tail" d="M182 126 C170 128 164 120 170 113 C174 108 181 110 181 116" stroke={NAVY} stroke-width={W_SUBJ} />
+        <g class="breathe">
+          <path d={CAT_BODY} fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+          <!-- mis-registration: the back shading, laid inside and short of its contour -->
+          <path d={CAT_BACK} fill={FUR_SHADE} />
+          <path d={CAT_BODY} fill="none" stroke={NAVY} stroke-width={W_SUBJ} />
+          <g stroke={ENVLINE} stroke-width={W_SUBJ}>
+            <path d="M193 102 Q197 107 195 112" />
+            <path d="M203 99.5 Q207 104 205 109" />
+          </g>
+        </g>
+        <ellipse cx="213" cy="124.5" rx="8.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+        <g class="head">
+          <path d="M227.5 108 L228 96 L237 103.5 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path d="M241 103.5 L248 97 L247.5 110 Z" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+          <circle cx="236" cy="116" r="12" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path d={HEAD_SHADE} fill={FUR_SHADE} />
+          <!-- awake, pupils low and right: looking down at what it has taken -->
+          <circle cx="232" cy="115" r="1.9" fill={NAVY} />
+          <circle cx="243" cy="115" r="1.9" fill={NAVY} />
+          <path d="M228.5 111 Q231 109.3 233.5 111" stroke={NAVY} stroke-width={W_FACE} />
+          <path d="M239.5 111 Q242 109.3 244.5 111" stroke={NAVY} stroke-width={W_FACE} />
+          <path d="M236 119.5 L236 121" stroke={NAVY} stroke-width={W_FACE} />
+          <g stroke={ENVLINE} stroke-width={W_FINE}>
+            <path d="M227 119 L222.5 118" />
+            <path d="M245 119 L249.5 118" />
+          </g>
+        </g>
+      </g>
+
+      <!-- ══ THE MISSING SCREWDRIVER, and the paw that took it ══ -->
+      <g class="tool">
+        <rect x="256" y="190" width="16" height="10" rx="4" fill={ORANGE} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M272 195 H287" stroke={NAVY} stroke-width={W_SUBJ} />
+        <rect x="287" y="191.5" width="4" height="7" rx="1" fill={KEYS} stroke={NAVY} stroke-width={W_FINE} />
+      </g>
+      <ellipse class="paw" cx="258" cy="188" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+
+      <!-- ══ MUG — the shared prop, on a static parent so the steam animation
+               cannot wipe the translate ══ -->
+      <g transform="translate(234 8)">
+        <g class="steam" stroke={ENVLINE} stroke-width={W_SUBJ}>
+          <path class="wisp wisp-1" d="M103 262 C100 256 108 252 105 246" />
+          <path class="wisp wisp-2" d="M112 262 C109 256 117 252 114 246" />
+        </g>
+        <path
+          d="M96 268 L96 286 Q96 292 102 292 L114 292 Q120 292 120 286 L120 268 Z"
+          fill={MUG}
+          stroke={NAVY}
+          stroke-width={W_SUBJ}
+        />
+        <rect x="97" y="278" width="22" height="5" fill={ORANGE} opacity="0.9" />
+        <path d="M96 273 H120" stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M120 275 C130 275 130 287 120 287" stroke={NAVY} stroke-width={W_SUBJ} />
+      </g>
+
+      <!-- ══ PLANT — the shared prop, static parent, same reason ══ -->
+      <g transform="translate(-224 8)">
+        <g class="leaves">
+          <path d="M330 274 C322 258 326 244 332 240 C338 246 338 262 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path d="M330 274 C318 266 312 254 314 248 C322 250 330 262 330 274 Z" fill={LEAF_B} stroke={NAVY} stroke-width={W_SUBJ} />
+          <path d="M330 274 C342 266 348 256 346 250 C338 252 331 263 330 274 Z" fill={LEAF_A} stroke={NAVY} stroke-width={W_SUBJ} />
+        </g>
+      </g>
+      <path d="M90 282 L94 300 H118 L122 282 Z" fill={POT} stroke={NAVY} stroke-width={W_SUBJ} />
+      <path d="M88 282 H124" stroke={NAVY} stroke-width={W_SUBJ} />
+
+      <!-- ══ GRASS — both sides, as on the 404 ══ -->
+      <g stroke={GRASS} stroke-width="3.5">
+        <g class="grass grass-b">
+          <path d="M62 300 C61 292 64 285 69 280" />
+          <path d="M69 300 C69 292 71 286 75 282" />
+          <path d="M75 300 C75 293 74 288 72 284" />
+        </g>
+        <g class="grass">
+          <path d="M372 300 C371 292 374 285 379 280" />
+          <path d="M379 300 C379 292 381 286 385 282" />
+          <path d="M385 300 C385 293 384 288 382 284" />
+        </g>
+      </g>
+    </g>
+  </svg>
+
+  {caption && <figcaption class="line">{caption}</figcaption>}
+</figure>
+
+<style>
+  .company {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.5rem;
+    padding: 0.35rem 0.85rem 0.35rem 0.7rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-navy-700);
+  }
+  .chip-dot {
+    width: 0.375rem;
+    height: 0.375rem;
+    border-radius: 999px;
+    background: #16a34a;
+    box-shadow: 0 0 0 3px rgb(22 163 74 / 0.14);
+  }
+  .scene {
+    display: block;
+    width: 100%;
+    /* the cap every scene carries, so one cat is one size wherever it appears */
+    max-width: 22rem;
+    height: auto;
+  }
+  .line {
+    max-width: 30ch;
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--color-navy-900);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* THE ONLY MOTION THIS SCENE OWNS. Breathing, the tail, the steam and the
+       wind are shared across the site — src/styles/scene-motion.css.
+
+       One bat every six seconds: the paw pushes, the screwdriver rocks on the
+       same beat and settles. The tool has no transform ATTRIBUTE, so the rock
+       has nothing to clobber. */
+    .paw {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: bat 6s ease-in-out infinite;
+    }
+    @keyframes bat {
+      0%,
+      82%,
+      96%,
+      100% {
+        transform: translate(0, 0);
+      }
+      87% {
+        transform: translate(3px, 1px);
+      }
+      92% {
+        transform: translate(1.5px, 0);
+      }
+    }
+
+    .tool {
+      transform-box: fill-box;
+      transform-origin: 8% 50%;
+      animation: rock 6s ease-in-out infinite;
+    }
+    @keyframes rock {
+      0%,
+      84%,
+      98%,
+      100% {
+        transform: rotate(0deg);
+      }
+      89% {
+        transform: rotate(-3.5deg);
+      }
+      94% {
+        transform: rotate(1.5deg);
+      }
+    }
+  }
+</style>
