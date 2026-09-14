@@ -71,6 +71,35 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-14 (last) — one vertical scale for the whole site
+- *"now do the whitespace fix across the site."* Measured first, at 1280, as the
+  run of empty pixels between one block's last ink and the next block's first:
+  `/` 211/253/221/329, `/our-mission` 161/238/215/313, `/services`
+  174/230/230/215/214/288.
+- **Two causes.** Sections carried `py-16 lg:py-24` or `py-20 lg:py-28`, so a
+  boundary was 192px of padding before a single margin counted — neither section
+  knows the other is there. And `ClosingCta` stacked its own 112 on top of the
+  navy card's 80, putting 192px above its heading on every page.
+- **One scale now: `py-12 lg:py-16` on every band**, 48 mobile / 64 desktop.
+  `PageHeader`, `Hero`, `ClosingCta` and `Footer` are the four things that are
+  not plain sections; all four are listed in `CLAUDE.md` with why each differs.
+  After: `/` 115/157/115/73, `/our-mission` 113/166/151/73, `/services`
+  114/154/154/139/138/48.
+- **Page height at 1280, same content, measured in an iframe before and after:**
+  `/` 4567→4023, `/services` 4453→3917, `/our-mission` 3296→2888, `/company`
+  3642→3234, `/careers` 3195→2851, `/contact` 1851→1715, `/privacy`
+  2443→2307. Between 5.6% and 12.4%; around an eighth of every main page was
+  nothing.
+- **One hole the tightening exposed rather than caused.** The vision/mission
+  panels on `/our-mission` stretch to equal height and `flex-1` pushed each
+  card's tail block to the bottom, so the shorter Vision copy left ~160px of
+  white in the middle of its own card. Fixed the way `/contact` was:
+  `lg:items-start`, no `flex-1`. The roles and competency card rows keep their
+  stretch on purpose — there the aligned "Apply"/"Learn more" links are the
+  point.
+- Checked at 1280 and 375 on every page: no horizontal overflow, `astro check`
+  clean. Commit `e034514`.
+
 ### 2026-09-14 (later) — six slots, a cloud, and the full loop
 - Harshit on the preview: *"increase the tool box length to adjust 2 rows of
   tools. plus the tools don't look clear enough. we will add cloud here too just
@@ -102,12 +131,11 @@ Nothing is blocked on code.
   that frame was empty, the mug then took the only free side, and careers and
   company copied contact. The 404 reads grass·mug·rack·plant·grass; the other
   three read grass·plant·object·mug·grass. One line each to flip if he wants it.
-- **Flagged, not fixed: whitespace across the site.** Measured at 1280px, most
-  sections carry `py-16 lg:py-24` but land at 94–156px of real padding once
-  internal margins are counted, and two adjacent sections stack to **215px of
-  empty between blocks** (/our-mission section 2 bottom 119 + section 3 top 96).
-  The worst is the closing CTA at `py-20 lg:py-28`: **206 top / 178 bottom** on
-  every page. That is a site-wide rhythm pass, not a per-page tweak.
+- **Done: the whitespace across the site.** See the log entry for
+  2026-09-14 (last). One scale, `py-12 lg:py-16`, on every band; gaps between
+  blocks went from 161–329px to 48–166px and every main page lost 11–12% of its
+  height without losing a word. The scale is recorded in `CLAUDE.md` — read it
+  before adding a section, and do not invent a new padding value.
 
 ### 2026-09-14 — the company scene, and three goes at one joke
 - *"move on to the next image."* I took **company** rather than uptime, and said
