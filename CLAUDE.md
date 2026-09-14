@@ -175,6 +175,38 @@ browser, load it and check it. Report what actually happened, including failures
   injection order.
 - **The site is light-only.** There is no dark mode and no `prefers-color-scheme`
   handling anywhere. Adding one is a whole-site decision, not a per-component tweak.
+- **Vertical rhythm is one scale: `py-12 lg:py-16` on every band.** 48px at
+  mobile, 64px at desktop, and that is the whole system — a full-width `<section>`
+  gets it, and nothing else gets more. Set 2026-09-14 when Harshit asked for the
+  empty space across the site to come down.
+
+  What it replaced: `py-16 lg:py-24` on inner pages and `py-20 lg:py-28` on the
+  home page and the closing CTA. Two sections' padding adds up, so a boundary was
+  192px of padding before a single margin was counted, and measured gaps between
+  blocks ran 161–329px at 1280. They now run 48–166. Roughly **11–12% of every
+  main page was empty space**, and the content did not change.
+
+  The rest of the scale, for the four things that are not plain sections:
+
+  | | |
+  |---|---|
+  | `PageHeader` | `pt-10 pb-10 lg:pt-14 lg:pb-12` (`main` already clears the fixed header with `pt-16 lg:pt-[4.5rem]`) |
+  | `Hero` | `pb-14 pt-24 sm:pb-16 lg:pb-16 lg:pt-28` — the tall `pt` is header clearance, since the home hero overlaps it |
+  | `ClosingCta` | `py-12 lg:py-16` outside, `py-12 lg:py-14` on the navy card inside. It used to carry 112 + 80 = 192px above its own heading |
+  | `Footer` | `py-12 lg:py-16` on its Container |
+
+  Inside a section, `mt-12` is the standing gap between a `SectionHeading` and
+  whatever it introduces. Do not invent a new value; if a band needs to breathe
+  more than the scale allows, that is a signal the content is wrong, not the
+  padding.
+
+  **Equal-height cards are the other source of holes, and they do not always
+  earn it.** A row of cards should align; a two-up panel whose halves carry very
+  different amounts of copy should not. `lg:items-start` on the grid — plus
+  removing the `flex-1` that pushes a card's tail block down — is the fix, and it
+  is what killed 176px of dead white on `/contact` and about 160 in the Vision
+  panel on `/our-mission`. Roles and competency cards keep their stretch on
+  purpose: their "Apply"/"Learn more" links line up across the row.
 
 ## Commands
 

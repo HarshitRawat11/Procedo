@@ -21,7 +21,7 @@ const { eyebrow, title, subtitle } = Astro.props;
  * the space on one page therefore cannot disturb the other four.
  */
 const hasAside = Astro.slots.has('aside');
-const pad = 'pt-14 pb-12 lg:pt-20 lg:pb-16';
+const pad = 'pt-10 pb-10 lg:pt-14 lg:pb-12';
 const layout = hasAside ? `${pad} grid items-center gap-10 lg:grid-cols-12 lg:gap-14` : pad;
 ---
 
