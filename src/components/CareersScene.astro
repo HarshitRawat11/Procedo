@@ -3,9 +3,11 @@
  *  CareersScene — the cat at the desk, working.
  *
  *  WHERE IT IS USED: the Careers page, in the open-application card beside
- *  "Don't see your role?". Adopted 2026-09-14. It replaced DeskScene, which
- *  still exists on disk but is now used nowhere; DeskSceneWorking, the failed
- *  intermediate, is still in components/preview/ and is also unused.
+ *  "Don't see your role?". Adopted 2026-09-14. It replaced DeskScene and its
+ *  failed intermediate DeskSceneWorking, both of which were deleted on
+ *  Harshit's instruction the same day, once this one had shipped. They are
+ *  recoverable from commit 9aeddcf if the history is ever wanted; do not
+ *  resurrect them as drawings, because both failed Gate 1b.
  *
  *  The card gives it `w-56 lg:w-72` — 288px on a wide screen, up from 208px.
  *  At 208 the cat rendered 42px wide against the 404 cat's 78px and the
@@ -68,7 +70,6 @@ const W_FINE = 1.4;
 const TIMBER = '#E4CBA8';
 const GROUND = '#E3EAF3';
 const DEVICE = '#C9D9EC'; // the 404 rack's own blue — screen, mouse, chair
-const KEYS = '#8FA8C8';
 /* Deliberately the same value as NAVY, and named separately because it is the
    one flat dark shape in the scene and the gate has to be re-run whenever it
    changes size. Harshit asked for the black screen back on 2026-09-14; it is

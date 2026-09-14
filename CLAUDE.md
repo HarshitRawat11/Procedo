@@ -141,11 +141,20 @@ open-application card) and `CompanyScene` (the Company statement band, adopted
 2026-09-14). What is left in `components/preview/` is therefore exactly the set
 that has no home yet.
 
-**Superseded but not deleted:** `WorkshopScene` (replaced by `CompanyScene`),
-`DeskScene` and `DeskSceneWorking` (replaced by `CareersScene`). All three are
-on disk and used nowhere. They are kept because deleting is a destructive change
-and §4 says ask first — but do not mistake them for live work, and do not copy
-from them: both failed Gate 1b, which is why they were replaced.
+**Deleted 2026-09-14** on his instruction, once their replacements had shipped:
+`WorkshopScene` (replaced by `CompanyScene`), `DeskScene` and `DeskSceneWorking`
+(replaced by `CareersScene`). All three had become unreachable. Recoverable from
+commit `9aeddcf`, but there is no reason to: `WorkshopScene` failed Gate 1b at
+29.7% cream / 7.2% dark, and the desk monitor was 4.6% flat dark on a 5% budget.
+This is the one place where an illustration did NOT survive its page — and the
+rule above still holds, because what changed is that a better one was live first.
+
+**What is left in `src/components/preview/` is therefore exactly two files**, and
+both are unfinished rather than unused: `RackScene` (the home hero — 0.2% cream
+against a floor of 60, a rethink rather than a refinement) and `SceneVariant`
+(the 404 comparison strip, used by `_404-preview`). `UptimeScene` sits in
+`src/components/` and is used only by `_uptime`; it has no slot on the real site
+at all.
 
 ### 5b. No human figures in illustrations
 **Hard rule, set by Harshit on 2026-09-07.** Illustrations carry animal or

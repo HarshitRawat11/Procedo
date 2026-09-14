@@ -4,20 +4,22 @@
  *  nav, linked from nowhere, excluded from the sitemap filter.
  *
  *  The live Careers page, with CareersScene in the open application card in
- *  place of the sleeping DeskScene that ships today. Everything else is a
+ *  place of the sleeping DeskScene that shipped until 2026-09-14. Everything
+ *  else is a
  *  faithful copy of src/pages/careers.astro; the live page is untouched.
  *
- *  UN-PARKED 2026-09-14 so Harshit can look at the rebuilt illustration in
- *  context. Sealed exactly as before — noindex, in no nav, linked from nowhere,
- *  named in the sitemap filter. Park it again (leading underscore) once the
- *  scene is signed off.
+ *  PARKED AGAIN 2026-09-14, on adoption. CareersScene now ships on the real
+ *  Careers page, so this only duplicates it — and it has drifted from the live
+ *  page already. Re-sync it from careers.astro before trusting anything here.
  *
  *  NOTE the illustration box here is w-56 / sm:w-72, which is WIDER than the
  *  live page's w-44 / sm:w-52. That is the open question, not an oversight:
  *  at 208px this drawing renders a 42px cat against the 404's 78px.
  *
- *  Once approved: move CareersScene out of components/preview/, swap it in on
- *  careers.astro, retire DeskScene and DeskSceneWorking, then delete this page.
+ *  All of that is done: CareersScene lives in components/, careers.astro uses
+ *  it, and DeskScene and DeskSceneWorking were deleted on 2026-09-14. This page
+ *  is kept, not deleted, as the rehearsal space for the next change to that
+ *  card.
  * ========================================================================== */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';

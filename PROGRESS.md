@@ -71,6 +71,33 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-14 (last, cleanup) — the three dead scenes go
+- *"remove workshopscene and the two dead desk scenes."* Checked first that
+  nothing imported them — every remaining mention was a comment, in five files —
+  then `git rm` on `components/preview/WorkshopScene.astro`,
+  `components/preview/DeskSceneWorking.astro` and `components/DeskScene.astro`.
+- **The comments were the actual work.** Deleting a file that five headers point
+  at just moves the problem, so `CareersScene`, `CompanyScene`, `UptimeScene`,
+  `_careers-preview` and the `workshopBand` doc comment in `site.ts` were all
+  rewritten to say the files are gone, name the commit they are recoverable
+  from (`9aeddcf`), and — where it matters — say why resurrecting them is a bad
+  idea: `WorkshopScene` failed Gate 1b at 29.7% cream / 7.2% dark, the desk
+  monitor was 4.6% flat dark on a 5% budget.
+- `_careers-preview`'s header also still said "park it again once the scene is
+  signed off" and "retire DeskScene and DeskSceneWorking" — both were done days
+  ago in the file's own terms. Now corrected, with the warning that the page has
+  drifted from careers.astro and needs re-syncing before use.
+- **`components/preview/` is down to two files**, and both are unfinished rather
+  than unused: `RackScene` (home hero, 0.2% cream, a rethink) and `SceneVariant`
+  (the 404 comparison strip, used by `_404-preview`).
+- Swept up one more piece of dead code while in there: `const KEYS` in
+  `CareersScene`, declared and never read. `astro check` now reports **0 errors,
+  0 warnings, 0 hints** — it had carried that one hint for days.
+- `site.ts` still exports `workshopBand`, a name for a component that no longer
+  exists. Left alone rather than renamed, because it is copy config and renaming
+  it was not asked for; the doc comment now explains the name and says
+  `companyBand` is the obvious replacement if anyone is in there anyway.
+
 ### 2026-09-14 (last, after the push) — CompanyScene goes live
 - *"adopt CompanyScene on the live /company page and park the preview."* Done,
   and the moves are the ones CLAUDE.md §5 prescribes rather than anything new.

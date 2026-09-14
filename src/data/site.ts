@@ -328,9 +328,17 @@ export const heroBand = {
 } as const;
 
 /**
- * Quiet band on the Company page, between "Core values" and "Why us".
- * Caption for the WorkshopScene illustration: a shadow board with one hook
- * empty, and the cat on the bench with the missing screwdriver.
+ * Chip and caption for the illustration on the Company page — the statement
+ * band under the page header, alongside the "technical precision and
+ * implementation clarity" quote.
+ *
+ * The picture is a shadow board with one hook empty and the cat on top of it
+ * holding the missing screwdriver, so the caption is the joke's punchline.
+ *
+ * The name is historical: this copy was written for WorkshopScene, which was
+ * replaced by CompanyScene on 2026-09-14 and then deleted. The band also used
+ * to sit between "Core values" and "Why us". Rename it to `companyBand` if you
+ * are touching this area anyway — it is used in two places.
  */
 export const workshopBand = {
   chip: 'One tool out',
