@@ -20,6 +20,7 @@
  *      .breathe   the cat's body group  (scaleY from its base)
  *      .tail      the cat's tail path   (rotates about where it meets the body)
  *      .wisp      a steam stroke        (.wisp-2 for the second, offset in time)
+ *      .cloud     a cloud               (drifts sideways)
  *      .leaves    the plant's foliage group
  *      .grass     a grass tuft          (.grass-b for the second, offset)
  *
@@ -111,6 +112,20 @@
     100% {
       opacity: 0;
       transform: translateY(-10px);
+    }
+  }
+
+  /* ── The sky ──────────────────────────────────────────────────────────── */
+
+  [data-scene] .cloud {
+    animation: scene-drift 18s ease-in-out infinite alternate;
+  }
+  @keyframes scene-drift {
+    from {
+      transform: translateX(-6px);
+    }
+    to {
+      transform: translateX(12px);
     }
   }
 

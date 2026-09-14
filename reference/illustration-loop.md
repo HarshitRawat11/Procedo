@@ -318,6 +318,11 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
   `QuietScene` verbatim and move them with a translate on a STATIC parent; do not
   redraw them and do not re-colour them. The mug is `#F7B9A3` with one
   `#F24E1E` band, and it carries two steam wisps.
+- **Legibility is not a gate, and the gates will pass things nobody can read.**
+  Render the scene at the width the card ACTUALLY gives it before believing any
+  number. The company board passed every gate at 100x72 and was a blank blue
+  rectangle at 352px. Two of its tools had to be redrawn for the same reason: a
+  capsule read as a torch, a triangular tip read as an arrowhead.
 - **Shared motion is declared once**, in `src/styles/scene-motion.css`, and
   opted into with `data-scene` on the scene's `<svg>`. Breathing, the tail, the
   steam, the wind — all of it. A scene's own `<style>` holds only motion unique

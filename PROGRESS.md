@@ -71,6 +71,44 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-14 (later) — six slots, a cloud, and the full loop
+- Harshit on the preview: *"increase the tool box length to adjust 2 rows of
+  tools. plus the tools don't look clear enough. we will add cloud here too just
+  like 404."* All three done, plus the animation brief below.
+- **The board is 136x180 now**, two rows of three on a 420x330 canvas — the
+  404's own canvas. Six slots: ring spanner · **bare outline** · pliers on the
+  top row, hammer · tape measure · coiled cable beneath. Every tool is declared
+  once as a const and used twice, flat as its painted outline and outlined as the
+  tool, so a tool and its own shadow can never drift apart.
+- The cloud is QuietScene's, and its drift moved into `scene-motion.css` with
+  the rest of the shared motion — it is a shared prop now, so it follows the rule
+  Harshit set: one definition, every scene.
+- **The loop, 16s**, exactly as briefed: asleep with every tool in place · wakes
+  at 3.5s · takes the screwdriver off the board at 4.3s · three bats · knocks it
+  off at 8.6s · asleep again at 10.4s · the screwdriver puts itself back at
+  13–14s · repeat. Verified frame by frame on the built page — tool in slot at
+  0.8s, up top at 4.6s, on the floor at 9.2s, home at 14.6s, eyes and paw in step
+  throughout.
+- **The screwdriver is drawn once**, vertical, in its slot. Up top and on the
+  floor are transforms of that one shape, which is why it lands back on its own
+  painted outline to the unit. Its attribute transform is the pose the caption is
+  about, so the still and the 26%/52% keyframe agree.
+- Gates: **75.8% cream / 3.4% dark**, curve ratio 50%, ink centred to 0.0.
+  Six tools cost 4.4 points of cream against the three-slot version; still 16
+  points above the floor.
+- **Answered a question rather than acting on it.** Harshit asked whether the
+  mug and plant being swapped relative to the 404 was intentional. It was not:
+  the plant went left when ReceptionScene first borrowed it because the left of
+  that frame was empty, the mug then took the only free side, and careers and
+  company copied contact. The 404 reads grass·mug·rack·plant·grass; the other
+  three read grass·plant·object·mug·grass. One line each to flip if he wants it.
+- **Flagged, not fixed: whitespace across the site.** Measured at 1280px, most
+  sections carry `py-16 lg:py-24` but land at 94–156px of real padding once
+  internal margins are counted, and two adjacent sections stack to **215px of
+  empty between blocks** (/our-mission section 2 bottom 119 + section 3 top 96).
+  The worst is the closing CTA at `py-20 lg:py-28`: **206 top / 178 bottom** on
+  every page. That is a site-wide rhythm pass, not a per-page tweak.
+
 ### 2026-09-14 — the company scene, and three goes at one joke
 - *"move on to the next image."* I took **company** rather than uptime, and said
   why: `WorkshopScene` has a slot waiting (`/company` carries no illustration
