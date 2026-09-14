@@ -1,0 +1,142 @@
+/* ============================================================================
+ *  Scene motion — how the shared props behave, in ONE place.
+ *
+ *  Harshit, 2026-09-14: "not only the design but animation of the common
+ *  elements should be same across the website like cat wag, heat from coffee
+ *  cup, plants and grass moving by wind. so that when i tell to change
+ *  something in the common element it will be changed across the site."
+ *
+ *  So: the cat's breathing and tail, the mug's steam, and the plant and grass
+ *  in the wind live here and nowhere else. QuietScene, ReceptionScene and
+ *  CareersScene used to carry their own copy of all five, three times over —
+ *  which meant "make the wag more prominent" was three edits that could drift
+ *  apart. Change a timing here and every scene on the site changes with it.
+ *
+ *  ── HOW TO USE IT ───────────────────────────────────────────────────────────
+ *  Put `data-scene` on the scene's <svg>, then use the class names below on the
+ *  right elements. Nothing else opts in, so these rules cannot leak into the
+ *  rest of the site:
+ *
+ *      .breathe   the cat's body group  (scaleY from its base)
+ *      .tail      the cat's tail path   (rotates about where it meets the body)
+ *      .wisp      a steam stroke        (.wisp-2 for the second, offset in time)
+ *      .leaves    the plant's foliage group
+ *      .grass     a grass tuft          (.grass-b for the second, offset)
+ *
+ *  ── TWO RULES THAT ARE NOT NEGOTIABLE ───────────────────────────────────────
+ *  · Every element listed above must be free of a `transform` ATTRIBUTE. A
+ *    presentation attribute loses to an animation, so the CSS transform
+ *    REPLACES it rather than composing with it. Static positioning goes on a
+ *    parent. This shipped broken twice: a plant carrying translate(-206 8) drew
+ *    206 units away from its own pot in every real browser.
+ *  · `transform-box: fill-box` origins must not nest. A transformed child moves
+ *    its parent's bounding box, which moves the parent's origin, which is a
+ *    feedback loop. A static parent is fine; two animated boxes are not.
+ *
+ *  Anything that belongs to one scene only — a phone ringing, a mouse being
+ *  clicked, a rack LED — stays in that component's own <style>.
+ * ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ── The cat ──────────────────────────────────────────────────────────── */
+
+  [data-scene] .breathe {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: scene-breathe 4.5s ease-in-out infinite;
+  }
+  @keyframes scene-breathe {
+    0%,
+    100% {
+      transform: scaleY(1);
+    }
+    50% {
+      transform: scaleY(1.04);
+    }
+  }
+
+  /* The wag. Made prominent on 2026-09-14 at Harshit's request — it was a
+     single 8-degree flick every nine seconds, which was easy to miss entirely.
+     Now it is five beats to 15 degrees, still for the first five seconds so it
+     reads as a deliberate gesture rather than a nervous twitch. Amplitude is
+     capped at 15: past that the tail tip drops below the desk line in the two
+     desk scenes. */
+  [data-scene] .tail {
+    transform-box: fill-box;
+    transform-origin: 100% 60%;
+    animation: scene-tail 8s ease-in-out infinite;
+  }
+  @keyframes scene-tail {
+    0%,
+    60% {
+      transform: rotate(0deg);
+    }
+    66% {
+      transform: rotate(-15deg);
+    }
+    73% {
+      transform: rotate(10deg);
+    }
+    80% {
+      transform: rotate(-10deg);
+    }
+    87% {
+      transform: rotate(6deg);
+    }
+    94% {
+      transform: rotate(-3deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  /* ── The mug ──────────────────────────────────────────────────────────── */
+
+  [data-scene] .wisp {
+    opacity: 0;
+    animation: scene-wisp 4s ease-in-out infinite;
+  }
+  [data-scene] .wisp-2 {
+    animation-delay: 1.6s;
+  }
+  @keyframes scene-wisp {
+    0% {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    40% {
+      opacity: 0.75;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+
+  /* ── The wind: plant and grass ────────────────────────────────────────── */
+
+  [data-scene] .leaves {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: scene-sway 6s ease-in-out infinite;
+  }
+  [data-scene] .grass {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+    animation: scene-sway 5s ease-in-out infinite;
+  }
+  [data-scene] .grass-b {
+    animation-duration: 6.5s;
+    animation-delay: -2s;
+  }
+  @keyframes scene-sway {
+    0%,
+    100% {
+      transform: rotate(-2.5deg);
+    }
+    50% {
+      transform: rotate(2.5deg);
+    }
+  }
+}

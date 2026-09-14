@@ -71,6 +71,40 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-14 (night, later) — one set of timings, and careers goes live
+- *"not only the design but animation of the common elements should be same
+  across the website like cat wag, heat from coffee cup, plants and grass moving
+  by wind. so that when i tell to change something in the common element it will
+  be changed across the site."* That is an architecture instruction, not a tweak.
+- **`src/styles/scene-motion.css`** now owns breathing, the tail, the steam and
+  the wind. Before this, all five were copied into QuietScene, ReceptionScene and
+  CareersScene — three definitions of the same thing, so "make the wag more
+  prominent" was three edits that could drift. The rules were **removed** from the
+  components rather than left to be overridden: a scoped Astro rule
+  (`.tail[data-astro-cid-x]`) and a global one (`[data-scene] .tail`) have the
+  same specificity, so the winner would have come down to injection order.
+- Each scene opts in with `data-scene` on its `<svg>` and keeps only its own
+  motion: the 404 keeps `float · spin · led · blip · drift`, contact keeps its
+  eleven sequence animations, careers keeps `click · peer · pip`.
+- **The wag is prominent now**, and it is prominent on all three pages at once —
+  which is the proof the file works. It was one 8° flick every 9s, easy to miss.
+  It is now five beats to 15°, over 8s, still for the first five seconds so it
+  reads as a gesture and not a twitch. 15° is a ceiling, not a preference: past
+  it the tail tip drops below the desk line in the two desk scenes.
+- **Careers gained its own two:** the paw double-clicks every 3.4s with 2.6 units
+  of travel (it was a single 1.5-unit dip every 7s), and the head leans towards
+  the screen on the same beat. Harshit asked for "cat moving and clicking mouse a
+  bit" — one gesture, so they share a duration and their keyframes line up.
+- **Adopted on the live site.** `CareersScene` moved out of
+  `components/preview/`, `careers.astro` now imports it in place of
+  `DeskScene`, and the card box went from `lg:w-52` to `lg:w-72` — **288px**,
+  because at 208 the cat rendered 42px against the 404's 78px. `DeskScene` and
+  `DeskSceneWorking` are kept on disk but are imported nowhere.
+- `_careers-preview` parked again, per §5: it now only duplicates the live page.
+- Verified on the built pages: /careers, /contact and /404 all run
+  `scene-breathe · scene-tail · scene-wisp · scene-sway` with **identical
+  timings — tail 8000ms on all three** — and no console errors anywhere.
+
 ### 2026-09-14 (night) — the prop kit, and a real responsive bug
 - *"coffee cup should be there in both contact and careers image. we will follow
   this theme all across the site. we have the cat, plant, grass and coffee mug

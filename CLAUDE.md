@@ -88,12 +88,9 @@ Still parked, on Harshit's review of 2026-09-13:
 it can be adopted; `_404-preview` and `_uptime` — older concept pages, no
 verdict yet.
 
-**Live, deliberately:** `careers-preview` (no underscore), un-parked 2026-09-14
-so the rebuilt `CareersScene` can be reviewed in context. Sealed exactly as
-everything else in §5 — noindex, in no nav, linked from nowhere, named in the
-sitemap filter. Its illustration box is `w-56 sm:w-72` where the live page has
-`w-44 sm:w-52`; that difference is the open question about card width, not an
-oversight. **Park it again once the scene is signed off.**
+**Parked again 2026-09-14, on adoption:** `_careers-preview`. `CareersScene`
+now ships on the real Careers page, so the preview only duplicates it. Kept
+rather than deleted, as a rehearsal space for the next change to that page.
 
 **Parked 2026-09-13, after sign-off:** `_contact-animation-preview`. Added the
 same day at Harshit's request, and parked the moment he approved the sequence
@@ -163,6 +160,15 @@ browser, load it and check it. Report what actually happened, including failures
 - **Design tokens live in `src/styles/global.css`** under `@theme`. Use the
   tokens (`brand-*`, `navy-*`, `cream`, `band`, `line`) — do not hard-code hexes
   in components. Inline SVG artwork is the one exception.
+- **Shared illustration motion lives in `src/styles/scene-motion.css`, once.**
+  The cat's breathing and tail, the mug's steam and the wind in the plant and
+  grass are defined there and nowhere else; each scene's `<svg>` opts in with
+  `data-scene`. Set by Harshit on 2026-09-14 so that changing a common element
+  changes it everywhere in one edit. A component's own `<style>` carries only
+  what is unique to that scene — a phone ringing, a mouse being clicked, a rack
+  LED. Do not re-declare a shared animation inside a component: a scoped rule and
+  the global one have the same specificity, and which wins would come down to
+  injection order.
 - **The site is light-only.** There is no dark mode and no `prefers-color-scheme`
   handling anywhere. Adding one is a whole-site decision, not a per-component tweak.
 

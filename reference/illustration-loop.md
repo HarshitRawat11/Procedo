@@ -318,6 +318,10 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
   `QuietScene` verbatim and move them with a translate on a STATIC parent; do not
   redraw them and do not re-colour them. The mug is `#F7B9A3` with one
   `#F24E1E` band, and it carries two steam wisps.
+- **Shared motion is declared once**, in `src/styles/scene-motion.css`, and
+  opted into with `data-scene` on the scene's `<svg>`. Breathing, the tail, the
+  steam, the wind — all of it. A scene's own `<style>` holds only motion unique
+  to that scene. Never copy a shared animation into a component.
 - **Measure the balance, do not eyeball it.** `node scripts/measure-balance.cjs
   <file.svg>` renders the scene, finds the bounding box of every non-cream pixel,
   and prints the viewBox that would centre it. Neither Gate 1 nor Gate 1b can see

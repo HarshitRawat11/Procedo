@@ -1,10 +1,15 @@
 ---
 /* ============================================================================
- *  CareersScene — the cat at the desk, working. PREVIEW ONLY.
+ *  CareersScene — the cat at the desk, working.
  *
- *  Replaces DeskSceneWorking, which failed Gate 1b at 9.6% dark against a 5%
- *  ceiling and was drawn in a different hand from the 404. That component is
- *  left in place until this one is approved.
+ *  WHERE IT IS USED: the Careers page, in the open-application card beside
+ *  "Don't see your role?". Adopted 2026-09-14. It replaced DeskScene, which
+ *  still exists on disk but is now used nowhere; DeskSceneWorking, the failed
+ *  intermediate, is still in components/preview/ and is also unused.
+ *
+ *  The card gives it `w-56 lg:w-72` — 288px on a wide screen, up from 208px.
+ *  At 208 the cat rendered 42px wide against the 404 cat's 78px and the
+ *  monitor and mouse stopped reading; the measurements are in PROGRESS.md.
  *
  *  ── WHAT WAS WRONG, measured ────────────────────────────────────────────────
  *  · The monitor was a solid navy rectangle, 76x64 on a 400x264 canvas — 4.6%
@@ -26,6 +31,11 @@
  *  ── THINGS THAT MUST STAY TRUE ──────────────────────────────────────────────
  *  · The desk's top SURFACE is y=236. Everything on it has its base at 236 and
  *    nothing crosses that line — monitor foot, mouse, cat, all of them.
+ *  · The cat's breathing and tail, the mug's steam and the wind in the plant
+ *    and grass are NOT defined here. They are shared by every scene on the site
+ *    and live in `src/styles/scene-motion.css`; this svg opts in with
+ *    `data-scene`. Change a shared timing there, never here — that is the whole
+ *    point of the file.
  *  · NEVER put a static `transform` attribute on an element that is also
  *    animated: a presentation attribute loses to an animation, so the CSS
  *    transform replaces it rather than composing with it. Static transforms go
@@ -89,6 +99,7 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
 <figure class:list={['careers', className]}>
   <svg
     class="scene"
+    data-scene
     viewBox="13 127 420 240"
     role="img"
     aria-labelledby={titleId}
@@ -238,57 +249,58 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
     height: auto;
   }
 
-  /* QuietScene's timings, so the three scenes move alike as well as look alike. */
   @media (prefers-reduced-motion: no-preference) {
-    .breathe {
-      transform-box: fill-box;
-      transform-origin: 50% 100%;
-      animation: breathe 4.5s ease-in-out infinite;
-    }
-    @keyframes breathe {
-      0%,
-      100% {
-        transform: scaleY(1);
-      }
-      50% {
-        transform: scaleY(1.04);
-      }
-    }
+    /* THE WORK ITSELF — the only motion this scene owns. Everything else the
+       cat and the props do (breathing, the tail, the steam, the wind in the
+       plant and grass) is shared across the whole site and lives in
+       src/styles/scene-motion.css. Change a timing there, not here.
 
-    .tail {
-      transform-box: fill-box;
-      transform-origin: 100% 60%;
-      animation: tail 9s ease-in-out infinite;
-    }
-    @keyframes tail {
-      0%,
-      80%,
-      100% {
-        transform: rotate(0deg);
-      }
-      87% {
-        transform: rotate(-8deg);
-      }
-      93% {
-        transform: rotate(4deg);
-      }
-    }
-
-    /* a click every seven seconds — the whole joke, in 1.5 units of travel */
+       Harshit asked for "cat moving and clicking mouse a bit", and the two are
+       one gesture — so the paw and the head share a duration and their
+       keyframes line up: the head leans in, the paw double-clicks, both
+       settle. */
     .paw {
       transform-box: fill-box;
       transform-origin: 50% 50%;
-      animation: click 7s ease-in-out infinite;
+      animation: click 3.4s ease-in-out infinite;
     }
     @keyframes click {
       0%,
-      88%,
-      95%,
+      66%,
       100% {
         transform: translateY(0);
       }
-      91% {
-        transform: translateY(1.5px);
+      71% {
+        transform: translateY(2.6px);
+      }
+      76% {
+        transform: translateY(0);
+      }
+      81% {
+        transform: translateY(2.6px);
+      }
+      86% {
+        transform: translateY(0);
+      }
+    }
+
+    /* .head carries no transform ATTRIBUTE, so this has nothing to clobber —
+       the static placement is on the cat's parent group. */
+    .head {
+      animation: peer 3.4s ease-in-out infinite;
+    }
+    @keyframes peer {
+      0%,
+      62%,
+      100% {
+        transform: translate(0, 0);
+      }
+      72%,
+      84% {
+        transform: translate(0.9px, 1.2px);
+      }
+      92% {
+        transform: translate(0, 0);
       }
     }
 
@@ -302,52 +314,6 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
       }
       50% {
         opacity: 1;
-      }
-    }
-
-    /* the steam, QuietScene's own timings */
-    .wisp {
-      opacity: 0;
-      animation: wisp 4s ease-in-out infinite;
-    }
-    .wisp-2 {
-      animation-delay: 1.6s;
-    }
-    @keyframes wisp {
-      0% {
-        opacity: 0;
-        transform: translateY(4px);
-      }
-      40% {
-        opacity: 0.75;
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-    }
-
-    .leaves {
-      transform-box: fill-box;
-      transform-origin: 50% 100%;
-      animation: sway 6s ease-in-out infinite;
-    }
-    .grass {
-      transform-box: fill-box;
-      transform-origin: 50% 100%;
-      animation: sway 5s ease-in-out infinite;
-    }
-    .grass-b {
-      animation-duration: 6.5s;
-      animation-delay: -2s;
-    }
-    @keyframes sway {
-      0%,
-      100% {
-        transform: rotate(-2.5deg);
-      }
-      50% {
-        transform: rotate(2.5deg);
       }
     }
   }

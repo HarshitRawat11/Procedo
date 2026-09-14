@@ -4,13 +4,19 @@
    type, GitHub-style calm medium-weight headings, Procedo orange accent, navy
    structural color, hairline borders, soft shadows, subtle motion.
    ========================================================================== */
-@import 'tailwindcss';
+@import "tailwindcss";
+/* The illustrations' shared motion — cat, steam, plant, grass. One definition
+   for the whole site; see the header of that file before changing a timing. */
+@import "./scene-motion.css";
 
 @theme {
   /* ---- Typography: one humanist sans everywhere (+ sparing mono labels) ---- */
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-display: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans:
+    "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --font-display:
+    "Inter Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* ---- Brand: Procedo orange (#F24E1E) — CTAs, links, key accents ---- */
   --color-brand-50: #fef2ee;
@@ -78,7 +84,10 @@ h4 {
 
 /* Faint engineered dot field (very subtle) for hero atmosphere. */
 .dot-grid {
-  background-image: radial-gradient(rgba(15, 23, 42, 0.045) 1px, transparent 1px);
+  background-image: radial-gradient(
+    rgba(15, 23, 42, 0.045) 1px,
+    transparent 1px
+  );
   background-size: 26px 26px;
 }
 

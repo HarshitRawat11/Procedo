@@ -140,6 +140,7 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
 
   <svg
     class="scene"
+    data-scene
     viewBox="22 136 420 240"
     role="img"
     aria-labelledby={titleId}
@@ -585,86 +586,6 @@ const CORD_DRAWN = 'M254 233 c-4 -4 -9 3 -13 -1 c-3 -3 -5 2 -8 1';
       }
     }
 
-    /* ── The ambient loops, which are QuietScene's and run for ever: the two
-         scenes should not only look alike, they should move alike. ── */
-    .breathe {
-      transform-box: fill-box;
-      transform-origin: 50% 100%;
-      animation: breathe 4.5s ease-in-out infinite;
-    }
-    @keyframes breathe {
-      0%,
-      100% {
-        transform: scaleY(1);
-      }
-      50% {
-        transform: scaleY(1.04);
-      }
-    }
-
-    .tail {
-      transform-box: fill-box;
-      transform-origin: 100% 60%;
-      animation: tail 9s ease-in-out infinite;
-    }
-    @keyframes tail {
-      0%,
-      80%,
-      100% {
-        transform: rotate(0deg);
-      }
-      87% {
-        transform: rotate(-8deg);
-      }
-      93% {
-        transform: rotate(4deg);
-      }
-    }
-
-    /* the steam, QuietScene's own timings */
-    .wisp {
-      opacity: 0;
-      animation: wisp 4s ease-in-out infinite;
-    }
-    .wisp-2 {
-      animation-delay: 1.6s;
-    }
-    @keyframes wisp {
-      0% {
-        opacity: 0;
-        transform: translateY(4px);
-      }
-      40% {
-        opacity: 0.75;
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-    }
-
-    .leaves {
-      transform-box: fill-box;
-      transform-origin: 50% 100%;
-      animation: sway 6s ease-in-out infinite;
-    }
-    .grass {
-      transform-box: fill-box;
-      transform-origin: 50% 100%;
-      animation: sway 5s ease-in-out infinite;
-    }
-    .grass-b {
-      animation-duration: 6.5s;
-      animation-delay: -2s;
-    }
-    @keyframes sway {
-      0%,
-      100% {
-        transform: rotate(-2.5deg);
-      }
-      50% {
-        transform: rotate(2.5deg);
-      }
-    }
-  }
+/* the steam, QuietScene's own timings */
+}
 </style>
