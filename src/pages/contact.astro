@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ContactForm from '../components/ContactForm.astro';
+import ReceptionScene from '../components/ReceptionScene.astro';
 import { Icon } from 'astro-icon/components';
 import { contact, competencies, directionsHref, whatsappHref } from '../data/site';
 import { graph, breadcrumbs } from '../lib/schema';
@@ -46,11 +47,30 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
 
+  {/*
+    Same treatment as /careers: the header is left-aligned with its subtitle
+    capped for a readable measure, so the top-right corner was empty white.
+
+    This is ReceptionScene, the contact page's own scene, at 20rem. Its id must
+    differ from the success card's "cf-done" — the component builds its <title>
+    id from the prop, and two elements sharing an id breaks aria-labelledby on
+    both. No chip or caption here: at this size they would crowd it, and the
+    copy belongs to the success card, which is the one that has earned it.
+
+    The sequence plays once on load, so the header shows the ring and the
+    pickup; the success card's copy restarts when it is un-hidden, because
+    display:none cancels a CSS animation and showing the element runs it again
+    from zero.
+  */}
   <PageHeader
     eyebrow="Contact"
     title="Let’s talk about your systems"
     subtitle="Tell us what you’re planning — we’ll help you scope the right solution. No pressure, just expert guidance."
-  />
+  >
+    <div slot="aside" class="mx-auto w-full max-w-[20rem] lg:ml-auto lg:mr-0">
+      <ReceptionScene id="contact-header" />
+    </div>
+  </PageHeader>
 
   <section class="bg-cream py-12 lg:py-16">
     <Container>
