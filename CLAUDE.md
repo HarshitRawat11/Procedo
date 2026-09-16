@@ -87,6 +87,16 @@ Still parked: `_404-preview` and `_uptime` — older concept pages, no verdict
 yet. `_uptime` is the only home `UptimeScene` has, and that scene has no slot on
 the real site at all.
 
+**Live, deliberately, 2026-09-16:** `hero-preview` (no underscore). It is
+`index.astro` with ONE difference — the hero's right-hand column carries the
+rebuilt `RackScene` instead of the competency index card — so the illustration is
+judged where it would actually live. Sealed exactly as §5 requires: noindex, in
+no nav, linked from nowhere, already named in the sitemap filter. **Park it on
+sign-off, whichever way the verdict goes.** The two cannot share that column;
+replacing the card costs no navigation, since its five links are repeated as
+full cards in `ServicesPreview` immediately below, but it is the home page and
+therefore Harshit's call.
+
 **Parked again 2026-09-14, on adoption:** `_careers-preview` and
 `_company-preview`. `CareersScene` ships on the real Careers page and
 `CompanyScene` on the real Company page, so both previews only duplicate what is
@@ -95,9 +105,9 @@ each page. Note that a parked preview **drifts from its live page the moment
 either is edited** — un-parking one means copying the live section back into it
 first, not trusting what is in the file.
 
-**Nothing is currently live without an underscore that should not be.** If you
-un-park a page to review something, put the underscore back in the same commit
-that adopts the work. The sitemap filter in `astro.config.mjs` still names every
+**One page is live without an underscore right now, on purpose: `hero-preview`
+(above).** If you un-park a page to review something, put the underscore back in
+the same commit that adopts the work, and do not leave two un-parked at once. The sitemap filter in `astro.config.mjs` still names every
 one of these paths, deliberately, so an un-parked page cannot walk into the
 sitemap by accident.
 
@@ -149,12 +159,12 @@ commit `9aeddcf`, but there is no reason to: `WorkshopScene` failed Gate 1b at
 This is the one place where an illustration did NOT survive its page — and the
 rule above still holds, because what changed is that a better one was live first.
 
-**What is left in `src/components/preview/` is therefore exactly two files**, and
-both are unfinished rather than unused: `RackScene` (the home hero — 0.2% cream
-against a floor of 60, a rethink rather than a refinement) and `SceneVariant`
-(the 404 comparison strip, used by `_404-preview`). `UptimeScene` sits in
-`src/components/` and is used only by `_uptime`; it has no slot on the real site
-at all.
+**What is left in `src/components/preview/` is therefore exactly two files:**
+`RackScene` — rebuilt 2026-09-16 and now passing every gate (81.4% cream, 3.5%
+dark, curve 45%, balance 0.4), awaiting a verdict on `/hero-preview` — and
+`SceneVariant`, the 404 comparison strip used by `_404-preview`. `UptimeScene`
+sits in `src/components/` and is used only by `_uptime`; it has no slot on the
+real site at all, and is the last scene with nowhere to go.
 
 ### 5b. No human figures in illustrations
 **Hard rule, set by Harshit on 2026-09-07.** Illustrations carry animal or

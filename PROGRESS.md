@@ -71,6 +71,60 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-16 — reveal on every page, and RackScene rebuilt
+- *"in the home page and company page the content comes out smoothly while
+  scrolling but rest of the pages doesn't have that plus when we go back to the
+  first 2 pages it doesn't happen like that as well. do that on every page plus
+  work on the next image."*
+
+**The reveal bug — one cause, both symptoms.** `.reveal` on `<html>` is what
+holds `[data-reveal]` at opacity 0. The `ClientRouter` copies the INCOMING
+document's root attributes over the live ones on every client-side navigation,
+and the incoming document is static HTML with no class — so clicking any nav
+link wiped it. Only the page you LANDED on animated; home and company were
+simply where he started. Going back is a client-side navigation too, which is
+the second half of the report.
+- Measured before, clicking `/` → `/our-mission`: html class `""`, all 9 reveal
+  targets at opacity 1, only 3 with `is-visible`. After: the class survives on
+  every page in the nav, and below-the-fold content is correctly still hidden —
+  home 13 of 16, services 20 of 26, careers 8 of 15.
+- Fixed in `BaseLayout` on `astro:after-swap`, which runs before paint.
+  `SectionHeading` also now reveals itself: those headings were the largest
+  unrevealed blocks left, ~325px each, on every page including the two he liked.
+- **Two measurement traps worth remembering.** The Browser pane reports
+  `document.hidden` when it is not on screen, and a hidden document does not run
+  IntersectionObserver — so the first three runs showed "nothing ever reveals"
+  on pages that were fine. Layout (`getBoundingClientRect`) still works while
+  hidden, which is why the geometry probes were trustworthy and the timing ones
+  were not. Separately, the long-running dev server on 4321 was serving
+  `504 (Outdated Optimize Dep)`; the real check has to be `astro preview` on the
+  built output, added to `.claude/launch.json` as `procedo-preview-4322`.
+
+**RackScene, rebuilt.** The old one was a close view of a rack FACE and failed
+Gate 1b harder than anything on the site: 0.2% cream against a floor of 60, and
+30.0% dark against a ceiling of 5. A wall, not a refinement problem.
+- Redrawn as an object standing on cream in the family composition: cloud top
+  left, then grass · mug · cabinet · plant · grass. Four units — patch panel,
+  switch, THE SPARE ONE, blank filler — and the cat asleep in the spare, ears
+  breaking the shelf above.
+- Kept distinct from QuietScene deliberately: that one is a tall narrow rack with
+  the cat ON TOP; this is a cabinet whose front is a visible stack of bays with
+  the cat INSIDE one.
+- **Gate 1 taught something reusable.** The curve ratio counts curved `<path>`s
+  against EVERY drawn element, so thirteen decorative port rectangles pulled the
+  scene to 35% against a 40% floor. Drawing each port row as ONE rounded path
+  fixed it at 45% and looks identical. The old version used `<pattern>` tiles for
+  the same reason.
+- First cut had the cabinet at 160 wide and the cat read as a blob — 68 units of
+  cat against 160 is 42%, where QuietScene's is 58%. Narrowed to 130.
+- Final: **81.4% cream, 3.5% dark, curve 45%, spread 2.50, balance 0.4.** All six
+  countable Gate 1 checks and both Gate 1b checks pass.
+- `/hero-preview` is un-parked to carry the verdict: `index.astro` with the
+  illustration in the hero's right column instead of the competency card. THE
+  OPEN QUESTION is whether it should replace that card at all — the two cannot
+  share the column. Replacing it costs no navigation (the five links repeat as
+  full cards in ServicesPreview immediately below), but it is the home page.
+
 ### 2026-09-14 (last, cleanup) — the three dead scenes go
 - *"remove workshopscene and the two dead desk scenes."* Checked first that
   nothing imported them — every remaining mention was a comment, in five files —

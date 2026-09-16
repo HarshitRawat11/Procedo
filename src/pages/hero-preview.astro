@@ -1,0 +1,121 @@
+---
+/* ============================================================================
+ *  /hero-preview — PREVIEW ONLY. Sealed off per CLAUDE.md §5: noindex, in no
+ *  nav, linked from nowhere, already named in the sitemap filter.
+ *
+ *  This is src/pages/index.astro with ONE difference: the hero's right-hand
+ *  column carries the rebuilt RackScene instead of the competency index card.
+ *  Everything else is the live home page, so the illustration is judged in the
+ *  place it would actually live rather than on a slide.
+ *
+ *  THE DECISION THIS PAGE EXISTS TO SETTLE: the illustration and the competency
+ *  card cannot both have that column. Replacing the card costs no navigation —
+ *  its five links are repeated as full cards in ServicesPreview, the very next
+ *  section — but it is the home page, so it is Harshit's call, not mine.
+ *
+ *  Park it (leading underscore) on sign-off, whichever way that goes.
+ * ========================================================================== */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import ClosingCta from '../components/ClosingCta.astro';
+import Button from '../components/Button.astro';
+import Hero from '../components/home/Hero.astro';
+import ServicesPreview from '../components/home/ServicesPreview.astro';
+import { Icon } from 'astro-icon/components';
+import RackScene from '../components/preview/RackScene.astro';
+import { whyUs, mission, company, heroBand } from '../data/site';
+import { graph, organization, website } from '../lib/schema';
+
+/*
+ * Organization + WebSite for search engines. The nodes live in src/lib/schema.ts
+ * so the other pages can refer to the same @id rather than restating the
+ * company on every page.
+ */
+const schema = graph(organization, website);
+---
+
+<BaseLayout headerOverlap noindex>
+  <script
+    type="application/ld+json"
+    slot="head"
+    is:inline
+    set:html={JSON.stringify(schema)}
+  />
+
+  <Hero>
+    <div slot="aside" class="rounded-2xl border border-line bg-band px-5 pt-7 pb-8">
+      <RackScene id="hero" chip={heroBand.chip} caption={heroBand.caption} />
+    </div>
+  </Hero>
+  <ServicesPreview />
+
+  <!-- Who we are / mission teaser -->
+  <section class="bg-cream py-12 lg:py-16">
+    <Container>
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-6" data-reveal>
+          <SectionHeading
+            eyebrow="Who we are"
+            title="An infrastructure-first technology firm"
+            reveal={false}
+          />
+          <p class="mt-6 text-lg leading-relaxed text-slate-600">{company.overview[0]}</p>
+          <p class="mt-4 leading-relaxed text-slate-600">{company.overview[1]}</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button href="/company" chevron>Company Overview</Button>
+            <Button href="/our-mission" variant="secondary">Our Mission</Button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6" data-reveal style="--reveal-delay:120ms">
+          <div class="rounded-2xl border border-line bg-white p-7 shadow-sm sm:p-9">
+            <span
+              class="grid size-11 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100"
+            >
+              <Icon name="lucide:quote" class="size-5" aria-hidden="true" />
+            </span>
+            <blockquote class="mt-6 text-lg font-medium leading-relaxed text-navy-900">
+              {mission.statement}
+            </blockquote>
+
+            <div class="mt-7 border-t border-line pt-6">
+              <h3 class="font-mono text-xs uppercase tracking-wider text-navy-700">
+                {mission.purpose.listTitle}
+              </h3>
+              <ul class="mt-3.5 flex flex-wrap gap-2">
+                {
+                  mission.purpose.items.map((it) => (
+                    <li class="inline-flex items-center gap-1.5 rounded-full border border-line bg-band px-3 py-1.5 text-sm text-navy-800">
+                      <Icon
+                        name="lucide:check"
+                        class="size-3.5 shrink-0 text-brand-500"
+                        aria-hidden="true"
+                      />
+                      {it}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Why partner with us -->
+  <section class="border-t border-line bg-band py-12 lg:py-16">
+    <Container>
+      <SectionHeading
+        eyebrow="Why Procedo"
+        title="Why partner with Procedo?"
+        subtitle="Experience the future of infrastructure-driven success with industry-leading expertise."
+      />
+      <FeatureGrid items={whyUs} columns={4} class="mt-12" />
+    </Container>
+  </section>
+
+  <ClosingCta />
+</BaseLayout>
