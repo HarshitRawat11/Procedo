@@ -7,11 +7,28 @@ interface Props {
   subtitle?: string;
   center?: boolean;
   class?: string;
+  /**
+   * Scroll-reveal this heading. On by default — a heading that appears with no
+   * transition while the cards under it fade in reads as a bug, and section
+   * headings were the largest unrevealed blocks on the site (~325px each).
+   *
+   * Pass `false` where an ancestor already carries `data-reveal` and should
+   * reveal as one block; nesting two reveals fades the same pixels twice.
+   * There is exactly one such place, the "Who we are" column on the home page.
+   */
+  reveal?: boolean;
 }
-const { eyebrow, title, subtitle, center = false, class: className = '' } = Astro.props;
+const {
+  eyebrow,
+  title,
+  subtitle,
+  center = false,
+  class: className = '',
+  reveal = true,
+} = Astro.props;
 ---
 
-<div class:list={[center && 'text-center', className]}>
+<div class:list={[center && 'text-center', className]} data-reveal={reveal || undefined}>
   {
     eyebrow && (
       <p

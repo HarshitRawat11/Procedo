@@ -203,6 +203,21 @@ browser, load it and check it. Report what actually happened, including failures
   injection order.
 - **The site is light-only.** There is no dark mode and no `prefers-color-scheme`
   handling anywhere. Adding one is a whole-site decision, not a per-component tweak.
+- **Anything you put on `<html>` from JavaScript must be re-applied on
+  `astro:after-swap`.** The `ClientRouter` copies the incoming document's root
+  attributes over the live ones, and the incoming document is static HTML — so a
+  class added at runtime is silently wiped on every client-side navigation. This
+  is what broke scroll-reveal site-wide: `.reveal` survived only on the page you
+  landed on, so a visitor clicking through the nav saw content simply appear,
+  and going back to a page that had animated a minute earlier did nothing.
+  Fixed 2026-09-16 in `BaseLayout.astro`; `after-swap` runs before paint, so
+  restoring the class there causes no flash. If dark mode is ever added, its
+  root class has the identical problem.
+- **`SectionHeading` reveals itself** (`reveal` prop, default `true`). Section
+  headings were the largest unrevealed blocks on the site, ~325px each. Pass
+  `reveal={false}` where an ancestor already carries `data-reveal` and should
+  reveal as one block — nesting two reveals fades the same pixels twice. Exactly
+  one place does: the "Who we are" column on the home page.
 - **Vertical rhythm is one scale: `py-12 lg:py-16` on every band.** 48px at
   mobile, 64px at desktop, and that is the whole system — a full-width `<section>`
   gets it, and nothing else gets more. Set 2026-09-14 when Harshit asked for the

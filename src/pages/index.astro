@@ -35,7 +35,11 @@ const schema = graph(organization, website);
     <Container>
       <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div class="lg:col-span-6" data-reveal>
-          <SectionHeading eyebrow="Who we are" title="An infrastructure-first technology firm" />
+          <SectionHeading
+            eyebrow="Who we are"
+            title="An infrastructure-first technology firm"
+            reveal={false}
+          />
           <p class="mt-6 text-lg leading-relaxed text-slate-600">{company.overview[0]}</p>
           <p class="mt-4 leading-relaxed text-slate-600">{company.overview[1]}</p>
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">

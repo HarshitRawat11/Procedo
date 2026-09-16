@@ -82,14 +82,34 @@ const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.t
     <ClientRouter />
 
     <!-- Enable scroll-reveal only when motion is allowed AND it's supported.
-         Runs synchronously before paint so content never flashes hidden. -->
+         Runs synchronously before paint so content never flashes hidden.
+
+         `astro:after-swap` re-applies it, and that listener is NOT optional.
+         The ClientRouter copies the incoming document's <html> attributes over
+         the live ones, and the incoming document is static HTML with no class
+         at all — so every client-side navigation stripped `reveal` off the root
+         and the hidden state stopped applying. The effect was that only the
+         page you LANDED on animated; everything you reached by clicking a nav
+         link just appeared, including coming back to a page that had animated
+         a minute earlier. after-swap runs before the browser paints, so the
+         class is back in time and nothing flashes.
+
+         This script is inline and in <head> on purpose: it has to run before
+         first paint. The listener is idempotent — re-running this script only
+         re-adds a class that is already there. -->
     <script is:inline>
-      if (
-        !matchMedia('(prefers-reduced-motion: reduce)').matches &&
-        'IntersectionObserver' in window
-      ) {
-        document.documentElement.classList.add('reveal');
-      }
+      (() => {
+        const wanted =
+          !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+          'IntersectionObserver' in window;
+        if (!wanted) return;
+        const apply = () => document.documentElement.classList.add('reveal');
+        apply();
+        if (!window.__revealRootBound) {
+          window.__revealRootBound = true;
+          document.addEventListener('astro:after-swap', apply);
+        }
+      })();
     </script>
   </head>
   <body class="bg-cream antialiased">
