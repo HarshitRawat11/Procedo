@@ -230,23 +230,35 @@ export const competencies: Competency[] = [
     groups: [
       {
         name: 'Network Architecture',
-        items: ['LAN/WAN design & deployment', 'Enterprise & mesh Wi-Fi', 'VPN, firewall, SD-WAN'],
+        items: [
+          'LAN and WAN design and deployment',
+          'High-performance Wi-Fi, mesh and enterprise-grade',
+          'VPNs, firewalls and SD-WAN configuration',
+        ],
       },
       {
-        name: 'Server & Storage',
+        name: 'Server & Storage Solutions',
         items: [
-          'On-prem + cloud (AWS / Azure / GCP)',
-          'Virtualization (VMware / Proxmox / Hyper-V)',
-          'NAS / SAN with redundancy',
+          'On-prem and cloud server setups (AWS, Azure, GCP)',
+          'Virtualization: VMware, Proxmox, Hyper-V',
+          'NAS and SAN storage with redundancy',
         ],
       },
       {
         name: 'Endpoint & Access Security',
-        items: ['SSO, LDAP, Azure AD', 'Role-based access control', 'Patch & asset management'],
+        items: [
+          'SSO, LDAP and Azure AD',
+          'Role-based access controls',
+          'Patch and asset management',
+        ],
       },
       {
         name: 'Continuity & Recovery',
-        items: ['Backup (cloud / local / hybrid)', 'Disaster recovery', 'Monitoring & failover'],
+        items: [
+          'Backup strategy: cloud, local or hybrid',
+          'Disaster recovery plans',
+          'Monitoring and failover systems',
+        ],
       },
     ],
     quote: "We don't just install servers. We build systems that carry your ambitions.",
@@ -260,24 +272,34 @@ export const competencies: Competency[] = [
       'Security should be invisible until you need it. We integrate surveillance, access control and building management into one coherent, monitored system.',
     groups: [
       {
-        name: 'Surveillance',
-        items: ['IP CCTV (PTZ / fisheye / thermal)', 'VMS + cloud archiving'],
+        name: 'Surveillance Systems',
+        items: [
+          'IP CCTV: PTZ, fisheye and thermal',
+          'VMS software and cloud-based archiving',
+        ],
       },
       {
         name: 'Access Control',
         items: [
-          'Biometrics (fingerprint / facial)',
-          'RFID / NFC / mobile credentials',
-          'Zonal control & visitor workflows',
+          'Biometrics: fingerprint and facial',
+          'RFID, NFC and mobile credentials',
+          'Zonal control and visitor workflow integration',
         ],
       },
       {
-        name: 'Building Management Systems',
-        items: ['HVAC, fire alarm, lighting automation', 'Central energy & environment dashboard'],
+        name: 'Building Management Systems (BMS)',
+        items: [
+          'HVAC, fire alarm and lighting automation',
+          'Central dashboard for energy and environment control',
+        ],
       },
       {
         name: 'Monitoring & Reporting',
-        items: ['Real-time dashboards', 'Remote diagnostics & alerts', 'Compliance-ready audit trails'],
+        items: [
+          'Real-time dashboards',
+          'Remote diagnostics and alerts',
+          'Compliance-ready audit trails',
+        ],
       },
     ],
     quote: "Security isn't about fear—it's about freedom to focus.",
@@ -292,15 +314,27 @@ export const competencies: Competency[] = [
     groups: [
       {
         name: 'Room Design & Acoustics',
-        items: ['Sightline & acoustic optimization', 'Lighting for engagement', 'Noise control'],
+        items: [
+          'Sightline and acoustic optimization',
+          'Lighting for engagement',
+          'Noise control treatments',
+        ],
       },
       {
         name: 'Platform Integration',
-        items: ['Zoom, Teams, Webex', 'AV control (Crestron, Extron)', 'BYOD & calendar sync'],
+        items: [
+          'Zoom, Teams and Webex',
+          'AV control: Crestron and Extron',
+          'BYOD and calendar sync',
+        ],
       },
       {
         name: 'Hardware Setup',
-        items: ['PTZ cameras, ceiling mics, smart displays', 'Wireless presentation', 'Voice tracking'],
+        items: [
+          'PTZ cameras, ceiling mics and smart displays',
+          'Wireless presentation',
+          'Voice tracking',
+        ],
       },
     ],
     quote: "A great conversation shouldn't depend on your geography.",
@@ -332,8 +366,16 @@ export const heroBand = {
  * band under the page header, alongside the "technical precision and
  * implementation clarity" quote.
  *
- * The picture is a shadow board with one hook empty and the cat on top of it
- * holding the missing screwdriver, so the caption is the joke's punchline.
+ * The picture is a shadow board with one bay empty and the cat on top of it
+ * holding the missing screwdriver.
+ *
+ * The caption used to BE the joke — "One tool out" / "Every tool in its place.
+ * Nearly." Harshit, 2026-09-16: that "doesn't match the company page", and he is
+ * right. The page argues technical precision and implementation clarity; a
+ * caption laughing at disorder argues the opposite. So the words now make the
+ * engineering point a shadow board actually makes — you can see at a glance what
+ * is missing — and the cat is left to be the joke on its own, without the
+ * caption nudging.
  *
  * The name is historical: this copy was written for WorkshopScene, which was
  * replaced by CompanyScene on 2026-09-14 and then deleted. The band also used
@@ -341,8 +383,8 @@ export const heroBand = {
  * are touching this area anyway — it is used in two places.
  */
 export const workshopBand = {
-  chip: 'One tool out',
-  caption: 'Every tool in its place. Nearly.',
+  chip: 'One item signed out',
+  caption: "A well-built system shows you what's missing.",
 } as const;
 
 /**
