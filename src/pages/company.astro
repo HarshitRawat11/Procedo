@@ -26,11 +26,7 @@ const [overviewA, overviewB, statement] = company.overview;
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
 
-  <PageHeader
-    eyebrow="Company"
-    title="Company Overview"
-    subtitle="An infrastructure-first technology firm — bringing IT, security, AV, digital workplace and datacenter infrastructure together into systems that quietly work."
-  />
+  <PageHeader eyebrow="Company" title="Company Overview" />
 
   <!-- Statement, with the illustration alongside — the /our-mission layout -->
   <section class="bg-cream py-12 lg:py-16">
@@ -42,6 +38,7 @@ const [overviewA, overviewB, statement] = company.overview;
           >
             {statement}
           </blockquote>
+          <p class="mt-8 text-lg leading-relaxed text-slate-600">{company.lede}</p>
         </div>
 
         <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">

@@ -18,7 +18,25 @@ const schema = graph(breadcrumbs([{ name: 'Careers', path: '/careers' }]));
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
 
-  <PageHeader eyebrow="Careers" title="Build systems that matter" subtitle={careers.intro} />
+  {/*
+    The header's aside slot carries a SECOND, smaller copy of CareersScene.
+    Harshit, 2026-09-16: the header is left-aligned with the subtitle capped for
+    a readable measure, so the top-right corner of the page was empty white.
+
+    It is deliberately the same drawing as the one in the open-application card
+    below — his ask, "a duplicate careers image". Capped at 15rem rather than the
+    component's own 22rem so it reads as a header ornament and does not compete
+    with the one further down, which is the one doing the work.
+
+    Its `id` must differ from that one: the component builds its <title> id from
+    the prop, and two elements sharing an id is invalid and breaks the
+    aria-labelledby on both.
+  */}
+  <PageHeader eyebrow="Careers" title="Build systems that matter" subtitle={careers.intro}>
+    <div slot="aside" class="mx-auto w-full max-w-[15rem] lg:ml-auto lg:mr-0">
+      <CareersScene id="careers-header" />
+    </div>
+  </PageHeader>
 
   <!-- Why work with us -->
   <section class="bg-cream py-12 lg:py-16">

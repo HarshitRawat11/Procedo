@@ -487,6 +487,19 @@ export const company = {
     'Whether deploying robust network architecture, securing workspaces with intelligent surveillance systems, or enabling modern communication through advanced AV integration—Procedo ensures each environment is tailored, scalable, and aligned with business continuity.',
     'With a commitment to technical precision and implementation clarity, our solutions empower organizations to evolve confidently while protecting their assets, people, and digital workflows.',
   ],
+  /**
+   * The line that sits under the statement on /company, beside the
+   * illustration. It was the PageHeader's `subtitle` and was hard-coded in the
+   * page, which broke #2; it moved here 2026-09-16.
+   *
+   * Why it moved DOWN as well as out: a three-line subtitle in the header,
+   * with nothing to its right, left the whole top-right corner of the page
+   * empty. Harshit: "it is creating too much negative space on the top right
+   * corner". /our-mission has always been eyebrow + title only for this
+   * reason, and /company now matches it.
+   */
+  lede:
+    'An infrastructure-first technology firm — bringing IT, security, AV, digital workplace and datacenter infrastructure together into systems that quietly work.',
   valuesIntro: 'The principles that guide every solution we deliver and every partnership we build.',
   values: [
     {
