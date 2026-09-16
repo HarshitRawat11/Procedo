@@ -84,7 +84,7 @@ const CAT_BACK = 'M124 228 C124 198 144 184 168 184 C186 184 200 190 208 202 C18
 
   <svg
     class="scene"
-    viewBox="66 24 288 238"
+    viewBox="2 -22 420 330"
     role="img"
     aria-labelledby={titleId}
     xmlns="http://www.w3.org/2000/svg"
@@ -133,17 +133,8 @@ const CAT_BACK = 'M124 228 C124 198 144 184 168 184 C186 184 200 190 208 202 C18
         <!-- rain: rows 30 apart, pattern repeating every 2 rows, so a 60
              translate loops seamlessly -->
         <g class="rain" stroke={RAIN} stroke-width="2">
-          <path d="M108 -30 l-6 15 M148 -30 l-6 15 M188 -30 l-6 15 M228 -30 l-6 15 M268 -30 l-6 15 M308 -30 l-6 15" />
-          <path d="M126 0 l-6 15 M166 0 l-6 15 M206 0 l-6 15 M246 0 l-6 15 M286 0 l-6 15 M326 0 l-6 15" />
-          <path d="M108 30 l-6 15 M148 30 l-6 15 M188 30 l-6 15 M228 30 l-6 15 M268 30 l-6 15 M308 30 l-6 15" />
-          <path d="M126 60 l-6 15 M166 60 l-6 15 M206 60 l-6 15 M246 60 l-6 15 M286 60 l-6 15 M326 60 l-6 15" />
-          <path d="M108 90 l-6 15 M148 90 l-6 15 M188 90 l-6 15 M228 90 l-6 15 M268 90 l-6 15 M308 90 l-6 15" />
-          <path d="M126 120 l-6 15 M166 120 l-6 15 M206 120 l-6 15 M246 120 l-6 15 M286 120 l-6 15 M326 120 l-6 15" />
-          <path d="M108 150 l-6 15 M148 150 l-6 15 M188 150 l-6 15 M228 150 l-6 15 M268 150 l-6 15 M308 150 l-6 15" />
-          <path d="M126 180 l-6 15 M166 180 l-6 15 M206 180 l-6 15 M246 180 l-6 15 M286 180 l-6 15 M326 180 l-6 15" />
-          <path d="M108 210 l-6 15 M148 210 l-6 15 M188 210 l-6 15 M228 210 l-6 15 M268 210 l-6 15 M308 210 l-6 15" />
-          <path d="M126 240 l-6 15 M166 240 l-6 15 M206 240 l-6 15 M246 240 l-6 15 M286 240 l-6 15 M326 240 l-6 15" />
-        </g>
+          <path d="M108 -30 l-6 15 M148 -30 l-6 15 M188 -30 l-6 15 M228 -30 l-6 15 M268 -30 l-6 15 M308 -30 l-6 15 M126 0 l-6 15 M166 0 l-6 15 M206 0 l-6 15 M246 0 l-6 15 M286 0 l-6 15 M326 0 l-6 15 M108 30 l-6 15 M148 30 l-6 15 M188 30 l-6 15 M228 30 l-6 15 M268 30 l-6 15 M308 30 l-6 15 M126 60 l-6 15 M166 60 l-6 15 M206 60 l-6 15 M246 60 l-6 15 M286 60 l-6 15 M326 60 l-6 15 M108 90 l-6 15 M148 90 l-6 15 M188 90 l-6 15 M228 90 l-6 15 M268 90 l-6 15 M308 90 l-6 15 M126 120 l-6 15 M166 120 l-6 15 M206 120 l-6 15 M246 120 l-6 15 M286 120 l-6 15 M326 120 l-6 15 M108 150 l-6 15 M148 150 l-6 15 M188 150 l-6 15 M228 150 l-6 15 M268 150 l-6 15 M308 150 l-6 15 M126 180 l-6 15 M166 180 l-6 15 M206 180 l-6 15 M246 180 l-6 15 M286 180 l-6 15 M326 180 l-6 15 M108 210 l-6 15 M148 210 l-6 15 M188 210 l-6 15 M228 210 l-6 15 M268 210 l-6 15 M308 210 l-6 15 M126 240 l-6 15 M166 240 l-6 15 M206 240 l-6 15 M246 240 l-6 15 M286 240 l-6 15 M326 240 l-6 15" />
+          </g>
 
         <!-- water running down the inside of the pane -->
         <g stroke="#DCE4EC" stroke-width="2" opacity="0.7">
@@ -159,6 +150,7 @@ const CAT_BACK = 'M124 228 C124 198 144 184 168 184 C186 184 200 190 208 202 C18
 
       <!-- ══ PLANE 3: the sill and what sits on it ══ -->
       <rect x="76" y="228" width="268" height="12" rx="3" fill={TIMBER} stroke={NAVY} stroke-width="2.8" />
+      <ellipse cx="210" cy="246" rx="116" ry="7" fill="#E3EAF3" />
       <path d="M88 240 H332" stroke={ENVLINE} stroke-width="2" />
 
       <!-- the lamplight: a flat pool with a fan of strokes over it. This used to

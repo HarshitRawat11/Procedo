@@ -339,6 +339,25 @@ the lamp bulb, the mug band. It is punctuation, not a fill.
   number. The company board passed every gate at 100x72 and was a blank blue
   rectangle at 352px. Two of its tools had to be redrawn for the same reason: a
   capsule read as a torch, a triangular tip read as an arrowhead.
+- **A scene that fills its frame fails Gate 1b, and re-framing is usually the
+  whole fix.** Two scenes were rebuilt on 2026-09-16 and neither needed redrawing
+  — `RackScene` was a rack FACE edge to edge (0.2% cream, 30.0% dark) and
+  `UptimeScene` was a window frame cropped tight to itself (32.1% cream, 6.7%
+  dark, and a literal frame, which Gate 0 forbids). Widening the `viewBox` so the
+  drawing becomes an OBJECT with cream around it moved UptimeScene to 64.6% cream
+  and 3.3% dark **without touching a single coordinate**. Do that before you
+  redraw anything. Note also what it does NOT fix: a scene whose subject is
+  genuinely too heavy still needs redrawing, which is why RackScene was rebuilt
+  rather than re-framed.
+- **Scale the frame, never the artwork.** Wrapping a drawing in a `scale()` to
+  shrink it also scales every stroke, so a scene that was on the 2 / 1.8 / 1.4
+  hierarchy silently lands on 1.57 / 1.41 / 1.10 and stops matching the rest of
+  the site. Move the `viewBox` instead.
+- **Straight `<path>`s count against the curve ratio just like rects do.**
+  UptimeScene's rain was ten paths of pure `l` commands and held it at 36%
+  against a 40% floor; merged into one path — identical rendering — it passes at
+  42%. Same lesson as the company board's port rectangles. Before redrawing for
+  this gate, count what is decorative and merge it.
 - **An object filled with the colour of the surface behind it has no colour.**
   Every tool on the company board was `DEVICE`, and so was the board — leaving a
   contour to do all the work, while the flat ghosts (a shade darker than the

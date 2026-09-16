@@ -36,6 +36,7 @@ export default defineConfig({
           '/contact-preview-b',
           '/contact-preview-c',
           '/hero-preview',
+          '/services-preview',
           '/contact-animation-preview',
         ].some((p) => page.includes(p)),
     }),
