@@ -17,26 +17,36 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
 import Button from '../components/Button.astro';
-import QuietScene from '../components/QuietScene.astro';
+import UptimeScene from '../components/UptimeScene.astro';
+import { notFound } from '../data/site';
 ---
 
 <BaseLayout title="Page not found" noindex>
   <section class="bg-cream py-12 lg:py-16">
     <Container>
       <div class="mx-auto flex max-w-xl flex-col items-center text-center">
-        <p class="font-mono text-xs uppercase tracking-[0.18em] text-brand-700">Error 404</p>
-        <h1 class="mt-4 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-tight text-navy-950">
-          This page isn’t on the rack
-        </h1>
-        <p class="mt-4 text-lg leading-relaxed text-slate-600">
-          The address you followed doesn’t exist, or it moved. Everything else is running
-          exactly as it should.
+        <p class="font-mono text-xs uppercase tracking-[0.18em] text-brand-700">
+          {notFound.eyebrow}
         </p>
+        <h1 class="mt-4 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-tight text-navy-950">
+          {notFound.title}
+        </h1>
+        <p class="mt-4 text-lg leading-relaxed text-slate-600">{notFound.body}</p>
 
-        <QuietScene
-          chip="All other systems nominal"
+        {/*
+          UptimeScene, adopted here 2026-09-18. It is the right picture for a
+          404: a storm outside, the lamp still lit, the cat asleep through it.
+          Something went down and nothing else noticed — which is the whole
+          message this page has to carry.
+
+          It replaced QuietScene, which is still live on /our-mission and the
+          contact success card. `surface="bare"` matches how QuietScene sat here;
+          the panel would fight a page that is already a centred column.
+        */}
+        <UptimeScene
+          chip={notFound.chip}
+          caption={notFound.caption}
           surface="bare"
-          palette="coloured"
           class="mt-10 w-full max-w-sm"
         />
 

@@ -4,6 +4,7 @@ import Container from '../components/Container.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ClosingCta from '../components/ClosingCta.astro';
 import { Icon } from 'astro-icon/components';
+import RackScene from '../components/RackScene.astro';
 import { competencies, competenciesIntro } from '../data/site';
 import { graph, breadcrumbs, services, organizationRef } from '../lib/schema';
 
@@ -21,11 +22,26 @@ const schema = graph(
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
 
+  {/*
+    RackScene in the header, adopted 2026-09-18. Services was the only page on
+    the site with no artwork, and this scene had no page; Harshit paired them
+    when he decided the home hero keeps its competency card.
+
+    Bare at 20rem, matching /careers and /contact. RackScene's own chip and
+    caption ("One U spare" / "Always leave room to grow.") live in site.ts as
+    `rackBand` and are NOT passed here — the two header ornaments already live
+    carry neither, and a third pattern would help nobody. Pass them if this ever
+    wants the panel treatment instead.
+  */}
   <PageHeader
     eyebrow={competenciesIntro.eyebrow}
     title={competenciesIntro.title}
     subtitle={competenciesIntro.sub}
-  />
+  >
+    <div slot="aside" class="mx-auto w-full max-w-[20rem] lg:ml-auto lg:mr-0">
+      <RackScene id="services-header" />
+    </div>
+  </PageHeader>
 
   {
     competencies.map((c, idx) => (

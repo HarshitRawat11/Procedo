@@ -13,7 +13,13 @@
  *  its five links are repeated as full cards in ServicesPreview, the very next
  *  section — but it is the home page, so it is Harshit's call, not mine.
  *
- *  Park it (leading underscore) on sign-off, whichever way that goes.
+ *  VERDICT, 2026-09-18: NO. Harshit: "the hero page will not have any image it
+ *  will be same as the current one." The home hero keeps its competency index
+ *  card, and RackScene went to /services instead. Parked the same day.
+ *
+ *  Kept rather than deleted because it is the only rehearsal of the hero with
+ *  an illustration in it, and the question could be reopened. If it is: this
+ *  file has drifted from index.astro since, so copy the live page in first.
  * ========================================================================== */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
@@ -24,8 +30,8 @@ import Button from '../components/Button.astro';
 import Hero from '../components/home/Hero.astro';
 import ServicesPreview from '../components/home/ServicesPreview.astro';
 import { Icon } from 'astro-icon/components';
-import RackScene from '../components/preview/RackScene.astro';
-import { whyUs, mission, company, heroBand } from '../data/site';
+import RackScene from '../components/RackScene.astro';
+import { whyUs, mission, company, rackBand } from '../data/site';
 import { graph, organization, website } from '../lib/schema';
 
 /*
@@ -46,7 +52,7 @@ const schema = graph(organization, website);
 
   <Hero>
     <div slot="aside" class="rounded-2xl border border-line bg-band px-5 pt-7 pb-8">
-      <RackScene id="hero" chip={heroBand.chip} caption={heroBand.caption} maxWidth="25rem" />
+      <RackScene id="hero" chip={rackBand.chip} caption={rackBand.caption} maxWidth="25rem" />
     </div>
   </Hero>
   <ServicesPreview />

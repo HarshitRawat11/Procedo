@@ -345,9 +345,27 @@ export const competencies: Competency[] = [
 ];
 
 /**
- * Quiet band on the home page, between the mission teaser and "Why Procedo".
- * Copy for the UptimeScene illustration. Both lines already existed as
- * component defaults; they live here so a non-developer can change them (#2).
+ * The 404 page, in full — heading, body and the illustration's two labels.
+ *
+ * All of it used to be hard-coded in `404.astro`, which broke #2. It moved here
+ * 2026-09-18, when Harshit put UptimeScene on this page: the old heading was
+ * "This page isn't on the rack", a joke that only worked while the picture was a
+ * cat asleep on a server rack. The picture is now a storm at 3am with the lamp
+ * still lit, so the words follow it — something went down, nothing else did,
+ * which is exactly what a 404 has to say.
+ */
+export const notFound = {
+  eyebrow: 'Error 404',
+  title: 'This page didn’t come back up',
+  body: 'The address you followed doesn’t exist, or it moved. Everything else is running exactly as it should.',
+  chip: 'All other systems nominal',
+  caption: 'Power cut at 3am. Nobody noticed.',
+} as const;
+
+/**
+ * Copy for UptimeScene on `_uptime`, the parked concept page. The scene's real
+ * home is the 404 now (see `notFound` above); this is kept only so un-parking
+ * that page still renders.
  */
 export const uptimeBand = {
   chip: 'On backup power',
@@ -355,11 +373,15 @@ export const uptimeBand = {
 } as const;
 
 /**
-/**
- * Copy for the RackScene illustration on the home hero: the cat asleep in the
- * one empty rack unit, because every good design leaves headroom.
+ * Copy for the RackScene illustration — the cat asleep in the one empty rack
+ * unit, because every good design leaves headroom.
+ *
+ * Named `heroBand` until 2026-09-18, when Harshit decided the home hero keeps
+ * its competency card and this scene goes to /services instead. A name that
+ * points at a page the thing is not on is how `workshopBand` ended up confusing,
+ * so it is `rackBand` now: named for the drawing, not the slot.
  */
-export const heroBand = {
+export const rackBand = {
   chip: 'One U spare',
   caption: 'Always leave room to grow.',
 } as const;

@@ -1,6 +1,15 @@
 ---
 /* ============================================================================
- *  RackScene — "Always leave room to grow." PREVIEW ONLY.
+ *  RackScene — "Always leave room to grow."
+ *
+ *  WHERE IT IS USED: the Services page, in the PageHeader's `aside` slot.
+ *  Adopted 2026-09-18. It was built for the home hero and spent two days in
+ *  /hero-preview; Harshit's verdict was that the hero keeps its competency index
+ *  card and this scene goes to /services instead, which had no artwork at all.
+ *
+ *  The `maxWidth` prop below exists because the hero would have rendered it at
+ *  25rem. In the services header it takes the default 22rem and the wrapper caps
+ *  it at 20rem, matching /careers and /contact.
  *
  *  ── WHAT THIS REPLACES, AND WHY ─────────────────────────────────────────────
  *  The previous RackScene was a close view of a rack FACE, filling the frame

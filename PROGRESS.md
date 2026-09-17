@@ -71,6 +71,45 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-18 — every scene has a page
+- Harshit settled the three open placements in two sentences: *"we will be moving
+  the uptime scene to 404 with a good caption and the hero image to services"*
+  and *"the hero page will not have any image it will be same as the current
+  one."*
+
+**UptimeScene → the 404.** It is the right picture for that page and always was
+— a storm outside, the lamp still lit, the cat asleep through it. Something went
+down and nothing else noticed, which is the whole message a 404 has to carry.
+- The heading had to move with it. The old one, *"This page isn't on the rack"*,
+  was a joke that only worked while the picture was a cat on a server rack. It
+  is now **"This page didn't come back up"**, which fits an outage and an
+  infrastructure firm. Chip stays *"All other systems nominal"*; caption is
+  *"Power cut at 3am. Nobody noticed."*
+- That page's copy was hard-coded in `404.astro`, breaking #2. All of it moved to
+  `site.ts` as `notFound` on the way past.
+- QuietScene is not orphaned: it still carries `/our-mission` and the contact
+  form's success card.
+
+**RackScene → the /services header.** Services was the only page with no artwork
+and this scene had no page. It costs the header **10px** — 326 without art, 336
+with — because RackScene's 380x275 frame at 320 wide is 232 tall, which fits
+inside the height the two-line title already needed. Bare at 20rem, matching
+`/careers` and `/contact`.
+- Adopted out of `components/preview/` into `components/`, per §5.
+- `heroBand` renamed **`rackBand`**: a copy const named for a page the drawing is
+  not on is exactly how `workshopBand` became confusing. Named for the drawing.
+
+**The home hero keeps its competency index card.** `_hero-preview` parked,
+rejected. `_services-preview` parked too — superseded, since the header slot it
+proposed is live with a different scene in it.
+
+**`components/preview/` is down to one file**, `SceneVariant`. Every scene the
+site draws now has a page, which has not been true at any point in this project.
+
+Measured on the built output at 1440: `/services` header 336 with the art at
+320x232, `/404` art 384x240, `/careers` unchanged at 288, home unchanged at 647
+with zero scenes. No duplicate ids, no overflow, `astro check` clean.
+
 ### 2026-09-17 — a content audit, and one line that was not Procedo's
 - *"we can work on aesthetics all we want but it is of no use if the content is
   not up to the mark."* Correct, and the review found something worse than the

@@ -84,18 +84,9 @@ the sitemap filter still lists them, deliberately, so an un-parked page cannot
 walk into the sitemap by accident.
 
 Still parked: `_404-preview` and `_uptime` — older concept pages, no verdict
-yet. `_uptime` is the only home `UptimeScene` has, and that scene has no slot on
-the real site at all.
-
-**Live, deliberately, 2026-09-16:** `hero-preview` (no underscore). It is
-`index.astro` with ONE difference — the hero's right-hand column carries the
-rebuilt `RackScene` instead of the competency index card — so the illustration is
-judged where it would actually live. Sealed exactly as §5 requires: noindex, in
-no nav, linked from nowhere, already named in the sitemap filter. **Park it on
-sign-off, whichever way the verdict goes.** The two cannot share that column;
-replacing the card costs no navigation, since its five links are repeated as
-full cards in `ServicesPreview` immediately below, but it is the home page and
-therefore Harshit's call.
+yet. `_uptime` was the only home `UptimeScene` had until 2026-09-18; that scene
+now ships on the **404**, so the page is a rehearsal space rather than a
+lifeboat.
 
 **Parked again 2026-09-14, on adoption:** `_careers-preview` and
 `_company-preview`. `CareersScene` ships on the real Careers page and
@@ -105,21 +96,19 @@ each page. Note that a parked preview **drifts from its live page the moment
 either is edited** — un-parking one means copying the live section back into it
 first, not trusting what is in the file.
 
-**THREE pages are live without an underscore right now, on purpose**, each
-carrying one open question and each sealed exactly as §5 requires:
+**ONE page is live without an underscore right now**, and it carries one open
+question: `our-mission-preview` — is the illustration better beside the TITLE,
+as on `/careers` and `/contact`, than beside the statement where it sits today?
+Sealed exactly as §5 requires. Put the underscore back in the commit that
+adopts or rejects it.
 
-| page | the question |
-|---|---|
-| `hero-preview` | does `RackScene` replace the home hero's competency card? |
-| `services-preview` | does `UptimeScene` go in the `/services` page header? |
-| `our-mission-preview` | is the illustration better beside the TITLE, as on `/careers` and `/contact`, than beside the statement where it sits today? |
-
-That is more than the one-at-a-time this file used to ask for, and it is
-deliberate: they are three independent verdicts Harshit can give in any order.
-**Put the underscore back in the same commit that adopts (or rejects) each
-one** — the risk of leaving several un-parked is forgetting which is which, not
-anything the pages do. The sitemap filter in `astro.config.mjs` names every one
-of these paths, so an un-parked page cannot walk into the sitemap by accident.
+**Parked 2026-09-18, with verdicts:**
+- `_hero-preview` — **rejected**. Harshit: *"the hero page will not have any
+  image it will be same as the current one."* The home hero keeps its competency
+  index card. RackScene went to `/services` instead.
+- `_services-preview` — **superseded**. The header slot was right and the scene
+  was wrong: UptimeScene went to the 404, RackScene took this header, and both
+  are live, so the page only duplicates `/services` with the wrong picture in it.
 
 **Parked 2026-09-13, after sign-off:** `_contact-animation-preview`. Added the
 same day at Harshit's request, and parked the moment he approved the sequence
@@ -155,11 +144,11 @@ was rejected outright on 2026-09-07.)
 
 **An adopted scene moves out of `components/preview/` into `components/`** in
 the commit that adopts it, and its header comment gains a `WHERE IT IS USED`
-line. Four have made that trip: `QuietScene` (404 and /our-mission),
-`ReceptionScene` (the contact success card), `CareersScene` (the Careers
-open-application card) and `CompanyScene` (the Company statement band, adopted
-2026-09-14). What is left in `components/preview/` is therefore exactly the set
-that has no home yet.
+line. Five have made that trip: `QuietScene` (/our-mission and the contact
+success card), `ReceptionScene` (the contact success card), `CareersScene` (the
+Careers open-application card), `CompanyScene` (the Company statement band) and
+`RackScene` (the Services page header, adopted 2026-09-18). What is left in
+`components/preview/` is therefore exactly the set that has no home yet.
 
 **Deleted 2026-09-14** on his instruction, once their replacements had shipped:
 `WorkshopScene` (replaced by `CompanyScene`), `DeskScene` and `DeskSceneWorking`
@@ -169,12 +158,25 @@ commit `9aeddcf`, but there is no reason to: `WorkshopScene` failed Gate 1b at
 This is the one place where an illustration did NOT survive its page — and the
 rule above still holds, because what changed is that a better one was live first.
 
-**What is left in `src/components/preview/` is therefore exactly two files:**
-`RackScene` — rebuilt 2026-09-16 and now passing every gate (81.4% cream, 3.5%
-dark, curve 45%, balance 0.4), awaiting a verdict on `/hero-preview` — and
-`SceneVariant`, the 404 comparison strip used by `_404-preview`. `UptimeScene`
-sits in `src/components/` and is used only by `_uptime`; it has no slot on the
-real site at all, and is the last scene with nowhere to go.
+**What is left in `src/components/preview/` is therefore exactly ONE file:**
+`SceneVariant`, the 404 comparison strip used by `_404-preview`. Every scene the
+site draws now has a page:
+
+| scene | where it lives |
+|---|---|
+| `QuietScene` | `/our-mission`, and the contact form's success card |
+| `ReceptionScene` | `/contact` header, and the form's success card |
+| `CareersScene` | `/careers` header, and the open-application card |
+| `CompanyScene` | `/company` statement band |
+| `RackScene` | `/services` header |
+| `UptimeScene` | the **404**, adopted 2026-09-18 |
+
+`UptimeScene` was the last scene with nowhere to go for weeks. It went to the
+404 because the picture is what that page has to say — a storm outside, the lamp
+still lit, the cat asleep through it: something went down and nothing else
+noticed. The 404's heading moved with it. The old one, "This page isn't on the
+rack", was a joke that only worked while the picture was a cat on a server rack;
+all of that page's copy now lives in `site.ts` as `notFound`.
 
 ### 5b. No human figures in illustrations
 **Hard rule, set by Harshit on 2026-09-07.** Illustrations carry animal or
