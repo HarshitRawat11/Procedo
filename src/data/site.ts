@@ -268,8 +268,11 @@ export const competencies: Competency[] = [
     title: 'Facilities Security',
     icon: 'lucide:shield-check',
     tagline: 'Smart environments that sense, protect, and evolve.',
+    /* Procedo's own wording, from the old site. A written line had replaced it
+       — one beginning Security should be invisible until you need it — which
+       was nobody's but ours. Restored 2026-09-17 under rule #1. */
     intro:
-      'Security should be invisible until you need it. We integrate surveillance, access control and building management into one coherent, monitored system.',
+      'We turn physical spaces into intelligent environments with integrated security systems that are proactive, not reactive.',
     groups: [
       {
         name: 'Surveillance Systems',

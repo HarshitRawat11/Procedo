@@ -71,6 +71,47 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-17 — a content audit, and one line that was not Procedo's
+- *"we can work on aesthetics all we want but it is of no use if the content is
+  not up to the mark."* Correct, and the review found something worse than the
+  depth gap I reported on 2026-09-16.
+- **`/services` carried an invented intro.** Facilities Security read *"Security
+  should be invisible until you need it. We integrate surveillance, access
+  control and building management into one coherent, monitored system."* That
+  sentence appears in NO verified source — not the scraped bundle, not the
+  client's 2026-09-06 revision. It had been written by a previous session, which
+  is precisely what rule #1 forbids, and it had been live and in the page's
+  JSON-LD `Service.description`.
+  Procedo's own line was sitting unused in the bundle the whole time and is now
+  restored: *"We turn physical spaces into intelligent environments with
+  integrated security systems that are proactive, not reactive."*
+- **Nothing was checking.** The illustrations have measured gates; the copy had
+  none, so an invented sentence survived several reviews. `scripts/measure-content.cjs`
+  now counts both depth and provenance, and prints any services string that
+  matches neither verified source.
+- **The depth gap, measured:**
+
+  | service | source | groups | items | avg chars | intro |
+  |---|---|---|---|---|---|
+  | digital-workplace | client | 4 | 12 | 56 | 214 |
+  | datacenter-infrastructure | client | 4 | 12 | 62 | 214 |
+  | it-infrastructure | old site | 4 | 12 | 34 | 157 |
+  | facilities-security | old site | 4 | **10** | 35 | 120 |
+  | av-conferencing | old site | **3** | **9** | 26 | 120 |
+
+  The client's two average 12 items at 59 chars; the transcribed three average
+  10 at 32. Half the words per bullet. AV is a whole group short and Facilities
+  is two bullets short.
+- **What only Harshit can supply**, and the whole of what is blocking parity:
+  a 4th group for AV, 2 more Facilities bullets, ~31 bullets rewritten to name
+  the mechanism rather than the category, and 3 intros at the length of the two
+  he already wrote. The old React site has nothing more to give — its 49 bullets
+  are the 49 on the page.
+- The 11 remaining provenance flags are my own 2026-09-16 paraphrases, which add
+  connectives only (`SSO, LDAP, Azure AD` → `SSO, LDAP and Azure AD`). Same
+  claims, easier to read, fractionally harder to verify. Kept, and the script
+  now lists them so the trade is visible rather than invisible.
+
 ### 2026-09-16 — reveal on every page, and RackScene rebuilt
 - *"in the home page and company page the content comes out smoothly while
   scrolling but rest of the pages doesn't have that plus when we go back to the
