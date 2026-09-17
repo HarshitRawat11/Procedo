@@ -13,6 +13,12 @@
  *  aria-labelledby on both — a second copy would need the component changed
  *  first. Moving it is also the plainer reading of the ask.
  *
+ *  The caption comes with it. Harshit, 2026-09-18: the drawing "alone doesn't
+ *  describe the intent of the image" — a cat asleep on a rack reads as a joke
+ *  until the line under it says what the joke is about. The chip stays off: it
+ *  is status flavour ("All systems nominal"), not intent, and it would cost
+ *  another 38px of header for nothing.
+ *
  *  The consequence to look at: the statement band loses its right-hand column,
  *  so the blockquote and body now run as one measure rather than seven twelfths
  *  of the grid. And this page's header has no subtitle, so it is the shortest
@@ -53,7 +59,12 @@ const schema = graph(breadcrumbs([{ name: 'Our Mission', path: '/our-mission' }]
 
   <PageHeader eyebrow="Our mission" title="Technology that gets out of the way">
     <div slot="aside" class="mx-auto w-full max-w-[20rem] lg:ml-auto lg:mr-0">
-      <QuietScene surface="bare" palette="coloured" chip={null} />
+      <QuietScene
+        surface="bare"
+        palette="coloured"
+        chip={null}
+        lines={['This is what a well-built system looks like: nothing to do.']}
+      />
     </div>
   </PageHeader>
 
