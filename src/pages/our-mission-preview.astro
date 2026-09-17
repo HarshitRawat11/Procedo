@@ -13,11 +13,17 @@
  *  aria-labelledby on both — a second copy would need the component changed
  *  first. Moving it is also the plainer reading of the ask.
  *
- *  The caption comes with it. Harshit, 2026-09-18: the drawing "alone doesn't
- *  describe the intent of the image" — a cat asleep on a rack reads as a joke
- *  until the line under it says what the joke is about. The chip stays off: it
- *  is status flavour ("All systems nominal"), not intent, and it would cost
- *  another 38px of header for nothing.
+ *  IT MOVES WHOLE. Harshit, 2026-09-18: the chip and the grey panel come too.
+ *  So this passes no `surface` and no `chip` at all — QuietScene already
+ *  defaults to `surface="panel"` and `chip="All systems nominal"`, which is
+ *  exactly what /our-mission renders today. The only prop that stays is
+ *  `palette="coloured"`, as on the live page, plus the caption line it already
+ *  carries.
+ *
+ *  Two earlier cuts were wrong about this and both were mine: bare with no text
+ *  at all, then bare with the caption but no chip. The image is not an ornament
+ *  here the way it is on /careers and /contact — it is the same panel the live
+ *  page shows, in a different place on the page.
  *
  *  The consequence to look at: the statement band loses its right-hand column,
  *  so the blockquote and body now run as one measure rather than seven twelfths
@@ -58,11 +64,14 @@ const schema = graph(breadcrumbs([{ name: 'Our Mission', path: '/our-mission' }]
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
 
   <PageHeader eyebrow="Our mission" title="Technology that gets out of the way">
-    <div slot="aside" class="mx-auto w-full max-w-[20rem] lg:ml-auto lg:mr-0">
+    <!-- 22.5rem, not the 20rem /careers and /contact use. Those carry a BARE
+         scene, where the cap is the artwork; this one carries the panel, whose
+         padding eats ~41px before the drawing starts. At 20rem the art came out
+         279px wide — back under the size Harshit asked to increase on careers.
+         360 puts the artwork itself at ~320 again. -->
+    <div slot="aside" class="mx-auto w-full max-w-[22.5rem] lg:ml-auto lg:mr-0">
       <QuietScene
-        surface="bare"
         palette="coloured"
-        chip={null}
         lines={['This is what a well-built system looks like: nothing to do.']}
       />
     </div>
