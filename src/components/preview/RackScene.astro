@@ -27,6 +27,22 @@
  *  the shelf above, tail lying along the slot floor. Silhouette and joke both
  *  differ; only the hand is shared.
  *
+ *  ── THE FRAME IS TIGHTER THAN THE FAMILY'S ─────────────────────────────────
+ *  380x275, not the 420x330 the other scenes use. The cat is the same 68 units
+ *  it is everywhere — that rule holds — but here it sits INSIDE a bay with ports,
+ *  LEDs and two shelves competing with it, where QuietScene's sits on top of a
+ *  rack against open cream. At the 420 frame it rendered 57px wide in the hero
+ *  panel and lost the contest; the drawing was fine and the framing was not.
+ *  Cropping to the ink rather than shrinking the props keeps every proportion.
+ *
+ *  It cannot go much tighter, and the reason is worth writing down: cropping
+ *  removes cream and keeps every navy contour, so Gate 1b's DARK share rises as
+ *  the frame shrinks. 360x260 measured 5.4% against a 5% ceiling; thinning the
+ *  ports barely moved it, because the contours are the dark, not the detail.
+ *  380x275 is the tightest frame that still passes. The rest of the size the
+ *  subject needs has to come from rendering it larger — which costs no gate at
+ *  all, because the gates measure the drawing and not its display width.
+ *
  *  ── THINGS THAT MUST STAY TRUE ──────────────────────────────────────────────
  *  · The GROUND is y=300 and the cabinet's base sits on it. Nothing crosses it.
  *  · NO DARK FILLS. Navy is contours only. The old version's 30% dark came from
@@ -48,8 +64,20 @@ interface Props {
   /** Unique per instance — the title id must not collide. */
   id: string;
   class?: string;
+  /**
+   * Cap on the rendered width. 22rem is the site-wide default, so one cat is
+   * one size wherever it appears; the home hero passes more, because it is the
+   * largest slot on the site and the art is the headline's counterweight there.
+   *
+   * It is a PROP and a custom property rather than a utility class on the
+   * wrapper, because Astro's scoped styles compile to `.scene[data-astro-cid-x]`
+   * — a class plus an attribute — which ties with `.parent .scene` on
+   * specificity and then wins on source order. An override from outside the
+   * component silently does nothing. Ask the component instead.
+   */
+  maxWidth?: string;
 }
-const { chip, caption, id, class: className = '' } = Astro.props;
+const { chip, caption, id, class: className = '', maxWidth = '22rem' } = Astro.props;
 const titleId = `rack-scene-${id}`;
 
 /* ── QuietScene's weights and palette, deliberately. ── */
@@ -105,7 +133,7 @@ const portRow = (x0: number, y: number, n: number, w = 11, h = 9, gap = 6, r = 1
   }).join(' ');
 ---
 
-<figure class:list={['rack', className]}>
+<figure class:list={['rack', className]} style={`--scene-max:${maxWidth}`}>
   {
     chip && (
       <p class="chip">
@@ -118,7 +146,7 @@ const portRow = (x0: number, y: number, n: number, w = 11, h = 9, gap = 6, r = 1
   <svg
     class="scene"
     data-scene
-    viewBox="13 27 420 330"
+    viewBox="33 55 380 275"
     role="img"
     aria-labelledby={titleId}
     xmlns="http://www.w3.org/2000/svg"
@@ -173,17 +201,16 @@ const portRow = (x0: number, y: number, n: number, w = 11, h = 9, gap = 6, r = 1
 
       <!-- unit 1 · patch panel: a face and a row of ports -->
       <rect x="167" y={U1} width="114" height="26" rx="2" fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d={portRow(176, U1 + 9, 6)} fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
+      <path d={portRow(182, U1 + 9, 4)} fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
 
       <!-- unit 2 · switch: ports on the left, status lights on the right -->
       <rect x="167" y={U2} width="114" height="26" rx="2" fill={KEYS} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d={portRow(176, U2 + 9, 4)} fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
+      <path d={portRow(182, U2 + 9, 3)} fill={DEVICE} stroke={NAVY} stroke-width={W_FINE} />
       <g fill={GREEN}>
         <circle class="led led-1" cx="246" cy={U2 + 13} r="2.6" />
         <circle class="led led-2" cx="256" cy={U2 + 13} r="2.6" />
         <circle class="led led-3" cx="266" cy={U2 + 13} r="2.6" />
-        <circle class="led led-4" cx="276" cy={U2 + 13} r="2.6" />
-      </g>
+              </g>
 
       <!-- unit 3 · THE SPARE U. Filled with the ground tone so it reads as a
            recess you could slide something into, not a hole in the picture. -->
@@ -332,8 +359,10 @@ const portRow = (x0: number, y: number, n: number, w = 11, h = 9, gap = 6, r = 1
   .scene {
     display: block;
     width: 100%;
-    /* the cap every scene carries, so one cat is one size wherever it appears */
-    max-width: 22rem;
+    /* the cap every scene carries, so one cat is one size wherever it appears.
+       The hero raises it through the maxWidth prop; see the note on that prop
+       for why an override from outside cannot work. */
+    max-width: var(--scene-max, 22rem);
     height: auto;
   }
   .line {
@@ -358,9 +387,6 @@ const portRow = (x0: number, y: number, n: number, w = 11, h = 9, gap = 6, r = 1
     }
     .led-3 {
       animation-delay: 1.1s;
-    }
-    .led-4 {
-      animation-delay: 1.7s;
     }
     @keyframes blink {
       0%,

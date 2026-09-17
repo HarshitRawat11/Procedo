@@ -13,9 +13,11 @@
  *  section's own intro is "Uptime is engineered, not assumed", and a storm at
  *  3am with the lamp still lit is that sentence as a drawing.
  *
- *  The header already had the 7/5 grid for this — the `aside` slot was built for
- *  Company, used by /hero-preview, and costs nothing on the pages that pass
- *  nothing.
+ *  TREATMENT: bare at 20rem, matching the header ornaments that went live on
+ *  /careers and /contact on 2026-09-16. The first cut of this page used the
+ *  panel treatment — bordered box, chip, caption — which was right when this was
+ *  the only header illustration on the site and is wrong now that two live pages
+ *  have set the other pattern. A page should not invent a third.
  *
  *  Park it (leading underscore) on sign-off, whichever way that goes.
  * ========================================================================== */
@@ -25,7 +27,7 @@ import PageHeader from '../components/PageHeader.astro';
 import ClosingCta from '../components/ClosingCta.astro';
 import { Icon } from 'astro-icon/components';
 import UptimeScene from '../components/UptimeScene.astro';
-import { competencies, competenciesIntro, uptimeBand } from '../data/site';
+import { competencies, competenciesIntro } from '../data/site';
 import { graph, breadcrumbs, services, organizationRef } from '../lib/schema';
 
 /* The five competencies as Service nodes, each anchored to its own section. */
@@ -48,8 +50,8 @@ const schema = graph(
     title={competenciesIntro.title}
     subtitle={competenciesIntro.sub}
   >
-    <div slot="aside" class="rounded-2xl border border-line bg-band px-5 pt-7 pb-8">
-      <UptimeScene chip={uptimeBand.chip} caption={uptimeBand.caption} surface="bare" />
+    <div slot="aside" class="mx-auto w-full max-w-[20rem] lg:ml-auto lg:mr-0">
+      <UptimeScene chip="" caption="" surface="bare" />
     </div>
   </PageHeader>
 
