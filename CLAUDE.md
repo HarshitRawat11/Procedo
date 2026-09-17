@@ -211,6 +211,25 @@ browser, load it and check it. Report what actually happened, including failures
   LED. Do not re-declare a shared animation inside a component: a scoped rule and
   the global one have the same specificity, and which wins would come down to
   injection order.
+- **Custom element styles MUST live in `@layer base`.** Tailwind v4 puts its
+  utilities in `@layer utilities`, and an UNLAYERED rule beats a layered one
+  however specific the layered one is — that is the cascade-layers rule, not a
+  specificity contest. While `h1,h2,h3,h4 { color }` sat outside a layer in
+  `global.css` it silently overrode every `text-*` utility on every heading on
+  the site, and the closing CTA's `<h2 class="… text-white">` rendered navy on a
+  navy card: an invisible heading on every page, in the production build.
+  Found 2026-09-17 by a contrast audit reporting it as 1.00:1; nothing else
+  would have caught it, because ~35 headings ask for the navy that rule already
+  gave them and looked correct by accident. Fixed by wrapping the base block.
+  Do not unwrap it, and do not add a bare element selector outside the layer.
+- **Brand orange is not a text colour at `brand-500`.** Measured: white on
+  `#F24E1E` is 3.57:1 against a 4.5 requirement, and `brand-500` as text on
+  cream is 3.42. Since 2026-09-17 buttons fill with **`brand-600`** (white on it
+  = 4.59) and orange reading text is **`brand-700`** (6.09 on cream). `brand-500`
+  stays for the logo, the hairline eyebrow ticks, blockquote borders, the
+  blurred glow and icons — all non-text, where the bar is 3:1 and it clears at
+  3.42. The hero's "intelligently" also stays at `brand-600`: it is 40px, so the
+  large-text bar is 3:1 and it passes at 4.40.
 - **The site is light-only.** There is no dark mode and no `prefers-color-scheme`
   handling anywhere. Adding one is a whole-site decision, not a per-component tweak.
 - **Anything you put on `<html>` from JavaScript must be re-applied on

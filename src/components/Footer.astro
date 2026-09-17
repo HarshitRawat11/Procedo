@@ -28,7 +28,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
                   aria-label={s.label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="grid size-9 place-items-center rounded-lg border border-line bg-white text-slate-500 transition-colors hover:border-brand-300 hover:text-brand-600"
+                  class="grid size-9 place-items-center rounded-lg border border-line bg-white text-slate-500 transition-colors hover:border-brand-300 hover:text-brand-700"
                 >
                   <Icon name={s.icon} class="size-4" aria-hidden="true" />
                 </a>
@@ -46,7 +46,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
             <ul class="mt-4 space-y-2.5 text-sm">
               {col.links.map((link) => (
                 <li>
-                  <a href={link.href} class="text-slate-600 transition-colors hover:text-brand-600">
+                  <a href={link.href} class="text-slate-600 transition-colors hover:text-brand-700">
                     {link.label}
                   </a>
                 </li>
@@ -62,7 +62,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
         <div class="mt-4 space-y-3 text-sm">
           <a
             href={`mailto:${contact.email}`}
-            class="flex items-start gap-2.5 text-slate-600 transition-colors hover:text-brand-600"
+            class="flex items-start gap-2.5 text-slate-600 transition-colors hover:text-brand-700"
           >
             <Icon
               name="lucide:mail"
@@ -73,7 +73,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
           </a>
           <a
             href={`mailto:${contact.salesEmail}`}
-            class="flex items-start gap-2.5 text-slate-600 transition-colors hover:text-brand-600"
+            class="flex items-start gap-2.5 text-slate-600 transition-colors hover:text-brand-700"
           >
             <Icon
               name="lucide:briefcase"
@@ -84,7 +84,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
           </a>
           <a
             href={telHref}
-            class="flex items-start gap-2.5 text-slate-600 transition-colors hover:text-brand-600"
+            class="flex items-start gap-2.5 text-slate-600 transition-colors hover:text-brand-700"
           >
             <Icon
               name="lucide:phone"

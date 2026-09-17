@@ -46,40 +46,56 @@
 }
 
 /* ---------- Base element styles ---------- */
-html {
-  scroll-behavior: smooth;
-  -webkit-text-size-adjust: 100%;
-}
+/* ── These are BASE styles and must sit in @layer base. ─────────────────────
+   Tailwind v4 puts its utilities in `@layer utilities`, and an UNLAYERED rule
+   beats a layered one no matter how specific the layered one is. So while this
+   block sat outside a layer, `h1,h2,h3,h4 { color }` silently overrode every
+   `text-*` utility on a heading on the site.
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--color-cream);
-  color: #475569; /* slate-600 body */
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
+   It was not cosmetic: the closing CTA's <h2 class="... text-white"> rendered
+   navy-950 on a navy-950 card — an invisible heading on every page, in the
+   production build, not just in dev. Found 2026-09-17 by a contrast audit that
+   reported it as 1.00:1.
 
-/* Calm, GitHub-style headings: medium weight, tight-not-cramped, navy ink. */
-h1,
-h2,
-h3,
-h4 {
-  font-family: var(--font-display);
-  color: var(--color-navy-950);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-}
+   Roughly 35 headings carry a colour utility; the rest happened to ask for the
+   navy this rule already gave them, which is why nothing looked wrong. Do not
+   move these rules back out of the layer. ── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
 
-::selection {
-  background-color: var(--color-brand-500);
-  color: #fff;
-}
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-cream);
+    color: #475569; /* slate-600 body */
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 
-:focus-visible {
-  outline: 2px solid var(--color-brand-500);
-  outline-offset: 2px;
-  border-radius: 2px;
+  /* Calm, GitHub-style headings: medium weight, tight-not-cramped, navy ink. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--color-navy-950);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-500);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
 }
 
 /* Faint engineered dot field (very subtle) for hero atmosphere. */

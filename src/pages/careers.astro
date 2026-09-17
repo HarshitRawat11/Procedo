@@ -104,7 +104,7 @@ const schema = graph(breadcrumbs([{ name: 'Careers', path: '/careers' }]));
               <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{r.body}</p>
               <a
                 href={`mailto:${careers.applyEmail}?subject=${encodeURIComponent('Application: ' + r.title)}`}
-                class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700"
+                class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-700"
               >
                 Apply for this role
                 <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" />
@@ -135,7 +135,7 @@ const schema = graph(breadcrumbs([{ name: 'Careers', path: '/careers' }]));
         </div>
         <a
           href={`mailto:${careers.applyEmail}?subject=${encodeURIComponent('Open application')}`}
-          class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-500 px-5 py-2.5 text-[15px] font-medium text-white shadow-sm shadow-brand-600/20 transition-all duration-200 hover:bg-brand-600 active:scale-[0.98]"
+          class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-brand-600 px-5 py-2.5 text-[15px] font-medium text-white shadow-sm shadow-brand-700/20 transition-all duration-200 hover:bg-brand-700 active:scale-[0.98]"
         >
           <Icon name="lucide:mail" class="size-4" aria-hidden="true" />
           {careers.applyEmail}
