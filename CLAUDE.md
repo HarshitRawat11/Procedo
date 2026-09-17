@@ -105,11 +105,21 @@ each page. Note that a parked preview **drifts from its live page the moment
 either is edited** — un-parking one means copying the live section back into it
 first, not trusting what is in the file.
 
-**One page is live without an underscore right now, on purpose: `hero-preview`
-(above).** If you un-park a page to review something, put the underscore back in
-the same commit that adopts the work, and do not leave two un-parked at once. The sitemap filter in `astro.config.mjs` still names every
-one of these paths, deliberately, so an un-parked page cannot walk into the
-sitemap by accident.
+**THREE pages are live without an underscore right now, on purpose**, each
+carrying one open question and each sealed exactly as §5 requires:
+
+| page | the question |
+|---|---|
+| `hero-preview` | does `RackScene` replace the home hero's competency card? |
+| `services-preview` | does `UptimeScene` go in the `/services` page header? |
+| `our-mission-preview` | is the illustration better beside the TITLE, as on `/careers` and `/contact`, than beside the statement where it sits today? |
+
+That is more than the one-at-a-time this file used to ask for, and it is
+deliberate: they are three independent verdicts Harshit can give in any order.
+**Put the underscore back in the same commit that adopts (or rejects) each
+one** — the risk of leaving several un-parked is forgetting which is which, not
+anything the pages do. The sitemap filter in `astro.config.mjs` names every one
+of these paths, so an un-parked page cannot walk into the sitemap by accident.
 
 **Parked 2026-09-13, after sign-off:** `_contact-animation-preview`. Added the
 same day at Harshit's request, and parked the moment he approved the sequence

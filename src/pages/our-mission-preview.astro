@@ -1,0 +1,141 @@
+---
+/* ============================================================================
+ *  /our-mission-preview — PREVIEW ONLY. Sealed off per CLAUDE.md §5: noindex,
+ *  in no nav, linked from nowhere, named in the sitemap filter.
+ *
+ *  ONE question: does the illustration read better beside the PAGE TITLE, the
+ *  way /careers and /contact carry theirs, than beside the mission statement
+ *  where it sits today?
+ *
+ *  So this is /our-mission with the image MOVED, not added. QuietScene has a
+ *  fixed `quiet-scene-title` id rather than one built from a prop, so it cannot
+ *  be rendered twice on a page without producing a duplicate id and breaking
+ *  aria-labelledby on both — a second copy would need the component changed
+ *  first. Moving it is also the plainer reading of the ask.
+ *
+ *  The consequence to look at: the statement band loses its right-hand column,
+ *  so the blockquote and body now run as one measure rather than seven twelfths
+ *  of the grid. And this page's header has no subtitle, so it is the shortest
+ *  on the site — the image lands in a header with less text beside it than on
+ *  /careers or /contact, and that is the thing to judge.
+ *
+ *  NOTE: a page called our-mission-preview existed before and was deleted on
+ *  2026-09-07 when MissionScene was rejected outright. This is not that page and
+ *  proposes no new drawing; it is a layout question about the existing one.
+ *
+ *  Park it (leading underscore) on sign-off, whichever way that goes.
+ * ========================================================================== */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import FeatureGrid from '../components/FeatureGrid.astro';
+import ClosingCta from '../components/ClosingCta.astro';
+import QuietScene from '../components/QuietScene.astro';
+import { Icon } from 'astro-icon/components';
+import { mission } from '../data/site';
+import { graph, breadcrumbs } from '../lib/schema';
+
+const panels = [
+  { label: 'Vision', icon: 'lucide:eye', ...mission.vision },
+  { label: 'Mission', icon: 'lucide:target', ...mission.purpose },
+];
+
+const schema = graph(breadcrumbs([{ name: 'Our Mission', path: '/our-mission' }]));
+---
+
+<BaseLayout
+  noindex
+  title="Our Mission"
+  description="We believe technology should enable, not complicate — integrated IT, security and AV solutions that empower organizations to thrive."
+>
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
+
+  <PageHeader eyebrow="Our mission" title="Technology that gets out of the way">
+    <div slot="aside" class="mx-auto w-full max-w-[20rem] lg:ml-auto lg:mr-0">
+      <QuietScene surface="bare" palette="coloured" chip={null} />
+    </div>
+  </PageHeader>
+
+  <!-- Mission statement. The illustration has gone up to the header, so the
+       right-hand column would be empty; the supporting paragraph moves into it
+       instead of sitting under the quote. Stacking it left at max-w-3xl was the
+       first cut and left ~465px of dead white beside it, which is the fault
+       this site has been hunting for a week. Both halves keep a readable
+       measure this way, and the band fills. -->
+  <section class="bg-cream py-12 lg:py-16">
+    <Container>
+      <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-7" data-reveal>
+          <blockquote
+            class="border-l-2 border-brand-500 pl-6 text-[clamp(1.35rem,2.6vw,1.85rem)] font-semibold leading-snug text-navy-950"
+          >
+            {mission.statement}
+          </blockquote>
+        </div>
+
+        <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
+          <p class="text-lg leading-relaxed text-slate-600">{mission.body}</p>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- Vision & Mission panels -->
+  <section class="border-t border-line bg-band py-12 lg:py-16">
+    <Container>
+      <div class="grid gap-6 lg:grid-cols-2 lg:items-start">
+        {
+          panels.map((p, i) => (
+            <div
+              data-reveal
+              style={`--reveal-delay:${i * 100}ms`}
+              class="flex flex-col rounded-2xl border border-line bg-white p-7 shadow-sm sm:p-9"
+            >
+              <div class="flex items-center gap-3.5">
+                <span class="grid size-11 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                  <Icon name={p.icon} class="size-5" aria-hidden="true" />
+                </span>
+                <h2 class="text-2xl font-semibold text-navy-950">{p.label}</h2>
+              </div>
+
+              <p class="mt-6 leading-relaxed text-slate-600">{p.statement}</p>
+
+              <div class="mt-7 border-t border-line pt-6">
+                <h3 class="font-mono text-xs uppercase tracking-wider text-navy-700">
+                  {p.listTitle}
+                </h3>
+                <ul class="mt-3.5 flex flex-wrap gap-2">
+                  {p.items.map((it) => (
+                    <li class="inline-flex items-center gap-1.5 rounded-full border border-line bg-band px-3 py-1.5 text-sm text-navy-800">
+                      <Icon
+                        name="lucide:check"
+                        class="size-3.5 shrink-0 text-brand-500"
+                        aria-hidden="true"
+                      />
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </Container>
+  </section>
+
+  <!-- Principles -->
+  <section class="bg-cream py-12 lg:py-16">
+    <Container>
+      <SectionHeading
+        eyebrow="Principles"
+        title="How we work"
+        subtitle="Three commitments that shape every design decision we make."
+      />
+      <FeatureGrid items={mission.points} columns={3} class="mt-12" />
+    </Container>
+  </section>
+
+  <ClosingCta />
+</BaseLayout>
