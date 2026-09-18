@@ -7,7 +7,7 @@
 // direct-email fallback rather than silently failing on submit.
 import { Icon } from 'astro-icon/components';
 import ReceptionScene from './ReceptionScene.astro';
-import { contactForm, contact, site, receptionBand } from '../data/site';
+import { contactForm, contact, site, receptionBand, contactCopy } from '../data/site';
 
 const ready = contactForm.web3formsKey.trim().length > 0;
 
@@ -107,12 +107,7 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
       <div>
         <label class={label} for="cf-interest">What’s this about?</label>
         <select class={field} id="cf-interest" name="interest">
-          <option>General enquiry</option>
-          <option>Digital Workplace Services</option>
-          <option>Datacenter Infrastructure</option>
-          <option>IT Infrastructure</option>
-          <option>Facilities Security</option>
-          <option>Audio &amp; Video Conferencing</option>
+          {contactCopy.subjects.map((s) => <option>{s}</option>)}
         </select>
       </div>
     </div>
@@ -161,9 +156,9 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
 <!-- Shown in place of the form once a message actually sends. Rendered up front
      and toggled, so the illustration is already in the DOM when it's needed. -->
 <div id="cf-success" hidden role="status" aria-live="polite" class="text-center">
-  <h3 class="text-xl font-semibold text-navy-950">Message received</h3>
+  <h3 class="text-xl font-semibold text-navy-950">{contactCopy.successTitle}</h3>
   <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-slate-600">
-    It’s landed with the right team. We’ll be in touch shortly — nothing else needed from you.
+    {contactCopy.successBody}
   </p>
   {
     hasSuccessArt ? (

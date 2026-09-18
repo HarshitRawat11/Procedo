@@ -2,11 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LegalDoc from '../components/LegalDoc.astro';
 import { privacyPolicy } from '../data/site';
+import { graph, breadcrumbs } from '../lib/schema';
+
+/* The legal pages carried no structured data at all until 2026-09-18.
+   BaseLayout now gives every page the Organization and WebSite nodes;
+   this adds the trail, so the three of them stop being orphans in the
+   graph the way every other page already was not. */
+const schema = graph(breadcrumbs([{ name: 'Privacy Policy', path: '/privacy' }]));
 ---
 
 <BaseLayout
   title="Privacy Policy"
-  description="How Procedo Infosystems collects, uses and safeguards the information you share with us."
+  description="How Procedo Infosystems collects, uses and safeguards the information you share with us — form submissions, technical data, cookies and your rights."
 >
+  <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
+
   <LegalDoc doc={privacyPolicy} />
 </BaseLayout>

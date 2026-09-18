@@ -9,24 +9,20 @@ import Hero from '../components/home/Hero.astro';
 import ServicesPreview from '../components/home/ServicesPreview.astro';
 import { Icon } from 'astro-icon/components';
 import { whyUs, mission, company } from '../data/site';
-import { graph, organization, website } from '../lib/schema';
 
 /*
- * Organization + WebSite for search engines. The nodes live in src/lib/schema.ts
- * so the other pages can refer to the same @id rather than restating the
- * company on every page.
+ * NO SCHEMA BLOCK HERE. Organization + WebSite used to be emitted from this
+ * page alone; since 2026-09-18 BaseLayout emits them on every indexable page,
+ * so a crawler that lands on an inner page from a search result gets the
+ * company's address, phone and service area too. Emitting them again here
+ * would put two nodes with the same @id in one document.
+ *
+ * The home page is the only page with nothing page-specific to add — no
+ * breadcrumb trail, because it IS the trail's first item.
  */
-const schema = graph(organization, website);
 ---
 
 <BaseLayout headerOverlap>
-  <script
-    type="application/ld+json"
-    slot="head"
-    is:inline
-    set:html={JSON.stringify(schema)}
-  />
-
   <Hero />
   <ServicesPreview />
 

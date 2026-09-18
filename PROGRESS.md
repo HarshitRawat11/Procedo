@@ -4,7 +4,7 @@ Status board for the Procedo Infosystems website.
 **Update this file whenever a task changes state.** New sessions should read it
 immediately after `CLAUDE.md`.
 
-- **Last updated:** 2026-09-09
+- **Last updated:** 2026-09-18
 - **Build:** ✅ passing — 16 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
 - **Deployed:** ❌ not yet — domain exists (procedoinfo.com) but still serves the old site
 - **Repo:** ✅ `HarshitRawat11/Procedo` on GitHub
@@ -64,12 +64,183 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 **One thing:** legal sign-off (#5) on the privacy / terms / cookie pages. The
 text is real, carried over from the previous site, but nobody has reviewed it.
 
+**Put one question in front of that reviewer.** Measured in a browser on the
+built output, 2026-09-18: **this site sets no cookies.** `document.cookie` is
+empty, localStorage and sessionStorage are empty, no third-party script loads on
+any page, `analytics.provider` is `'none'`, and the contact form is a plain POST
+to Web3Forms. The Cookie Policy nevertheless says Procedo uses cookies to
+understand how you use the site, remember preferences and "provide relevant
+content or ads", and lists analytics and preference cookies as types in use; the
+Privacy Policy lists cookies under information collected and mentions
+newsletters and marketing material, for which the site has no mechanism.
+
+That is the old React site's policy describing the old React site. It is not an
+exposure in the dangerous direction — the risk is undisclosed tracking, and
+there is none — but it is untrue today on a page whose job is to be true, and a
+visitor can check it in ten seconds. It was NOT edited unilaterally: it is
+verified Procedo copy, and the answer depends on a decision nobody has made yet.
+**Decide analytics (#18) first, then make the policy match.** If the answer is
+GA4, it sets cookies and needs a consent banner that does not exist.
+
 Deployment (#16) is ready the moment the domain is pointed at the new build.
 Nothing is blocked on code.
 
 ---
 
 ## Log
+
+### 2026-09-18 (later) — both cats go to work, and the head gets a gate
+
+Six things from Harshit in one message. Four were done; two are questions for
+him and for a lawyer.
+
+**1. The services cat is working, not sleeping.** *"in services image, the cat
+should have a working on the server animation rather than sleeping in the
+server."* The load-bearing change is not the animation — it is that **the spare
+bay and the switch swapped rack units.** The cat sat at U3 with the switch above
+it at U2, and reaching UP meant a foreleg crossing its own face, because the
+head is at the right of the body and the switch's lights are at the right of its
+face: thirty units of limb through the muzzle. With the spare bay at U2 and the
+switch directly below it, the reach is four units and hits nothing. The two bays
+are the same size and the same two fills, so Gate 1b did not move — 75.5% cream,
+4.8% dark, the identical drawing with two rectangles' contents exchanged.
+
+Then: eyes open with the pupils low and right; a foreleg drawn BEFORE the body
+so the body and head lie over its top half and only the reaching part shows,
+built as two stacked strokes on one path (navy 10, fur 6, round caps) which
+leaves the site's 2-unit contour and gives the far end a cap that is already a
+paw. The paw breaks the switch's top edge rather than sitting inside the face —
+CareersScene's rule, for CareersScene's reason.
+
+**A bare paw ellipse was tried first and was wrong.** The theory was that
+CareersScene's paw works with no limb, so this one would too. It does not
+transfer: there the paw sits ON the mouse and beside the head, and the mouse
+explains it. Here it had a flat faceplate under it and nine units of cream
+between it and the cat, and it read as a stray white blob — a second muzzle, if
+anything. Caught by rendering the built SVG, not by reading the coordinates.
+
+Paw, head and LEDs now share one 4.2s clock: head leans in, paw taps twice,
+lights answer a beat later and ripple left to right on two 0.15s delays. On
+three different durations the same three movements drift apart and read as a cat
+near a switch instead of a cat operating one.
+
+**2. The careers cat moves the mouse.** *"the cat should be moving the mouse back
+and forth and clicking."* It was clicking a mouse that never moved, which reads
+as a twitch. Mouse and paw now sit in two `.mousing` groups sharing one 5.6s
+keyframe — two groups only because the cat is drawn between them — and the order
+is the sentence: travel right, travel left, settle, THEN click. A click during
+the travel reads as a mis-click; one that lands after the pointer stops reads as
+a decision. The head tracks sideways at a tenth of the mouse's amplitude.
+
+±6 user units, and both limits are real: at −6 the paw clears the cat's body
+contour by 7, at +6 the mouse clears the monitor foot by 10. **The lead had to
+move too** — it started at x=252 on the body's right edge, which was fine while
+the mouse was still and a cable detaching from its own mouse the moment it
+moved. It starts at 242 now, under the body and drawn before it, so what the eye
+sees is the visible length of cable growing and shrinking, which is what slack
+does.
+
+**3. The 404 sits on grey, and the crush above it was real.** The panel was a
+one-word change (`surface="bare"` deleted — `"panel"` is the component's own
+default), and it earns its place beyond matching QuietScene: the scene's sky is
+a pale grey-blue, so on bare cream the window had nothing to sit against and the
+storm read as a hole in the page.
+
+The congestion was **a bug, not a taste call.** `mt-12` on the figure computed to
+**0px**. `UptimeScene` carried `margin: 0` in its scoped style; Astro compiles
+that to `.uptime[data-astro-cid-x]` and leaves it UNLAYERED, and an unlayered
+rule beats a layered one whatever the specificity — so it ate every margin
+utility a caller passed, silently, with no way for the caller to know. Even
+`:where()` would have won that fight, because the layer is decided before
+specificity is looked at.
+
+It was also redundant: Tailwind's preflight already carries
+`*, ::before, ::after { margin: 0 }` in `@layer base`, which is what actually
+zeroes the `<figure>` UA margin. Removing the line let `mt-12` through and
+changed nothing else. Body-to-art went 0 → 48px, and the three lines above it
+went from mt-4/mt-4 to mt-5/mt-5. **The other five scene components still carry
+the same line** — none is passed a margin today, so none is broken, but that is
+why, if one ever ignores an `mt-*`.
+
+**4. Content: three real defects, and a fourth that is a question.**
+
+- **"Procedo Infosystems Pvt. Ltd.. All rights reserved."** — a double full stop
+  in the footer, on every page of the site. `legalName` ends in a stop and the
+  template appended another.
+- **An invented claim, live on /careers.** "We are a small, senior team — which
+  means your work is visible, your decisions carry weight, and you learn across
+  every layer of the stack." It states how many people work at Procedo and how
+  senior they are. It is in no verified source: the old site's careers page had
+  its intro line, four culture bullets and the roles, and nothing else. **Deleted
+  and not replaced,** per rule #3. This is the second rule #1 breach found by an
+  audit rather than by reading — the first was the Facilities Security intro on
+  2026-09-17 — and both were the same shape: a plausible sentence written into a
+  slot that wanted one.
+- **Five blocks of copy hard-coded in pages**, breaking rule #2 — the Contact
+  page's three section headings, its form's lead, the success card's heading and
+  body, the form's subject dropdown, and the Careers open-application card. All
+  moved into `site.ts` as `contactCopy` and `careers.openTitle`/`openBody`. The
+  dropdown's five service labels stay shorter than the competency titles on
+  purpose; an option reading "Digital Workplace Services & Field Operations" is
+  unusable on a phone.
+- **The Cookie Policy describes a site that does not exist.** See the launch
+  blockers section above — measured, not edited, and it needs a decision first.
+
+Two refinements beyond the defects. The competencies heading read "Comprehensive
+technology, engineered as one system" directly above "Comprehensive technology
+solutions designed to transform how your business operates" — the same two words
+twice in adjacent lines, once at 40px. The sub is Procedo's own wording and
+stays; the title is ours, so the title moved, to "Five disciplines, engineered as
+one system", which also answers the first question the section raises. And the
+"Security First" value was restored to Procedo's full sentence: it was the only
+one of the six that did not match the bundle word for word, cut after "above all
+else", losing the half that says what Procedo does about it.
+
+**5. SEO — three findings, none of them visible in a browser.**
+
+- The home `<title>` was **106 characters**. Google shows about 60, so the one
+  title that matters most read "Procedo Infosystems — Designing intelligent
+  systems that empower busi…": the brand, and then nothing a buyer searches for.
+  It is `site.homeTitle` now, 62 characters, naming the three things Procedo
+  names first in its own company overview.
+- The default meta description was **215**, listing all five competencies and
+  truncating mid-list so two of the five never appeared in a result. Now 152,
+  naming four and closing with the service area.
+- **Organization and WebSite were emitted from index.astro alone.** Every inner
+  page — including /contact, which is where the address, the phone and the two
+  contact points live — shipped a BreadcrumbList and nothing else, and referred
+  to the Organization by an @id in another document, which Google resolves
+  unreliably at best. Both nodes now come from BaseLayout on every indexable
+  page. `organizationRef`, the stub that stood in for it on /services, is unused
+  (kept only because the parked `_services-preview` imports it and `astro check`
+  reads parked pages).
+
+Also: breadcrumbs and fuller descriptions on the three legal pages, which had no
+structured data at all, and `og:image:width`/`height`/`alt` plus
+`twitter:image:alt`, so LinkedIn renders the card on a first share instead of
+queueing a fetch and showing nothing.
+
+**`scripts/measure-seo.cjs` is new** and is why this is a gate rather than an
+anecdote. It reads `dist/`, not `src/` — what a crawler receives is the rendered
+head, after layout defaults and per-page props resolve — and it fails on a long
+title, a long or missing description, a page without exactly one `<h1>`, an
+`<img>` with no alt, a missing canonical, unparseable or duplicate-`@id`
+JSON-LD, a missing Organization node, or a missing `og:image:alt`. All ten pages
+pass.
+
+**6. The our-mission preview is rejected.** *"we will go with our-mission as it
+is and its preview is rejected."* Parked, with the verdict written into the file.
+The illustration stays beside the mission STATEMENT, deliberately unlike
+/careers and /contact — on those two the image is a small bare ornament filling
+white space beside a heading, while here it is a panel with a chip and a caption
+that argues a point, and an argument belongs next to the claim it supports.
+**Every preview page is now parked;** there is no un-parked one and no open
+question.
+
+Build clean throughout, `astro check` 0 errors / 0 warnings / 0 hints, no
+horizontal overflow on any page, all three scene density gates still passing
+(rack 75.5/4.8, careers 86.5/4.4, uptime 66.0/3.2), and both animations verified
+by seeking their keyframes in a real browser rather than by watching them.
 
 ### 2026-09-18 — every scene has a page
 - Harshit settled the three open placements in two sentences: *"we will be moving

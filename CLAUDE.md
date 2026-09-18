@@ -61,6 +61,31 @@ Pages read from it; they do not hard-code sentences. A non-developer must be abl
 to change site text by editing that one file. If you are about to type a sentence
 of marketing copy into a `.astro` file, stop and put it in `site.ts` instead.
 
+This has been broken twice by accident and both times the copy that escaped was
+copy nobody thought of as copy: the 404's whole page (moved back 2026-09-18) and
+then the Contact page's section headings, its form's lead and its success card,
+plus two blocks on Careers (moved back the same day). Section headings and form
+furniture are still sentences a client will want to change.
+
+**How to check:** the pattern is text sitting between tags with no `{}` in it.
+An `<svg>`'s `<title>` is the one exception — that is alt text, not copy.
+
+  ```bash
+  grep -rn '>[A-Z][a-z].\{15,\}<' src/pages src/components --include=*.astro
+  ```
+
+### 2b. The home page and 404 titles and descriptions are SEO surfaces
+`site.homeTitle` is the home page's `<title>` and nothing else's; every other
+page builds `Page | Procedo Infosystems` from its own `title` prop.
+`site.description` is the default `<meta name="description">` AND the
+`description` on the Organization and WebSite schema nodes.
+
+Keep titles at or under ~60 characters and descriptions between 120 and 160.
+Both were out of band until 2026-09-18 — the home title was 106 characters, so a
+searcher saw the brand and then nothing about what Procedo sells, and the
+description was 215, which truncated mid-list and hid two of the five
+competencies. `node scripts/measure-seo.cjs` counts them on the built output.
+
 ### 3. Missing data degrades gracefully — never show a placeholder
 One value is still unknown (the LinkedIn URL). It
 is wired so that an empty value **hides the feature** rather than rendering a
@@ -96,13 +121,17 @@ each page. Note that a parked preview **drifts from its live page the moment
 either is edited** — un-parking one means copying the live section back into it
 first, not trusting what is in the file.
 
-**ONE page is live without an underscore right now**, and it carries one open
-question: `our-mission-preview` — is the illustration better beside the TITLE,
-as on `/careers` and `/contact`, than beside the statement where it sits today?
-Sealed exactly as §5 requires. Put the underscore back in the commit that
-adopts or rejects it.
+**EVERY preview page is parked.** There is no un-parked one and no open
+question; `src/pages/` contains only the real site plus underscored files.
 
 **Parked 2026-09-18, with verdicts:**
+- `_our-mission-preview` — **rejected**. Harshit: *"we will go with our-mission
+  as it is and its preview is rejected."* On `/our-mission` the illustration
+  stays beside the mission STATEMENT, not beside the page title. That is
+  deliberately the opposite of `/careers` and `/contact`, so do not "fix" the
+  inconsistency: on those two the image is a small bare ornament filling white
+  space beside a heading, while here it is a panel with a chip and a caption
+  that argues a point, and an argument belongs next to the claim it supports.
 - `_hero-preview` — **rejected**. Harshit: *"the hero page will not have any
   image it will be same as the current one."* The home hero keeps its competency
   index card. RackScene went to `/services` instead.

@@ -16,8 +16,30 @@ export const site = {
   /** Production domain — used for canonical URLs, sitemap, Open Graph. */
   url: 'https://www.procedoinfo.com',
   tagline: 'Designing intelligent systems that empower businesses to focus on what matters most.',
+  /**
+   * The HOME PAGE's <title>, and only the home page's — every other page builds
+   * its own as "Page | Procedo Infosystems".
+   *
+   * It used to be `name — tagline`, which came out at 106 characters. Google
+   * shows about 60, so what a searcher actually saw was "Procedo Infosystems —
+   * Designing intelligent systems that empower busi…": the brand, then nothing
+   * that says what the firm sells. This names the three things Procedo names
+   * first in its own company overview, and still ends in the brand, so it reads
+   * as part of the same set as the other nine titles.
+   */
+  homeTitle: 'IT Infrastructure, Security & AV Systems | Procedo Infosystems',
+  /**
+   * The default <meta name="description"> for any page that does not set one —
+   * in practice the home page — and the `description` on the Organization and
+   * WebSite schema nodes.
+   *
+   * Cut from 215 characters to fit the ~160 a search result shows. The old one
+   * listed all five competencies and was truncated mid-list, so two of the five
+   * never appeared; this names four and closes with the service area, which is
+   * a real differentiator and is on the Contact page already.
+   */
   description:
-    'Procedo Infosystems is an infrastructure-first technology firm delivering integrated IT infrastructure, facilities security, AV conferencing, digital workplace services and datacenter infrastructure for enterprises.',
+    'Procedo Infosystems delivers integrated IT infrastructure, facilities security, AV conferencing, digital workplace and datacenter services across India.',
 } as const;
 
 /** Contact details. */
@@ -107,10 +129,19 @@ export const hero = {
   badges: ['Enterprise Grade Solutions', '24/7 Support'],
 } as const;
 
-/** Section intro shared by the Home competencies preview and the Services page. */
+/**
+ * Section intro shared by the Home competencies preview and the Services page.
+ *
+ * The title used to read "Comprehensive technology, engineered as one system",
+ * which put "Comprehensive technology" twice in two adjacent lines — once in a
+ * 40px heading and again in the sentence directly beneath it. The SUB is
+ * Procedo's own wording from the old site and stays; the title is ours, so the
+ * title moved. "Five disciplines" also says something the old line did not: how
+ * many there are, which is the first question the section raises.
+ */
 export const competenciesIntro = {
   eyebrow: 'Our core competencies',
-  title: 'Comprehensive technology, engineered as one system',
+  title: 'Five disciplines, engineered as one system',
   sub: 'Comprehensive technology solutions designed to transform how your business operates.',
 } as const;
 
@@ -432,6 +463,42 @@ export const receptionBand = {
 export const contactStatement =
   'Tell us what you’re planning — we’ll help you scope the right solution. No pressure, just expert guidance.';
 
+/**
+ * The rest of the Contact page and its form: two column headings, the form's
+ * own heading and lead, and what the visitor sees after a message sends.
+ *
+ * All of it was hard-coded in contact.astro and ContactForm.astro until
+ * 2026-09-18, which broke #2 — the page a prospective client is most likely to
+ * read carefully was the one page a non-developer could not edit. None of it is
+ * a claim about Procedo, so none of it is a rule #1 problem; it is furniture,
+ * and furniture still belongs in this file.
+ *
+ * `subjects` is the "What's this about?" dropdown. The five service entries are
+ * DELIBERATELY shorter than the competency titles they point at — a <select>
+ * option that reads "Digital Workplace Services & Field Operations" is unusable
+ * on a phone. They are listed here rather than derived from `competencies` for
+ * that reason, and because the first option is not a service at all. Keep the
+ * order the same as `competencies` so the form and the page agree.
+ */
+export const contactCopy = {
+  directTitle: 'Reach us directly',
+  officeTitle: 'Office',
+  helpTitle: 'What we can help with',
+  formTitle: 'Send us a message',
+  formIntro: 'Share a few details and the right engineer will get back to you.',
+  successTitle: 'Message received',
+  successBody:
+    'It’s landed with the right team. We’ll be in touch shortly — nothing else needed from you.',
+  subjects: [
+    'General enquiry',
+    'Digital Workplace Services',
+    'Datacenter Infrastructure',
+    'IT Infrastructure',
+    'Facilities Security',
+    'Audio & Video Conferencing',
+  ],
+} as const;
+
 /** Closing call-to-action band. */
 export const closingCta = {
   heading: 'Ready to Future-Proof Your Business?',
@@ -530,7 +597,12 @@ export const company = {
     {
       icon: 'lucide:lock',
       title: 'Security First',
-      body: 'We prioritize the protection of your critical infrastructure and data above all else.',
+      /* Restored to Procedo's full sentence on 2026-09-18. It had been cut
+         after "above all else", and it was the ONLY one of the six that did not
+         match the old site's bundle word for word — the other five are verbatim.
+         The dropped clause is the half that says what Procedo actually does
+         about it. */
+      body: 'We prioritize the protection of your critical infrastructure and data above all else, implementing enterprise-grade security measures in every solution.',
     },
     {
       icon: 'lucide:sparkles',
@@ -613,6 +685,18 @@ export const careers = {
   intro:
     'Help us build scalable digital infrastructure, secure smart environments, and immersive communication spaces.',
   cultureTitle: 'Why work with us',
+  /*
+   * There is deliberately NO intro paragraph under this heading. One used to be
+   * hard-coded in careers.astro — "We are a small, senior team, which means your
+   * work is visible, your decisions carry weight, and you learn across every
+   * layer of the stack" — and it was removed on 2026-09-18 under rule #1. It is
+   * a claim about how many people work at Procedo and how senior they are, and
+   * it appears in no verified source; the old site's careers page had the intro
+   * line above, these four bullets and the roles, and nothing else. The bullets
+   * carry the section perfectly well on their own.
+   *
+   * If Procedo wants a line here, it has to come from Procedo.
+   */
   culture: [
     'Innovation-driven culture that values creative solutions.',
     'Collaborative environment focused on continuous growth.',
@@ -654,6 +738,14 @@ export const careers = {
       body: 'Develop ML models, analyze complex data sets, and deliver actionable insights that drive business decisions.',
     },
   ] satisfies Role[],
+  /**
+   * The open-application card at the foot of the page, beside CareersScene.
+   * Hard-coded in careers.astro until 2026-09-18, which broke #2 — a
+   * non-developer could not have changed either line.
+   */
+  openTitle: 'Don’t see your role?',
+  openBody:
+    'Send us your CV and a short note on what you’d like to build. We keep good people in mind for upcoming projects.',
   applyEmail: 'contact@procedoinfo.com',
 } as const;
 
@@ -667,6 +759,33 @@ export const contactForm = {
  *  Legal pages — real policy text carried over from the previous Procedo site.
  *  ⚠️ Have these reviewed by your legal advisor before go-live, and keep the
  *  `updated` date current whenever you change the text.
+ *
+ *  ⚠️ ONE THING FOR THAT REVIEW, measured 2026-09-18.
+ *
+ *  THIS SITE SETS NO COOKIES. Checked in a real browser on the built output:
+ *  document.cookie is empty, localStorage and sessionStorage are empty, and no
+ *  third-party script is loaded on any page. `analytics.provider` is 'none',
+ *  there is no consent banner, and the contact form is a plain POST to
+ *  Web3Forms. Nothing on the site stores anything on a visitor's device.
+ *
+ *  The Cookie Policy below nevertheless says Procedo uses cookies to understand
+ *  how you use the website, remember your preferences and "provide relevant
+ *  content or ads", and lists analytics and preference cookies as types in use.
+ *  The Privacy Policy lists cookies under information collected, and mentions
+ *  newsletters and marketing material, for which the site has no mechanism.
+ *
+ *  That is the old React site's policy describing the old React site. It is not
+ *  a compliance exposure in the dangerous direction — the risk is undisclosed
+ *  tracking, and there is none — but it is untrue today, on a page whose whole
+ *  job is to be true, and a visitor can verify it in ten seconds.
+ *
+ *  NOT CHANGED HERE ON PURPOSE. It is verified Procedo copy under rule #1, a
+ *  lawyer has to sign these off before go-live anyway, and every word becomes
+ *  accurate again the moment `analytics.provider` is set to anything. So it is
+ *  ONE question for that same review rather than an edit made on our own:
+ *  does the site launch with analytics or without? Answer that first, then fix
+ *  the policy to match — and if the answer is GA4, note that GA4 sets cookies
+ *  and therefore needs a consent banner that does not exist yet.
  * ========================================================================== */
 
 export interface LegalSection {

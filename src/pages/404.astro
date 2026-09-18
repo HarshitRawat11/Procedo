@@ -2,14 +2,18 @@
 /* ============================================================================
  *  404 — page not found.
  *
- *  Uses the QuietScene illustration (cat asleep on a humming rack). The joke
- *  lands because the scene says "everything is fine" while the page you asked
- *  for is the one thing that isn't there.
+ *  Uses the UptimeScene illustration — a storm outside, the lamp still burning,
+ *  the cat asleep through it. The joke lands because the scene says "everything
+ *  is fine" while the page you asked for is the one thing that isn't there.
+ *  (It carried QuietScene until 2026-09-18; that scene is still live on
+ *  /our-mission and the contact success card.)
  *
- *  This is where the QuietScene illustration now lives on the real site (the
- *  standalone /quiet concept page it came from has been deleted). It sits inside
- *  BaseLayout so the header and footer are present — someone who lands here by
- *  mistake needs a way back out.
+ *  It sits inside BaseLayout so the header and footer are present — someone who
+ *  lands here by mistake needs a way back out.
+ *
+ *  All of the copy is in site.ts as `notFound`, per rule #2. It was hard-coded
+ *  here until 2026-09-18, which is how the heading came to be a rack joke long
+ *  after the rack had left the page.
  *
  *  Astro emits this as dist/404.html, which static hosts (Netlify, Vercel,
  *  Cloudflare Pages, nginx) serve automatically for unmatched routes.
@@ -25,13 +29,20 @@ import { notFound } from '../data/site';
   <section class="bg-cream py-12 lg:py-16">
     <Container>
       <div class="mx-auto flex max-w-xl flex-col items-center text-center">
+        {/*
+          The three-line stack above the art. The gaps were mt-4 / mt-4 — 16px
+          under a 40px heading — and Harshit's word for it was "conjested".
+          They are mt-5 now, and the art sits 48px below rather than 40, which
+          is the same step the rest of the site uses between a heading and the
+          thing it introduces.
+        */}
         <p class="font-mono text-xs uppercase tracking-[0.18em] text-brand-700">
           {notFound.eyebrow}
         </p>
-        <h1 class="mt-4 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-tight text-navy-950">
+        <h1 class="mt-5 text-[clamp(1.75rem,4vw,2.5rem)] font-semibold leading-tight text-navy-950">
           {notFound.title}
         </h1>
-        <p class="mt-4 text-lg leading-relaxed text-slate-600">{notFound.body}</p>
+        <p class="mt-5 text-lg leading-relaxed text-slate-600">{notFound.body}</p>
 
         {/*
           UptimeScene, adopted here 2026-09-18. It is the right picture for a
@@ -40,14 +51,21 @@ import { notFound } from '../data/site';
           message this page has to carry.
 
           It replaced QuietScene, which is still live on /our-mission and the
-          contact success card. `surface="bare"` matches how QuietScene sat here;
-          the panel would fight a page that is already a centred column.
+          contact success card.
+
+          `surface="panel"` — the component's own default, so the prop is simply
+          gone — puts it on the grey band tone inside a hairline, which is how
+          QuietScene sits on /our-mission. Harshit asked for that on 2026-09-18.
+          It earns its place beyond matching: the scene's own sky is a pale grey
+          blue, and on bare cream the window had nothing to sit against, so the
+          storm read as a hole in the page rather than as weather seen through
+          glass. max-w-md rather than max-w-sm because the panel adds 20px of
+          padding a side; at max-w-sm the art would have lost that much width.
         */}
         <UptimeScene
           chip={notFound.chip}
           caption={notFound.caption}
-          surface="bare"
-          class="mt-10 w-full max-w-sm"
+          class="mt-12 w-full max-w-md"
         />
 
         <div class="mt-10 flex flex-col gap-3 sm:flex-row">

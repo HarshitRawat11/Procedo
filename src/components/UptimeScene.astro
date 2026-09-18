@@ -246,7 +246,25 @@ const CAT_BACK = 'M124 228 C124 198 144 184 168 184 C186 184 200 190 208 202 C18
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin: 0;
+    /* NO `margin: 0` HERE. It was, and it silently ate every margin utility a
+       caller passed in `class` — the 404's own mt-12 computed to 0px, which is
+       most of what Harshit meant by the content above being "conjested".
+
+       Astro compiles a scoped rule to `.uptime[data-astro-cid-x]` and leaves it
+       UNLAYERED, while Tailwind's utilities sit in @layer utilities, and an
+       unlayered rule beats a layered one whatever the specificity. So the
+       component wins that fight every time and the caller has no way to know.
+       Even `:where(.uptime)` would win it, because the layer is decided before
+       specificity is looked at.
+
+       It was also redundant: Tailwind's preflight already carries
+       `*, ::before, ::after, ::backdrop { margin: 0 }` in @layer base, which is
+       what actually zeroes the <figure> UA margin. Utilities beat base, so
+       removing this line lets mt-* through and changes nothing else.
+
+       The five other scene components still carry the same line. None of them
+       is passed a margin today, so none of them is broken; if you ever pass one
+       a mt-* and it does nothing, this is why. */
   }
   .uptime--panel {
     border: 1px solid var(--color-line);

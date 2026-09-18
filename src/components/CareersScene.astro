@@ -51,6 +51,13 @@
  *  · The working paw must BREAK the mouse's outline, not sit inside it. The
  *    first cut had it wholly within, and it read as a hole cut in the mouse
  *    rather than a paw resting on one.
+ *  · The mouse and the paw MOVE TOGETHER, in two `.mousing` groups sharing one
+ *    keyframe. They are two groups rather than one only because the cat is
+ *    drawn between them and has to stay there. If you add anything to the mouse
+ *    — a scroll wheel, a second button — it goes inside the first group, or it
+ *    will sit still while the mouse slides out from under it.
+ *  · The mouse's LEAD starts at x=242, under the body, and is drawn before it.
+ *    That is what lets the mouse travel without the cable detaching from it.
  * ========================================================================== */
 interface Props {
   /** Unique per instance — several on one page must not share a title id. */
@@ -157,10 +164,23 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
       <circle class="pip" cx="265" cy="218" r="2.2" fill={GREEN} />
       <path d="M271 218 H289" stroke={DEVICE} stroke-width={W_FINE} />
 
-      <!-- ══ MOUSE — under the paw, its lead running to the monitor foot ══ -->
-      <path d="M252 232 C257 231 261 233 266 235" stroke={ENVLINE} stroke-width={W_FINE} />
-      <path d={MOUSE_BODY} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
-      <path d="M240 226 L240 231" stroke={ENVLINE} stroke-width={W_FINE} />
+      <!-- ══ MOUSE — under the paw, its lead running to the monitor foot.
+               The mouse and the paw both sit in `.mousing` groups, which share
+               one keyframe, so they travel together; the body and its button
+               split are one group and the paw is another only because the cat
+               is drawn between them and has to stay between them.
+
+               THE LEAD STARTS AT x=242, UNDER THE BODY, and is drawn before it.
+               It used to start at 252, on the body's right edge — fine while
+               the mouse was still, and a cable detaching from its own mouse the
+               moment it moved. At ±6 the body spans 222–258, so 242 is covered
+               at both extremes; what the eye sees is the visible length of
+               cable growing and shrinking, which is what slack does. ══ -->
+      <path d="M242 233 C250 231 258 232 266 235" stroke={ENVLINE} stroke-width={W_FINE} />
+      <g class="mousing">
+        <path d={MOUSE_BODY} fill={DEVICE} stroke={NAVY} stroke-width={W_SUBJ} />
+        <path d="M240 226 L240 231" stroke={ENVLINE} stroke-width={W_FINE} />
+      </g>
 
       <!-- ══ CAT — QuietScene's own drawing, moved onto the desk by one
                translate, exactly as the contact scene does it. ══ -->
@@ -195,8 +215,13 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
         </g>
       </g>
 
-      <!-- the working paw, out on the mouse -->
-      <ellipse class="paw" cx="228" cy="228" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+      <!-- The working paw, out on the mouse. Two nested transforms: the outer
+           group travels with the mouse, the ellipse clicks. They compose, which
+           is exactly why the travel is NOT on the ellipse itself — a second
+           animation on one element replaces the first rather than adding to it. -->
+      <g class="mousing">
+        <ellipse class="paw" cx="228" cy="228" rx="6.5" ry="3.5" fill={FUR} stroke={NAVY} stroke-width={W_SUBJ} />
+      </g>
 
       <!-- ══ PLANT — RIGHT, between the desk and the grass. It stood on the left
                until 2026-09-14, as a counterweight to the dark screen, which
@@ -277,49 +302,90 @@ const MOUSE_BODY = 'M228 236 C228 230 233 226 240 226 C247 226 252 230 252 236 Z
        plant and grass) is shared across the whole site and lives in
        src/styles/scene-motion.css. Change a timing there, not here.
 
-       Harshit asked for "cat moving and clicking mouse a bit", and the two are
-       one gesture — so the paw and the head share a duration and their
-       keyframes line up: the head leans in, the paw double-clicks, both
-       settle. */
+       Harshit, 2026-09-18: "careers image the cat should be moving the mouse
+       back and forth and clicking." It was clicking a mouse that never moved,
+       which reads as a twitch rather than as work. So there are now three
+       keyframes on ONE 5.6s clock, and the order is the sentence: the mouse
+       travels right, then left, then settles, and only THEN is it clicked. A
+       click during the travel would read as a mis-click; a click that arrives
+       after the pointer stops reads as a decision.
+
+       Amplitude is ±6 user units, and the two limits are real. At -6 the paw's
+       left edge is 7 units clear of the cat's body contour; at +6 the mouse's
+       right edge is 10 clear of the monitor foot. Past either, the drawing
+       collides with itself. */
+    .mousing {
+      animation: mouseSlide 5.6s ease-in-out infinite;
+    }
+    @keyframes mouseSlide {
+      0%,
+      4%,
+      62%,
+      100% {
+        transform: translateX(0);
+      }
+      20% {
+        transform: translateX(6px);
+      }
+      38% {
+        transform: translateX(-6px);
+      }
+      52% {
+        transform: translateX(2px);
+      }
+    }
+
     .paw {
       transform-box: fill-box;
       transform-origin: 50% 50%;
-      animation: click 3.4s ease-in-out infinite;
+      animation: click 5.6s ease-in-out infinite;
     }
     @keyframes click {
       0%,
-      66%,
+      64%,
       100% {
         transform: translateY(0);
       }
-      71% {
+      69% {
         transform: translateY(2.6px);
       }
-      76% {
+      74% {
         transform: translateY(0);
       }
-      81% {
+      79% {
         transform: translateY(2.6px);
       }
-      86% {
+      84% {
         transform: translateY(0);
       }
     }
 
     /* .head carries no transform ATTRIBUTE, so this has nothing to clobber —
-       the static placement is on the cat's parent group. */
+       the static placement is on the cat's parent group. It tracks the mouse
+       sideways on the same clock — a tenth of the mouse's own travel, which is
+       enough to read as attention and not enough to read as a head wobble —
+       then leans in for the two clicks. */
     .head {
-      animation: peer 3.4s ease-in-out infinite;
+      animation: peer 5.6s ease-in-out infinite;
     }
     @keyframes peer {
       0%,
-      62%,
+      4%,
       100% {
         transform: translate(0, 0);
       }
-      72%,
+      20% {
+        transform: translate(0.9px, 0);
+      }
+      38% {
+        transform: translate(-0.8px, 0);
+      }
+      62% {
+        transform: translate(0, 0);
+      }
+      70%,
       84% {
-        transform: translate(0.9px, 1.2px);
+        transform: translate(0, 1.2px);
       }
       92% {
         transform: translate(0, 0);

@@ -6,19 +6,19 @@ import ClosingCta from '../components/ClosingCta.astro';
 import { Icon } from 'astro-icon/components';
 import RackScene from '../components/RackScene.astro';
 import { competencies, competenciesIntro } from '../data/site';
-import { graph, breadcrumbs, services, organizationRef } from '../lib/schema';
+import { graph, breadcrumbs, services } from '../lib/schema';
 
-/* The five competencies as Service nodes, each anchored to its own section. */
-const schema = graph(
-  breadcrumbs([{ name: 'Services', path: '/services' }]),
-  services(),
-  organizationRef,
-);
+/* The five competencies as Service nodes, each anchored to its own section.
+   The Service nodes name the Organization as their provider by @id, and that
+   @id now resolves inside this same document because BaseLayout emits the full
+   Organization node on every page — which is why `organizationRef`, the stub
+   that used to stand in for it here, is gone. */
+const schema = graph(breadcrumbs([{ name: 'Services', path: '/services' }]), services());
 ---
 
 <BaseLayout
   title="Services"
-  description="Five core competencies — IT infrastructure, facilities security, AV & conferencing, digital workplace services, and datacenter infrastructure — engineered as one."
+  description="Five core competencies — IT infrastructure, facilities security, AV, digital workplace and datacenter infrastructure — engineered as one system."
 >
   <script type="application/ld+json" slot="head" is:inline set:html={JSON.stringify(schema)} />
 

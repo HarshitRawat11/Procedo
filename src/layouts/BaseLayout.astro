@@ -11,6 +11,7 @@ import Analytics from '../components/Analytics.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
+import { graph, organization, website } from '../lib/schema';
 
 interface Props {
   title?: string;
@@ -30,7 +31,25 @@ const {
 
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const ogImage = new URL(image, site.url).href;
-const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.tagline}`;
+const fullTitle = title ? `${title} | ${site.name}` : site.homeTitle;
+
+/*
+ * Organization + WebSite on EVERY page, not just the home page.
+ *
+ * It used to be emitted from index.astro alone, and the inner pages carried a
+ * BreadcrumbList and nothing else — so a crawler arriving on /contact or
+ * /services straight from a search result (which is how most of them arrive)
+ * got no address, no phone, no service area and no logo. Those pages referred
+ * to the Organization by @id across documents, and Google resolves a
+ * cross-document @id unreliably at best.
+ *
+ * Pages still add their own graph in the `head` slot for what is specific to
+ * them — the breadcrumb trail, and the Service list on /services. Two ld+json
+ * blocks on one page is valid and is how most sites do this.
+ *
+ * Skipped on noindex pages: the 404 has nothing to say to an index.
+ */
+const baseSchema = noindex ? null : graph(organization, website);
 ---
 
 <!doctype html>
@@ -54,6 +73,12 @@ const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.t
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
+    {/* LinkedIn and Facebook render the card immediately when the dimensions are
+        declared; without them they queue a fetch and often show no image on the
+        first share. og-default.png is 1200x630, the size both expect. */}
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.legalName} — ${site.tagline}`} />
     <meta property="og:locale" content="en_IN" />
 
     <!-- Twitter -->
@@ -61,6 +86,12 @@ const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.t
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={`${site.legalName} — ${site.tagline}`} />
+
+    {/* Organization + WebSite, on every indexable page. See the note above. */}
+    {baseSchema && (
+      <script type="application/ld+json" is:inline set:html={JSON.stringify(baseSchema)} />
+    )}
 
     <slot name="head" />
 

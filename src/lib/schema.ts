@@ -80,6 +80,12 @@ export const organization = {
  * @id (the Service nodes name it as their provider) resolves the reference
  * inside its own document rather than relying on a validator following the
  * @id to the home page.
+ *
+ * ⚠️ NO LIVE PAGE USES THIS ANY MORE. Since 2026-09-18 BaseLayout emits the
+ * full `organization` node on every indexable page, so the @id always resolves
+ * in-document and a stub beside it would be a second node with the same @id.
+ * It is kept only because the parked `_services-preview` still imports it, and
+ * `astro check` type-checks parked pages. Delete both together.
  */
 export const organizationRef = {
   '@type': 'Organization',

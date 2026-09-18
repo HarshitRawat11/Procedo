@@ -5,7 +5,14 @@ import PageHeader from '../components/PageHeader.astro';
 import ContactForm from '../components/ContactForm.astro';
 import ReceptionScene from '../components/ReceptionScene.astro';
 import { Icon } from 'astro-icon/components';
-import { contact, competencies, directionsHref, whatsappHref } from '../data/site';
+import {
+  contact,
+  competencies,
+  contactCopy,
+  contactStatement,
+  directionsHref,
+  whatsappHref,
+} from '../data/site';
 import { graph, breadcrumbs } from '../lib/schema';
 
 const telHref = 'tel:' + contact.phone.replace(/[^+\d]/g, '');
@@ -65,7 +72,7 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
   <PageHeader
     eyebrow="Contact"
     title="Let’s talk about your systems"
-    subtitle="Tell us what you’re planning — we’ll help you scope the right solution. No pressure, just expert guidance."
+    subtitle={contactStatement}
   >
     <div slot="aside" class="mx-auto w-full max-w-[20rem] lg:ml-auto lg:mr-0">
       <ReceptionScene id="contact-header" />
@@ -81,7 +88,7 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
       <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
         <!-- Direct channels -->
         <div data-reveal>
-          <h2 class="text-xl font-semibold text-navy-950">Reach us directly</h2>
+          <h2 class="text-xl font-semibold text-navy-950">{contactCopy.directTitle}</h2>
           <div class="mt-6 space-y-4">
             {
               channels.map((c) => (
@@ -110,7 +117,7 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
                   </span>
                   <span class="min-w-0">
                     <span class="block text-xs font-medium uppercase tracking-wider text-slate-500">
-                      Office
+                      {contactCopy.officeTitle}
                     </span>
                     <span class="block font-medium leading-relaxed text-navy-900">
                       {contact.address}
@@ -138,7 +145,7 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
           <!-- What we can help with -->
           <div class="mt-10 rounded-xl border border-line bg-band p-6">
             <h3 class="font-mono text-xs uppercase tracking-wider text-navy-700">
-              What we can help with
+              {contactCopy.helpTitle}
             </h3>
             <ul class="mt-3.5 flex flex-wrap gap-2">
               {
@@ -164,10 +171,8 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
           style="--reveal-delay:100ms"
           class="rounded-2xl border border-line bg-white p-6 shadow-sm sm:p-8"
         >
-          <h2 class="text-xl font-semibold text-navy-950">Send us a message</h2>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">
-            Share a few details and the right engineer will get back to you.
-          </p>
+          <h2 class="text-xl font-semibold text-navy-950">{contactCopy.formTitle}</h2>
+          <p class="mt-2 text-sm leading-relaxed text-slate-600">{contactCopy.formIntro}</p>
           <div class="mt-7">
             <ContactForm />
           </div>

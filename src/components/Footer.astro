@@ -112,7 +112,14 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
     <div
       class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line pt-7 text-sm text-slate-600 sm:flex-row"
     >
-      <p>© {year} {site.legalName}. All rights reserved.</p>
+      {/*
+        `legalName` ends in "Pvt. Ltd." — a full stop of its own — so appending
+        another produced "Pvt. Ltd.. All rights reserved." on every page of the
+        site. Strip one trailing stop rather than dropping the period from the
+        name, which is part of the registered name and is correct everywhere
+        else it appears.
+      */}
+      <p>© {year} {site.legalName.replace(/\.$/, '')}. All rights reserved.</p>
       <nav aria-label="Legal" class="flex items-center gap-5">
         <a href="/privacy" class="transition-colors hover:text-navy-900">Privacy</a>
         <a href="/terms" class="transition-colors hover:text-navy-900">Terms</a>
