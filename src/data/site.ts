@@ -390,7 +390,17 @@ export const notFound = {
   title: 'This page didn’t come back up',
   body: 'The address you followed doesn’t exist, or it moved. Everything else is running exactly as it should.',
   chip: 'All other systems nominal',
-  caption: 'Power cut at 3am. Nobody noticed.',
+  /*
+   * "Power cut at 3am. Nobody noticed." until 2026-09-18, when Harshit asked
+   * for something cleverer. That line was written for the SCENE, and it is
+   * still the scene's own caption on `_uptime` — but on a 404 it described the
+   * weather and left the page unmentioned, so the joke never closed.
+   *
+   * This one closes it, and it only works with this picture: the lamp is the
+   * one warm thing in the frame and the whole argument the drawing makes. Six
+   * words, two clauses, no adjectives — the register the tone note asks for.
+   */
+  caption: 'The lamp stayed on. The page did not.',
 } as const;
 
 /**

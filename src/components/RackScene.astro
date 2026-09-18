@@ -48,12 +48,30 @@
  *      is built on, for the same reason. A paw wholly inside a shape reads as a
  *      hole cut in it.
  *
- *  There is no foreleg, which is also CareersScene's answer: at this size a
- *  limb is four dark pixels of noise and the paw alone reads. The paw overlaps
- *  the body's lower-right corner, so it is attached rather than floating.
+ *  A BARE PAW ELLIPSE WAS TRIED FIRST AND WAS WRONG. The theory was that
+ *  CareersScene's paw needs no limb, so this one would not either. It does not
+ *  transfer: there the paw sits ON the mouse and beside the head, and the mouse
+ *  explains it. Here it had a flat faceplate under it and nine units of cream
+ *  between it and the cat, and it read as a stray white blob — a second muzzle,
+ *  if anything. The foreleg below is the fix, and it is drawn BEFORE the body so
+ *  the body and head lie over its top half and only the reaching part shows.
  *
- *  The LEDs are now ON THE PAW'S CLOCK — same 4.2s, firing just after each tap
- *  — so the picture argues that the cat is the reason they changed.
+ *  ── THE ANIMATION, SECOND VERSION (2026-09-18, same day) ────────────────────
+ *  Harshit asked for a different gesture. It is a different ACTION, not the same
+ *  one retimed:
+ *
+ *      was   two quick taps in one spot; all three lights blink together
+ *      now   one deliberate press and hold; the lights then run left to right
+ *            twice; the cat tilts its head at them; back to work
+ *
+ *  The press is a ROTATION about the shoulder rather than a translate, and the
+ *  reason is structural: the shoulder is the point the body conceals, and it is
+ *  now the pivot, so the hidden end CANNOT move at any angle and nothing can
+ *  peek out from under the body at the bottom of a press. A translate had to be
+ *  kept small to avoid exactly that. A limb that pivots at the shoulder is also
+ *  what a foreleg does.
+ *
+ *  Everything is on one 7s clock. Full reasoning in the <style> block.
  *
  *  ── HOW IT DIFFERS FROM QuietScene, DELIBERATELY ────────────────────────────
  *  QuietScene (/our-mission and the contact card) is also a cat and a rack, so
@@ -452,81 +470,110 @@ const portRow = (x0: number, y: number, n: number, w = 11, h = 9, gap = 6, r = 1
        the cloud) is shared across the site and lives in
        src/styles/scene-motion.css. Nothing here duplicates it.
 
-       All three keyframes run on ONE 4.2s clock, which is the whole trick: the
-       head leans in, the paw taps twice, and the lights answer a beat later. On
-       three different durations the same three movements would drift apart and
-       read as a cat near a switch rather than a cat operating one. This is
-       CareersScene's approach, at CareersScene's amplitudes. */
-    /* No transform-box here: this is a plain translate, which does not need an
-       origin, and .paw sits inside the cat group alongside .breathe — two
-       fill-box origins in one subtree is the thing scene-motion.css warns
-       about. */
+       ── SECOND VERSION, 2026-09-18. Harshit asked for a different gesture,
+       and this is a different ACTION rather than the same one retimed:
+
+         was   two quick taps in one spot; all three lights blink together
+         now   one deliberate press and hold; the lights then run left to right
+               twice; the cat tilts its head at them; back to work
+
+       The press is a ROTATION about the shoulder rather than a translate, and
+       that is not decoration. The foreleg is drawn behind the body precisely so
+       its top end stays hidden, and the shoulder IS the pivot — so the concealed
+       end cannot move, at any angle, and nothing can peek out from under the
+       body at the bottom of the press. Translating the limb risked exactly that
+       and had to be kept small to avoid it. A limb pivoting at the shoulder is
+       also what a foreleg does.
+
+       One 7s clock for all five keyframed things. On separate durations the
+       press, the sweep and the tilt drift apart within a minute and the scene
+       stops being one sentence. */
+
+    /* transform-origin 0% 0% IS the shoulder, exactly. `fill-box` uses the
+       OBJECT bounding box, which excludes the stroke — so for this path it is
+       x[240,263] y[122,134], whose top-left corner is the path's own start
+       point at (240 122). Change the `d` and this origin moves with it.
+
+       Three fill-box origins now live in this cat (.paw, .breathe, .head). They
+       are SIBLINGS, not nested, which is the distinction scene-motion.css draws:
+       a transformed child inside another fill-box element moves its parent's
+       bounding box and feeds back. Keep them siblings. */
     .paw {
-      animation: tap 4.2s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: 0% 0%;
+      animation: press 7s ease-in-out infinite;
     }
-    @keyframes tap {
+    @keyframes press {
       0%,
-      58%,
+      26%,
+      52%,
       100% {
-        transform: translateY(0);
+        transform: rotate(0deg);
       }
-      63% {
-        transform: translateY(2.4px);
-      }
-      68% {
-        transform: translateY(0);
-      }
-      73% {
-        transform: translateY(2.4px);
-      }
-      78% {
-        transform: translateY(0);
+      /* 6 degrees at a 26-unit radius carries the paw 2.3 units down and 1.4
+         in — the old tap's travel, on an arc instead of a straight line. */
+      33%,
+      43% {
+        transform: rotate(6deg);
       }
     }
 
-    /* .head carries no transform ATTRIBUTE — the static placement is on the
-       cat's parent group — so this has nothing to clobber. */
+    /* The head leans into the press, then TILTS at what the lights are doing.
+       The tilt is the part that makes this read as a cat rather than a
+       mechanism, and it is the one movement in the scene that is not work.
+       Origin 50% 100% is the bottom centre of the head's box, which is where
+       the head meets the body. .head carries no transform ATTRIBUTE — the
+       static placement is on the cat's parent group — so there is nothing here
+       for the animation to clobber. */
     .head {
-      animation: peer 4.2s ease-in-out infinite;
+      transform-box: fill-box;
+      transform-origin: 50% 100%;
+      animation: tilt 7s ease-in-out infinite;
     }
-    @keyframes peer {
+    @keyframes tilt {
       0%,
-      54%,
+      22%,
+      88%,
       100% {
-        transform: translate(0, 0);
+        transform: translate(0, 0) rotate(0deg);
       }
-      64%,
-      80% {
-        transform: translate(0.8px, 1.1px);
+      33%,
+      43% {
+        transform: translate(0, 1.1px) rotate(0deg);
       }
-      88% {
-        transform: translate(0, 0);
+      57%,
+      76% {
+        transform: translate(0, -0.8px) rotate(-7deg);
       }
     }
 
-    /* The lights answer. Same 4.2s, dropping out just AFTER the first tap, and
-       the two delays make it ripple left to right rather than snap as a block. */
+    /* The switch answers, starting a beat AFTER the press finishes at 43%. A
+       dark pulse travels left to right, twice.
+
+       It is a DIP from full rather than a rise from dim, deliberately: these
+       three dots are the only saturated colour in the drawing, and holding them
+       at partial opacity for most of the loop would mute the one hit of green
+       the scene has. Resting state stays exactly as it was. */
     .led {
-      animation: blink 4.2s steps(1, end) infinite;
+      animation: chase 7s ease-in-out infinite;
     }
     .led-2 {
-      animation-delay: 0.15s;
-    }
-    .led-3 {
       animation-delay: 0.3s;
     }
-    @keyframes blink {
+    .led-3 {
+      animation-delay: 0.6s;
+    }
+    @keyframes chase {
       0%,
-      64% {
-        opacity: 1;
-      }
-      67%,
-      74% {
-        opacity: 0.35;
-      }
-      77%,
+      44%,
+      55%,
+      66%,
       100% {
         opacity: 1;
+      }
+      49%,
+      60% {
+        opacity: 0.25;
       }
     }
   }

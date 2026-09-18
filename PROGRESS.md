@@ -89,6 +89,60 @@ Nothing is blocked on code.
 
 ## Log
 
+### 2026-09-18 (last) — a second gesture for the rack cat, and a better 404 line
+
+**A different action, not the same one retimed.** *"can i have some other cat
+working animation of the service image"*:
+
+    was   two quick taps in one spot; all three lights blink together
+    now   one deliberate press and hold; the lights then run left to right
+          twice; the cat tilts its head at them; back to work
+
+**The press is a rotation about the shoulder, and that is structural rather than
+stylistic.** The foreleg is drawn behind the body specifically so its top end
+stays hidden — and the shoulder is now the pivot, so the concealed end CANNOT
+move at any angle. Nothing can peek out from under the body at the bottom of a
+press, which is the failure a translate has to be kept small to avoid. It is
+also what a foreleg actually does.
+
+`transform-origin: 0% 0%` lands exactly on the shoulder, and the reason is worth
+knowing: `transform-box: fill-box` uses the OBJECT bounding box, which EXCLUDES
+the stroke. For this path that box is x[240,263] y[122,134], and its top-left
+corner is the path's own start point. Edit the `d` and the origin follows it.
+
+Six degrees at a 26-unit radius carries the paw 2.3 units down and 1.4 in — the
+old tap's travel, on an arc instead of a straight line.
+
+There are now three fill-box origins inside this cat (`.paw`, `.breathe`,
+`.head`). They are **siblings**, which is the distinction `scene-motion.css`
+draws: a transformed child *inside* another fill-box element moves its parent's
+box and feeds back. Nesting is the hazard; siblings are fine.
+
+The head tilt is the one movement in the scene that is not work, and it is what
+keeps the thing reading as a cat rather than a mechanism. The LED sweep is a DIP
+from full rather than a rise from dim, deliberately — those three dots are the
+only saturated colour in the drawing, and holding them at partial opacity for
+most of a 7s loop would mute the scene's one hit of green.
+
+Verified by seeking each animation through its keyframes in a real browser
+(6.00° at 33–43%, −7.00° on the head at 57–76%, the dip arriving at led-1 before
+led-3), and by baking the two extreme poses into the built SVG and rendering
+them at 1000px — a 6-degree rotation is four pixels at the scene's real 320px
+width, which is not a size at which "does the shoulder stay hidden" can be
+answered. It does. Gate 1b unchanged at 75.5% cream / 4.8% dark: nothing moved
+except transforms.
+
+**The 404 caption.** *"write something clever other than power cut line"*:
+
+    was   Power cut at 3am. Nobody noticed.
+    now   The lamp stayed on. The page did not.
+
+The old line was written for the SCENE and is still the scene's own caption on
+`_uptime`. On a 404 it described the weather and never mentioned the page, so
+the joke never closed. The new one closes it, and only works with this picture —
+the lamp is the one warm thing in the frame and the whole argument the drawing
+makes. Six words, two clauses, no adjectives.
+
 ### 2026-09-18 (later) — both cats go to work, and the head gets a gate
 
 Six things from Harshit in one message. Four were done; two are questions for
