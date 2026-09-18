@@ -356,8 +356,7 @@ which is exactly what makes it easy to change by accident. Check it there if the
 `X-Robots-Tag` ever goes missing.
 
 `NODE_VERSION` is pinned to `22` as a project environment variable: Astro 6
-needs >= 18.20.8 / 20.3 / 22 and Pages defaults older. `netlify.toml` pinned the
-same value for the same reason.
+needs >= 18.20.8 / 20.3 / 22 and Pages defaults older.
 
 **A direct-upload project cannot be converted to a git-connected one.** The API
 refuses with `8000069 — "You cannot update the source object in a Direct Uploads
@@ -365,11 +364,18 @@ project"`, and the dashboard has no such option either. The project therefore
 had to be deleted and recreated under the same name to keep the URL. If this
 ever needs doing again, create it git-connected from the start.
 
-Netlify had refused every build since 14 September — six consecutive *"Skipped
-due to account credit usage exceeded"* — while its own API reported
+**Netlify is gone.** Deleted 2026-09-18 on Harshit's instruction, once the
+Cloudflare URL was signed off: the site, the repo connection and `netlify.toml`.
+Nothing was attached to it — no custom domain, no DNS zone, no form submissions
+(the contact form posts to Web3Forms) — so only the `.netlify.app` URL and its
+deploy history went with it.
+
+Why it went: it had refused every build since 14 September — six consecutive
+*"Skipped due to account credit usage exceeded"* — while its own API reported
 `credits used: 0`, so the last deploy it accepted was 19 commits stale. Direct
 uploads still worked, which is how the site was got current, but `--prod` came
-back `Forbidden` and only a `restoreSiteDeploy` call would publish.
+back `Forbidden` and only a `restoreSiteDeploy` call would publish. Do not treat
+this as a verdict on Netlify in general; it is a verdict on that account.
 
 **Two wrangler gotchas, both cost time on 2026-09-18:**
 
@@ -386,13 +392,9 @@ back `Forbidden` and only a `restoreSiteDeploy` call would publish.
    Workers static assets eventually.** When that happens, re-check `_headers`
    support first: the entire noindex design below depends on it.
 
-`netlify.toml` is kept as a fallback until Harshit says the Cloudflare URL is
-signed off, then it and the repo connection both go. Its header maps each of its
-parts to what replaced it.
-
 **THE ONE RULE THAT MATTERS HERE: the preview's `X-Robots-Tag: noindex, nofollow`
-must never be committed.** `netlify.toml` could hold it safely because it sat at
-the repo root and was never copied into `dist/`. Cloudflare Pages has no
+must never be committed.** The old `netlify.toml` could hold it safely because it
+sat at the repo root and was never copied into `dist/`. Cloudflare Pages has no
 root-level header config — its only mechanism is a `_headers` file *inside the
 build output*, so anything in it ships wherever the build ships. Put the noindex
 in `public/_headers` and the day procedoinfo.com launches from this repo, the

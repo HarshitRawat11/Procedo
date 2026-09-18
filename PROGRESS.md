@@ -34,7 +34,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
 | 14 | Design inspiration folder | ✅ | — | Images saved and renamed to the index 2026-09-05, verified by opening each. 11 of 12 present — ref 11 (two-hands) never made it in; ref 12 (Google Meet "meeting is safe") is new and now catalogued as ANALYSIS §8. Notes tracked in git, images stay local |
 | 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. Four scenes exist: QuietScene (404, contact success, `/our-mission`), UptimeScene (`/uptime`), the kept Power/Datacenter concept, and **DeskScene**, adopted on **Careers** 2026-09-07 — first illustration to clear the loop end to end |
-| 16 | Deployment | ✅ | — | **Preview is on Cloudflare Pages at https://procedoinfo-preview.pages.dev, git-connected, auto-deploying from `master` since 2026-09-18.** Build command `npm run build:preview`, output `dist`, `NODE_VERSION=22`. Left Netlify because it refused every build from 14 Sept — six consecutive *Skipped due to account credit usage exceeded* while its own API reported `credits used: 0`. A direct-upload project cannot be converted to git (API error 8000069), so it was deleted and recreated under the same name to keep the URL. **Watch the build command:** plain `npm run build` produces no noindex, and it is set in the Cloudflare project rather than in the repo, so changing it by accident is easy and invisible. Production on procedoinfo.com is still a separate, later decision |
+| 16 | Deployment | ✅ | — | **Preview is on Cloudflare Pages at https://procedoinfo-preview.pages.dev, git-connected, auto-deploying from `master` since 2026-09-18.** Build command `npm run build:preview`, output `dist`, `NODE_VERSION=22`. **Netlify removed the same day** — site deleted, repo disconnected, `netlify.toml` gone; nothing was attached to it (no custom domain, no DNS zone, no form submissions) so only the `.netlify.app` URL went with it. It had refused every build from 14 Sept — six consecutive *Skipped due to account credit usage exceeded* while its own API reported `credits used: 0`. **Watch the build command:** plain `npm run build` produces no noindex, and it lives in the Cloudflare project rather than the repo, so changing it by accident is easy and invisible. Production on procedoinfo.com is still a separate, later decision |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
 | 18 | Analytics | 🟡 | Wired; waiting on a provider | Wiring done 2026-09-12: `analytics` in `site.ts` plus `Analytics.astro`, supporting **Plausible**, **Umami** and **GA4**. Emits nothing at all while `provider` is `'none'` — turning it on is a two-line edit, no code change. Plausible/Umami are cookieless; **GA4 would require a cookie consent banner that does not exist**, so it must not be switched on without building one first. Provider choice is on the client (see `CLIENT-PENDING.txt`) |
 | 19 | Photography / real imagery | ✅ | — | **Decided 2026-08-30: no photography.** The illustration-and-icon style is a deliberate choice, not a gap. Revisit only if real project photos become available |
@@ -89,7 +89,39 @@ Nothing is blocked on code.
 
 ## Log
 
-### 2026-09-18 (last) — auto-deploy, and two settings that would have failed silently
+### 2026-09-18 (last) — Netlify removed
+
+*"remove netlify"*. Done, in this order, and the order was the point: the
+fallback only went once Cloudflare had been building from git for three
+consecutive pushes and serving the noindex from its own CI.
+
+**Looked before deleting.** The site carried no custom domain, no domain
+aliases, no DNS zone and no form submissions — the contact form posts to
+Web3Forms, not Netlify Forms — and its only environment variable was one named
+`DEPRECATED`. So the only things that went with it were the
+`procedoinfo-preview.netlify.app` URL and the deploy history, and the history is
+in git anyway.
+
+Removed: the site itself (API `deleteSite`), which also drops the repo
+connection, and `netlify.toml`. The local `.netlify/` CLI scratch directory went
+too — it was gitignored, but it is dead state pointing at a site that no longer
+exists.
+
+Verified: `procedoinfo-preview.netlify.app` now returns **404**, the account
+lists only `acharya-amit-puri` and `log-book-hr`, and Cloudflare built and
+published the commit that deleted `netlify.toml` — which is the check that
+matters, because it proves nothing in the build ever depended on that file.
+
+`public/robots.txt` stopped referring to netlify.toml on 2026-09-18 when the
+Cloudflare work started, so no dangling reference is left. `README.md` and
+`404.astro` still name Netlify, and correctly — both are generic lists of static
+hosts that can serve `dist/404.html`, not claims about where this site lives.
+
+**The history in this log stays as written.** The Netlify entries are a record of
+what happened and why the move was made; deleting them would leave the Cloudflare
+setup looking like an arbitrary choice rather than a forced one.
+
+### 2026-09-18 (later still) — auto-deploy, and two settings that would have failed silently
 
 **A push to `master` now builds and publishes.** Proven, not assumed: the commit
 that wired it is itself the first CI build, and the live URL is serving it.
