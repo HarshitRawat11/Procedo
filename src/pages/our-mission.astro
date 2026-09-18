@@ -52,7 +52,20 @@ const schema = graph(breadcrumbs([{ name: 'Our Mission', path: '/our-mission' }]
   <!-- Vision & Mission panels -->
   <section class="border-t border-line bg-band py-12 lg:py-16">
     <Container>
-      <div class="grid gap-6 lg:grid-cols-2 lg:items-start">
+      {/*
+        NO `lg:items-start` HERE, deliberately, and it is the one place on the
+        site where equal-height cards are wanted. CLAUDE.md's vertical-rhythm
+        note says a two-up panel whose halves carry different amounts of copy
+        should NOT stretch, and this panel is the example it cites — stretching
+        it used to leave about 160px of dead white under the Vision chips.
+
+        Harshit asked on 2026-09-18 for the two cards to be equal, so that
+        judgement is reversed for this panel only. The white does not come back
+        as a hole, because the statement paragraph below carries `lg:flex-1`:
+        the extra height is absorbed ABOVE the divider, which leaves both chip
+        blocks bottom-aligned with each other instead of one card trailing off.
+      */}
+      <div class="grid gap-6 lg:grid-cols-2">
         {
           panels.map((p, i) => (
             <div
@@ -67,7 +80,9 @@ const schema = graph(breadcrumbs([{ name: 'Our Mission', path: '/our-mission' }]
                 <h2 class="text-2xl font-semibold text-navy-950">{p.label}</h2>
               </div>
 
-              <p class="mt-6 leading-relaxed text-slate-600">{p.statement}</p>
+              {/* lg:flex-1 is what makes the equal heights readable rather than
+                  ragged — see the note on the grid above. */}
+              <p class="mt-6 leading-relaxed text-slate-600 lg:flex-1">{p.statement}</p>
 
               <div class="mt-7 border-t border-line pt-6">
                 <h3 class="font-mono text-xs uppercase tracking-wider text-navy-700">

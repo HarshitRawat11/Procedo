@@ -317,9 +317,24 @@ browser, load it and check it. Report what actually happened, including failures
   earn it.** A row of cards should align; a two-up panel whose halves carry very
   different amounts of copy should not. `lg:items-start` on the grid — plus
   removing the `flex-1` that pushes a card's tail block down — is the fix, and it
-  is what killed 176px of dead white on `/contact` and about 160 in the Vision
-  panel on `/our-mission`. Roles and competency cards keep their stretch on
-  purpose: their "Apply"/"Learn more" links line up across the row.
+  is what killed 176px of dead white on `/contact`. Roles and competency cards
+  keep their stretch on purpose: their "Apply"/"Learn more" links line up across
+  the row.
+
+  **The Vision/Mission panel on `/our-mission` is the one exception, and it was
+  reversed on 2026-09-18 at Harshit's request** — he wanted the two cards equal.
+  It used to be the second example above, at about 160px of dead white. Two
+  things make the stretch work there rather than reopening that hole:
+
+  - the statement paragraph carries `lg:flex-1`, so the slack is absorbed ABOVE
+    the divider and both chip blocks end up bottom-aligned with each other,
+    rather than one card trailing off into white; and
+  - the Vision card gained three more chips, so the two lists now run three rows
+    each and the gap it has to absorb is small.
+
+  Measured at 1280 afterwards: both cards 470px, dividers on the same baseline,
+  chip lists ending on the same baseline. Do not "fix" this back to
+  `lg:items-start` — check the panel first.
 
 ## Commands
 

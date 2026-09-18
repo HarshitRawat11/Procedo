@@ -705,10 +705,42 @@ export const mission = {
     'We believe technology should enable, not complicate. Our mission is to deliver integrated IT, security, and AV solutions that empower organizations to thrive in a rapidly evolving world.',
   body: 'From secure IT infrastructure to intelligent building automation and immersive AV, we help you create environments where people and ideas flourish—today and tomorrow.',
   vision: {
+    /* Procedo's own vision sentence, verbatim from the old site. It is ONE
+       sentence and there is no more of it — checked against the bundle on
+       2026-09-18 when Harshit asked for the Vision card to be lengthened. Unlike
+       the "Security First" value, this was not truncated; there is simply
+       nothing further to restore. Lengthening it means Procedo writing a longer
+       vision, not us. */
     statement:
       'To be a leading provider of integrated infrastructure and facility security solutions that enable efficient, secure, and collaborative environments across industries.',
     listTitle: 'Key Focus Areas',
-    items: ['Industry Leadership', 'Integrated Solutions', 'Cross-Industry Impact'],
+    /*
+     * The first three are the old site's own. The last three were added
+     * 2026-09-18 so the Vision card carries as many chips as the Mission card,
+     * at Harshit's request — and every one of them is lifted from the vision
+     * sentence directly above, not invented:
+     *
+     *     "... enable EFFICIENT, SECURE, and COLLABORATIVE ENVIRONMENTS ..."
+     *
+     * which is the same move the old site made for the first three
+     * ("Industry Leadership" ← "a leading provider", "Integrated Solutions"
+     * ← "integrated ... solutions", "Cross-Industry Impact" ← "across
+     * industries"). They repeat the noun on purpose: it makes the derivation
+     * obvious to anyone reading the statement and the chips together.
+     *
+     * They are still an editorial re-cut of Procedo's words rather than
+     * Procedo's own list. If Harshit or the client would rather have three real
+     * focus areas, delete these three lines — the card simply gets shorter
+     * again and nothing else breaks.
+     */
+    items: [
+      'Industry Leadership',
+      'Integrated Solutions',
+      'Cross-Industry Impact',
+      'Efficient Environments',
+      'Secure Environments',
+      'Collaborative Environments',
+    ],
   },
   purpose: {
     statement:
