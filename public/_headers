@@ -17,9 +17,36 @@
 # The same trap is why public/robots.txt carries no Disallow — see the note in
 # that file.
 
+# Added 2026-09-19 after auditing what the live site actually sent: nosniff and
+# Referrer-Policy and nothing else. For a firm whose own services page sells
+# Facilities Security and "Enterprise-Grade Security", a prospect who runs the
+# site through securityheaders.com or Mozilla Observatory is a plausible
+# visitor — and the grade was the kind you do not want them to see. The
+# technical risk on a static brochure site with no auth and no user content is
+# genuinely low; the credibility risk is not.
+#
+# Each of these denies something the site does not do, so none can break it:
+#   HSTS                 the site is HTTPS-only already; this stops a first
+#                        request being made over http. No `preload` — that is a
+#                        one-way door for a domain and is Procedo's call, not a
+#                        default to slip in.
+#   X-Frame-Options      nothing should ever frame this site.
+#   Permissions-Policy   no camera, microphone or geolocation is used anywhere.
+#   COOP                 no cross-origin window is opened or talked to.
+#
+# STILL MISSING: Content-Security-Policy. It is not here because it cannot be
+# written by hand — Astro inlines three module scripts plus the reveal
+# bootstrap, so a strict policy needs their sha256 hashes, which change with
+# every build. That needs a post-build step, and a wrong CSP breaks the site
+# silently for visitors rather than loudly at build time. Worth doing, worth
+# doing carefully, and deliberately not bundled in with the free wins above.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
 
 # Astro fingerprints these filenames, so they can be cached forever.
 /_astro/*
