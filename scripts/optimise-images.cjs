@@ -39,6 +39,35 @@ const sharp = require(path.join(__dirname, '..', 'node_modules', 'sharp'));
 const ROOT = path.join(__dirname, '..');
 const TARGETS = ['public/assets/procedo-logo.png', 'public/favicon.png'];
 
+/*
+ * The header logo is DERIVED from the full-size one, and the two exist for
+ * genuinely different jobs:
+ *
+ *   procedo-logo.png         790x316   Organization.logo in the JSON-LD. No
+ *                                      visitor downloads it, only crawlers; it
+ *                                      stays large because Google wants a logo
+ *                                      well above its 112px floor.
+ *   procedo-logo-header.png  288x115   What every page actually loads.
+ *
+ * The header renders it at 90x36 CSS pixels, so 288 wide is 3.2x - crisp on a
+ * 3x display and past the point where more pixels can be seen. Serving the
+ * 790px original there cost 47.7 KB of wire on every page against 11 KB here,
+ * for no difference on screen.
+ *
+ * PNG rather than WebP, measured: for a flat mark like this a palette PNG beats
+ * WebP at every size worth using (11.0 KB against 14.8 KB at 288 wide), so
+ * there is nothing to gain from a <picture> element and a second format to keep
+ * in step.
+ *
+ * If the brand logo is ever replaced, drop the new artwork in as
+ * procedo-logo.png and re-run this script - the header copy regenerates.
+ */
+const DERIVED = {
+  from: 'public/assets/procedo-logo.png',
+  to: 'public/assets/procedo-logo-header.png',
+  width: 288,
+};
+
 const kb = (n) => (n / 1024).toFixed(1).padStart(7) + ' KB';
 
 (async () => {
@@ -79,6 +108,24 @@ const kb = (n) => (n / 1024).toFixed(1).padStart(7) + ' KB';
         meta.width + 'x' + meta.height + ' (unchanged)',
     );
   }
+  /* ── the derived header logo ─────────────────────────────────────────── */
+  const from = path.join(ROOT, DERIVED.from);
+  const to = path.join(ROOT, DERIVED.to);
+  const existed = fs.existsSync(to) ? fs.statSync(to).size : 0;
+  const derived = await sharp(from)
+    .resize({ width: DERIVED.width })
+    .png({ palette: true, effort: 10 })
+    .toBuffer();
+  const dMeta = await sharp(derived).metadata();
+  fs.writeFileSync(to, derived);
+  console.log(
+    '\n' + DERIVED.to.padEnd(32) + kb(derived.length) +
+      '   ' + dMeta.width + 'x' + dMeta.height +
+      (existed ? '   (regenerated)' : '   (created)'),
+  );
+  console.log('  ^ the header loads THIS; the 790px original is for schema only.');
+  console.log('  Logo.astro must carry width="' + dMeta.width + '" height="' + dMeta.height + '".');
+
   console.log('\n' + 'total'.padEnd(32) + kb(before) + ' -> ' + kb(after) +
     '   saved ' + kb(before - after) + ' on every page load');
 })();

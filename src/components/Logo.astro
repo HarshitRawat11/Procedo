@@ -1,6 +1,25 @@
 ---
 // Procedo's real logo lockup, used as-is (navy+orange hexagon + wordmark) on
 // the light navbar/footer. Do not recolor or crop — the full artwork ships.
+//
+// IT LOADS `procedo-logo-header.png`, NOT `procedo-logo.png`, and the two are
+// not interchangeable:
+//
+//   procedo-logo-header.png   288x115   11.0 KB   what every page downloads
+//   procedo-logo.png          790x316   46.6 KB   Organization.logo in the
+//                                                 JSON-LD only; no visitor ever
+//                                                 fetches it
+//
+// This renders at 90x36 CSS pixels, so 288 wide is 3.2x — crisp on a 3x display
+// and past the point where more pixels can be seen. Pointing this back at the
+// 790px file costs 37 KB of wire on EVERY page for no visible difference; that
+// is what it used to do, and images were 76% of the site's transfer because of
+// it. The schema keeps the big one because Google wants a logo well above its
+// 112px floor.
+//
+// The header file is generated from the other by `node scripts/optimise-images.cjs`.
+// If the brand artwork is ever replaced, replace procedo-logo.png and re-run
+// that — then update the width/height below if the ratio changed.
 interface Props {
   class?: string;
   href?: string | null;
@@ -15,10 +34,10 @@ const Tag = href ? 'a' : 'div';
   class:list={['inline-flex items-center', className]}
 >
   <img
-    src="/assets/procedo-logo.png"
+    src="/assets/procedo-logo-header.png"
     alt="Procedo Infosystems"
-    width="790"
-    height="316"
+    width="288"
+    height="115"
     class="h-9 w-auto"
   />
 </Tag>
