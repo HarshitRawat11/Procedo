@@ -346,6 +346,15 @@ npm run build:preview   # build, then add the preview-only noindex to dist/_head
 npm run deploy:preview  # build:preview, then push dist/ to Cloudflare Pages
 ```
 
+Measured gates, all reading `dist/` so they see what a visitor gets:
+
+```bash
+node scripts/measure-seo.cjs         # titles, descriptions, schema, og, canonicals
+node scripts/measure-integrity.cjs   # dead links/anchors, duplicate ids, headings, labels
+node scripts/measure-content.cjs     # services copy depth and provenance
+node scripts/optimise-images.cjs     # re-encode the two PNGs on every page (idempotent)
+```
+
 Dev server launch configs are in `.claude/launch.json` as `procedo-dev` and
 `procedo-preview` (both port 4321).
 
