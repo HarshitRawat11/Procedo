@@ -346,6 +346,35 @@ npm run build:preview   # build, then add the preview-only noindex to dist/_head
 npm run deploy:preview  # build:preview, then push dist/ to Cloudflare Pages
 ```
 
+**A CSP ships in `public/_headers` and carries NO hashes**, which is why it can
+be a static line rather than a build step. A hash-locked policy was attempted
+twice — hand-rolled, then with Astro's own `security.csp` — and both broke the
+site. Two hard blocks, and neither appears on a cold page load, so only walking
+the nav with a `securitypolicyviolation` listener found them:
+
+- **Astro's ClientRouter neuters already-run scripts** by replacing their `src`
+  with an empty `data:application/javascript,` URL. No hash allows that, and
+  `strictDynamic` does not either — `strict-dynamic` deliberately refuses
+  `data:`, `blob:` and `filesystem:`, since those are the bypass it exists to
+  prevent. Verified, not assumed.
+- **Astro's `styleDirective` always appends hashes**, and per spec a hash in the
+  list makes `'unsafe-inline'` be IGNORED — so all 64 `style="--reveal-delay:Nms"`
+  attributes were blocked, 156 violations on a five-page walk. `style-src-attr`
+  would fix it precisely, but Astro's config rejects any directive starting
+  `style-src`.
+
+So the shipped policy keeps every directive that genuinely constrains this site
+and drops the two that cannot work. It still blocks scripts from other origins,
+object/embed, framing, `<base>` rewriting, and form or fetch traffic to anywhere
+but this origin and Web3Forms. It cannot stop INLINE injection — and on a site
+that is static HTML built from `site.ts`, with nothing anywhere echoing user
+input back into a page, there is no route to inject in the first place.
+
+**If that ever changes — a search page that reflects its query, a comment form,
+anything rendering user input — this policy stops being adequate.** Then the 64
+inline style attributes need turning into utility classes (six distinct delay
+values, about twenty call sites) and the router question needs solving.
+
 Measured gates, all reading `dist/` so they see what a visitor gets:
 
 ```bash

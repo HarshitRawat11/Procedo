@@ -34,12 +34,37 @@
 #   Permissions-Policy   no camera, microphone or geolocation is used anywhere.
 #   COOP                 no cross-origin window is opened or talked to.
 #
-# STILL MISSING: Content-Security-Policy. It is not here because it cannot be
-# written by hand — Astro inlines three module scripts plus the reveal
-# bootstrap, so a strict policy needs their sha256 hashes, which change with
-# every build. That needs a post-build step, and a wrong CSP breaks the site
-# silently for visitors rather than loudly at build time. Worth doing, worth
-# doing carefully, and deliberately not bundled in with the free wins above.
+# THE CSP BELOW CARRIES NO HASHES, WHICH IS WHY IT CAN LIVE IN A STATIC FILE.
+# A hash-locked policy was built twice — once by hand, once with Astro's own
+# security.csp — and both broke the site. astro.config.mjs records the full
+# finding; the short version is that Astro's ClientRouter neuters already-run
+# scripts with a `data:application/javascript,` URL, which no hash and not even
+# strict-dynamic will allow, and Astro's styleDirective always adds hashes,
+# which per spec makes 'unsafe-inline' be ignored and blocks all 64
+# `style="--reveal-delay:Nms"` attributes.
+#
+# WHAT THIS POLICY STILL BUYS, on a site with no login, no database and no
+# user-generated content anywhere:
+#   · no script may load from any other origin — a compromised dependency or a
+#     hijacked CDN link cannot pull one in
+#   · no <object>, <embed> or <applet>, and no framing of this site at all
+#   · no <base> tag rewriting where relative URLs resolve to
+#   · forms can POST to this origin and Web3Forms and NOWHERE else, so a
+#     submitted enquiry cannot be redirected to an attacker
+#   · XHR/fetch is limited to the same two places
+#
+# WHAT IT DOES NOT BUY: it cannot stop INLINE script injection, because
+# 'unsafe-inline' has to stay. That matters far less here than it would
+# elsewhere — every page is static HTML built from src/data/site.ts, and there
+# is no input anywhere that is echoed back into a page, so there is no route by
+# which an attacker could get markup onto it in the first place. If that ever
+# changes — a comment form, a search page that reflects its query, anything
+# rendering user input — this policy stops being adequate and the inline styles
+# and the router question have to be solved properly.
+#
+# connect-src and form-action name Web3Forms because the contact form fetches
+# https://api.web3forms.com/submit, and falls back to a native POST to the same
+# URL when JavaScript is unavailable.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
@@ -47,6 +72,7 @@
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline' data:; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests
 
 # Astro fingerprints these filenames, so they can be cached forever.
 /_astro/*
