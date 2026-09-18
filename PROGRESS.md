@@ -89,7 +89,70 @@ Nothing is blocked on code.
 
 ## Log
 
-### 2026-09-18 (last) — Cloudflare Pages is live
+### 2026-09-18 (last) — auto-deploy, and two settings that would have failed silently
+
+**A push to `master` now builds and publishes.** Proven, not assumed: the commit
+that wired it is itself the first CI build, and the live URL is serving it.
+
+**A direct-upload project cannot be converted to a git-connected one.** The API
+says so outright — `8000069, "You cannot update the source object in a Direct
+Uploads project"` — and the dashboard offers nothing either. So the question was
+whether a git-connected project could be created through the API at all, given
+the GitHub App was already installed for `HarshitRawat11` (both of the account's
+other Pages projects use it). That was answered by creating a **throwaway probe
+project**, reading its `source` back, and deleting it — rather than finding out
+by experimenting on the live one. It can.
+
+Which made it Harshit's call: the name `procedoinfo-preview` was taken by the
+direct-upload project, so keeping the URL meant deleting and recreating. He
+chose that over a second project on a new URL, so the URL is unchanged.
+
+**TWO SETTINGS THAT WOULD HAVE FAILED SILENTLY.** Both are the kind that leave
+everything looking fine:
+
+1. `production_branch` was **`main`**, because that is wrangler's default when
+   creating a project. This repo's default branch is **`master`**. No push would
+   ever have matched, so the project would have sat there looking connected and
+   never building, and the URL would have gone stale exactly the way Netlify's
+   did — for a completely different reason.
+2. `build_command` is **`npm run build:preview`**, not `npm run build`. Plain
+   `build` deliberately produces a `dist/` with no noindex; that is the safety
+   property the whole migration was designed around. Had Cloudflare built this
+   preview with `build`, the preview would have gone live indexable, with
+   unreviewed legal pages on it, and **nothing in the repo would look wrong** —
+   because the setting lives in the Cloudflare project, not in the repo. That
+   asymmetry is now written into CLAUDE.md, with where to look if the header
+   ever goes missing.
+
+`NODE_VERSION` pinned to 22 for the same reason netlify.toml pinned it: Astro 6
+needs >= 18.20.8 / 20.3 / 22 and Pages defaults older.
+
+**Verified on the CI-built deployment** — and it is definitively CI-built, since
+deleting the project took the earlier direct upload with it and only one
+deployment exists:
+
+    x-robots-tag           noindex, nofollow   ← produced by Cloudflare's own
+                                                 build running preview-headers.cjs
+    x-content-type-options nosniff
+    referrer-policy        strict-origin-when-cross-origin
+    /_astro/*              max-age=31536000, immutable
+    _headers as a file     404
+    routes                 9/9 200; /our-mission-preview 404; unknown → custom 404
+    content                press keyframes, 4 .mousing groups, lamp caption,
+                           Five disciplines, no double full stop, sitemap 9
+
+That first line is the one worth keeping: the noindex reached a live response
+having been generated inside Cloudflare's build, from a script that is committed
+while the rule it writes is not.
+
+`npm run deploy:preview` still works and now means something different — a way
+to bypass the git build for a quick test. Anything it publishes is overwritten
+by the next push, and it deploys the working tree rather than master.
+
+Still open: `netlify.toml` and the Netlify project both remain, deliberately,
+until Harshit signs off the Cloudflare URL.
+
+### 2026-09-18 (later still) — Cloudflare Pages is live
 
 Harshit said *"unable to login"*. The login had in fact succeeded — `whoami`
 returned the account and `~/.wrangler/config/default.toml` held a valid
