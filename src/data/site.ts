@@ -83,21 +83,44 @@ export const directionsHref = contact.address
   : '';
 
 /**
- * Analytics (#18). OFF until a provider is chosen — nothing is emitted while
- * `provider` is 'none' or `id` is empty.
+ * Analytics (#18). Nothing is emitted while `provider` is 'none' or `id` is
+ * empty — that is the §3 pattern, a missing value hides the feature rather than
+ * emitting a broken tag.
  *
- *   plausible  id = the domain registered with Plausible, e.g. 'procedoinfo.com'
- *   umami      id = the website id from the Umami dashboard
- *   ga4        id = the measurement id, e.g. 'G-XXXXXXXXXX'
+ * ── CHOSEN: CLOUDFLARE, 2026-09-18 ──────────────────────────────────────
+ * Free, cookieless, and the site is already hosted on Cloudflare Pages. It
+ * gives pageviews, referrers, countries, devices and Core Web Vitals — enough
+ * to answer the only question this site needs answered: which pages get read,
+ * and who reaches /contact. No funnels or custom events; if those are ever
+ * needed, Plausible is still wired below and is a two-line change.
+ *
+ * TO TURN IT ON, one value is needed and it comes from the dashboard:
+ *   Cloudflare dashboard → Analytics & Logs → Web Analytics → Add a site
+ *   → copy the SITE TOKEN (32 hex characters) → paste it as `id` below
+ *   → set `provider` to 'cloudflare'.
+ * Nothing else changes; no code edit, no redeploy beyond the usual push.
+ *
+ *   cloudflare  id = the Web Analytics site token, 32 hex characters
+ *   plausible   id = the domain registered with Plausible, e.g. 'procedoinfo.com'
+ *   umami       id = the website id from the Umami dashboard
+ *   ga4         id = the measurement id, e.g. 'G-XXXXXXXXXX'
  *
  * `host` is only for a self-hosted Plausible or Umami; leave it empty for the
- * hosted service.
+ * hosted service and for cloudflare.
  *
- * Note: plausible and umami are cookieless and need no consent banner. GA4
- * sets cookies, so choosing it means a cookie consent banner has to be built
- * first — the site does not have one.
+ * COOKIES. cloudflare, plausible and umami are all cookieless and need no
+ * consent banner. GA4 sets cookies, so choosing it would mean building a
+ * consent banner first — the site does not have one, and that is why the
+ * choice was made on this axis as much as on features. It also keeps the
+ * answer to "does this site set cookies?" a plain no, which is what the Cookie
+ * Policy has to be rewritten around (see the legal note further down).
+ *
+ * ONE THING TO EXPECT: the beacon is not hostname-locked, so while the preview
+ * at procedoinfo-preview.pages.dev is the only deployment, its traffic —
+ * mostly yours and the client's — lands in the same dataset. Filter by hostname
+ * in the Web Analytics dashboard, or leave `provider` as 'none' until launch.
  */
-export type AnalyticsProvider = 'none' | 'plausible' | 'umami' | 'ga4';
+export type AnalyticsProvider = 'none' | 'cloudflare' | 'plausible' | 'umami' | 'ga4';
 export const analytics: { provider: AnalyticsProvider; id: string; host: string } = {
   provider: 'none',
   id: '',

@@ -36,7 +36,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. Four scenes exist: QuietScene (404, contact success, `/our-mission`), UptimeScene (`/uptime`), the kept Power/Datacenter concept, and **DeskScene**, adopted on **Careers** 2026-09-07 — first illustration to clear the loop end to end |
 | 16 | Deployment | ✅ | — | **Preview is on Cloudflare Pages at https://procedoinfo-preview.pages.dev, git-connected, auto-deploying from `master` since 2026-09-18.** Build command `npm run build:preview`, output `dist`, `NODE_VERSION=22`. **Netlify removed the same day** — site deleted, repo disconnected, `netlify.toml` gone; nothing was attached to it (no custom domain, no DNS zone, no form submissions) so only the `.netlify.app` URL went with it. It had refused every build from 14 Sept — six consecutive *Skipped due to account credit usage exceeded* while its own API reported `credits used: 0`. **Watch the build command:** plain `npm run build` produces no noindex, and it lives in the Cloudflare project rather than the repo, so changing it by accident is easy and invisible. Production on procedoinfo.com is still a separate, later decision |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
-| 18 | Analytics | 🟡 | Wired; waiting on a provider | Wiring done 2026-09-12: `analytics` in `site.ts` plus `Analytics.astro`, supporting **Plausible**, **Umami** and **GA4**. Emits nothing at all while `provider` is `'none'` — turning it on is a two-line edit, no code change. Plausible/Umami are cookieless; **GA4 would require a cookie consent banner that does not exist**, so it must not be switched on without building one first. Provider choice is on the client (see `CLIENT-PENDING.txt`) |
+| 18 | Analytics | 🟡 | Needs one value: the Web Analytics site token | **Provider chosen 2026-09-18: Cloudflare Web Analytics.** Free, cookieless, and the site is already on Cloudflare Pages. Wired into `Analytics.astro` as a fourth provider alongside Plausible, Umami and GA4, so `site.ts` stays the single switch — deliberately NOT toggled on the Pages project, which would put the on/off somewhere `site.ts` cannot see. Output tested with a dummy token: the beacon appears once per page, the `data-cf-beacon` attribute decodes to valid JSON, and no other provider leaks in. **To turn on:** Cloudflare dashboard → Analytics & Logs → Web Analytics → Add a site → copy the 32-hex site token → in `site.ts` set `provider: 'cloudflare'` and paste it as `id`. Nothing else. Still emits nothing while `provider` is `'none'`. **Note:** the beacon is not hostname-locked, so enabling it before launch mixes preview traffic into the data — filter by hostname, or wait for launch. Cookieless means NO consent banner is needed, which also unblocks the Cookie Policy rewrite (#5) |
 | 19 | Photography / real imagery | ✅ | — | **Decided 2026-08-30: no photography.** The illustration-and-icon style is a deliberate choice, not a gap. Revisit only if real project photos become available |
 | 20 | Dark mode | ❌ | **Rejected by the client 2026-09-12** | Closed. The site stays light-only; no `prefers-color-scheme` handling anywhere, and none is to be added |
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
@@ -89,7 +89,54 @@ Nothing is blocked on code.
 
 ## Log
 
-### 2026-09-18 (last) — Netlify removed
+### 2026-09-18 (last) — analytics: Cloudflare Web Analytics
+
+The provider question has been open since the wiring landed on 2026-09-12. It is
+answered: **Cloudflare Web Analytics.** Free, cookieless, and the site moved onto
+Cloudflare Pages earlier the same day — which is what put this option on the
+table at all. It was not available when the original three were chosen.
+
+**The choice was made on the cookie axis as much as on features.** Three of the
+four candidates are cookieless; GA4 is not. Picking GA4 would have meant
+building a consent banner, consent storage and script gating before it could
+legally ship, and would have left the site with an ongoing compliance surface.
+Picking a cookieless one keeps the answer to *"does this site set cookies?"* a
+plain no — which is exactly what the Cookie Policy has to be rewritten around,
+so this decision unblocks that too (#5).
+
+Against Cloudflare: no funnels, no custom events, and it ties measurement to the
+host — and this site has changed host once already, under duress. That is a real
+argument and it is why the beacon is **wired into `Analytics.astro` rather than
+toggled on the Pages project.** Cloudflare will inject it for you from the
+project settings, which would be one fewer thing in the repo, but it would put
+the on/off switch somewhere `site.ts` cannot see — the same failure mode the
+build command already has. One switch, one file, and it survives a host change.
+
+**Tested, not assumed.** Built once with a dummy token to check the branch:
+
+    beacon present         once per page, on all 10 including the 404
+    data-cf-beacon         decodes to valid JSON; token reads back intact
+    other providers        absent
+    provider: 'none'       nothing emitted at all — all four silent
+
+That middle line is the one worth having checked. The token travels in a JSON
+string inside an HTML attribute, so it is emitted entity-escaped
+(`{&quot;token&quot;: …}`). That is correct and a parser hands the beacon back
+clean JSON — but it looks wrong enough at a glance to be worth proving rather
+than assuming.
+
+**Still needs one value, and it is not one to invent:** the 32-hex site token
+from Cloudflare dashboard → Analytics & Logs → Web Analytics → Add a site. The
+wrangler OAuth token has no RUM scope, so this cannot be done from here; probed
+and confirmed 403 rather than guessed. Until it is pasted in, `provider` stays
+`'none'` and the live site is byte-identical.
+
+**One thing to decide when pasting it:** the beacon is not hostname-locked, so
+switching it on now mixes preview traffic — mostly Harshit's and the client's —
+into the same dataset as the eventual real traffic. Either filter by hostname in
+the dashboard, or leave it off until launch.
+
+### 2026-09-18 (later still) — Netlify removed
 
 *"remove netlify"*. Done, in this order, and the order was the point: the
 fallback only went once Cloudflare had been building from git for three

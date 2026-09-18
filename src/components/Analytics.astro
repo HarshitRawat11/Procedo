@@ -7,27 +7,53 @@
  *  rather than emitting a broken tag. Turning it on is a two-line edit in
  *  src/data/site.ts — no code change here.
  *
+ *  CHOSEN 2026-09-18: cloudflare. Free, cookieless, and the site is already on
+ *  Cloudflare Pages. The other three stay wired — switching is a two-line edit
+ *  in site.ts, which is the whole point of this component existing.
+ *
  *  Which to choose:
- *    plausible / umami — cookieless, so no consent banner is required.
+ *    cloudflare       — cookieless, free, no consent banner. Pageviews,
+ *                       referrers, countries, devices, Core Web Vitals. No
+ *                       funnels or custom events.
+ *    plausible / umami — cookieless, so no consent banner is required. More
+ *                       depth than cloudflare; plausible is paid.
  *    ga4              — free, but it sets cookies; switching it on means the
  *                       site also needs a cookie consent banner to stay
  *                       compliant, which does not exist yet. Do not enable
  *                       GA4 without building that first.
  *
- *  All three track client-side navigations on their own (the site uses
- *  Astro's ClientRouter), so no manual pageview call is wired here. Worth
- *  confirming in the provider's dashboard on the day it is switched on:
- *  visit two pages via the nav and check both appear.
+ *  CLOUDFLARE IS DELIBERATELY WIRED HERE RATHER THAN TOGGLED ON THE PAGES
+ *  PROJECT. Cloudflare will inject this beacon for you from the project's
+ *  settings, and that would be one fewer thing in the repo — but it would put
+ *  the on/off switch somewhere site.ts cannot see, which is exactly the failure
+ *  mode the build command already has (see CLAUDE.md). One switch, one file.
+ *  It also means the measurement survives a change of host, and this site has
+ *  changed host once already.
+ *
+ *  All four track client-side navigations on their own (the site uses Astro's
+ *  ClientRouter), so no manual pageview call is wired here. Worth confirming in
+ *  the provider's dashboard on the day it is switched on: visit two pages via
+ *  the nav and check both appear — this is the one thing most likely to be
+ *  quietly wrong, and nothing in the build would catch it.
  * ========================================================================== */
 import { analytics } from '../data/site';
 
 const { provider, id, host } = analytics;
 const enabled = provider !== 'none' && id.trim() !== '';
 
+const cloudflareSrc = 'https://static.cloudflareinsights.com/beacon.min.js';
 const plausibleSrc = `${host || 'https://plausible.io'}/js/script.js`;
 const umamiSrc = `${host || 'https://cloud.umami.is'}/script.js`;
 const ga4Src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
 ---
+
+{
+  /* The token goes in a JSON attribute, which is Cloudflare's own documented
+     shape for the beacon. `id` is the 32-hex site token from Web Analytics. */
+  enabled && provider === 'cloudflare' && (
+    <script is:inline defer src={cloudflareSrc} data-cf-beacon={`{"token": "${id}"}`} />
+  )
+}
 
 {enabled && provider === 'plausible' && <script is:inline defer data-domain={id} src={plausibleSrc} />}
 
