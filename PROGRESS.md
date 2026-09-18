@@ -34,7 +34,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
 | 14 | Design inspiration folder | ✅ | — | Images saved and renamed to the index 2026-09-05, verified by opening each. 11 of 12 present — ref 11 (two-hands) never made it in; ref 12 (Google Meet "meeting is safe") is new and now catalogued as ANALYSIS §8. Notes tracked in git, images stay local |
 | 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. Four scenes exist: QuietScene (404, contact success, `/our-mission`), UptimeScene (`/uptime`), the kept Power/Datacenter concept, and **DeskScene**, adopted on **Careers** 2026-09-07 — first illustration to clear the loop end to end |
-| 16 | Deployment | 🟡 | Needs you to connect the repo | **Client preview deploy prepared 2026-09-07.** `netlify.toml` committed: build config plus `X-Robots-Tag: noindex, nofollow` on every response, so the preview can never be indexed while the legal pages are unreviewed. Connect `HarshitRawat11/Procedo` at app.netlify.com and it auto-deploys on push. Production on procedoinfo.com is still a separate, later decision — host unknown |
+| 16 | Deployment | 🔴 | Needs you to run `npx wrangler login` once | **Moving off Netlify to Cloudflare Pages, 2026-09-18.** Netlify refused every build from 14 Sept onward — six consecutive *Skipped due to account credit usage exceeded*, while its own API reported `credits used: 0` — so the URL sat 19 commits stale until a manual CLI upload. Repo side of the move is done and verified: `public/_headers`, `scripts/preview-headers.cjs`, `npm run deploy:preview`, wrangler pinned as a devDependency. **Blocked only on Cloudflare auth**, which is an interactive browser login on your account. Then: `npm run deploy:preview`, confirm the headers, disconnect the repo in Netlify and delete `netlify.toml`. Production on procedoinfo.com is still a separate, later decision |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
 | 18 | Analytics | 🟡 | Wired; waiting on a provider | Wiring done 2026-09-12: `analytics` in `site.ts` plus `Analytics.astro`, supporting **Plausible**, **Umami** and **GA4**. Emits nothing at all while `provider` is `'none'` — turning it on is a two-line edit, no code change. Plausible/Umami are cookieless; **GA4 would require a cookie consent banner that does not exist**, so it must not be switched on without building one first. Provider choice is on the client (see `CLIENT-PENDING.txt`) |
 | 19 | Photography / real imagery | ✅ | — | **Decided 2026-08-30: no photography.** The illustration-and-icon style is a deliberate choice, not a gap. Revisit only if real project photos become available |
@@ -89,7 +89,65 @@ Nothing is blocked on code.
 
 ## Log
 
-### 2026-09-18 (last) — a second gesture for the rack cat, and a better 404 line
+### 2026-09-18 (last) — off Netlify, onto Cloudflare Pages
+
+*"move this from netlify to cloudflare"*. The repo side is done and verified;
+the cutover itself is blocked on an interactive Cloudflare login.
+
+**Why the move is right.** Netlify had refused every build since 14 September —
+six consecutive *"Skipped due to account credit usage exceeded"* — while its own
+API reported `credits: {included: 300, used: 0}`, `usages_exceeded: []` and
+`lifecycle_state: active`. The published URL sat 19 commits stale. Getting it
+current took finding that uploads were permitted, `--prod` returned `Forbidden`,
+and only a `restoreSiteDeploy` API call would actually publish. Nobody should
+have to remember that to ship a static site.
+
+**The one thing that did not port cleanly, and the whole of the work.** The
+preview is kept out of search by `X-Robots-Tag: noindex, nofollow`. On Netlify
+that lived in `netlify.toml` — and it was SAFE there for one specific reason:
+that file sits at the repo root and is never copied into `dist/`, so it could
+carry a rule the real site must never have.
+
+Cloudflare Pages has no root-level header config. Its only mechanism is a
+`_headers` file **inside the build output**, so anything in it ships wherever the
+build ships. Put the noindex in `public/_headers` and the day procedoinfo.com is
+launched from this repo, the launch is silently de-indexed and nothing in the
+build says why. That is the same trap the robots.txt note has warned about since
+September, one step further along.
+
+So the rule is attached to the ACT OF DEPLOYING A PREVIEW rather than to the
+source tree:
+
+| | |
+|---|---|
+| `public/_headers` | only what is correct in production too — `nosniff`, `Referrer-Policy`, immutable cache on `/_astro/*`. Committed. |
+| `scripts/preview-headers.cjs` | appends the noindex to `dist/_headers`. Run by `build:preview`, never by `build`. |
+
+A production build physically cannot contain the rule, and that is a measured
+claim rather than an intention:
+
+    npm run build          -> 0 active X-Robots-Tag rules
+    npm run build:preview  -> 1
+    re-running the script  -> still 1 (idempotent)
+
+Worth noting for later: Cloudflare adds a noindex to *non-production*
+deployments by itself, but the preview is deployed as its project's PRODUCTION
+deployment — that is what buys a stable URL instead of a hash-prefixed one — so
+the automatic protection does not apply and this script is the only thing
+standing between the preview and Google.
+
+**Also done:** `npm run deploy:preview` as a one-command deploy, wrangler pinned
+as a devDependency so the command is reproducible, the stale netlify.toml
+reference in `public/robots.txt` corrected, and `netlify.toml` kept but headed
+with a SUPERSEDED note mapping each of its parts to what replaced it. It stays
+until the Cloudflare project is verified — deleting the fallback before the
+replacement works would be the wrong order.
+
+**Blocked on:** `npx wrangler login`, an interactive browser OAuth on Harshit's
+Cloudflare account. A `CLOUDFLARE_API_TOKEN` in the environment would do the
+same job non-interactively. Neither is something to do on his behalf.
+
+### 2026-09-18 (later still) — a second gesture for the rack cat, and a better 404 line
 
 **A different action, not the same one retimed.** *"can i have some other cat
 working animation of the service image"*:

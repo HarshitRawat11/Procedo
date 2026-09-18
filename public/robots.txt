@@ -5,8 +5,11 @@
 # which is what actually keeps them out of an index; they are not listed here,
 # because a Disallow line would advertise the very paths it hides.
 #
-# The client preview deploy is kept out of search by an X-Robots-Tag header in
-# netlify.toml, which overrides this file on that host.
+# The client preview deploy is kept out of search by an X-Robots-Tag response
+# header, which overrides this file. On Cloudflare Pages that header is appended
+# to dist/_headers at deploy time by scripts/preview-headers.cjs — deliberately
+# not committed anywhere, so it cannot follow the build into production. See
+# that script and public/_headers.
 User-agent: *
 Allow: /
 

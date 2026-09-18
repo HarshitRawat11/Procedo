@@ -324,13 +324,60 @@ browser, load it and check it. Report what actually happened, including failures
 ## Commands
 
 ```bash
-npm run dev      # dev server on :4321
-npm run build    # astro check && astro build → dist/
-npm run preview  # serve the built output
+npm run dev             # dev server on :4321
+npm run build           # astro check && astro build → dist/
+npm run preview         # serve the built output
+npm run build:preview   # build, then add the preview-only noindex to dist/_headers
+npm run deploy:preview  # build:preview, then push dist/ to Cloudflare Pages
 ```
 
 Dev server launch configs are in `.claude/launch.json` as `procedo-dev` and
 `procedo-preview` (both port 4321).
+
+### Hosting: the preview is on Cloudflare Pages
+
+Moved off Netlify on 2026-09-18. Netlify had refused every build since
+14 September — six consecutive *"Skipped due to account credit usage exceeded"* —
+while its own API reported `credits used: 0`, so the last deploy it accepted was
+19 commits stale. Direct uploads still worked, which is how the site was got
+current, but `--prod` came back `Forbidden` and only a `restoreSiteDeploy` call
+would publish. That is not a hosting setup anyone should have to remember.
+
+`netlify.toml` is kept until the Cloudflare project is verified, then it and the
+repo connection both go. Its header explains what replaced each of its parts.
+
+**THE ONE RULE THAT MATTERS HERE: the preview's `X-Robots-Tag: noindex, nofollow`
+must never be committed.** `netlify.toml` could hold it safely because it sat at
+the repo root and was never copied into `dist/`. Cloudflare Pages has no
+root-level header config — its only mechanism is a `_headers` file *inside the
+build output*, so anything in it ships wherever the build ships. Put the noindex
+in `public/_headers` and the day procedoinfo.com launches from this repo, the
+launch is silently de-indexed.
+
+So the split is:
+
+| | |
+|---|---|
+| `public/_headers` | rules that are correct **in production too** — `nosniff`, `Referrer-Policy`, and the immutable cache on `/_astro/*`. Committed. |
+| `scripts/preview-headers.cjs` | appends the noindex to `dist/_headers`. Run by `build:preview`, **never** by `build`. |
+
+A production build therefore cannot contain the rule. Verify with:
+
+```bash
+npm run build && grep -cE '^[[:space:]]+X-Robots-Tag:' dist/_headers   # 0
+npm run build:preview && grep -cE '^[[:space:]]+X-Robots-Tag:' dist/_headers   # 1
+```
+
+Two things still make the noindex necessary: the legal pages have not been
+reviewed (PROGRESS.md #5), and an indexed preview would compete with
+procedoinfo.com for its own terms. Cloudflare adds a noindex to *non-production*
+deployments by itself, but the preview is deployed as its project's production
+deployment — that is what gives it a stable URL rather than a hash-prefixed one
+— so the automatic protection does not apply.
+
+`site` in `astro.config.mjs` still points at `https://www.procedoinfo.com`, so
+canonicals on the preview point at the production domain. That is deliberate and
+is the second layer.
 
 ---
 

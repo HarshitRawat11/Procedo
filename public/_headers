@@ -1,0 +1,26 @@
+# Cloudflare Pages response headers.
+#
+# Cloudflare reads this file from the ROOT OF THE BUILD OUTPUT, so it lives in
+# public/ and Astro copies it to dist/ verbatim. It is not served as a file.
+#
+# ⚠️ EVERYTHING IN THIS FILE FOLLOWS THE SITE INTO PRODUCTION. That is the whole
+# difference from netlify.toml, which sat at the repo root and was never copied
+# into dist/ — so it could carry preview-only rules safely and this file cannot.
+#
+# So this file holds ONLY rules that are correct on the real procedoinfo.com as
+# well as on the preview. The preview's `X-Robots-Tag: noindex, nofollow` is NOT
+# here, and must never be added here: it would follow the build into production
+# and quietly de-index the real launch. It is appended to dist/_headers at
+# deploy time by scripts/preview-headers.cjs, which `npm run build:preview`
+# runs and `npm run build` does not.
+#
+# The same trap is why public/robots.txt carries no Disallow — see the note in
+# that file.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+
+# Astro fingerprints these filenames, so they can be cached forever.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

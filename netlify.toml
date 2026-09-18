@@ -1,3 +1,30 @@
+# ⚠️ SUPERSEDED 2026-09-18 — the preview is moving to Cloudflare Pages.
+#
+# Kept until the Cloudflare project is live and verified, so there is something
+# to fall back to; delete it, and disconnect the repo in the Netlify dashboard,
+# once the cutover is confirmed. While the repo is still connected, every push
+# keeps triggering a Netlify build that is skipped for "account credit usage
+# exceeded" — harmless noise, but that is what those failures are.
+#
+# What replaced each part of this file:
+#   [build]                  → Cloudflare project settings (build command
+#                              `npm run build`, output directory `dist`)
+#   NODE_VERSION             → same, as a Pages environment variable
+#   [[headers]] security     → public/_headers
+#   [[headers]] _astro cache → public/_headers
+#   X-Robots-Tag noindex     → scripts/preview-headers.cjs, NOT public/_headers,
+#                              and the reason is the whole point — see below.
+#
+# THE ONE THING THAT DOES NOT PORT CLEANLY. This file works as a preview-only
+# config precisely because it sits at the repo root and is never copied into
+# dist/. Cloudflare Pages has no root-level config for headers; its only
+# mechanism is a `_headers` file inside the build output, which means anything
+# in it ships wherever the build ships. So the noindex is appended to
+# dist/_headers at deploy time instead, by a script that `npm run build` does
+# not run. Same guarantee, reached a different way.
+#
+# ── the original notes follow ───────────────────────────────────────────────
+#
 # Netlify config — for the CLIENT PREVIEW deploy, not production.
 #
 # Purpose: give the client a stable URL that rebuilds on every push to master,

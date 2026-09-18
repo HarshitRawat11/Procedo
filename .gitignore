@@ -36,3 +36,9 @@ reference/inspiration/*
 
 # verification artifacts
 lighthouse*.json
+
+# host CLI scratch state, not project config. `netlify deploy` writes
+# .netlify/ (a copy of netlify.toml plus a site-id cache) and `wrangler`
+# writes .wrangler/. Both are local to one machine and one login.
+.netlify/
+.wrangler/

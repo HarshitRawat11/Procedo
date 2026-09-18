@@ -8,7 +8,9 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
+    "build:preview": "npm run build && node scripts/preview-headers.cjs",
     "preview": "astro preview",
+    "deploy:preview": "npm run build:preview && wrangler pages deploy dist --project-name=procedoinfo-preview --branch=main --commit-dirty=true",
     "astro": "astro",
     "check": "astro check"
   },
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.1",
-    "postcss": "^8.5.15"
+    "postcss": "^8.5.15",
+    "wrangler": "^4.135.0"
   }
 }
