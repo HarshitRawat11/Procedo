@@ -336,15 +336,39 @@ Dev server launch configs are in `.claude/launch.json` as `procedo-dev` and
 
 ### Hosting: the preview is on Cloudflare Pages
 
-Moved off Netlify on 2026-09-18. Netlify had refused every build since
-14 September — six consecutive *"Skipped due to account credit usage exceeded"* —
-while its own API reported `credits used: 0`, so the last deploy it accepted was
-19 commits stale. Direct uploads still worked, which is how the site was got
-current, but `--prod` came back `Forbidden` and only a `restoreSiteDeploy` call
-would publish. That is not a hosting setup anyone should have to remember.
+**Live at https://procedoinfo-preview.pages.dev** — project `procedoinfo-preview`,
+production branch `main`, deployed by direct upload. Moved there 2026-09-18.
 
-`netlify.toml` is kept until the Cloudflare project is verified, then it and the
-repo connection both go. Its header explains what replaced each of its parts.
+Netlify had refused every build since 14 September — six consecutive *"Skipped
+due to account credit usage exceeded"* — while its own API reported
+`credits used: 0`, so the last deploy it accepted was 19 commits stale. Direct
+uploads still worked, which is how the site was got current, but `--prod` came
+back `Forbidden` and only a `restoreSiteDeploy` call would publish.
+
+**DEPLOYS ARE MANUAL.** The project has no Git provider attached, so a push does
+NOT publish — run `npm run deploy:preview`. Connecting the repo is a dashboard
+job (it needs a GitHub OAuth grant) and has not been done. Until it is, pushing
+and deploying are two separate acts; do both, or the URL goes stale the way the
+Netlify one did.
+
+**Two wrangler gotchas, both cost time on 2026-09-18:**
+
+1. Wrangler 4.135+ **delegates `wrangler pages …` into Workers static assets**,
+   where it reinterprets the command and dies with *"Missing entry-point to
+   Worker script or to assets directory"*. Pass `--force` to reach classic Pages
+   — but **only on `pages project create`, and only once**. Once the project
+   exists, every later command runs against Pages directly and `--force` is
+   wrong. `npm run deploy:preview` therefore does not carry it, and that is
+   deliberate rather than an omission.
+2. That delegation is Cloudflare folding Pages into Workers. This setup is on
+   the older product on purpose — it is what the account's other two projects
+   use and what `_headers` is guaranteed to support — but **expect to migrate to
+   Workers static assets eventually.** When that happens, re-check `_headers`
+   support first: the entire noindex design below depends on it.
+
+`netlify.toml` is kept as a fallback until Harshit says the Cloudflare URL is
+signed off, then it and the repo connection both go. Its header maps each of its
+parts to what replaced it.
 
 **THE ONE RULE THAT MATTERS HERE: the preview's `X-Robots-Tag: noindex, nofollow`
 must never be committed.** `netlify.toml` could hold it safely because it sat at

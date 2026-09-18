@@ -34,7 +34,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
 | 14 | Design inspiration folder | ✅ | — | Images saved and renamed to the index 2026-09-05, verified by opening each. 11 of 12 present — ref 11 (two-hands) never made it in; ref 12 (Google Meet "meeting is safe") is new and now catalogued as ANALYSIS §8. Notes tracked in git, images stay local |
 | 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. Four scenes exist: QuietScene (404, contact success, `/our-mission`), UptimeScene (`/uptime`), the kept Power/Datacenter concept, and **DeskScene**, adopted on **Careers** 2026-09-07 — first illustration to clear the loop end to end |
-| 16 | Deployment | 🔴 | Needs you to run `npx wrangler login` once | **Moving off Netlify to Cloudflare Pages, 2026-09-18.** Netlify refused every build from 14 Sept onward — six consecutive *Skipped due to account credit usage exceeded*, while its own API reported `credits used: 0` — so the URL sat 19 commits stale until a manual CLI upload. Repo side of the move is done and verified: `public/_headers`, `scripts/preview-headers.cjs`, `npm run deploy:preview`, wrangler pinned as a devDependency. **Blocked only on Cloudflare auth**, which is an interactive browser login on your account. Then: `npm run deploy:preview`, confirm the headers, disconnect the repo in Netlify and delete `netlify.toml`. Production on procedoinfo.com is still a separate, later decision |
+| 16 | Deployment | 🟡 | Deploys are manual until the repo is connected | **Preview moved to Cloudflare Pages 2026-09-18 and is LIVE at https://procedoinfo-preview.pages.dev** (project `procedoinfo-preview`, production branch `main`, direct upload). Left Netlify because it refused every build from 14 Sept — six consecutive *Skipped due to account credit usage exceeded* while its own API reported `credits used: 0`. Verified on Cloudflare: all 9 routes 200, unknown routes serve the custom 404, `/our-mission-preview` 404s, `_headers` is not served as a file, `X-Robots-Tag: noindex, nofollow` present, `/_astro/*` immutable, sitemap 9 URLs. **Open:** no Git provider attached, so a push does not publish — run `npm run deploy:preview`. Connecting the repo needs a GitHub OAuth grant in the Cloudflare dashboard. Then delete `netlify.toml` and disconnect Netlify. Production on procedoinfo.com is still a separate, later decision |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
 | 18 | Analytics | 🟡 | Wired; waiting on a provider | Wiring done 2026-09-12: `analytics` in `site.ts` plus `Analytics.astro`, supporting **Plausible**, **Umami** and **GA4**. Emits nothing at all while `provider` is `'none'` — turning it on is a two-line edit, no code change. Plausible/Umami are cookieless; **GA4 would require a cookie consent banner that does not exist**, so it must not be switched on without building one first. Provider choice is on the client (see `CLIENT-PENDING.txt`) |
 | 19 | Photography / real imagery | ✅ | — | **Decided 2026-08-30: no photography.** The illustration-and-icon style is a deliberate choice, not a gap. Revisit only if real project photos become available |
@@ -89,7 +89,64 @@ Nothing is blocked on code.
 
 ## Log
 
-### 2026-09-18 (last) — off Netlify, onto Cloudflare Pages
+### 2026-09-18 (last) — Cloudflare Pages is live
+
+Harshit said *"unable to login"*. The login had in fact succeeded — `whoami`
+returned the account and `~/.wrangler/config/default.toml` held a valid
+`oauth_token` and `refresh_token` — so the diagnosis was worth doing before
+answering: port 8976 showed a recent connection, `dash.cloudflare.com` was
+reachable, no proxy, a default browser registered. Nothing was wrong.
+
+**Live at https://procedoinfo-preview.pages.dev.** Project `procedoinfo-preview`,
+production branch `main`, direct upload, deployed with the `npm run deploy:preview`
+script exactly as committed — no edits needed to make it work.
+
+**Two wrangler gotchas, both worth the write-up.**
+
+1. `wrangler pages project create` FAILED on wrangler 4.135. It delegates
+   `wrangler pages …` into Workers static assets, reinterprets the command, and
+   dies with *"Missing entry-point to Worker script or to assets directory"* —
+   an error that says nothing about the real cause. `--force` reaches classic
+   Pages, and it is needed **only once, on project create**: once the project
+   exists, later commands run against Pages directly. So `deploy:preview` does
+   not carry `--force`, and that is deliberate rather than an omission. Proven,
+   not assumed — the deploy ran without it.
+2. That delegation is Cloudflare folding Pages into Workers. This is on the
+   older product on purpose: it is what the account's other two projects use,
+   and `_headers` is guaranteed to work there. **Expect to migrate eventually,
+   and re-check `_headers` support first when that happens** — the whole noindex
+   design depends on it.
+
+**Verified on the live URL**, not inferred:
+
+    routes            9/9 200; /our-mission-preview 404; unknown routes
+                      serve the custom 404 (the lamp caption is in the body)
+    _headers          404 as a file — Cloudflare consumes it, does not serve it
+    headers           x-robots-tag: noindex, nofollow
+                      x-content-type-options: nosniff
+                      referrer-policy: strict-origin-when-cross-origin
+    /_astro/*         Cache-Control: public, max-age=31536000, immutable
+    sitemap           9 <loc> entries, pointing at the production domain
+    this session      press/tilt keyframes, 4 .mousing groups, no invented
+                      careers line, no double full stop, Five disciplines,
+                      Organization schema on /contact, Security First restored
+
+The noindex is the one that mattered, and it is the thing the whole migration
+was designed around: it reached the live response from `scripts/preview-headers.cjs`
+via `dist/_headers`, without ever being committed.
+
+**THE ONE REGRESSION, and it is worth saying plainly.** The project has no Git
+provider attached, so **a push no longer publishes.** Netlify auto-deployed on
+push (in principle — in practice it had been refusing for four days). Cloudflare
+here is direct-upload only, so pushing and deploying are two separate acts.
+Connecting the repo needs a GitHub OAuth grant in the Cloudflare dashboard,
+which is Harshit's to give. Until then: `npm run deploy:preview`, or the URL
+goes stale exactly the way the Netlify one did.
+
+`netlify.toml` and the Netlify project are both still in place, deliberately —
+the fallback goes only once the Cloudflare URL is signed off.
+
+### 2026-09-18 (later) — off Netlify, onto Cloudflare Pages
 
 *"move this from netlify to cloudflare"*. The repo side is done and verified;
 the cutover itself is blocked on an interactive Cloudflare login.
