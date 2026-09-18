@@ -337,19 +337,39 @@ Dev server launch configs are in `.claude/launch.json` as `procedo-dev` and
 ### Hosting: the preview is on Cloudflare Pages
 
 **Live at https://procedoinfo-preview.pages.dev** — project `procedoinfo-preview`,
-production branch `main`, deployed by direct upload. Moved there 2026-09-18.
+connected to `HarshitRawat11/Procedo` on branch **`master`**. Moved there and
+wired for auto-deploy on 2026-09-18. **A push to master builds and publishes.**
+
+`npm run deploy:preview` still works and still direct-uploads, which is now a
+way to *bypass* the git build rather than the normal route. Use it only to test
+something without committing; anything it publishes is overwritten by the next
+push, and it deploys whatever is in your working tree rather than what is on
+master.
+
+**THE BUILD COMMAND IS `npm run build:preview`, AND IT MUST STAY THAT WAY.**
+Cloudflare runs it on every push. Plain `npm run build` deliberately produces a
+`dist/` with no noindex — that is the safety property this whole setup is built
+on — so if anyone "tidies" the project's build command to `npm run build`, the
+preview goes live indexable, with unreviewed legal pages on it, and **nothing in
+the repo looks wrong**. It is set in the Cloudflare project, not in the repo,
+which is exactly what makes it easy to change by accident. Check it there if the
+`X-Robots-Tag` ever goes missing.
+
+`NODE_VERSION` is pinned to `22` as a project environment variable: Astro 6
+needs >= 18.20.8 / 20.3 / 22 and Pages defaults older. `netlify.toml` pinned the
+same value for the same reason.
+
+**A direct-upload project cannot be converted to a git-connected one.** The API
+refuses with `8000069 — "You cannot update the source object in a Direct Uploads
+project"`, and the dashboard has no such option either. The project therefore
+had to be deleted and recreated under the same name to keep the URL. If this
+ever needs doing again, create it git-connected from the start.
 
 Netlify had refused every build since 14 September — six consecutive *"Skipped
 due to account credit usage exceeded"* — while its own API reported
 `credits used: 0`, so the last deploy it accepted was 19 commits stale. Direct
 uploads still worked, which is how the site was got current, but `--prod` came
 back `Forbidden` and only a `restoreSiteDeploy` call would publish.
-
-**DEPLOYS ARE MANUAL.** The project has no Git provider attached, so a push does
-NOT publish — run `npm run deploy:preview`. Connecting the repo is a dashboard
-job (it needs a GitHub OAuth grant) and has not been done. Until it is, pushing
-and deploying are two separate acts; do both, or the URL goes stale the way the
-Netlify one did.
 
 **Two wrangler gotchas, both cost time on 2026-09-18:**
 
