@@ -23,7 +23,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 2 | Real copy across all 9 public pages | ✅ | — | — |
 | 3 | Recover real copy from the old React bundle | ✅ | — | — |
 | 4 | Remove all Aviator Infotech material | ✅ | — | — |
-| 5 | Legal pages (privacy / terms / cookies) | 🔴 | Needs review by Procedo's legal advisor | Send the three pages for sign-off; update the `updated` date in `site.ts` after |
+| 5 | Legal pages (privacy / terms / cookies) | 🔴 | Needs review by Procedo's legal advisor | **Cookie Policy rewritten 2026-09-18 and awaiting sign-off.** The old text was the previous React site's policy describing that site — it claimed analytics and preference cookies and "relevant content or ads"; this site sets none, measured live (no cookies, no localStorage/sessionStorage/IndexedDB, zero third-party origins). The new policy answers "no" first, drops the three invented cookie categories and the pointless "managing cookies" advice, and adds why there is no consent banner, how traffic is measured instead, and what the contact form does. **Its cookie claims now DERIVE from `analytics.provider`**, so the page cannot go stale again — set `ga4` and it switches to "Yes" by itself. Two matching false lines corrected in the Privacy Policy. **Flagged, not changed:** the Privacy Policy still offers newsletters and marketing mail, for which there is no list and no consent mechanism — a permissions judgement for the advisor, not a factual fix. Send all three for sign-off, then reset the `updated` dates |
 | 6 | Contact form delivery | ✅ | — | Web3Forms key set 2026-08-30. First key was tied to the wrong inbox and replaced same day; the current key (ending `...6a36`) is verified live via two real form submissions through `/contact` |
 | 7 | Office address | ✅ | — | 324 Guru Ram Das Nagar, Laxmi Nagar, Delhi – 110092. PIN confirmed by user 2026-08-30. Live on `/contact` and in the homepage JSON-LD |
 | 8 | LinkedIn profile URL | 🔴 | Not supplied | Client to provide; replace `'#'` in `socials` — footer icon unhides itself |
@@ -89,7 +89,63 @@ Nothing is blocked on code.
 
 ## Log
 
-### 2026-09-18 (last) — analytics: Cloudflare Web Analytics
+### 2026-09-18 (last) — the Cookie Policy says something true now
+
+Unblocked by the analytics decision, and drafted for the legal advisor rather
+than quietly applied: the `updated` date should be reset to the sign-off date
+when that happens.
+
+**What was wrong.** The old text was the previous React site's policy describing
+the previous React site. It said Procedo uses cookies to understand how you use
+the website, remember your preferences and *"provide relevant content or ads"*,
+and listed essential, analytics and preference cookies as types in use. The
+Privacy Policy agreed with it in two places. None of it was true here, on the
+two pages whose entire job is to be true, and a visitor could disprove it in ten
+seconds with developer tools.
+
+**Measured on the live site before a word was written** — no cookies, no
+localStorage, no sessionStorage, no IndexedDB, and *zero* third-party origins:
+the fonts are self-hosted and the only script is Astro's own router. The contact
+form posts to Web3Forms, and only when submitted.
+
+**What the new policy does differently.** It answers the question first and
+plainly — "No. This site sets no cookies." — and then earns it: what cookies
+are and why this site needs none, why there is therefore no consent banner, how
+traffic is measured instead, what happens when you use the contact form, and
+what we do if any of that changes. Gone: the three invented cookie categories,
+and the "managing cookies" advice, which was telling people how to block
+something that does not exist.
+
+**The part that stops it recurring.** The policy's cookie claims are DERIVED
+from `analytics.provider`, not written down beside it:
+
+    provider      opening answer                       sections
+    none          No. This site sets no cookies.       + why no banner
+    cloudflare    No. This site sets no cookies.       + why no banner
+                                                       + how traffic is measured
+    ga4           Yes. We use Google Analytics 4 ...   + managing cookies
+                                                         (banner section drops)
+
+Verified by building all three. The old bug was a policy hard-coding a claim
+about configuration; a policy that reads the configuration cannot drift from it.
+`analyticsSetsCookies` carries a loud warning: GA4 would make the page honest
+and still not compliant, because honest is not the same as having the consent
+banner the law then requires, and this site has none.
+
+**Two lines corrected in the Privacy Policy**, both making the same false cookie
+claim — the "Information we collect" bullet and the Cookies section.
+
+**One line flagged and deliberately NOT changed:** the Privacy Policy still
+offers *"updates, marketing material, or newsletters (only with your consent)"*.
+There is no list, no newsletter, and no mechanism by which that consent could be
+given. The sentence is not false — it is conditional on a consent never sought —
+but it describes something that does not exist. Whether to keep it as headroom
+or drop it is a judgement about marketing permissions, not a factual correction,
+so it is the advisor's call and is marked as such in the file.
+
+Terms of Service untouched: nothing in it was contradicted by the code.
+
+### 2026-09-18 (later still) — analytics: Cloudflare Web Analytics
 
 The provider question has been open since the wiring landed on 2026-09-12. It is
 answered: **Cloudflare Web Analytics.** Free, cookieless, and the site moved onto

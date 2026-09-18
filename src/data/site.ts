@@ -127,6 +127,40 @@ export const analytics: { provider: AnalyticsProvider; id: string; host: string 
   host: '',
 };
 
+/* ── WHAT THE LEGAL PAGES ARE ALLOWED TO SAY ABOUT COOKIES ──────────────────
+ *
+ * The Cookie Policy used to hard-code "we use cookies to ... provide relevant
+ * content or ads" while the site set none. That is the defect these three
+ * values exist to make impossible: the policy DERIVES its cookie claims from
+ * the analytics configuration above, so the two cannot drift apart again.
+ *
+ * Measured on the live site, 2026-09-18, with `provider: 'none'`:
+ * no cookies, no localStorage, no sessionStorage, no IndexedDB, and not one
+ * third-party origin — fonts are self-hosted and the only script is Astro's
+ * own router. The contact form posts to Web3Forms, but only when submitted.
+ *
+ * ⚠️ IF YOU SET `provider` TO 'ga4', READ THIS. GA4 sets cookies. The policy
+ * below will switch to saying so, which keeps it honest — but honest is not the
+ * same as compliant. A site that sets analytics cookies needs a consent banner
+ * that asks BEFORE the script loads, and this site has no banner and no consent
+ * storage. Build those first, or choose one of the three cookieless providers.
+ */
+const COOKIE_SETTING_ANALYTICS: AnalyticsProvider[] = ['ga4'];
+const ANALYTICS_NAMES: Record<AnalyticsProvider, string> = {
+  none: '',
+  cloudflare: 'Cloudflare Web Analytics',
+  plausible: 'Plausible Analytics',
+  umami: 'Umami',
+  ga4: 'Google Analytics 4',
+};
+/** True once a provider is actually switched on (id filled in), per §3. */
+export const analyticsEnabled = analytics.provider !== 'none' && analytics.id.trim() !== '';
+/** True only when the switched-on provider is one that sets cookies. */
+export const analyticsSetsCookies =
+  analyticsEnabled && COOKIE_SETTING_ANALYTICS.includes(analytics.provider);
+/** Display name for the legal pages. Empty while analytics is off. */
+export const analyticsName = analyticsEnabled ? ANALYTICS_NAMES[analytics.provider] : '';
+
 /**
  * Social links. TODO: replace `#` with the real profile URL.
  * Links still pointing at `#` are automatically hidden in the footer.
@@ -848,7 +882,12 @@ export const privacyPolicy: LegalDoc = {
       list: [
         'Personal details you voluntarily submit (such as name, email, phone number).',
         'Technical data like IP address, browser type, device type, and time of visit.',
-        'Cookies and similar tracking technologies to improve your browsing experience.',
+        /* DRAFT 2026-09-18. Was: "Cookies and similar tracking technologies to
+           improve your browsing experience." The site sets no cookies, so the
+           bullet claimed a collection that does not happen. It is replaced
+           rather than deleted because a reader scanning this list should find
+           the cookie answer here, not only on another page. */
+        'No cookies and nothing stored on your device — see our Cookie Policy.',
       ],
     },
     {
@@ -856,6 +895,13 @@ export const privacyPolicy: LegalDoc = {
       list: [
         'To provide and maintain our services.',
         'To respond to your inquiries or customer support requests.',
+        /* ⚠️ FOR THE LEGAL REVIEWER, flagged 2026-09-18 and deliberately NOT
+           changed. There is no newsletter, no mailing list and no mechanism on
+           this site by which anyone could give the consent this line refers to.
+           The sentence is not false — it is conditional on a consent that is
+           never sought — but it describes a thing that does not exist. Whether
+           to keep it as headroom for later or drop it is a legal judgement
+           about permissions, not a factual correction, so it is left alone. */
         'To send updates, marketing material, or newsletters (only with your consent).',
         'To analyze usage trends and improve website performance.',
       ],
@@ -880,8 +926,12 @@ export const privacyPolicy: LegalDoc = {
     },
     {
       heading: 'Cookies',
+      /* DRAFT 2026-09-18. Was: "Our website may use cookies to remember
+         preferences and collect analytics data. You can choose to disable
+         cookies through your browser settings." Neither half was true of this
+         site: it sets no cookies, so there is nothing to disable. */
       body: [
-        'Our website may use cookies to remember preferences and collect analytics data. You can choose to disable cookies through your browser settings — see our Cookie Policy for details.',
+        'This site sets no cookies and stores nothing on your device. Our Cookie Policy explains that in full, including how traffic is measured instead.',
       ],
     },
     {
@@ -941,48 +991,102 @@ export const termsOfService: LegalDoc = {
   contactLine: 'For any questions regarding these Terms, please contact us at:',
 };
 
+/**
+ * ⚖️ DRAFT, 2026-09-18 — REWRITTEN, AND NOT YET SIGNED OFF.
+ *
+ * The previous text was the old React site's policy describing the old React
+ * site. It said Procedo uses cookies to understand how you use the website,
+ * remember your preferences and "provide relevant content or ads", and listed
+ * analytics and preference cookies as types in use. None of that was true of
+ * this site, on a page whose entire job is to be true, and a visitor could
+ * disprove it in ten seconds with developer tools.
+ *
+ * Measured on the live site before this was written: no cookies, no
+ * localStorage, no sessionStorage, no IndexedDB, and zero third-party origins.
+ *
+ * WHAT CHANGED IN SUBSTANCE, for the reviewer:
+ *   · The answer to "do you use cookies" is now no, stated first and plainly.
+ *   · The old "Types of cookies we use" section is gone — it listed three
+ *     categories of cookie that do not exist.
+ *   · "Managing cookies" is gone in the cookieless case. Telling someone how to
+ *     block cookies you do not set is noise.
+ *   · New: why there is no consent banner; how traffic is measured instead;
+ *     what happens when the contact form is used; what we do if this changes.
+ *   · The sections about analytics are DERIVED from `analytics.provider`, so
+ *     the policy cannot go stale the way the old one did.
+ *
+ * `updated` is set to the date of this rewrite. RESET IT to the date of legal
+ * sign-off when that happens, since that is the date that matters.
+ */
 export const cookiePolicy: LegalDoc = {
   title: 'Cookie Policy',
   intro:
-    'This Cookie Policy explains how Procedo Infosystems Pvt. Ltd. uses cookies and similar technologies to enhance your experience on our website.',
-  updated: '27 August 2026',
+    'This policy explains how Procedo Infosystems Pvt. Ltd. uses cookies and similar technologies on this website, and what that means for you.',
+  updated: '18 September 2026',
   sections: [
+    analyticsSetsCookies
+      ? {
+          heading: 'Does this website use cookies?',
+          body: [
+            `Yes. We use ${analyticsName} to measure how this site is used, and it sets cookies in your browser to do so.`,
+            'Nothing else on this site sets cookies. We do not use cookies for advertising, and we do not sell or share what they record.',
+          ],
+        }
+      : {
+          heading: 'Does this website use cookies?',
+          body: [
+            'No. This site sets no cookies.',
+            'It also stores nothing else on your device: no local storage, no session storage, no device fingerprinting. Nothing you do here is remembered between visits, because nothing here needs to be.',
+          ],
+        },
     {
-      heading: 'What are cookies?',
+      heading: 'What cookies are',
       body: [
-        'Cookies are small text files stored on your device to collect standard internet log information and visitor behavior information.',
+        'Cookies are small text files a website asks your browser to keep, so that it can recognise your browser on a later request. They are how most sites keep you signed in, remember a language or a basket, or follow what you look at from page to page and from site to site.',
+        'This site does none of those things, so it needs none of them.',
       ],
     },
+    ...(analyticsSetsCookies
+      ? [
+          {
+            heading: 'Managing cookies',
+            body: [
+              'You can set your browser to refuse cookies, or delete any it has already stored. Doing so will not stop this site working — nothing here depends on them.',
+            ],
+          },
+        ]
+      : [
+          {
+            heading: 'Why there is no consent banner',
+            body: [
+              'Consent banners exist because cookies and similar technologies generally need your permission before they are set. Nothing on this site needs that permission, so there is nothing to ask you for and no banner to dismiss.',
+            ],
+          },
+        ]),
+    ...(analyticsEnabled && !analyticsSetsCookies
+      ? [
+          {
+            heading: 'How we measure traffic instead',
+            body: [
+              `We use ${analyticsName}, which is cookieless. It counts page views and records, in aggregate, the site that referred you, your country, your browser and device type, and how quickly pages loaded.`,
+              'It sets nothing on your device, does not fingerprint your browser, and cannot follow you to other websites. We use it to see which pages are read and which are not. None of it identifies you.',
+            ],
+          },
+        ]
+      : []),
     {
-      heading: 'How we use cookies',
-      body: ['We use cookies to:'],
-      list: [
-        'Understand how you use our website',
-        'Improve site functionality and performance',
-        'Remember your preferences',
-        'Provide relevant content or ads',
-      ],
-    },
-    {
-      heading: 'Types of cookies we use',
-      terms: [
-        { term: 'Essential cookies', body: 'Required for the website to function correctly.' },
-        { term: 'Analytics cookies', body: 'Help us analyze site usage and performance.' },
-        { term: 'Preference cookies', body: 'Remember your settings and preferences.' },
-      ],
-    },
-    {
-      heading: 'Managing cookies',
+      heading: 'When you send us a message',
       body: [
-        'You can set your browser to not accept cookies or delete them manually. However, some features of our site may not function properly without cookies.',
+        'The contact form is delivered by Web3Forms, which passes your message to us by email. Nothing is sent until you press send, and the form sets no cookies.',
+        'What happens to the details you send is covered by our Privacy Policy.',
       ],
     },
     {
-      heading: 'Updates to this policy',
+      heading: 'If this ever changes',
       body: [
-        'We may update this Cookie Policy occasionally. Please review it regularly to stay informed.',
+        'If we add anything that does set cookies, we will update this page before it goes live and, where the law requires it, ask for your consent first. The date above is when this page was last changed.',
       ],
     },
   ],
-  contactLine: 'For more information about our use of cookies, reach out to us at:',
+  contactLine: 'If you have any questions about this policy, please contact us at:',
 };
