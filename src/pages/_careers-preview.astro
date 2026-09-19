@@ -59,7 +59,7 @@ import { careers } from '../data/site';
           <h2 class="mt-4 text-2xl font-semibold text-navy-950 sm:text-3xl">
             {careers.cultureTitle}
           </h2>
-          <p class="mt-4 leading-relaxed text-slate-600">
+          <p class="mt-4 leading-relaxed text-ink-600">
             We are a small, senior team — which means your work is visible, your decisions carry
             weight, and you learn across every layer of the stack.
           </p>
@@ -71,14 +71,14 @@ import { careers } from '../data/site';
               <li
                 data-reveal
                 style={`--reveal-delay:${(i % 2) * 80}ms`}
-                class="flex items-start gap-3 rounded-xl border border-line bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg hover:shadow-navy-950/[0.06]"
+                class="flex items-start gap-3 rounded-xl border border-line bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-ink-300 hover:shadow-lg hover:shadow-navy-950/[0.06]"
               >
                 <Icon
                   name="lucide:circle-check"
                   class="mt-0.5 size-5 shrink-0 text-brand-500"
                   aria-hidden="true"
                 />
-                <span class="text-sm leading-relaxed text-slate-700">{c}</span>
+                <span class="text-sm leading-relaxed text-ink-700">{c}</span>
               </li>
             ))
           }
@@ -102,13 +102,13 @@ import { careers } from '../data/site';
             <article
               data-reveal
               style={`--reveal-delay:${(i % 3) * 80}ms`}
-              class="flex flex-col rounded-xl border border-line bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-slate-300 hover:shadow-lg hover:shadow-navy-950/[0.06]"
+              class="flex flex-col rounded-xl border border-line bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-ink-300 hover:shadow-lg hover:shadow-navy-950/[0.06]"
             >
               <span class="grid size-11 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                 <Icon name={r.icon} class="size-5" aria-hidden="true" />
               </span>
               <h3 class="mt-5 text-base font-semibold text-navy-950">{r.title}</h3>
-              <p class="mt-2 flex-1 text-sm leading-relaxed text-slate-600">{r.body}</p>
+              <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-600">{r.body}</p>
               <a
                 href={`mailto:${careers.applyEmail}?subject=${encodeURIComponent('Application: ' + r.title)}`}
                 class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700 hover:text-brand-700"
@@ -138,7 +138,7 @@ import { careers } from '../data/site';
         </div>
         <div class="min-w-0 lg:flex-1">
           <h2 class="text-base font-semibold text-navy-950">Don’t see your role?</h2>
-          <p class="mt-1.5 text-sm leading-relaxed text-slate-600">
+          <p class="mt-1.5 text-sm leading-relaxed text-ink-600">
             Send us your CV and a short note on what you’d like to build. We keep good people in
             mind for upcoming projects.
           </p>

@@ -100,7 +100,7 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
                     <Icon name={c.icon} class="size-5" aria-hidden="true" />
                   </span>
                   <span class="min-w-0">
-                    <span class="block text-xs font-medium uppercase tracking-wider text-slate-500">
+                    <span class="block text-xs font-medium uppercase tracking-wider text-ink-500">
                       {c.label}
                     </span>
                     <span class="block break-all font-medium text-navy-900">{c.value}</span>
@@ -116,14 +116,14 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
                     <Icon name="lucide:map-pin" class="size-5" aria-hidden="true" />
                   </span>
                   <span class="min-w-0">
-                    <span class="block text-xs font-medium uppercase tracking-wider text-slate-500">
+                    <span class="block text-xs font-medium uppercase tracking-wider text-ink-500">
                       {contactCopy.officeTitle}
                     </span>
                     <span class="block font-medium leading-relaxed text-navy-900">
                       {contact.address}
                     </span>
                     {contact.reach && (
-                      <span class="mt-1 block text-sm text-slate-500">{contact.reach}</span>
+                      <span class="mt-1 block text-sm text-ink-500">{contact.reach}</span>
                     )}
                     {directionsHref && (
                       <a
@@ -172,7 +172,7 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
           class="rounded-2xl border border-line bg-white p-6 shadow-sm sm:p-8"
         >
           <h2 class="text-xl font-semibold text-navy-950">{contactCopy.formTitle}</h2>
-          <p class="mt-2 text-sm leading-relaxed text-slate-600">{contactCopy.formIntro}</p>
+          <p class="mt-2 text-sm leading-relaxed text-ink-600">{contactCopy.formIntro}</p>
           <div class="mt-7">
             <ContactForm />
           </div>

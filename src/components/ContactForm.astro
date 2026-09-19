@@ -36,7 +36,7 @@ const hasAside = Astro.slots.has('aside');
 const hasSuccessArt = Astro.slots.has('success-art');
 
 const field =
-  'w-full rounded-lg border border-line bg-white px-4 py-2.5 text-navy-900 placeholder:text-slate-400 transition-colors focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-band disabled:text-slate-400';
+  'w-full rounded-lg border border-line bg-white px-4 py-2.5 text-navy-900 placeholder:text-ink-400 transition-colors focus:border-brand-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 disabled:cursor-not-allowed disabled:bg-band disabled:text-ink-400';
 const label = 'mb-1.5 block text-sm font-medium text-navy-800';
 ---
 
@@ -100,7 +100,7 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
     <div class="grid gap-5 sm:grid-cols-2">
       <div>
         <label class={label} for="cf-company">
-          Company <span class="font-normal text-slate-400">(optional)</span>
+          Company <span class="font-normal text-ink-400">(optional)</span>
         </label>
         <input class={field} id="cf-company" type="text" name="company" placeholder="Company name" />
       </div>
@@ -125,7 +125,7 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
 
     <button
       type="submit"
-      class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-[15px] font-medium text-white shadow-sm shadow-brand-700/20 transition-all duration-200 hover:bg-brand-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none sm:w-auto"
+      class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-[15px] font-medium text-white shadow-sm shadow-brand-700/20 transition-all duration-200 hover:bg-brand-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-ink-300 disabled:shadow-none sm:w-auto"
     >
       <span data-submit-label>Send message</span>
       <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" />
@@ -157,7 +157,7 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
      and toggled, so the illustration is already in the DOM when it's needed. -->
 <div id="cf-success" hidden role="status" aria-live="polite" class="text-center">
   <h3 class="text-xl font-semibold text-navy-950">{contactCopy.successTitle}</h3>
-  <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-slate-600">
+  <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-ink-600">
     {contactCopy.successBody}
   </p>
   {
@@ -196,8 +196,8 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
       status.textContent = msg;
       status.hidden = false;
       status.className = ok
-        ? 'rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800'
-        : 'rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800';
+        ? 'rounded-lg border border-success-200 bg-success-50 px-4 py-3 text-sm text-success-800'
+        : 'rounded-lg border border-danger-200 bg-danger-50 px-4 py-3 text-sm text-danger-800';
     };
 
     form.addEventListener('submit', async (e) => {

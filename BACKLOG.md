@@ -69,4 +69,6 @@ Honest assessment attached to each, including the ones not worth doing.
 | Date | What |
 |---|---|
 | 2026-09-19 | **Wire weight measured on all ten routes**, not just home. Heaviest is `/services` at 49.9 KB against a 100 KB ceiling; lightest `/terms` at 44.1. 39.5 KB of that is shared across every page and cached after the first, so a second page view costs 5–10 KB |
+| 2026-09-20 | **EXTRA, not done:** `public/_headers` sets `Cache-Control` for `/_astro/*` and nothing else, so the header logo — which loads on every page — carries no cache directive. Found by Lighthouse; serves no quality gate, so named rather than fixed |
+| 2026-09-20 | **EXTRA, not done:** the header logo is 288x115 and renders at about 90x36, roughly 1.6x oversized even at 2x DPR. ~10 KiB. Gate 5f (WebP/AVIF) was waived on the same file |
 | 2026-09-19 | **Provenance audit cleared.** `measure-content.cjs` flags 11 service bullets as "not literally in the bundle". All 11 traced to real bundle text — they differ by punctuation only. **No invented capability.** Details in `PROGRESS.md` |

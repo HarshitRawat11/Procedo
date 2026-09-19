@@ -43,6 +43,30 @@
   --color-surface: #ffffff; /* raised cards */
   --color-band: #f3f4f6; /* alternating section band */
   --color-line: #e5e7eb; /* hairline borders */
+
+  /* ---- Ink: the TEXT ramp. Added 2026-09-20 to close the palette ----------
+     Until now @theme defined only SURFACES — cream, surface, band, line — and
+     no colour for text. So every component that needed body grey reached for
+     Tailwind's stock slate-* palette, 81 times across src/, and the site's
+     most common text colour was a framework default rather than a Procedo one.
+
+     These values are COPIED VERBATIM from what Tailwind was already emitting
+     for slate-300..700, in the same colour space. Swapping the utilities is
+     therefore a pure rename with no visual change — that is the point, and it
+     is what makes the change safe to verify by diffing screenshots. */
+  --color-ink-700: oklch(37.2% 0.044 257.287); /* was slate-700 */
+  --color-ink-600: oklch(44.6% 0.043 257.281); /* was slate-600 — body text */
+  --color-ink-500: oklch(55.4% 0.046 257.417); /* was slate-500 — secondary */
+  --color-ink-400: oklch(70.4% 0.04 256.788); /* was slate-400 — tertiary */
+  --color-ink-300: oklch(86.9% 0.022 252.894); /* was slate-300 — light text on navy, strong rules, disabled fill */
+
+  /* ---- Form state. Only the contact form uses these. ---------------------- */
+  --color-success-50: oklch(98.2% 0.018 155.826);
+  --color-success-200: oklch(92.5% 0.084 155.995);
+  --color-success-800: oklch(44.8% 0.119 151.328);
+  --color-danger-50: oklch(97.1% 0.013 17.38);
+  --color-danger-200: oklch(88.5% 0.062 18.334);
+  --color-danger-800: oklch(44.4% 0.177 26.899);
 }
 
 /* ---------- Base element styles ---------- */
@@ -69,7 +93,7 @@
   body {
     font-family: var(--font-sans);
     background-color: var(--color-cream);
-    color: #475569; /* slate-600 body */
+    color: var(--color-ink-600); /* was a raw #475569 — see the ink ramp above */
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }

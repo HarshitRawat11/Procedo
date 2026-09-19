@@ -43,12 +43,28 @@ const isActive = (href: string) =>
       <Button href="/contact" chevron>Get in Touch</Button>
     </div>
 
+    {
+      /* Below `md` the full button above is hidden and the nav collapses, which
+         used to leave EIGHT OF TEN PAGES with no visible way to make contact
+         until the visitor scrolled — measured 2026-09-19, zero qualifying CTAs
+         above the fold at 375px on every page except / and /404. The one in the
+         mobile menu (further down this file) does not count: it is behind a tap.
+
+         A phone visitor checking a vendor is the audience this site is written
+         for, and the enquiry is the whole point of it, so the button is now
+         always present and only the label shortens. `px-4 py-2` rather than the
+         `md` size keeps logo + button + hamburger on one 375px line. */
+    }
+    <div class="md:hidden">
+      <Button href="/contact" class="px-4 py-2">Contact</Button>
+    </div>
+
     <button
       id="menu-toggle"
       type="button"
       aria-expanded="false"
       aria-controls="mobile-menu"
-      class="group inline-flex size-10 items-center justify-center rounded-lg text-navy-900 hover:bg-band md:hidden"
+      class="group -mr-2 inline-flex size-10 items-center justify-center rounded-lg text-navy-900 hover:bg-band md:hidden"
     >
       <Icon name="lucide:menu" class="size-6 group-aria-expanded:hidden" aria-hidden="true" />
       <Icon name="lucide:x" class="hidden size-6 group-aria-expanded:block" aria-hidden="true" />

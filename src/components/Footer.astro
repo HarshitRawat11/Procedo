@@ -12,13 +12,13 @@ const telHref = 'tel:' + contact.phone.replace(/[^+\d]/g, '');
 const liveSocials = socials.filter((s) => s.href && s.href !== '#');
 ---
 
-<footer class="border-t border-line bg-band text-slate-600">
+<footer class="border-t border-line bg-band text-ink-600">
   <Container class="py-12 lg:py-16">
     <div class="grid gap-12 lg:grid-cols-12">
       <!-- Brand -->
       <div class="lg:col-span-4">
         <Logo href="/" />
-        <p class="mt-5 max-w-sm text-sm leading-relaxed text-slate-600">{footer.tagline}</p>
+        <p class="mt-5 max-w-sm text-sm leading-relaxed text-ink-600">{footer.tagline}</p>
         {
           liveSocials.length > 0 && (
             <div class="mt-6 flex items-center gap-2">
@@ -28,7 +28,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
                   aria-label={s.label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="grid size-9 place-items-center rounded-lg border border-line bg-white text-slate-500 transition-colors hover:border-brand-300 hover:text-brand-700"
+                  class="grid size-9 place-items-center rounded-lg border border-line bg-white text-ink-500 transition-colors hover:border-brand-300 hover:text-brand-700"
                 >
                   <Icon name={s.icon} class="size-4" aria-hidden="true" />
                 </a>
@@ -46,7 +46,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
             <ul class="mt-4 space-y-2.5 text-sm">
               {col.links.map((link) => (
                 <li>
-                  <a href={link.href} class="text-slate-600 transition-colors hover:text-brand-700">
+                  <a href={link.href} class="text-ink-600 transition-colors hover:text-brand-700">
                     {link.label}
                   </a>
                 </li>
@@ -62,7 +62,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
         <div class="mt-4 space-y-3 text-sm">
           <a
             href={`mailto:${contact.email}`}
-            class="flex items-start gap-2.5 text-slate-600 transition-colors hover:text-brand-700"
+            class="flex items-start gap-2.5 text-ink-600 transition-colors hover:text-brand-700"
           >
             <Icon
               name="lucide:mail"
@@ -73,7 +73,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
           </a>
           <a
             href={`mailto:${contact.salesEmail}`}
-            class="flex items-start gap-2.5 text-slate-600 transition-colors hover:text-brand-700"
+            class="flex items-start gap-2.5 text-ink-600 transition-colors hover:text-brand-700"
           >
             <Icon
               name="lucide:briefcase"
@@ -84,7 +84,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
           </a>
           <a
             href={telHref}
-            class="flex items-start gap-2.5 text-slate-600 transition-colors hover:text-brand-700"
+            class="flex items-start gap-2.5 text-ink-600 transition-colors hover:text-brand-700"
           >
             <Icon
               name="lucide:phone"
@@ -95,7 +95,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
           </a>
           {
             contact.address && (
-              <p class="flex items-start gap-2.5 text-slate-600">
+              <p class="flex items-start gap-2.5 text-ink-600">
                 <Icon
                   name="lucide:map-pin"
                   class="mt-0.5 size-4 shrink-0 text-brand-500"
@@ -110,7 +110,7 @@ const liveSocials = socials.filter((s) => s.href && s.href !== '#');
     </div>
 
     <div
-      class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line pt-7 text-sm text-slate-600 sm:flex-row"
+      class="mt-14 flex flex-col items-center justify-between gap-4 border-t border-line pt-7 text-sm text-ink-600 sm:flex-row"
     >
       {/*
         `legalName` ends in "Pvt. Ltd." — a full stop of its own — so appending
