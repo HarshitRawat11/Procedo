@@ -100,14 +100,29 @@ the company's real copy.
 
 ### Quality gates
 
-Each reads `dist/`, so it checks what a visitor actually gets:
+Each reads `dist/`, so it checks what a visitor actually gets. Build first.
 
 ```bash
 node scripts/measure-seo.cjs         # titles, descriptions, schema, og, canonicals
 node scripts/measure-integrity.cjs   # dead links/anchors, duplicate ids, headings, labels
 node scripts/measure-content.cjs     # services copy depth and provenance
+node scripts/measure-weight.cjs      # wire weight per route, brotli, vs the 100 KB cap
 node scripts/measure-svg.cjs <file>  # the illustration loop's countable checks
 ```
+
+The design gates in [`QUALITY-GATES.md`](./QUALITY-GATES.md) need a server and
+a browser. `review/` is gitignored — regenerable output, like `dist/`:
+
+```bash
+node scripts/serve-dist.cjs --no-headers   # :4400, framable, for layout probes
+node scripts/shoot-screens.cjs             # 60 screenshots at 375/768/1280
+node scripts/measure-hierarchy.cjs         # squint / greyscale / thumbnail
+node scripts/extract-scenes.cjs            # scene SVGs for measure-density
+node scripts/diff-screens.cjs --control    # run BEFORE trusting any pixel diff
+```
+
+Without `--no-headers` the server applies the real `dist/_headers`, which is
+what you want for testing the CSP or the preview `noindex`.
 
 ### Routes
 

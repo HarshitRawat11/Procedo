@@ -37,6 +37,17 @@ reference/inspiration/*
 # verification artifacts
 lighthouse*.json
 
+# Design-audit screenshots and their derivatives (QUALITY-GATES.md evidence).
+# Regenerable output, like dist/ — about 21 MB per full run, which would more
+# than quadruple this repo permanently. The SCRIPTS that produce it are tracked
+# in scripts/, so anyone can rebuild the evidence:
+#
+#   npm run build
+#   node scripts/serve-dist.cjs --no-headers &
+#   node scripts/shoot-screens.cjs
+#   node scripts/measure-hierarchy.cjs
+review/
+
 # host CLI scratch state, not project config. `netlify deploy` writes
 # .netlify/ (a copy of netlify.toml plus a site-id cache) and `wrangler`
 # writes .wrangler/. Both are local to one machine and one login.

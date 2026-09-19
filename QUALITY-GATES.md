@@ -5,7 +5,9 @@
 **Intent:** `INTENT-BRIEF.md` · **Scope:** `FINISH-LINE.md` v1.0 (Case 2 — exists, not locked)
 **Evidence:** `review/` — 60 fold and full-page screenshots at 375 / 768 / 1280,
 plus `review/gate3/` (90 squint / greyscale / thumbnail derivatives) and
-`review/gate4/` (logo-masked).
+`review/gate4/` (logo-masked). **`review/` is gitignored** — 21 MB of
+regenerable output, like `dist/`. The scripts that produce it are tracked; see
+**Reproducing this audit** at the foot of this document.
 
 > Approved as written on 2026-09-19. The three retuned thresholds stand —
 > animation loop length, headline measure, and a type scale of 7 rather than 6 —
@@ -27,7 +29,7 @@ five of six passing.
 |---|---|---|---|
 | **1 — Intent alignment** | **FAIL** | 1a PASS 10/10 · **1b PASS — fixed 2026-09-20, 1–3 CTAs above fold on 10/10 pages at 375 (was 0 on 8/10)** · 1c: hypey PASS, consumer-cute **WAIVED** for `/404`, **generic still FAIL** | `review/*-375-fold.png`, iframe CTA probe |
 | **2 — Visual system** | **FAIL** | **2a PASS — fixed 2026-09-20, 0 stock-palette utilities remain; proven a pure rename by pixel diff** · 2b PASS · 2d PASS · **2c FAIL — 14 rendered type sizes vs 7** · **2e FAIL — 5 radii vs 3** | computed-style sweep + 1280 pixel diff + control run |
-| **3 — Hierarchy** | **FAIL** | **3a FAIL — 17/30 views clear at ratio ≥1.5** · 3b PASS (sampled) · 3c PASS 10/10 | `review/gate3/*-squint.png`, `contact-sheet-thumbs-1280.png` |
+| **3 — Hierarchy** | **FAIL** | **3a FAIL — 19/30 views clear at ratio ≥1.5** (was 17/30) · 3b PASS (sampled) · 3c PASS 10/10 | `review/gate3/*-squint.png`, `contact-sheet-thumbs-1280.png` |
 | **4 — Distinctiveness** | **FAIL** | **4a FAIL — logo-cover leaves nothing uniquely Procedo** · **4b FAIL — reads as Tailwind UI marketing hero** · 4c PASS · 4d PASS (mono eyebrow, 10/10) | `review/gate4/*-nologo.png` |
 | **5 — Imagery** | **PASS** (1 waived) | 5a–5e PASS — density 66–88% cream / 2.5–4.8% dark, all inside the band · **5f WAIVED** — 11 KB PNG logo | `measure-density.cjs`, built `<img>` audit |
 | **6 — Motion** | **PASS** | 11 of 11. Micro 200–300ms, reveal 600ms, CLS **0**, **transform/opacity only**, reduced-motion guards in 9 files | stylesheet + keyframe audit |
@@ -213,7 +215,7 @@ flood-fill clustering, so an element spanning ten cells is one cluster.
 ## Gate 3 — Hierarchy — **FAIL** (squint only)
 
 ### 3a. Squint test
-- **METHOD** — blur each fold at σ = width/45 (scaled, so 375 and 1280 are
+- **METHOD** — `node scripts/measure-hierarchy.cjs`. Blur each fold at σ = width/45 (scaled, so 375 and 1280 are
   squinted equally hard), threshold into ink, flood-fill adjacent ink into
   clusters, compare the largest cluster's mass to the second largest. **The
   sticky header is cropped first** — it is identical chrome on all ten pages and
@@ -222,7 +224,10 @@ flood-fill clustering, so an element spanning ten cells is one cluster.
 - **THRESHOLD** — dominant cluster ≥ **1.5×** the runner-up, on every
   view. *(The ratio is mine. It is the number most worth arguing about in this
   document.)*
-- **CURRENT** — **17 of 30 views clear.** VERIFIED. Failing views:
+- **CURRENT** — **19 of 30 views clear**, re-measured 2026-09-20 after the fix
+  batch (was 17 of 30). Still FAIL. Some of that movement may be capture
+  variance on the six animated pages rather than the fix — see
+  `scripts/diff-screens.cjs --control`. Failing views at the earlier reading:
 
   `404-375` (1.02) · `careers-768` (1.09) · `company-768` (1.07) ·
   `contact-1280` (1.42) · `contact-375` (1.04) · `cookies-375` (1.14) ·
@@ -461,3 +466,58 @@ failures rather than being quietly worked around.
 **Logged as EXTRA, not fixed** (serves no gate): `/assets/*` has no
 `Cache-Control` rule, and the header logo is 288x115 rendering at ~90x36.
 Both in `BACKLOG.md`.
+
+---
+
+## Reproducing this audit
+
+`review/` is gitignored — a full run is about 21 MB of PNGs, which would more
+than quadruple this repository permanently, and git keeps blobs forever. The
+evidence is regenerable output, like `dist/`. **The scripts are tracked**, so
+the METHOD lines above describe something anyone can actually re-run rather
+than a procedure that left with one session's scratch directory.
+
+```bash
+npm run build
+
+# Two servers, two jobs. The default applies the real dist/_headers, which is
+# what you want for anything header-dependent. --no-headers is framable, which
+# is what the layout and style probes need — the real CSP correctly refuses to
+# be iframed, so contentDocument comes back null.
+node scripts/serve-dist.cjs                 # :4399, real headers
+node scripts/serve-dist.cjs --no-headers    # :4400, framable
+
+node scripts/shoot-screens.cjs              # 60 screenshots -> review/
+node scripts/measure-hierarchy.cjs          # Gate 3, writes review/gate3/
+node scripts/measure-weight.cjs             # O5 / Gate 5, every route
+node scripts/extract-scenes.cjs             # Gate 5a, then:
+node scripts/measure-density.cjs review/scenes/RackScene.svg
+```
+
+**Before believing any pixel diff, run the control:**
+
+```bash
+node scripts/diff-screens.cjs --control
+```
+
+Six of the ten pages carry an animated illustration with loops of 2.4–26 s, and
+`--virtual-time-budget` lands the shutter at an arbitrary phase. Shooting the
+same build twice reproduces differences of 0.03–0.22% on exactly those six
+pages, with no code change at all. The four pages with no scene are
+pixel-deterministic, and a difference on one of those is real.
+
+That distinction is what let the Gate 2a token rename be verified rather than
+merely asserted: `home`, `privacy`, `terms` and `cookies` came back byte-for-byte
+identical across 81 utility swaps.
+
+### Lighthouse
+
+Not installed, and `FINISH-LINE.md` §4 keeps it out of scope as a gate. It was
+run once by hand for this audit, via `npx lighthouse@12`, after
+`npm cache clean --force` — two earlier attempts failed on a corrupted npm cache
+entry. Desktop 100/100/100/100, mobile 92/100/100/100.
+
+Run it against `:4399`, not `:4400`, and **ignore its "enable text compression"
+finding either way**: neither server compresses, so it reports ~87 KiB of
+uncompressed text that does not exist in production. `scripts/measure-weight.cjs`
+gives the real figure by compressing the files directly.
