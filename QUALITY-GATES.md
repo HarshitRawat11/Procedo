@@ -500,6 +500,52 @@ records as already signed off by the client. That conflict was raised before
 this batch and is unresolved, so Gates 3a, 4a, 4b, 2c, 2e and 7e stand as
 failures rather than being quietly worked around.
 
+### Batch 3 — 2026-09-20: fix 1, BUILT AS A PREVIEW, NOT ADOPTED
+
+**Gate 4 still FAILS on the live site**, because the live hero is unchanged.
+What exists is a proposal at **`/hero-preview`**, deployed and sealed off
+(noindex, in no nav, linked from nowhere, already in the sitemap filter).
+
+**Why a preview rather than an edit.** `CLAUDE.md` rule 4 says to build
+previews as new pages rather than editing live ones, and the home hero is the
+page the client signed off. The page is the REAL home page with one
+substitution — `HeroIndex` for `Hero` — so the only difference between `/` and
+`/hero-preview` is the hero itself. It is a comparison, not a mock-up.
+
+**What it changes.** The five disciplines move from a white card parked on the
+right into a full-width numbered index beneath the headline: hairline rules,
+large monospace numerals, no card chrome. It reads as the contents page of an
+engineering document rather than a marketing panel.
+
+**Why that specifically.** The card was the strongest Tailwind UI tell, and the
+note already in `Hero.astro` records that its five links are repeated as full
+cards in `ServicesPreview`, the very next section — so removing it costs no
+navigation. The numerals promote the mono eyebrow from decoration to structure,
+which is the lesson `INTENT-BRIEF.md` takes from the Oxide benchmark, and that
+eyebrow is the one motif already on 10 of 10 pages.
+
+**No copy, colour, typeface, illustration or radius changed.** Every element of
+the live hero survives. Only the arrangement differs, which is what Gate 4b
+measures. The constraints hold: no illustration in the hero (rejected
+2026-09-18), the set stays closed at six, seven type steps, three radii.
+
+**Measured on the preview:**
+
+| Check | Live hero | Preview |
+|---|---|---|
+| 4b template-likeness | FAIL — Tailwind UI hero shape | **PASS** — the right-hand card is gone |
+| 4a logo-cover | FAIL — "nothing" | **Marginal.** What remains is a mono-numbered hairline index, the eyebrow with its brand tick, and the cream ground. By the gate's wording the honest answer is no longer "nothing"; it is not unmistakable either |
+| 3a squint, 1280 | 5 clusters, 70%, ratio 2.92 | **2 clusters, 75%, ratio 2.92** — cleaner |
+| Type sizes / radii | 7 / 3 | **7 / 3** — unchanged |
+| Overflow 375/768/1280 | 0 | **0** |
+| CTAs above fold | 3 / 5 / 5 | **3 / 5 / 5** |
+| h1 orphans | 0 | **0** |
+
+**4a is the judgement call and it is not mine.** Adopting this means changing
+the client's signed-off front page, so it wants Harshit's eye and then
+Procedo's. Until then Gate 4 is recorded as FAILING, because it measures what
+ships.
+
 **Logged as EXTRA, not fixed** (serves no gate): `/assets/*` has no
 `Cache-Control` rule, and the header logo is 288x115 rendering at ~90x36.
 Both in `BACKLOG.md`.
