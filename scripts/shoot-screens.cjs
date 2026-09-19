@@ -10,7 +10,7 @@
 // longer than every fold on the page put together. Use it when iterating on a
 // change and judging it by Gate 3.
 //
-// ── TWO TRAPS, BOTH OF WHICH PRODUCED CONVINCING WRONG PICTURES ──────────────
+// ── THREE TRAPS, ALL OF WHICH PRODUCED CONVINCING WRONG PICTURES ────────────
 //
 // 1. WINDOWS CLAMPS THE MINIMUM WINDOW WIDTH (~500px), AND HEADLESS HONOURS IT.
 //    `--window-size=375,812` yields a file that IS 375x812 but whose page laid
@@ -27,7 +27,21 @@
 //    a file:// page (not subject to the site's X-Frame-Options) pointing at the
 //    --no-headers server (not subject to its CSP). Neither affects layout.
 //
-// 2. SCROLL REVEALS HOLD CONTENT AT opacity:0 UNTIL IT ENTERS THE VIEWPORT.
+// 2. WEBFONTS ARE NOT ALWAYS LOADED WHEN THE SHUTTER FIRES, AND A FALLBACK
+//    FONT BREAKS LINES DIFFERENTLY. On 2026-09-20 a capture of the closing CTA
+//    at 375 showed "Ready to Future-" / "Proof Your Business?" — a hyphenated
+//    compound split across lines, which looks exactly like a real typographic
+//    defect and was nearly "fixed" as one. In a real browser at a real 375px
+//    viewport with Inter loaded, it breaks at the space:
+//    "Ready to Future-Proof" / "Your Business?". The screenshot had rendered in
+//    a wider fallback face.
+//
+//    So: DO NOT READ LINE BREAKS, MEASURE OR ORPHANS OFF THESE SCREENSHOTS.
+//    Use a live probe against a real viewport for anything typographic — see
+//    the Gate 7 method in QUALITY-GATES.md. These images are for judging mass,
+//    layout and colour, where a font substitution changes little.
+//
+// 3. SCROLL REVEALS HOLD CONTENT AT opacity:0 UNTIL IT ENTERS THE VIEWPORT.
 //    A naive full-page capture therefore returns a page of blank cream. The fix
 //    is a viewport as tall as the document, so every IntersectionObserver fires
 //    at once, plus virtual time for the transitions to finish before the
