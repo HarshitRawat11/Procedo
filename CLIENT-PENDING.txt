@@ -62,7 +62,54 @@ NEEDED TO FINISH THE CONTENT
    The footer has a LinkedIn icon ready. It stays hidden until you send
    the profile URL.
 
-5. PROOF — ANY OF THE FOLLOWING
+5. THREE SERVICE SECTIONS ARE THINNER THAN THE OTHER TWO
+   This is the most worthwhile thing on the list, and the quickest.
+
+   In September you rewrote Digital Workplace Services and Datacenter
+   Infrastructure. The other three — IT Infrastructure, Facilities
+   Security, and Audio & Video Conferencing — still carry the text from
+   your old website, and the difference shows. Side by side, from the
+   live page:
+
+     You wrote, for Digital Workplace:
+       "Unified intake by portal, email and phone with tiered
+        escalation"
+       "ITIL-aligned root cause analysis to end repeat incidents"
+       "Patch deployment, rollback and quarantine for non-compliant
+        endpoints"
+
+     The old site says, for AV Conferencing:
+       "Voice tracking"
+       "Wireless presentation"
+       "Lighting for engagement"
+
+   Both are true. Only one of them tells a buyer what they are getting.
+   Averaged across the page: the two you revised run 12 points at about
+   59 characters each; the three you have not run 9 to 12 points at 26
+   to 35.
+
+   WE CANNOT FIX THIS OURSELVES. We checked your old website's source
+   for more detail and there is none — every sentence it holds is
+   already on the new site. Writing more would mean inventing claims
+   about your capabilities, which we will not do.
+
+   WHAT EACH ONE NEEDS:
+
+     IT Infrastructure     Fuller wording on the 12 points that are
+                           already there. Structure is fine.
+     Facilities Security   Two more points, and fuller wording.
+     Audio & Video         One more group of three points, and fuller
+                           wording.
+
+   HOW TO SEND IT: bullet points in an email are perfect. Not prose,
+   not a document. Take one of the three, read what is on the live
+   page, and say it the way you would say it to a client on a call.
+   Twenty minutes per section and it is done.
+
+   If you would rather leave all three as they are, say so and we will
+   close this. They are accurate as written — just quieter.
+
+6. PROOF — ANY OF THE FOLLOWING
    The site currently makes no claims it cannot back up, which is correct
    but means there is no third-party proof anywhere. Whatever you can
    share helps:
@@ -75,18 +122,18 @@ NEEDED TO FINISH THE CONTENT
    If none of this can be shared publicly yet, say so and we will leave
    the section out rather than pad it.
 
-6. HOW A PROJECT ACTUALLY RUNS
+7. HOW A PROJECT ACTUALLY RUNS
    Four to six steps, in your words — for example: site survey, design
    and BOQ, procurement, installation and commissioning, handover, AMC.
    Prospective clients ask "what happens after I call you", and the site
    has no answer today.
 
-7. FIVE OR SIX FAQs
+8. FIVE OR SIX FAQs
    The questions you are actually asked on a first call, with your
    answers. Typical ones: minimum project size, geographic coverage,
    support/SLA terms, AMC options, lead times.
 
-   Items 5, 6 and 7 are NOT needed for launch. The site is complete
+   Items 6, 7 and 8 are NOT needed for launch. The site is complete
    without them. They are the first things worth adding afterwards.
 
 
@@ -95,7 +142,8 @@ ALREADY DECIDED — NO ACTION NEEDED
    Dark mode                      Rejected. Closed.
    Photography                    Not used. Illustrations instead.
    Blog                           Not wanted. Removed.
-   Services copy revision         Applied in full.
+   Services copy revision         Applied in full for the two sections you
+                                  sent. The other three are item 5.
    Office address, phone, email   In place and working.
    Contact form                   Live and tested with real submissions.
    WhatsApp                       Confirmed 13 September — same number as

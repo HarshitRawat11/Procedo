@@ -117,6 +117,7 @@ are the best things to add next.
 | | Item | Detail |
 |---|---|---|
 | ☐ | **Permission to point procedoinfo.com at the new site** | Plus access to the DNS records. About 15 minutes once you say go |
+| ☐ | **Fuller copy for three service sections** | IT Infrastructure, Facilities Security and Audio & Video still carry your old website’s wording, and it is noticeably thinner than the two you rewrote in September. We cannot write it for you — your old site holds no more detail, and inventing capabilities is off the table. Bullet points in an email, twenty minutes a section. Or tell us to leave them |
 | ☐ | **Your LinkedIn page address** | The footer has the icon ready and hides it until you send the link. No broken link is shown in the meantime |
 | ☐ | **The analytics token** | Cloudflare dashboard → Analytics & Logs → Web Analytics → Add a site → copy the token. It is free and sets no cookies. Until you send it, nothing is measured |
 | ☐ | **Proof we may publish** | Client names or logos, two or three short project stories, OEM authorisations, ISO/MSME certifications. If none can be shared yet, say so and we leave the section out rather than pad it |

@@ -23,7 +23,7 @@ same list written for the client to read.
 | **DNS cutover** to procedoinfo.com | Their say-so plus DNS access | Preview URL is the live deployment. ~15 minutes once approved |
 | **LinkedIn URL** | One URL | Footer icon hides itself. No dead link ships |
 | **Cloudflare Web Analytics token** | 32 hex characters from their dashboard | Nothing is measured. Provider already chosen and wired |
-| **Deeper copy** for IT Infrastructure, Facilities Security, AV Conferencing | Their words — see the finding below | Those three sections are visibly thinner than the two they revised |
+| **Deeper copy** for IT Infrastructure, Facilities Security, AV Conferencing | Their words. **Asked concretely 2026-09-19** — `CLIENT-PENDING.txt` item 5 shows the gap in their own sentences and says exactly what each section needs | Those three sections are visibly thinner than the two they revised: the page tapers from 2924px to 1631px as you scroll |
 | **Proof material** — client names, logos, case studies, OEM authorisations, ISO/MSME | Permission to publish, and the material | No third-party proof anywhere on the site |
 | **"How a project runs"** process section | Four to six steps in their words | The site cannot answer "what happens after I call you" |
 | **FAQs** | Five or six real questions with their answers | — |
