@@ -15,6 +15,20 @@ filling in and refining *content*, not redesigning.
 When in doubt, ask: does this help a prospective client understand what Procedo
 does and get in touch? If not, it is probably out of scope.
 
+**Amended 2026-09-20.** That sign-off is no longer unqualified. The design audit
+in `QUALITY-GATES.md` found the visual *system* incoherent even though each page
+looked fine: fourteen rendered type sizes at 1280, five corner radii, and a body
+text colour that was Tailwind's stock `slate-600` rather than any Procedo token.
+Harshit authorised changing all three — *"do fix 4 5 and 6"* — so the type scale,
+the radius set and the token palette were reworked site-wide.
+
+**What that does and does not license.** It licenses bringing the site *into* its
+own system: collapsing duplicates, naming values, removing one-offs. It does not
+license restyling — the palette, the typefaces, the layout patterns and the
+illustration programme are unchanged and still signed off. If a change would
+alter how a page *looks* rather than how its values are *defined*, it is a
+redesign and needs asking.
+
 ---
 
 ## Scope: `FINISH-LINE.md` is a RECORD, not a gate
@@ -275,8 +289,46 @@ browser, load it and check it. Report what actually happened, including failures
 - **Tailwind must stay on PostCSS.** Astro 6 ships a rolldown-based Vite whose
   native resolver breaks the Tailwind Vite plugin. See `postcss.config.mjs`.
 - **Design tokens live in `src/styles/global.css`** under `@theme`. Use the
-  tokens (`brand-*`, `navy-*`, `cream`, `band`, `line`) — do not hard-code hexes
-  in components. Inline SVG artwork is the one exception.
+  tokens — `brand-*`, `navy-*`, `ink-*`, `cream`, `surface`, `band`, `line`,
+  `success-*`, `danger-*` — and do not hard-code hexes in components. Inline SVG
+  artwork is the one exception.
+
+  **`ink-300..700` is the TEXT ramp, added 2026-09-20.** Before it, `@theme`
+  defined only surfaces and no colour for text, so 81 utilities across `src/`
+  reached for Tailwind's stock `slate-*` and the site's commonest text colour
+  was a framework default. **Never reintroduce a stock palette colour**
+  (`slate-*`, `gray-*`, `red-*`, `green-*` …); if a role has no token, add one.
+  The values were copied verbatim from what Tailwind was emitting, so the swap
+  changed no pixels — verify any similar change the same way, with
+  `node scripts/diff-screens.cjs`, and run `--control` first.
+
+- **The type scale is SEVEN steps, and that is the whole system.** Set
+  2026-09-20, when the site was rendering fourteen distinct sizes at 1280
+  because six one-off `text-[clamp(…)]` expressions had accumulated, one per
+  component, with overlapping ranges — two of them covering the same range with
+  a different `vw` term.
+
+  | Step | At 1280 | Used for |
+  |---|---|---|
+  | `text-xs` | 12px | mono eyebrows, badges, illustration chips |
+  | `text-sm` | 14px | small text, buttons, captions |
+  | `text-base` | 16px | secondary body, nav, card titles' siblings |
+  | `text-lg` | 18px | body copy, lead paragraphs, card titles |
+  | `text-2xl` | 24px | mid-level headings |
+  | `text-h2` | 24 → 36px | section headings, the closing CTA |
+  | `text-h1` | 32 → 48px | page titles, the home hero, the 404 |
+
+  `text-h1/h2/h3` are `@theme` clamps, so they stay fluid without being
+  one-offs. **Do not add an eighth size**, and do not reach for
+  `text-xl`/`text-3xl`/`text-[Npx]` — every one of those was removed
+  deliberately. Body stays at **18px**: dropping it to 16 pushes the measure
+  past Gate 7's 80-character ceiling.
+
+- **Corner radius is THREE values**: `rounded-lg` (8px) for controls and cards,
+  `rounded-2xl` (16px) for large panels, `rounded-full` for pills. Set
+  2026-09-20, down from five. `rounded`, `rounded-md` and `rounded-xl` were all
+  folded into `rounded-lg` — downward on purpose, because at 16px the cards read
+  softer and more consumer, which is an anti-adjective in `INTENT-BRIEF.md`.
 - **Shared illustration motion lives in `src/styles/scene-motion.css`, once.**
   The cat's breathing and tail, the mug's steam and the wind in the plant and
   grass are defined there and nowhere else; each scene's `<svg>` opts in with

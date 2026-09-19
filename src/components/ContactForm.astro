@@ -125,7 +125,7 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
 
     <button
       type="submit"
-      class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-[15px] font-medium text-white shadow-sm shadow-brand-700/20 transition-all duration-200 hover:bg-brand-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-ink-300 disabled:shadow-none sm:w-auto"
+      class="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-6 py-3 text-sm font-medium text-white shadow-sm shadow-brand-700/20 transition-all duration-200 hover:bg-brand-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-ink-300 disabled:shadow-none sm:w-auto"
     >
       <span data-submit-label>Send message</span>
       <Icon name="lucide:arrow-right" class="size-4" aria-hidden="true" />
@@ -156,7 +156,7 @@ const label = 'mb-1.5 block text-sm font-medium text-navy-800';
 <!-- Shown in place of the form once a message actually sends. Rendered up front
      and toggled, so the illustration is already in the DOM when it's needed. -->
 <div id="cf-success" hidden role="status" aria-live="polite" class="text-center">
-  <h3 class="text-xl font-semibold text-navy-950">{contactCopy.successTitle}</h3>
+  <h3 class="text-lg font-semibold text-navy-950">{contactCopy.successTitle}</h3>
   <p class="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-ink-600">
     {contactCopy.successBody}
   </p>

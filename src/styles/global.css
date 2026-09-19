@@ -60,6 +60,29 @@
   --color-ink-400: oklch(70.4% 0.04 256.788); /* was slate-400 — tertiary */
   --color-ink-300: oklch(86.9% 0.022 252.894); /* was slate-300 — light text on navy, strong rules, disabled fill */
 
+  /* ---- Type scale. Seven steps, and that is the whole system. -------------
+     Added 2026-09-20. Before this the site rendered FOURTEEN distinct font
+     sizes at 1280 — 10, 11, 12, 14, 15, 16, 18, 20, 24, 30, 36, 40, 48, 52 —
+     because six one-off `text-[clamp(…)]` expressions had accumulated, one per
+     component, with overlapping ranges. Two of them covered the same range
+     with a different `vw` term. Fourteen sizes is not a scale; it is an
+     accident with a history.
+
+     The three display steps below replace those six clamps. Everything else
+     uses the stock Tailwind sizes, restricted to four: xs 12, sm 14, base 16,
+     lg 18. At 1280 the page therefore renders 12, 14, 16, 18, 24, 36, 48.
+
+     WHERE THINGS MOVED, and why the direction is down rather than up: the
+     Intent Brief asks for "quietly expert", so every collapse picks the
+     smaller neighbour. The hero went 52 -> 48, section headings 40 -> 36,
+     mid-level headings 30 -> 24, card titles 20 -> 18 (weight now carries that
+     step, not size). The only things that grew are the 10px and 11px mono
+     labels, which became 12px — three sizes for one semantic role, and the
+     smallest was below any sensible legibility floor. */
+  --text-h1: clamp(2rem, 4vw, 3rem); /* 32 -> 48. Hero, PageHeader, 404 */
+  --text-h2: clamp(1.5rem, 3vw, 2.25rem); /* 24 -> 36. SectionHeading, ClosingCta */
+  --text-h3: clamp(1.25rem, 2.2vw, 1.5rem); /* 20 -> 24. Statement blockquotes */
+
   /* ---- Form state. Only the contact form uses these. ---------------------- */
   --color-success-50: oklch(98.2% 0.018 155.826);
   --color-success-200: oklch(92.5% 0.084 155.995);

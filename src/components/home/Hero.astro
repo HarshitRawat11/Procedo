@@ -40,7 +40,7 @@ const hasAside = Astro.slots.has('aside');
           {hero.eyebrow}
         </p>
 
-        <h1 class="mt-6 max-w-2xl text-[clamp(2rem,4.5vw,3.25rem)] font-semibold leading-[1.12] tracking-tight text-navy-950">
+        <h1 class="mt-6 max-w-2xl text-balance text-h1 font-semibold leading-[1.12] tracking-tight text-navy-950">
           We design systems that work <span class="text-brand-600">intelligently</span>—so you can
           focus on what matters.
         </h1>
@@ -63,7 +63,7 @@ const hasAside = Astro.slots.has('aside');
       <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
         {hasAside && <slot name="aside" />}
         {!hasAside && (
-        <div class="overflow-hidden rounded-xl border border-line bg-white shadow-sm shadow-navy-950/[0.04]">
+        <div class="overflow-hidden rounded-lg border border-line bg-white shadow-sm shadow-navy-950/[0.04]">
           <p class="border-b border-line px-6 py-4 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
             Core competencies
           </p>
@@ -76,7 +76,7 @@ const hasAside = Astro.slots.has('aside');
                     class="group flex items-center gap-4 px-6 py-4 transition-colors hover:bg-band"
                   >
                     <span class="font-mono text-xs text-ink-500 tabular-nums">0{i + 1}</span>
-                    <span class="grid size-9 shrink-0 place-items-center rounded-md bg-brand-50 text-brand-600 ring-1 ring-brand-100">
+                    <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                       <Icon name={c.icon} class="size-[18px]" aria-hidden="true" />
                     </span>
                     <span class="min-w-0 flex-1 font-medium text-navy-900">{c.title}</span>

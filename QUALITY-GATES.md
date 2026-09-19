@@ -1,6 +1,6 @@
 # QUALITY GATES — Procedo Infosystems website
 
-**Version:** v1.1 — **APPROVED**, one fix batch applied, 2 gates waived
+**Version:** v1.2 — **APPROVED**, two fix batches applied, 2 gates waived
 **Measured:** 2026-09-19, re-measured after fixes 2026-09-20, against the **built output** (`dist/`), not the dev server
 **Intent:** `INTENT-BRIEF.md` · **Scope:** `FINISH-LINE.md` v1.0 (Case 2 — exists, not locked)
 **Evidence:** `review/` — 60 fold and full-page screenshots at 375 / 768 / 1280,
@@ -28,21 +28,23 @@ five of six passing.
 | Gate | Status | Measured value | Evidence |
 |---|---|---|---|
 | **1 — Intent alignment** | **FAIL** | 1a PASS 10/10 · **1b PASS — fixed 2026-09-20, 1–3 CTAs above fold on 10/10 pages at 375 (was 0 on 8/10)** · 1c: hypey PASS, consumer-cute **WAIVED** for `/404`, **generic still FAIL** | `review/*-375-fold.png`, iframe CTA probe |
-| **2 — Visual system** | **FAIL** | **2a PASS — fixed 2026-09-20, 0 stock-palette utilities remain; proven a pure rename by pixel diff** · 2b PASS · 2d PASS · **2c FAIL — 14 rendered type sizes vs 7** · **2e FAIL — 5 radii vs 3** | computed-style sweep + 1280 pixel diff + control run |
-| **3 — Hierarchy** | **FAIL** | **3a FAIL — 19/30 views clear at ratio ≥1.5** (was 17/30) · 3b PASS (sampled) · 3c PASS 10/10 | `review/gate3/*-squint.png`, `contact-sheet-thumbs-1280.png` |
+| **2 — Visual system** | **PASS** | **All five checks pass.** 2a — 0 stock-palette utilities, proven a pure rename by pixel diff · 2b — 2 families · **2c — 7 rendered sizes at 1280 (was 14), and 7 at 768 and 375 too** · 2d — one spacing scale · **2e — 3 radii (was 5)** | computed-style sweep across 10 routes x 3 widths |
+| **3 — Hierarchy** | **FAIL, and worse** | **3a FAIL — 15/30 views clear at ratio ≥1.5, down from 19/30. Regressed by fix 4** (see below) · 3b PASS (sampled) · 3c PASS 10/10 | `review/gate3/*-squint.png`, `contact-sheet-thumbs-1280.png` |
 | **4 — Distinctiveness** | **FAIL** | **4a FAIL — logo-cover leaves nothing uniquely Procedo** · **4b FAIL — reads as Tailwind UI marketing hero** · 4c PASS · 4d PASS (mono eyebrow, 10/10) | `review/gate4/*-nologo.png` |
 | **5 — Imagery** | **PASS** (1 waived) | 5a–5e PASS — density 66–88% cream / 2.5–4.8% dark, all inside the band · **5f WAIVED** — 11 KB PNG logo | `measure-density.cjs`, built `<img>` audit |
 | **6 — Motion** | **PASS** | 11 of 11. Micro 200–300ms, reveal 600ms, CLS **0**, **transform/opacity only**, reduced-motion guards in 9 files | stylesheet + keyframe audit |
-| **7 — Typography craft** | **FAIL** | 5 of 6 PASS — body 63–79 chars, 18px, LH 1.63, contrast **7.27:1** · **7e FAIL — headline orphans at 375 on `/services`, `/careers`, `/contact`** | iframe Range line probe, 3 widths |
+| **7 — Typography craft** | **PASS** | All six. Body 63–80 chars, 18px, LH 1.63, contrast **7.27:1** · **7e — 0 headline orphans at all three widths** (was 3 at 375), fixed with `text-balance` | iframe Range line probe, 3 widths |
 | **8 — 5-second test** | **NOT MEASURED** | Your protocol; 3 people, ≥2 must answer all three | — |
 | **9 — Behavioural** | **NOT MEASURED** | Needs the analytics token and 30 days post-launch | — |
 | **10 — Accessibility floor** | **PASS** | Lighthouse a11y **100** desktop and mobile · `measure-integrity.cjs` **0** · focus ring 2px `brand-500` | `lh-desktop.json`, `lh-mobile.json` |
 
-**3 passing · 5 failing · 2 checks waived · 2 not measurable yet.**
+**5 passing · 3 failing · 2 checks waived · 2 not measurable yet.**
 
-**Movement this batch:** Gate 1b FAIL → PASS, Gate 2a FAIL → PASS. Gate 1 and
-Gate 2 still fail overall, each on a remaining check. Gates 3, 4 and 7 are
-untouched — no fix for them was approved.
+**Movement, batch 2:** Gates **2** and **7** now pass outright. Only **1**, **3**
+and **4** still fail, and all three failures are now the same finding: the home
+hero is generic (4a, 4b), which is what 1c's "generic" check reports, and 3a's
+mobile squint failures are the single-column stacking that no approved fix
+addresses.
 
 Lighthouse, for the record, since it is not itself a gate: **desktop
 100/100/100/100, mobile 92/100/100/100, CLS 0 on both.**
@@ -224,10 +226,28 @@ flood-fill clustering, so an element spanning ten cells is one cluster.
 - **THRESHOLD** — dominant cluster ≥ **1.5×** the runner-up, on every
   view. *(The ratio is mine. It is the number most worth arguing about in this
   document.)*
-- **CURRENT** — **19 of 30 views clear**, re-measured 2026-09-20 after the fix
-  batch (was 17 of 30). Still FAIL. Some of that movement may be capture
-  variance on the six animated pages rather than the fix — see
-  `scripts/diff-screens.cjs --control`. Failing views at the earlier reading:
+- **CURRENT** — **15 of 30 views clear.** Re-measured 2026-09-20 after fix 4.
+  **This is a REGRESSION: 17 → 19 → 15.** Fix 4 caused it, and the mechanism is
+  not mysterious. This metric scores a cluster by its ink mass, and fix 4
+  shrank every heading — 52→48, 40→36, 30→24, 20→18 — so headings now carry
+  less mass relative to the body copy they are supposed to dominate.
+
+  The clearest single case is `/404` at 1280. Before: the illustration
+  dominated at **81% of ink, ratio 4.88**. After: **51%, ratio 1.03** — because
+  the 404 heading grew 40 → 48 and now sits at parity with the illustration
+  instead of behind it. Two near-equal clusters is exactly what the squint test
+  is designed to fail.
+
+  **Whether that is bad for the site is a separate question from whether it
+  fails the gate.** A heading at parity with its illustration is arguably
+  better than one swamped by it, and the gate does not measure that. But the
+  gate says ≥1.5 and it now fails more often, so it is recorded as a
+  regression rather than argued away.
+
+  **One untested option**, if you want it back: raise `--text-h2` from a 2.25rem
+  max to 2.5rem (36 → 40px). That restores heading mass and still leaves seven
+  steps, so Gate 2c would continue to pass. It is louder, which is why it was
+  not the original choice. Failing views at the 19/30 reading:
 
   `404-375` (1.02) · `careers-768` (1.09) · `company-768` (1.07) ·
   `contact-1280` (1.42) · `contact-375` (1.04) · `cookies-375` (1.14) ·
@@ -466,6 +486,39 @@ failures rather than being quietly worked around.
 **Logged as EXTRA, not fixed** (serves no gate): `/assets/*` has no
 `Cache-Control` rule, and the header logo is 288x115 rendering at ~90x36.
 Both in `BACKLOG.md`.
+
+### Batch 2 — 2026-09-20, approved by Harshit: "do fix 4 5 and 6"
+
+This batch changes how the site LOOKS, which `CLAUDE.md` had recorded as
+client-signed-off and not to be touched. That conflict was raised before the
+batch and Harshit overruled it; `CLAUDE.md` now records the amendment and what
+it does and does not license.
+
+| | Change | Files | Gate | Result |
+|---|---|---|---|---|
+| **Fix 4** | Three `@theme` display clamps (`text-h1/h2/h3`) replace six one-off `text-[clamp(…)]` expressions; `text-xl`→`text-lg`, `text-3xl`→`text-2xl`, `text-[15px]`→`text-sm`, `text-[11px]`→`text-xs`; illustration chips 10→12px and captions 15→14px | `global.css` + 28 files | **2c** | **FAIL → PASS.** 14 rendered sizes → **7**, and 7 at 768 and 375 too |
+| **Fix 5** | `rounded`, `rounded-md` and `rounded-xl` all fold into `rounded-lg`; `rounded-2xl` and `rounded-full` stay | 20 files | **2e** | **FAIL → PASS.** 5 radii → **3** (8px / 16px / full) |
+| **Fix 6** | `text-balance` on every `h1` and `h2` | 5 components | **7e** | **FAIL → PASS.** 3 orphans at 375 → **0**, at all three widths |
+
+**Every collapse picked the smaller neighbour**, because the Intent Brief asks
+for "quietly expert". The hero went 52→48, section headings 40→36, mid-level
+headings 30→24, card titles 20→18 with weight now carrying that step. The only
+things that grew are the 10px and 11px mono labels, which became 12px — three
+sizes existed for one semantic role and the smallest was below any sensible
+legibility floor.
+
+**Body stays at 18px deliberately.** Dropping it to 16 would push the measure
+past Gate 7's 80-character ceiling; at 768 it already sits at exactly 80.
+
+**Cost: Gate 3a regressed, 19 → 15 of 30.** Recorded in full under Gate 3.
+Smaller headings carry less ink mass, so they dominate less. This was flagged
+as a risk before the batch ("re-measure Gates 3a and 7 after") and it
+materialised.
+
+**Unchanged and re-verified after the batch:** horizontal overflow 0 at all
+three widths, body 18px and 63–80 characters, contrast 7.27:1, CTA above the
+fold on 10 of 10 pages at 375, all six illustration densities identical, build
+0/0/0, and the SEO, integrity, content and weight gates all passing.
 
 ---
 

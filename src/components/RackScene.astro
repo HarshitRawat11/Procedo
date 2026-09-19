@@ -174,7 +174,7 @@ const U2 = 196; // THE SPARE ONE — the cat is in it, working
 const U3 = 226; // switch — directly under the cat, which is the point
 const U4 = 256; // blank filler
 
-/* A row of ports as ONE path with rounded corners, not N <rect>s.
+/* A row of ports as ONE path with rounded-lg corners, not N <rect>s.
    Gate 1's curve ratio counts curved <path>s against EVERY drawn element, so
    thirteen port rectangles dragged the whole scene under the 40% floor at 35%.
    Drawn this way the same ports read identically and count as one curve each:
@@ -433,7 +433,7 @@ const portRow = (x0: number, y: number, n: number, w = 11, h = 9, gap = 6, r = 1
     background: #fff;
     box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
     font-family: var(--font-mono);
-    font-size: 0.625rem;
+    font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -458,7 +458,7 @@ const portRow = (x0: number, y: number, n: number, w = 11, h = 9, gap = 6, r = 1
   .line {
     max-width: 30ch;
     margin-top: 0.75rem;
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
     font-weight: 500;
     line-height: 1.5;
     color: var(--color-navy-900);

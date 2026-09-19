@@ -88,13 +88,13 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
       <div class="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
         <!-- Direct channels -->
         <div data-reveal>
-          <h2 class="text-xl font-semibold text-navy-950">{contactCopy.directTitle}</h2>
+          <h2 class="text-lg font-semibold text-navy-950">{contactCopy.directTitle}</h2>
           <div class="mt-6 space-y-4">
             {
               channels.map((c) => (
                 <a
                   href={c.href}
-                  class="flex items-center gap-3.5 rounded-xl border border-line bg-white p-4 shadow-sm transition-colors hover:border-brand-300"
+                  class="flex items-center gap-3.5 rounded-lg border border-line bg-white p-4 shadow-sm transition-colors hover:border-brand-300"
                 >
                   <span class="grid size-10 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                     <Icon name={c.icon} class="size-5" aria-hidden="true" />
@@ -111,7 +111,7 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
 
             {
               contact.address && (
-                <div class="flex items-start gap-3.5 rounded-xl border border-line bg-white p-4 shadow-sm">
+                <div class="flex items-start gap-3.5 rounded-lg border border-line bg-white p-4 shadow-sm">
                   <span class="grid size-10 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
                     <Icon name="lucide:map-pin" class="size-5" aria-hidden="true" />
                   </span>
@@ -143,7 +143,7 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
           </div>
 
           <!-- What we can help with -->
-          <div class="mt-10 rounded-xl border border-line bg-band p-6">
+          <div class="mt-10 rounded-lg border border-line bg-band p-6">
             <h3 class="font-mono text-xs uppercase tracking-wider text-navy-700">
               {contactCopy.helpTitle}
             </h3>
@@ -171,7 +171,7 @@ const schema = graph(breadcrumbs([{ name: 'Contact', path: '/contact' }]));
           style="--reveal-delay:100ms"
           class="rounded-2xl border border-line bg-white p-6 shadow-sm sm:p-8"
         >
-          <h2 class="text-xl font-semibold text-navy-950">{contactCopy.formTitle}</h2>
+          <h2 class="text-lg font-semibold text-navy-950">{contactCopy.formTitle}</h2>
           <p class="mt-2 text-sm leading-relaxed text-ink-600">{contactCopy.formIntro}</p>
           <div class="mt-7">
             <ContactForm />
