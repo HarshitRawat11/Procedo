@@ -1,8 +1,15 @@
 PROCEDO INFOSYSTEMS — WEBSITE: WHAT WE NEED FROM YOU
-Updated 12 September 2026
+Updated 19 September 2026
 
 The site is built and complete. Everything below is waiting on your side.
 Nothing on this list is blocked on development work.
+
+You can see it now, on every device, at:
+
+   https://procedoinfo-preview.pages.dev
+
+That is a private preview address. It is deliberately kept out of Google
+until the legal pages have been reviewed.
 
 
 BLOCKING LAUNCH — 1 ITEM
@@ -12,6 +19,20 @@ BLOCKING LAUNCH — 1 ITEM
    from your previous website. Nobody has reviewed it against the current
    site. Your legal advisor needs to read all three and either approve
    them or send corrections.
+
+   Two things to put in front of that reviewer:
+
+     - The COOKIE POLICY was rewritten on 18 September. The old one was
+       the previous website's policy describing the previous website: it
+       claimed analytics and preference cookies and "relevant content or
+       ads". This site sets no cookies at all, which we measured in a
+       browser before changing a word. The new text says so plainly.
+       It needs approving like the other two.
+
+     - The PRIVACY POLICY still offers newsletters and marketing email.
+       There is no mailing list and no way to consent to one. That is a
+       judgement for your advisor — remove the offer, or tell us to build
+       the mechanism.
 
    This is the only thing standing between the site and going live.
 
@@ -23,17 +44,16 @@ NEEDED TO GO LIVE
    the DNS records. The build is ready; this is a 15-minute change once
    you say go.
 
-3. ANALYTICS — YOUR CHOICE OF TOOL
-   The site is wired for analytics but switched off until you pick one.
-   Two options:
+3. ANALYTICS — ONE VALUE
+   Decided on 18 September: Cloudflare Web Analytics. It is free, it
+   sets no cookies, it needs no consent banner, and the site is already
+   hosted on Cloudflare, so there is nothing new to sign up for.
 
-     a) Plausible or Umami — no cookies, no consent banner needed,
-        paid (roughly USD 9/month) or self-hosted.
-     b) Google Analytics 4 — free, but it sets cookies, so the site
-        would then need a cookie consent banner to stay compliant.
+   We need one thing: the site token.
+     Cloudflare dashboard -> Analytics & Logs -> Web Analytics
+     -> Add a site -> copy the token (32 characters).
 
-   Tell us which, and send the account/site ID. Our recommendation is
-   (a): it keeps the site free of consent pop-ups.
+   Send us that and it is on. Until then the site collects nothing.
 
 
 NEEDED TO FINISH THE CONTENT
@@ -66,9 +86,8 @@ NEEDED TO FINISH THE CONTENT
    answers. Typical ones: minimum project size, geographic coverage,
    support/SLA terms, AMC options, lead times.
 
-8. WHATSAPP
-   Is +91 9958896172 a WhatsApp Business number? If yes, we will add a
-   WhatsApp button. If a different number is used for enquiries, send it.
+   Items 5, 6 and 7 are NOT needed for launch. The site is complete
+   without them. They are the first things worth adding afterwards.
 
 
 ALREADY DECIDED — NO ACTION NEEDED
@@ -79,13 +98,39 @@ ALREADY DECIDED — NO ACTION NEEDED
    Services copy revision         Applied in full.
    Office address, phone, email   In place and working.
    Contact form                   Live and tested with real submissions.
+   WhatsApp                       Confirmed 13 September — same number as
+                                  the phone line. Live on the Contact page.
+   Analytics tool                 Chosen 18 September (see item 3).
 
 
 ILLUSTRATIONS
 ------------------------------------------------------------------------
-   Five illustrations are drawn and ready. They sit on internal preview
-   pages for now and are not on the public site. We will bring them
-   forward for your review once the items above are moving.
+   All six are drawn, approved and live on the site. Nothing is pending:
+
+     Our Mission     a cat asleep on a cushion on top of a humming
+                     server rack. Every status light is green.
+     Services        a cat sitting in the one empty rack bay, a paw
+                     on the switch below, watching its lights
+     Careers         a cat at a desk, one paw on the mouse,
+                     watching the monitor
+     Company         a workshop shadow board, six tools over their
+                     painted outlines. One outline is bare — the cat
+                     on top of the board has that screwdriver
+     Contact         a cat asleep beside a telephone. It rings, the
+                     cat wakes, and it answers
+     404 page        a storm outside the window at night, the desk
+                     lamp still burning, the cat asleep through it
+
+   The Contact one plays when a message is sent, and the Our Mission
+   one also appears there once it has gone through.
+
+   The home page has no illustration, on purpose — its hero carries the
+   list of the five competencies instead, which is the first thing a
+   visitor should read.
+
+   Every one is drawn to the same rules — animals and machines, never
+   people — and every one stops moving for a visitor who has asked their
+   device to reduce motion.
 
 
 QUESTIONS

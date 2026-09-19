@@ -4,12 +4,17 @@ Status board for the Procedo Infosystems website.
 **Update this file whenever a task changes state.** New sessions should read it
 immediately after `CLAUDE.md`.
 
-- **Last updated:** 2026-09-18
-- **Build:** ✅ passing — 16 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
-- **Deployed:** ❌ not yet — domain exists (procedoinfo.com) but still serves the old site
+- **Last updated:** 2026-09-19
+- **Build:** ✅ passing — 10 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
+- **Deployed:** ✅ preview live at https://procedoinfo-preview.pages.dev, git-connected,
+  auto-deploying from `master`. **Not** on procedoinfo.com — that domain still
+  serves the old site and the cutover is the client's call
 - **Repo:** ✅ `HarshitRawat11/Procedo` on GitHub
-- **Overall:** the site is content-complete and shippable. Only the legal review
-  and deployment remain before launch.
+- **Scope:** 🔒 **LOCKED 2026-09-19.** `FINISH-LINE.md` defines v1. Every request
+  is a DEFECT (a criterion written there is failing) or an EXTRA (everything
+  else → `BACKLOG.md`). Reopening takes the word UNFREEZE
+- **Overall:** v1 is complete against every written criterion. Only the legal
+  review and the domain cutover remain, and both are the client's to do.
 
 Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · ⬜ not started
 
@@ -33,21 +38,21 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 12 | Illustration on Our Mission page | ✅ | — | Adopted 2026-08-30 — QuietScene now sits beside the mission statement on the live `/our-mission`. Preview page deleted |
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
 | 14 | Design inspiration folder | ✅ | — | Images saved and renamed to the index 2026-09-05, verified by opening each. 11 of 12 present — ref 11 (two-hands) never made it in; ref 12 (Google Meet "meeting is safe") is new and now catalogued as ANALYSIS §8. Notes tracked in git, images stay local |
-| 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. Four scenes exist: QuietScene (404, contact success, `/our-mission`), UptimeScene (`/uptime`), the kept Power/Datacenter concept, and **DeskScene**, adopted on **Careers** 2026-09-07 — first illustration to clear the loop end to end |
+| 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. **Six scenes, and every one has a home:** QuietScene (`/our-mission` + contact success), ReceptionScene (`/contact` + contact success), CareersScene (`/careers` header + open-application card), CompanyScene (`/company` statement band), RackScene (`/services` header), UptimeScene (the **404**). `src/components/preview/` holds exactly one file now — `SceneVariant`, the 404 comparison strip. **The set is closed:** a new illustration is EXTRA under `FINISH-LINE.md` |
 | 16 | Deployment | ✅ | — | **Preview is on Cloudflare Pages at https://procedoinfo-preview.pages.dev, git-connected, auto-deploying from `master` since 2026-09-18.** Build command `npm run build:preview`, output `dist`, `NODE_VERSION=22`. **Netlify removed the same day** — site deleted, repo disconnected, `netlify.toml` gone; nothing was attached to it (no custom domain, no DNS zone, no form submissions) so only the `.netlify.app` URL went with it. It had refused every build from 14 Sept — six consecutive *Skipped due to account credit usage exceeded* while its own API reported `credits used: 0`. **Watch the build command:** plain `npm run build` produces no noindex, and it lives in the Cloudflare project rather than the repo, so changing it by accident is easy and invisible. Production on procedoinfo.com is still a separate, later decision |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
-| 18 | Analytics | 🟡 | Needs one value: the Web Analytics site token | **Provider chosen 2026-09-18: Cloudflare Web Analytics.** Free, cookieless, and the site is already on Cloudflare Pages. Wired into `Analytics.astro` as a fourth provider alongside Plausible, Umami and GA4, so `site.ts` stays the single switch — deliberately NOT toggled on the Pages project, which would put the on/off somewhere `site.ts` cannot see. Output tested with a dummy token: the beacon appears once per page, the `data-cf-beacon` attribute decodes to valid JSON, and no other provider leaks in. **To turn on:** Cloudflare dashboard → Analytics & Logs → Web Analytics → Add a site → copy the 32-hex site token → in `site.ts` set `provider: 'cloudflare'` and paste it as `id`. Nothing else. Still emits nothing while `provider` is `'none'`. **Note:** the beacon is not hostname-locked, so enabling it before launch mixes preview traffic into the data — filter by hostname, or wait for launch. Cookieless means NO consent banner is needed, which also unblocks the Cookie Policy rewrite (#5) |
+| 18 | Analytics | 🔴 | Needs one value from the client: the Web Analytics site token | **Provider chosen 2026-09-18: Cloudflare Web Analytics.** Free, cookieless, and the site is already on Cloudflare Pages. Wired into `Analytics.astro` as a fourth provider alongside Plausible, Umami and GA4, so `site.ts` stays the single switch — deliberately NOT toggled on the Pages project, which would put the on/off somewhere `site.ts` cannot see. Output tested with a dummy token: the beacon appears once per page, the `data-cf-beacon` attribute decodes to valid JSON, and no other provider leaks in. **To turn on:** Cloudflare dashboard → Analytics & Logs → Web Analytics → Add a site → copy the 32-hex site token → in `site.ts` set `provider: 'cloudflare'` and paste it as `id`. Nothing else. Still emits nothing while `provider` is `'none'`. **Note:** the beacon is not hostname-locked, so enabling it before launch mixes preview traffic into the data — filter by hostname, or wait for launch. Cookieless means NO consent banner is needed, which also unblocks the Cookie Policy rewrite (#5) |
 | 19 | Photography / real imagery | ✅ | — | **Decided 2026-08-30: no photography.** The illustration-and-icon style is a deliberate choice, not a gap. Revisit only if real project photos become available |
 | 20 | Dark mode | ❌ | **Rejected by the client 2026-09-12** | Closed. The site stays light-only; no `prefers-color-scheme` handling anywhere, and none is to be added |
 | 21 | `Container.astro` unused `Props` warning | ✅ | — | Fixed 2026-08-30 by exporting the interface. Build is now 0 errors / 0 warnings / 0 hints |
-| 22 | `/uptime` illustration concept | ⏸️ | Parked | `UptimeScene` kept, `_uptime` parked. Due the Gate 1b weight pass with the rest |
+| 22 | `/uptime` illustration concept | ✅ | — | **Resolved 2026-09-18: UptimeScene went to the 404**, which is what the picture had to say all along — a storm outside, the lamp still lit, the cat asleep through it. It passes Gate 1b as shipped: **66.0% cream / 3.2% dark**. `_uptime` stays parked as rehearsal space, not as a lifeboat |
 | 23 | Illustration technique — outline vs flat colour | ✅ | — | **Decided 2026-09-06: technique B.** Applied to all three QuietScene call sites 2026-09-07 — the 404, the contact-form success state and `/our-mission`. `QuietScene` takes a `palette` prop (`outline` default, `coloured`); every live instance now passes `coloured` |
 | 24 | Our Mission illustration | ❌ | Abandoned 2026-09-07 | **Dropped.** Two iterations rejected by both Harshit and the client; the second passed all six countable gates and was still no good. `MissionScene.astro` and `/our-mission-preview` deleted 2026-09-07. `/our-mission` keeps QuietScene, now in technique B. The cause is now a standing rule, not an open question — no human figures (CLAUDE.md §5b) |
 | 25 | Client copy revision — services | ✅ | — | Applied 2026-09-06, revised after Harshit reviewed the deployed preview 2026-09-07. Telecom removed; **Digital Workplace Services** and **Datacenter Infrastructure** now sit **first and second**, each condensed to **4 cards / 12 pointers** to match the existing three. The two per-section closing banners were removed as redundant against the page-level CTA |
-| 26 | Company page illustration | 🟡 | Needs refining first | `WorkshopScene` kept, `_company-preview` still parked. Harshit 2026-09-13: refine the image before adopting — Gate 1b |
-| 27 | Careers cat — working, not sleeping | 🟡 | Needs refining first | `DeskSceneWorking` kept, `_careers-preview` still parked. Same: Gate 1b before adoption |
+| 26 | Company page illustration | ✅ | — | **Adopted 2026-09-14.** `WorkshopScene` was not refined, it was replaced: it failed Gate 1b at 29.7% cream / 7.2% dark and was deleted. **CompanyScene** took its place in the `/company` statement band — a shadow board with six tools over their painted outlines, one outline bare because the cat on top of the board has that screwdriver. Passes as shipped: **72.8% cream / 4.5% dark**. `_company-preview` parked on adoption |
+| 27 | Careers cat — working, not sleeping | ✅ | — | **Done.** `DeskScene` and `DeskSceneWorking` were both deleted 2026-09-14 and **CareersScene** shipped instead, on the `/careers` header and the open-application card. Harshit 2026-09-18: the cat should work the mouse, not just rest a paw on it — two `.mousing` groups now share one `mouseSlide` clock and the lead was redrawn so it stays under the body. Passes as shipped: **86.5% cream / 4.4% dark** |
 | 28 | Contact page illustration | ✅ | — | **Adopted 2026-09-13.** All three placement previews deleted; `ReceptionScene` moved to `src/components/` and now appears in exactly one place — the contact form's success card, `state="hungup"`. The image is the reward for having sent something. Still due the Gate 1b weight pass |
-| 29 | Home hero illustration | 🟡 | Preview removed, image kept | `RackScene` kept; `hero-preview` deleted. It fails Gate 1b hardest of all — 0.2% bare cream, 30% dark — so it is the clearest test of the refinement pass |
+| 29 | Home hero illustration | ❌ | **Rejected by Harshit 2026-09-18** | Closed. *"the hero page will not have any image it will be same as the current one."* The home hero keeps its competency index card, and that is deliberate — the first thing a visitor reads is the list of five disciplines. **RackScene was not wasted:** rebuilt from 0.2% cream / 30.0% dark to **75.5% / 4.8%** and adopted on the `/services` header instead, where the cat now works the rack rather than sleeping on it. Putting an illustration in the hero is EXTRA |
 | 30 | Blog / MDX plumbing | ✅ | — | **Removed 2026-09-10** on Harshit's call ("no blog for now"). `@astrojs/mdx` and `@astrojs/rss` are out of `package.json`, the lockfile and `astro.config.mjs`; there was never an `.mdx` document or an RSS route to lose |
 | 31 | Structured data | ✅ | — | Builders in `src/lib/schema.ts`, so no page restates the company. Organization now carries **contactPoint** (support and sales) and **areaServed: India**; Services carries its five competencies as **Service** nodes anchored to their sections, with an Organization stub so the `provider` reference resolves in-document; Company, Our Mission, Careers and Contact each carry a **BreadcrumbList**. Verified on the built output: one block per page, all in `<head>`, all parse |
 | 32 | `robots.txt` | ✅ | — | Added 2026-09-10; it was a 404. Allow all, plus the sitemap. Names no preview paths deliberately — a `Disallow` line advertises the routes it hides — and the Netlify preview's `X-Robots-Tag` header overrides it on that host |
@@ -55,7 +60,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 34 | Preview pages — parked, then reviewed | ✅ | — | Parked 2026-09-12; reviewed 2026-09-13. **Deleted:** `illustrations-preview`, `contact-preview` ×3, `hero-preview`, `home-preview` (recoverable from `3caa023`). **Still parked:** `_company-preview`, `_careers-preview` (pending refinement), `_404-preview`, `_uptime`. Every illustration component was kept — the pages went, the images did not |
 | 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
 | 36 | WhatsApp channel | ✅ | — | Number confirmed by Harshit 2026-09-13 — the same line as the phone. `contact.whatsapp` in `site.ts` with a derived `whatsappHref`; the channel drops out entirely if the number is ever cleared (§3). Live on the Contact page |
-| 37 | Illustration weight — the "subtle" pass | 🟡 | 3 of 5 refined | Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **Balance** (`scripts/measure-balance.cjs`): the ink centred in the frame, which neither gate can see. **And scale**: apparent size is subject width over CANVAS width. Standing: QuietScene 80.9/3.4 · **ReceptionScene 89.2/2.3 — live** · **CareersScene 88.4/3.9 — live** · **CompanyScene 80.2/2.9 — done 2026-09-14, awaiting sign-off** · RackScene 0.2/30.0 · UptimeScene 32.1/6.7 *(no slot on the real site — lowest priority)* |
+| 37 | Illustration weight — the "subtle" pass | ✅ | — | **All six pass, measured on the built pages 2026-09-19** — on each scene’s live viewBox, which is what a visitor sees, not the component in isolation. Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **Balance** (`scripts/measure-balance.cjs`): the ink centred in the frame, which Gate 1b cannot see. **And scale**: apparent size is subject width over CANVAS width. Standing, cream/dark: ReceptionScene 88.2/2.5 · CareersScene 86.5/4.4 · QuietScene 80.9/3.4 · RackScene 75.5/4.8 · CompanyScene 72.8/4.5 · UptimeScene 66.0/3.2. The two that used to fail were not tuned but rebuilt — RackScene from 0.2/30.0, and WorkshopScene replaced outright |
 
 ---
 
@@ -64,32 +69,130 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 **One thing:** legal sign-off (#5) on the privacy / terms / cookie pages. The
 text is real, carried over from the previous site, but nobody has reviewed it.
 
-**Put one question in front of that reviewer.** Measured in a browser on the
-built output, 2026-09-18: **this site sets no cookies.** `document.cookie` is
-empty, localStorage and sessionStorage are empty, no third-party script loads on
-any page, `analytics.provider` is `'none'`, and the contact form is a plain POST
-to Web3Forms. The Cookie Policy nevertheless says Procedo uses cookies to
-understand how you use the site, remember preferences and "provide relevant
-content or ads", and lists analytics and preference cookies as types in use; the
-Privacy Policy lists cookies under information collected and mentions
-newsletters and marketing material, for which the site has no mechanism.
+**Put two things in front of that reviewer.**
 
-That is the old React site's policy describing the old React site. It is not an
-exposure in the dangerous direction — the risk is undisclosed tracking, and
-there is none — but it is untrue today on a page whose job is to be true, and a
-visitor can check it in ten seconds. It was NOT edited unilaterally: it is
-verified Procedo copy, and the answer depends on a decision nobody has made yet.
-**Decide analytics (#18) first, then make the policy match.** If the answer is
-GA4, it sets cookies and needs a consent banner that does not exist.
+**One — the Cookie Policy is new and needs approving like the other two.** The
+old text was the previous React site's policy describing the previous React
+site: it claimed analytics and preference cookies and "relevant content or ads".
+Measured in a browser on the built output, 2026-09-18: **this site sets no
+cookies.** `document.cookie` is empty, localStorage and sessionStorage are
+empty, no third-party script loads on any page, and the contact form is a plain
+POST to Web3Forms. It was not an exposure in the dangerous direction — the risk
+is undisclosed tracking, and there is none — but it was untrue on a page whose
+job is to be true, and a visitor could check it in ten seconds. Rewritten
+2026-09-18, once the analytics decision (#18) unblocked it: Cloudflare Web
+Analytics is cookieless, so the answer is a plain no and no consent banner is
+needed. **The page's cookie claims now derive from `analytics.provider`**, so it
+cannot go stale again — set `ga4` and it switches to "Yes" by itself.
 
-Deployment (#16) is ready the moment the domain is pointed at the new build.
+**Two — the Privacy Policy still offers newsletters and marketing mail**, for
+which there is no list and no consent mechanism. Flagged, not changed: that is a
+permissions judgement for the advisor, not a factual fix.
+
+Reset the `updated` dates on all three when sign-off arrives.
+
+Deployment (#16) is done for the preview and auto-deploys from `master`. The
+production cutover is the client pointing procedoinfo.com at the new build.
 Nothing is blocked on code.
+
+**Everything else is finished.** `FINISH-LINE.md` records the criteria and their
+measured state; the gap it lists is empty.
 
 ---
 
 ## Log
 
-### 2026-09-18 (last) — the Cookie Policy says something true now
+### 2026-09-19 (last) — the finish line, locked
+
+The project had no defined end. Requests arrived, were built, and were followed
+by more requests, with nothing in the repo distinguishing "in scope" from
+"extra". That is fixed now, and it is fixed in writing rather than by intention.
+
+**`FINISH-LINE.md` is locked at v1.0.** It names the ten routes and what must be
+on each, the visual system as the v1 system, ten optimization thresholds, the
+deployment criterion, and a long list of what is deliberately NOT in v1. Every
+criterion is falsifiable — checkable by someone with no context, in under a
+minute, with a yes or no. Every claim in it carries VERIFIED, UNVERIFIED or
+UNKNOWN, and nothing was allowed to sit at UNVERIFIED for convenience.
+
+**The rule that follows from it** is now in `CLAUDE.md`, so a fresh session
+inherits it without being told: every request is a **DEFECT** (a criterion
+written in the document is failing) or an **EXTRA** (everything else, including
+suggestions from Claude). There is no third bucket. Extras get one line in
+`BACKLOG.md` and wait. Reopening scope takes the explicit word **UNFREEZE**.
+
+**Two gaps were closed by measurement rather than argument**, before the lock:
+
+- **Responsive floor at 768px** had never been measured — only 375 and 1280
+  had. Measured across all ten routes: horizontal overflow **0 on every one**.
+- **Console errors** had been measured on `/` only. Measured on all ten:
+  **zero**. The 404's single entry is its own 404 status, which a browser logs
+  by definition, so the criterion was reworded to exclude it rather than left to
+  look like a failure.
+
+**One non-defect was recorded so nobody chases it again.** Driving the nav with
+a script produces repeated `InvalidStateError: Transition was aborted because of
+invalid state`. It is the View Transitions API correctly refusing to start a
+transition while the previous one is still running — caused by clicking faster
+than a human can. A fresh tab, a clean load and three human-paced navigations
+produce **no console output at all**. It was checked before being reported,
+which is the only reason it is not now an open bug in this file.
+
+**The last of the gap was three stale documents, and they are what this session
+actually changed.** No site code was touched.
+
+- **`README.md`** still sold "telecom, and power & precision systems". The
+  client removed telecom on 2026-09-06 and the site has shipped five different
+  competencies ever since. It also listed `/quiet` and `/our-mission-preview` as
+  live routes — both deleted — named Netlify first under Deploying, and told the
+  reader the office address was an unfilled TODO. It has been rewritten against
+  what the repo actually contains.
+- **`PROGRESS.md`** — this file — said "16 pages" when the build emits 10, and
+  "Deployed: ❌ not yet" when the preview has been live and auto-deploying since
+  2026-09-18. Rows 15, 18, 22, 26, 27, 29 and 37 described work as pending that
+  had shipped days earlier.
+- **`CLIENT-PENDING.txt`** offered the client a choice of analytics tool that
+  had already been made, asked whether the phone line takes WhatsApp when that
+  was confirmed on 2026-09-13, and told them the illustrations "sit on internal
+  preview pages and are not on the public site" when all six are live.
+
+**Row 37's numbers were re-measured rather than copied forward.** The recorded
+figures had been taken on the components in isolation; these are taken on each
+scene's live viewBox, which is what a visitor actually sees. All six pass Gate
+1b — cream at or above 60%, dark at or below 5%:
+
+| scene | cream | dark |
+|---|---|---|
+| ReceptionScene | 88.2% | 2.5% |
+| CareersScene | 86.5% | 4.4% |
+| QuietScene | 80.9% | 3.4% |
+| RackScene | 75.5% | 4.8% |
+| CompanyScene | 72.8% | 4.5% |
+| UptimeScene | 66.0% | 3.2% |
+
+Getting those numbers took three attempts and the failures are worth recording,
+because the next person to measure a live scene will hit all three. The built
+SVG cannot be handed to `measure-density.cjs` as-is: searching forward from a
+fixed offset for the opening `<svg` finds the wrong one and yields a fragment
+that starts mid-element; `data-scene` and `data-astro-cid-…` are written
+valueless, which is legal HTML and illegal XML, so librsvg stops at the first
+one; and fixing that with a general attribute regex rewrites
+`viewBox="0 0 420 330"` into `viewBox="0 0="" 420="" 330"`, which parses
+cleanly and renders nothing. A scene that renders nothing measures as 100% cream
+and would have passed. The extractor is in the session scratchpad, not the repo
+— it is a measuring instrument, not part of the build.
+
+**What remains is the client's, and it is two items:** legal sign-off, and the
+domain cutover. Both are recorded in `FINISH-LINE.md` as owed content with an
+owner, which under the rule agreed at lock means v1 is done — the site is
+finished; the client owes the content.
+
+**`ACCEPTANCE-CHECKLIST.md`** is the document to send them: the Definition of
+Done rephrased as tick-boxes in plain language, with no jargon and no file
+paths. The freeze stays **PROVISIONAL** until their acceptance is recorded in
+`FINISH-LINE.md` with a date and the method.
+
+### 2026-09-18 — the Cookie Policy says something true now
 
 Unblocked by the analytics decision, and drafted for the legal advisor rather
 than quietly applied: the `updated` date should be reset to the sign-off date

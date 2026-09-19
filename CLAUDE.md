@@ -17,17 +17,66 @@ does and get in touch? If not, it is probably out of scope.
 
 ---
 
+## 🔒 POST-FREEZE OPERATING RULE
+
+**Scope is LOCKED.** `FINISH-LINE.md` v1.0, locked 2026-09-19. Read it before
+acting on any request. The block below is the rule verbatim, and it outranks
+every instinct to be helpful by building something.
+
+> This project has a locked finish line in FINISH-LINE.md. On every new request,
+> before doing anything, classify it into exactly one of two buckets:
+>
+>   DEFECT — the request describes a failure of a criterion that is WRITTEN in
+>   FINISH-LINE.md. This is in scope. Fix it.
+>
+>   EXTRA — anything else. This includes every improvement, addition, redesign,
+>   optimization beyond the locked thresholds, new page, new feature, and any
+>   suggestion from the user, from Claude, or from the client. Route it as
+>   follows:
+>     (a) Name it explicitly: "This is EXTRA — it is not a criterion in
+>         FINISH-LINE.md."
+>     (b) Append one line to BACKLOG.md: date, one-sentence description, source
+>         (user / Claude / client). Nothing more — no estimates, no client
+>         formatting.
+>     (c) Ask whether to proceed. Do not implement until told to.
+>
+> There is no third bucket. If a request seems to fall between the two, it is
+> EXTRA — the document is the only source of truth for what is in scope.
+>
+> Reopening scope is a deliberate act, not a drift. It requires the explicit
+> word UNFREEZE from the user, after which a new version of FINISH-LINE.md
+> (v1.1, v2.0) is negotiated through Phases C–E again. Until then, the line
+> holds.
+
+**Three notes on applying it in this repo.**
+
+- **"Ask whether to proceed" means ask — then do as you are told.** If Harshit
+  says build it, build it. The rule exists so that the decision is *his and
+  conscious*, not so that work gets refused. Naming something EXTRA is not a
+  refusal and must not read as one.
+- **Correcting a document is not an EXTRA.** Keeping `README.md`, `PROGRESS.md`
+  and `CLIENT-PENDING.txt` true to the repo is maintenance of the record, and
+  rule 1 (never state something untrue about Procedo) applies to them as much as
+  to the site. Adding a *new* document is EXTRA.
+- **A criterion failing is a DEFECT even if nobody noticed.** If
+  `npm run build` starts warning, or a page's `<title>` grows past 62
+  characters, that is in scope without anyone reporting it.
+
+---
+
 ## Read order for a new session
 
 1. **`CLAUDE.md`** (this file) — the rules.
-2. **`PROGRESS.md`** — what is done, what is blocked, what is next. Start work here.
-3. **`src/data/site.ts`** — the single source of truth for all site copy.
-4. The specific page or component you are changing, under `src/pages/` or `src/components/`.
-5. **`reference/illustration-loop.md`** — the standing procedure for any new
+2. **`FINISH-LINE.md`** — what v1 IS. Scope is locked; read this before agreeing
+   to build anything, because most requests now classify as EXTRA.
+3. **`PROGRESS.md`** — what is done, what is blocked, what is next. Start work here.
+4. **`src/data/site.ts`** — the single source of truth for all site copy.
+5. The specific page or component you are changing, under `src/pages/` or `src/components/`.
+6. **`reference/illustration-loop.md`** — the standing procedure for any new
    illustration. Mandatory before writing a single line of SVG; it is a set of
    measured gates, not advice. Its countable checks run via
    `node scripts/measure-svg.cjs <file>`.
-6. `reference/inspiration/ANALYSIS.md` — the reference set and what it teaches.
+7. `reference/inspiration/ANALYSIS.md` — the reference set and what it teaches.
 
 Do not read `scrape/procedo/app.js` cover to cover; it is a 1 MB minified
 bundle. Grep it (see below).
