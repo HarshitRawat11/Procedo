@@ -10,7 +10,8 @@ database, no runtime JavaScript framework beyond Astro's own client router. It
 builds to plain HTML/CSS and can be hosted anywhere that serves files.
 
 - **Working agreement for AI/dev sessions:** [`CLAUDE.md`](./CLAUDE.md)
-- **What is in scope, and what is not:** [`FINISH-LINE.md`](./FINISH-LINE.md)
+- **What the site is, and what was considered:** [`FINISH-LINE.md`](./FINISH-LINE.md)
+- **What is not done yet:** [`BACKLOG.md`](./BACKLOG.md)
 - **Current status and open tasks:** [`PROGRESS.md`](./PROGRESS.md)
 
 ---
@@ -63,8 +64,8 @@ the one part of the hosting setup that is easy to break invisibly.
 
 ```
 ├── CLAUDE.md              Working agreement — read this first
-├── FINISH-LINE.md         Locked scope: what v1 is, and what is EXTRA
-├── BACKLOG.md             One line per EXTRA, held for a later version
+├── FINISH-LINE.md         What the site is: ten routes, ~30 measured criteria
+├── BACKLOG.md             What is not done yet, and what each thing needs
 ├── PROGRESS.md            Status board and progress log
 ├── CLIENT-PENDING.txt     One page: what the client still owes
 ├── astro.config.mjs       Astro config: site URL, integrations, sitemap filter
@@ -161,10 +162,10 @@ form labels and visible focus states.
 **6. Verify before calling it done.**
 `npm run build` runs a type-check first and must pass with zero errors.
 
-**7. Scope is locked.**
-`FINISH-LINE.md` defines v1. A request is either a DEFECT (a criterion written
-there is failing) or an EXTRA (everything else, which goes to `BACKLOG.md`).
-Reopening scope takes the explicit word UNFREEZE.
+**7. Keep the record true.**
+`FINISH-LINE.md` names the ten routes and holds ~30 measured criteria — page
+weight, title lengths, console errors, overflow, headers. Treat those numbers as
+a baseline not to regress, and update them in the same commit that beats one.
 
 ---
 

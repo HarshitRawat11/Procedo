@@ -17,58 +17,43 @@ does and get in touch? If not, it is probably out of scope.
 
 ---
 
-## 🔒 POST-FREEZE OPERATING RULE
+## Scope: `FINISH-LINE.md` is a RECORD, not a gate
 
-**Scope is LOCKED.** `FINISH-LINE.md` v1.0, locked 2026-09-19. Read it before
-acting on any request. The block below is the rule verbatim, and it outranks
-every instinct to be helpful by building something.
+**UNFROZEN 2026-09-19, the same day it was locked.** The lock was made on a
+misunderstanding of the word — Harshit read LOCK as "lock the finish-line
+document", which it did, but it also froze all work behind a two-bucket
+DEFECT/EXTRA rule that made every further request need permission first. That
+was not what he wanted. **Do not reinstate that rule.** There is no
+classification step, no permission gate, and nothing to route to `BACKLOG.md`
+before acting. Work as normal.
 
-> This project has a locked finish line in FINISH-LINE.md. On every new request,
-> before doing anything, classify it into exactly one of two buckets:
->
->   DEFECT — the request describes a failure of a criterion that is WRITTEN in
->   FINISH-LINE.md. This is in scope. Fix it.
->
->   EXTRA — anything else. This includes every improvement, addition, redesign,
->   optimization beyond the locked thresholds, new page, new feature, and any
->   suggestion from the user, from Claude, or from the client. Route it as
->   follows:
->     (a) Name it explicitly: "This is EXTRA — it is not a criterion in
->         FINISH-LINE.md."
->     (b) Append one line to BACKLOG.md: date, one-sentence description, source
->         (user / Claude / client). Nothing more — no estimates, no client
->         formatting.
->     (c) Ask whether to proceed. Do not implement until told to.
->
-> There is no third bucket. If a request seems to fall between the two, it is
-> EXTRA — the document is the only source of truth for what is in scope.
->
-> Reopening scope is a deliberate act, not a drift. It requires the explicit
-> word UNFREEZE from the user, after which a new version of FINISH-LINE.md
-> (v1.1, v2.0) is negotiated through Phases C–E again. Until then, the line
-> holds.
+**What the document is still for**, and why it was not deleted:
 
-**Three notes on applying it in this repo.**
+- It names the **ten routes** and what must be on each — the clearest statement
+  anywhere of what this site is.
+- It records **measured state** for ~30 criteria: build output, page weight,
+  title and description lengths, console errors, overflow at three widths,
+  security headers. That is a baseline worth not regressing, and each line says
+  how it was measured.
+- §4 lists what was **considered and rejected**, with dates and who decided —
+  dark mode, photography, human figures, a hero illustration, a blog. Reading it
+  stops a future session from proposing something the client already turned
+  down.
+- Tag `v1.0` points at the commit where every criterion was verified met. It is
+  a snapshot, not a boundary; work continues past it.
 
-- **"Ask whether to proceed" means ask — then do as you are told.** If Harshit
-  says build it, build it. The rule exists so that the decision is *his and
-  conscious*, not so that work gets refused. Naming something EXTRA is not a
-  refusal and must not read as one.
-- **Correcting a document is not an EXTRA.** Keeping `README.md`, `PROGRESS.md`
-  and `CLIENT-PENDING.txt` true to the repo is maintenance of the record, and
-  rule 1 (never state something untrue about Procedo) applies to them as much as
-  to the site. Adding a *new* document is EXTRA.
-- **A criterion failing is a DEFECT even if nobody noticed.** If
-  `npm run build` starts warning, or a page's `<title>` grows past 62
-  characters, that is in scope without anyone reporting it.
+**Keep it true.** If a page is added, a threshold is beaten, or a rejected idea
+is revived, update the document in the same commit. A record that drifts is
+worse than none, and that is exactly what had happened to `README.md`,
+`PROGRESS.md` and `CLIENT-PENDING.txt` before they were corrected.
 
 ---
 
 ## Read order for a new session
 
 1. **`CLAUDE.md`** (this file) — the rules.
-2. **`FINISH-LINE.md`** — what v1 IS. Scope is locked; read this before agreeing
-   to build anything, because most requests now classify as EXTRA.
+2. **`FINISH-LINE.md`** — what the site IS: the ten routes, and ~30 criteria
+   with their measured values. A record and a baseline, not a gate.
 3. **`PROGRESS.md`** — what is done, what is blocked, what is next. Start work here.
 4. **`src/data/site.ts`** — the single source of truth for all site copy.
 5. The specific page or component you are changing, under `src/pages/` or `src/components/`.

@@ -10,9 +10,10 @@ immediately after `CLAUDE.md`.
   auto-deploying from `master`. **Not** on procedoinfo.com — that domain still
   serves the old site and the cutover is the client's call
 - **Repo:** ✅ `HarshitRawat11/Procedo` on GitHub
-- **Scope:** 🔒 **LOCKED 2026-09-19.** `FINISH-LINE.md` defines v1. Every request
-  is a DEFECT (a criterion written there is failing) or an EXTRA (everything
-  else → `BACKLOG.md`). Reopening takes the word UNFREEZE
+- **Scope:** `FINISH-LINE.md` names the ten routes and holds ~30 measured
+  criteria — a baseline not to regress. It was briefly frozen on 2026-09-19 and
+  **unfrozen the same day**; it is a record, not a gate. Open work is in
+  `BACKLOG.md`
 - **Overall:** v1 is complete against every written criterion. Only the legal
   review and the domain cutover remain, and both are the client's to do.
 
@@ -38,7 +39,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 12 | Illustration on Our Mission page | ✅ | — | Adopted 2026-08-30 — QuietScene now sits beside the mission statement on the live `/our-mission`. Preview page deleted |
 | 13 | Contact-form success state | ✅ | — | Done 2026-08-30: on a successful send the form is replaced by QuietScene + "Message received". Verified with a real submission |
 | 14 | Design inspiration folder | ✅ | — | Images saved and renamed to the index 2026-09-05, verified by opening each. 11 of 12 present — ref 11 (two-hands) never made it in; ref 12 (Google Meet "meeting is safe") is new and now catalogued as ANALYSIS §8. Notes tracked in git, images stay local |
-| 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. **Six scenes, and every one has a home:** QuietScene (`/our-mission` + contact success), ReceptionScene (`/contact` + contact success), CareersScene (`/careers` header + open-application card), CompanyScene (`/company` statement band), RackScene (`/services` header), UptimeScene (the **404**). `src/components/preview/` holds exactly one file now — `SceneVariant`, the 404 comparison strip. **The set is closed:** a new illustration is EXTRA under `FINISH-LINE.md` |
+| 15 | Illustration set for the site | ✅ | — | Governed by `reference/illustration-loop.md`. **Six scenes, and every one has a home:** QuietScene (`/our-mission` + contact success), ReceptionScene (`/contact` + contact success), CareersScene (`/careers` header + open-application card), CompanyScene (`/company` statement band), RackScene (`/services` header), UptimeScene (the **404**). `src/components/preview/` holds exactly one file now — `SceneVariant`, the 404 comparison strip. A seventh scene would need a slot that does not exist today |
 | 16 | Deployment | ✅ | — | **Preview is on Cloudflare Pages at https://procedoinfo-preview.pages.dev, git-connected, auto-deploying from `master` since 2026-09-18.** Build command `npm run build:preview`, output `dist`, `NODE_VERSION=22`. **Netlify removed the same day** — site deleted, repo disconnected, `netlify.toml` gone; nothing was attached to it (no custom domain, no DNS zone, no form submissions) so only the `.netlify.app` URL went with it. It had refused every build from 14 Sept — six consecutive *Skipped due to account credit usage exceeded* while its own API reported `credits used: 0`. **Watch the build command:** plain `npm run build` produces no noindex, and it lives in the Cloudflare project rather than the repo, so changing it by accident is easy and invisible. Production on procedoinfo.com is still a separate, later decision |
 | 17 | Version control | ✅ | — | Git configured, first commit made, and pushed to GitHub (`HarshitRawat11/Procedo`) 2026-08-30 |
 | 18 | Analytics | 🔴 | Needs one value from the client: the Web Analytics site token | **Provider chosen 2026-09-18: Cloudflare Web Analytics.** Free, cookieless, and the site is already on Cloudflare Pages. Wired into `Analytics.astro` as a fourth provider alongside Plausible, Umami and GA4, so `site.ts` stays the single switch — deliberately NOT toggled on the Pages project, which would put the on/off somewhere `site.ts` cannot see. Output tested with a dummy token: the beacon appears once per page, the `data-cf-beacon` attribute decodes to valid JSON, and no other provider leaks in. **To turn on:** Cloudflare dashboard → Analytics & Logs → Web Analytics → Add a site → copy the 32-hex site token → in `site.ts` set `provider: 'cloudflare'` and paste it as `id`. Nothing else. Still emits nothing while `provider` is `'none'`. **Note:** the beacon is not hostname-locked, so enabling it before launch mixes preview traffic into the data — filter by hostname, or wait for launch. Cookieless means NO consent banner is needed, which also unblocks the Cookie Policy rewrite (#5) |
@@ -52,7 +53,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 26 | Company page illustration | ✅ | — | **Adopted 2026-09-14.** `WorkshopScene` was not refined, it was replaced: it failed Gate 1b at 29.7% cream / 7.2% dark and was deleted. **CompanyScene** took its place in the `/company` statement band — a shadow board with six tools over their painted outlines, one outline bare because the cat on top of the board has that screwdriver. Passes as shipped: **72.8% cream / 4.5% dark**. `_company-preview` parked on adoption |
 | 27 | Careers cat — working, not sleeping | ✅ | — | **Done.** `DeskScene` and `DeskSceneWorking` were both deleted 2026-09-14 and **CareersScene** shipped instead, on the `/careers` header and the open-application card. Harshit 2026-09-18: the cat should work the mouse, not just rest a paw on it — two `.mousing` groups now share one `mouseSlide` clock and the lead was redrawn so it stays under the body. Passes as shipped: **86.5% cream / 4.4% dark** |
 | 28 | Contact page illustration | ✅ | — | **Adopted 2026-09-13.** All three placement previews deleted; `ReceptionScene` moved to `src/components/` and now appears in exactly one place — the contact form's success card, `state="hungup"`. The image is the reward for having sent something. Still due the Gate 1b weight pass |
-| 29 | Home hero illustration | ❌ | **Rejected by Harshit 2026-09-18** | Closed. *"the hero page will not have any image it will be same as the current one."* The home hero keeps its competency index card, and that is deliberate — the first thing a visitor reads is the list of five disciplines. **RackScene was not wasted:** rebuilt from 0.2% cream / 30.0% dark to **75.5% / 4.8%** and adopted on the `/services` header instead, where the cat now works the rack rather than sleeping on it. Putting an illustration in the hero is EXTRA |
+| 29 | Home hero illustration | ❌ | **Rejected by Harshit 2026-09-18** | Closed. *"the hero page will not have any image it will be same as the current one."* The home hero keeps its competency index card, and that is deliberate — the first thing a visitor reads is the list of five disciplines. **RackScene was not wasted:** rebuilt from 0.2% cream / 30.0% dark to **75.5% / 4.8%** and adopted on the `/services` header instead, where the cat now works the rack rather than sleeping on it. Putting an illustration in the hero would reopen a decision the client made |
 | 30 | Blog / MDX plumbing | ✅ | — | **Removed 2026-09-10** on Harshit's call ("no blog for now"). `@astrojs/mdx` and `@astrojs/rss` are out of `package.json`, the lockfile and `astro.config.mjs`; there was never an `.mdx` document or an RSS route to lose |
 | 31 | Structured data | ✅ | — | Builders in `src/lib/schema.ts`, so no page restates the company. Organization now carries **contactPoint** (support and sales) and **areaServed: India**; Services carries its five competencies as **Service** nodes anchored to their sections, with an Organization stub so the `provider` reference resolves in-document; Company, Our Mission, Careers and Contact each carry a **BreadcrumbList**. Verified on the built output: one block per page, all in `<head>`, all parse |
 | 32 | `robots.txt` | ✅ | — | Added 2026-09-10; it was a 404. Allow all, plus the sitemap. Names no preview paths deliberately — a `Disallow` line advertises the routes it hides — and the Netlify preview's `X-Robots-Tag` header overrides it on that host |
@@ -102,7 +103,7 @@ measured state; the gap it lists is empty.
 
 ## Log
 
-### 2026-09-19 (last) — the finish line, locked
+### 2026-09-19 (last) — the finish line, locked, and unfrozen an hour later
 
 The project had no defined end. Requests arrived, were built, and were followed
 by more requests, with nothing in the repo distinguishing "in scope" from
@@ -191,6 +192,26 @@ finished; the client owes the content.
 Done rephrased as tick-boxes in plain language, with no jargon and no file
 paths. The freeze stays **PROVISIONAL** until their acceptance is recorded in
 `FINISH-LINE.md` with a date and the method.
+
+**Then it was unfrozen, the same day, and that is the more useful half of this
+entry.** Harshit had read LOCK as *"lock the finish-line document"* — which it
+did — not as *"stop work and ask permission for everything after this"*, which
+is what the prompt’s rule actually imposed. That is a fair reading of the word,
+and the misunderstanding is worth recording because the rule was genuinely
+heavy: it would have made every future session classify his requests and hold
+them for approval before touching anything.
+
+**What was removed:** the DEFECT/EXTRA classification, the permission gate, and
+the instruction in `CLAUDE.md` telling future sessions to enforce them. **What
+was kept:** the ten routes named and described, ~30 criteria with measured
+values and the method used to get each, and §4’s list of what was considered
+and rejected with dates. Those are worth having whether or not anything is
+frozen. `BACKLOG.md` was repurposed from a holding pen for refused work into a
+plain list of what is not done yet.
+
+The `v1.0` tag stays where it is. It points at a commit where every criterion
+was measured and met, which is a useful thing to be able to return to. It is a
+snapshot, not a boundary.
 
 ### 2026-09-18 — the Cookie Policy says something true now
 

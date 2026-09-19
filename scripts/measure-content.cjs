@@ -81,9 +81,56 @@ console.log(
   'old-site average       : ' + mean(old, 'items') + ' items at ' + mean(old, 'avg') + ' chars, intro ' + mean(old, 'intro'),
 );
 
-/* ── provenance ── */
+/* ── provenance ──
+   A literal substring match against the bundle is too strict to be useful on
+   its own. Every one of the old-site bullets was lightly re-punctuated when it
+   was transcribed — "AV control (Crestron, Extron)" became "AV control:
+   Crestron and Extron" — so a literal check reported 11 failures on every run,
+   all of them harmless. A gate that cries wolf eleven times is a gate people
+   learn to skip, and the ONE thing it exists to catch is an invented claim
+   hiding among them.
+
+   So there are two passes:
+
+     ATTESTED   the exact words are in the bundle, or every significant word is,
+                in the same order and close together. The claim is Procedo's;
+                only the punctuation changed. The matching bundle text is
+                printed so it can be checked by eye rather than trusted.
+     UNATTESTED nothing in the bundle carries those words. This is the rule #1
+                risk and the only thing here worth acting on.
+
+   Verified this way on 2026-09-19: all 11 were ATTESTED, including the two
+   vendor names — the bundle really does say "AV control (Crestron, Extron)". */
 const re = new RegExp("(['\"])((?:(?!\\1)[^\\\\\\n]|\\\\.){25,600})\\1", 'g');
-const unsourced = [];
+
+/* Words carrying no claim. Dropping them is what lets "A, B, C" match
+   "A, B and C" without letting two unrelated sentences match each other. */
+const STOP = new Set(['and', 'or', 'the', 'a', 'an', 'with', 'for', 'of', 'to', 'in', 'on']);
+const esc = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const tokens = (s) =>
+  norm(s)
+    .split(/[^a-z0-9.+&/-]+/)
+    .filter((t) => t && !STOP.has(t));
+
+/* All significant words, in order, separated by punctuation and at most ONE
+   connective. Both halves are needed: dropping stop words from the site string
+   is what lets 'A, B, C' match 'A, B and C', but the BUNDLE may be the side
+   carrying the connective — it says 'NAS/SAN storage with redundancy' where
+   the site says 'NAS and SAN storage with redundancy'. A separator that
+   allowed punctuation only could not bridge that 'with', and reported two
+   perfectly sourced bullets as invented. Tight enough that two unrelated
+   sentences will not match; loose enough to absorb re-punctuation. */
+const attestedBy = (s) => {
+  const t = tokens(s);
+  if (t.length < 2) return null;
+  const GAP = "[^a-z0-9]{0,4}(?:(?:" + [...STOP].join('|') + ")[^a-z0-9]{0,4})?";
+  const rx = new RegExp(t.map(esc).join(GAP), 'i');
+  const m = rx.exec(bN);
+  return m ? m[0] : null;
+};
+
+const attested = [];
+const unattested = [];
 let m;
 while ((m = re.exec(blk))) {
   const s = m[2];
@@ -91,12 +138,31 @@ while ((m = re.exec(blk))) {
   const slug = (blk.slice(0, m.index).match(/slug: '([^']+)'/g) || []).pop();
   const which = slug ? slug.slice(7, -1) : '?';
   if (CLIENT.has(which)) continue;
-  if (!bN.includes(norm(s))) unsourced.push(which + ': ' + s.slice(0, 96));
+  if (bN.includes(norm(s))) continue; // verbatim, nothing to report
+  const hit = attestedBy(s);
+  if (hit) attested.push({ which, s, hit });
+  else unattested.push({ which, s });
 }
-console.log('\nPROVENANCE — old-site services whose wording is not literally in the bundle: ' + unsourced.length);
-for (const u of unsourced) console.log('   - ' + u);
-console.log(
-  '\nThese are paraphrases that add connectives ("SSO, LDAP, Azure AD" ->\n' +
-    '"SSO, LDAP and Azure AD"). Same claim, easier to read, harder to verify.\n' +
-    'Anything here that states a NEW capability is a rule #1 defect — check it.\n',
-);
+
+console.log('\nPROVENANCE — old-site wording that is not verbatim in the bundle');
+console.log('  attested (same claim, re-punctuated): ' + attested.length);
+console.log('  UNATTESTED (no source for the words): ' + unattested.length);
+
+if (attested.length) {
+  console.log('\n  Attested — site text, then the bundle text backing it:');
+  for (const a of attested) {
+    console.log('   · ' + a.which + ': ' + a.s.slice(0, 84));
+    console.log('     bundle: ' + a.hit.slice(0, 84));
+  }
+}
+
+if (unattested.length) {
+  console.log('\n  UNATTESTED — each of these states something the bundle does not.');
+  console.log('  This is a rule #1 defect unless the client supplied it. Check every one:');
+  for (const u of unattested) console.log('   ✗ ' + u.which + ': ' + u.s.slice(0, 96));
+  console.log('');
+  process.exitCode = 1;
+} else {
+  console.log('\n  No unattested claims. Every capability on the services page traces to');
+  console.log('  the old-site bundle or to a client revision.\n');
+}

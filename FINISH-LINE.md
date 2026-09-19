@@ -1,22 +1,26 @@
 # FINISH LINE — Procedo Infosystems website
 
-**Version:** v1.0 — **LOCKED**
-**Locked:** 2026-09-19
+**Version:** v1.0 — **UNFROZEN 2026-09-19**
+**Locked:** 2026-09-19 · **Unfrozen:** 2026-09-19, the same day
 **Drafted:** 2026-09-19 (v0), revised 2026-09-19 (v1), locked 2026-09-19 (v1.0)
 **Completion authority:** client work — Procedo Infosystems Pvt. Ltd.
 **Acceptance status:** **PROVISIONAL** — awaiting client acceptance.
 Record the date and the method here when it arrives; the freeze is final only then.
 
-> This document defines the point after which v1 is complete. Every request is
-> either a **DEFECT** (a criterion written below is failing) or an **EXTRA**
-> (everything else). There is no third bucket.
+> **This is a record and a baseline. It is not a gate, and nothing here needs
+> permission to change.**
 >
-> **A criterion that is not written here does not exist.**
+> It was locked on 2026-09-19 under a rule that classified every further
+> request as a DEFECT or an EXTRA and held the EXTRAs for approval. Harshit
+> unfroze it the same day: he had read LOCK as *"lock the finish-line
+> document"* rather than *"stop work"*, which is a fair reading of the word and
+> not the one the prompt meant. **The freeze rule is gone and is not to be
+> reinstated.**
 >
-> The operating rule is in `CLAUDE.md`, so every future session inherits it
-> without being told. Extras go to `BACKLOG.md`. Reopening scope takes the
-> explicit word **UNFREEZE**, which starts a new version of this document — it
-> does not happen by drift.
+> What survives is the useful half: ten routes named and described, ~30
+> criteria with measured values and the method used to get them, and a list of
+> what was considered and rejected with dates. Beat a threshold and update the
+> number. Add a route and add its row. A record that drifts is worse than none.
 
 ---
 
@@ -24,7 +28,7 @@ Record the date and the method here when it arrives; the freeze is final only th
 
 | Question | Answer |
 |---|---|
-| Three thinner service sections | **Accepted as-is for v1.** No owed item, no gap. Deepening them later is EXTRA. |
+| Three thinner service sections | **Accepted as-is for v1.** No owed item, no gap. Deepening them is open work — see `BACKLOG.md`. |
 | Which URL must be live | **`procedoinfo-preview.pages.dev`.** The custom domain is a client action, not a v1 criterion. |
 | Proof / process / FAQs | **Out of scope for v1.** Listed in §4. |
 
@@ -41,7 +45,7 @@ therefore part of the locked line — **not confirmed, but binding**:
   8 parked preview pages, the untracked `dist-client/` build from 29 August and
   the `deliverables/` folder all stay. None reaches the public site.
 
-If either is wrong, that is an **UNFREEZE**, not a defect.
+Neither was ever confirmed. If one turns out to be wrong, correct it here — it costs nothing now that the freeze is gone.
 
 ---
 
@@ -70,7 +74,7 @@ If either is wrong, that is an **UNFREEZE**, not a defect.
 - **C2.** No page contains `lorem`, `TODO`, `FIXME`, `TBD`, `{{ }}`, "coming soon" or `[FILL`. — **VERIFIED: 0 occurrences in `dist/`**
 - **C3.** No `<img>` has empty `alt`; no `<a href="#">` reaches the built output. — **VERIFIED: 0 and 0**
 - **C4.** Every sentence of marketing copy lives in `src/data/site.ts`, not hard-coded in a `.astro` file. — **VERIFIED**
-- **C5.** No claim about Procedo appears that is not traceable to the old-site bundle or a client revision. — **VERIFIED by `scripts/measure-content.cjs`**
+- **C5.** No claim about Procedo appears that is not traceable to the old-site bundle or a client revision. — **VERIFIED by `scripts/measure-content.cjs`: 0 unattested.** The 11 service bullets that are not verbatim differ by punctuation only, and the gate now prints the bundle text backing each one
 
 **Owed content — assigned to Procedo. Documented here, so v1 is DONE regardless.**
 
@@ -118,7 +122,7 @@ page deviates from it.
 | O2 | `node scripts/measure-seo.cjs` | passes | **VERIFIED — all 10 pages** |
 | O3 | `node scripts/measure-integrity.cjs` | 0 problems | **VERIFIED — 0** |
 | O4 | Console errors on load, every route, excluding the 404 route's own 404 status | 0 | **VERIFIED — 0 across all ten** |
-| O5 | Home page wire weight | ≤ 100 KB | **VERIFIED — 50.4 KB, 5 requests** |
+| O5 | Wire weight, **every route** | ≤ 100 KB | **VERIFIED — heaviest `/services` 49.9 KB, lightest `/terms` 44.1, all 5 requests. Measured brotli on the built output 2026-09-19; 39.5 KB of each is shared and cached after the first page** |
 | O6 | `<title>` length, every page | ≤ 62 chars | **VERIFIED — 29–62** |
 | O7 | `meta description` length | 120–160 chars | **VERIFIED — 132–158** |
 | O8 | Exactly one `<h1>` per page | exactly 1 | **VERIFIED — 10/10** |
@@ -129,7 +133,7 @@ page deviates from it.
 it would mean a new dependency to satisfy a number that O1–O10 already cover for
 a static site with 5 requests and no framework runtime. This exclusion was
 offered for correction in Phase D and was not corrected; adding Lighthouse now
-is an **UNFREEZE**, not a defect.
+is open work, not a defect.
 
 **O5 is set at double the measured weight, on purpose.** 50.4 KB against a
 100 KB ceiling is not a threshold chosen to be flattered — it is headroom for a
@@ -169,10 +173,13 @@ jargon and no file paths.
 
 ---
 
-## 4. Explicitly out of scope for v1
+## 4. Considered and NOT built
 
-Everything below was considered, suggested, or partly started, and is **not**
-part of v1. Any of it re-enters scope only through **UNFREEZE**.
+Everything below was considered, suggested, or partly started, and did not ship
+in v1. **This is not a prohibition** — it is the reasoning, so nobody re-proposes
+something the client already turned down, or re-derives a decision from scratch.
+The ones marked *rejected* are closed; the rest are simply not done yet, and
+`BACKLOG.md` tracks those.
 
 **Content**
 - Proof material — client names, logos, case studies, testimonials, certifications
@@ -235,8 +242,8 @@ still running — caused by clicking links faster than a human can. Verified on
 | Artifact | Purpose |
 |---|---|
 | `FINISH-LINE.md` | This document, repo root — the single source of truth for scope |
-| `BACKLOG.md` | One line per EXTRA: date, description, source |
-| A block in `CLAUDE.md` | The post-freeze routing rule, so any future session inherits it without being told |
+| `BACKLOG.md` | What is not done yet, and what it needs |
+| A block in `CLAUDE.md` | Says this document is a record rather than a gate, so no future session reinstates the freeze |
 | Annotated git tag `v1.0` | Points at the freeze commit, so "what shipped as v1" is answerable years later |
 | `ACCEPTANCE-CHECKLIST.md` | The client-facing version, ready to send |
 
