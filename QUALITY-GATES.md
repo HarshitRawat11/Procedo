@@ -29,7 +29,7 @@ five of six passing.
 |---|---|---|---|
 | **1 — Intent alignment** | **FAIL** | 1a PASS 10/10 · **1b PASS — fixed 2026-09-20, 1–3 CTAs above fold on 10/10 pages at 375 (was 0 on 8/10)** · 1c: hypey PASS, consumer-cute **WAIVED** for `/404`, **generic still FAIL** | `review/*-375-fold.png`, iframe CTA probe |
 | **2 — Visual system** | **PASS** | **All five checks pass.** 2a — 0 stock-palette utilities, proven a pure rename by pixel diff · 2b — 2 families · **2c — 7 rendered sizes at 1280 (was 14), and 7 at 768 and 375 too** · 2d — one spacing scale · **2e — 3 radii (was 5)** | computed-style sweep across 10 routes x 3 widths |
-| **3 — Hierarchy** | **FAIL, and worse** | **3a FAIL — 15/30 views clear at ratio ≥1.5, down from 19/30. Regressed by fix 4** (see below) · 3b PASS (sampled) · 3c PASS 10/10 | `review/gate3/*-squint.png`, `contact-sheet-thumbs-1280.png` |
+| **3 — Hierarchy** | **FAIL** | **3a FAIL — 16/30 views clear at ratio ≥1.5, down from 19/30 before batch 2.** A real regression of three views, measured deterministically (see below) · 3b PASS (sampled) · 3c PASS 10/10 | `review/gate3/*-squint.png`, `contact-sheet-thumbs-1280.png` |
 | **4 — Distinctiveness** | **FAIL** | **4a FAIL — logo-cover leaves nothing uniquely Procedo** · **4b FAIL — reads as Tailwind UI marketing hero** · 4c PASS · 4d PASS (mono eyebrow, 10/10) | `review/gate4/*-nologo.png` |
 | **5 — Imagery** | **PASS** (1 waived) | 5a–5e PASS — density 66–88% cream / 2.5–4.8% dark, all inside the band · **5f WAIVED** — 11 KB PNG logo | `measure-density.cjs`, built `<img>` audit |
 | **6 — Motion** | **PASS** | 11 of 11. Micro 200–300ms, reveal 600ms, CLS **0**, **transform/opacity only**, reduced-motion guards in 9 files | stylesheet + keyframe audit |
@@ -226,28 +226,45 @@ flood-fill clustering, so an element spanning ten cells is one cluster.
 - **THRESHOLD** — dominant cluster ≥ **1.5×** the runner-up, on every
   view. *(The ratio is mine. It is the number most worth arguing about in this
   document.)*
-- **CURRENT** — **15 of 30 views clear.** Re-measured 2026-09-20 after fix 4.
-  **This is a REGRESSION: 17 → 19 → 15.** Fix 4 caused it, and the mechanism is
-  not mysterious. This metric scores a cluster by its ink mass, and fix 4
-  shrank every heading — 52→48, 40→36, 30→24, 20→18 — so headings now carry
-  less mass relative to the body copy they are supposed to dominate.
+- **CURRENT** — **16 of 30 views clear**, down from **19 of 30** before fix
+  batch 2. A real regression of three views.
 
-  The clearest single case is `/404` at 1280. Before: the illustration
-  dominated at **81% of ink, ratio 4.88**. After: **51%, ratio 1.03** — because
-  the 404 heading grew 40 → 48 and now sits at parity with the illustration
-  instead of behind it. Two near-equal clusters is exactly what the squint test
-  is designed to fail.
+  **⚠️ THE FIRST NUMBERS REPORTED FOR THIS GATE WERE NOISE, AND THE INSTRUMENT
+  HAD TO BE FIXED BEFORE ANY OF THIS COULD BE TRUSTED.** Six of the ten pages
+  carry scene loops of 2.4–26 s, and `--virtual-time-budget` lands the shutter
+  at an arbitrary phase, so repeat runs of the *same build* returned 15, 16 and
+  17 for identical source. On that basis fix 4 was first reported as a 19 → 15
+  regression, and a `--text-h2` bump was first reported as recovering a view.
+  Both readings were inside the noise band.
+
+  **Fixed** by adding `--force-prefers-reduced-motion` to the capture. Every
+  animation on this site sits inside
+  `@media (prefers-reduced-motion: no-preference)`, so forcing `reduce` stops
+  them dead *and* resolves the scroll reveals instantly — deterministic frames,
+  fully revealed content, no mid-fade states. Three consecutive runs now return
+  16, 16, 16.
+
+  **Re-measured on the fixed instrument**, by checking out each source state and
+  rebuilding:
+
+  | Source | Clear focal point |
+  |---|---|
+  | Before batch 2 (`cc1704c`) | **19 of 30** |
+  | After batch 2 (`4c66460`) | **16 of 30** |
+  | After batch 2, `--text-h2` raised to 40px | **16 of 30** |
+
+  So fix 4 did regress this gate, by three views rather than four — and the
+  `text-h2` bump **does nothing for it**, which is why it was reverted rather
+  than kept. The mechanism stands: this metric scores a cluster by ink mass,
+  and fix 4 shrank every heading, so headings dominate the body copy less. The
+  clearest case is `/404` at 1280, where the heading grew 40 → 48 and came to
+  parity with the illustration instead of sitting behind it.
 
   **Whether that is bad for the site is a separate question from whether it
-  fails the gate.** A heading at parity with its illustration is arguably
-  better than one swamped by it, and the gate does not measure that. But the
-  gate says ≥1.5 and it now fails more often, so it is recorded as a
-  regression rather than argued away.
-
-  **One untested option**, if you want it back: raise `--text-h2` from a 2.25rem
-  max to 2.5rem (36 → 40px). That restores heading mass and still leaves seven
-  steps, so Gate 2c would continue to pass. It is louder, which is why it was
-  not the original choice. Failing views at the 19/30 reading:
+  fails the gate.** A heading at parity with its illustration is arguably better
+  than one swamped by it, and the gate cannot see that. But the gate says ≥1.5
+  and it fails three more views, so it is recorded as a regression rather than
+  argued away. Failing views:
 
   `404-375` (1.02) · `careers-768` (1.09) · `company-768` (1.07) ·
   `contact-1280` (1.42) · `contact-375` (1.04) · `cookies-375` (1.14) ·
@@ -510,10 +527,11 @@ legibility floor.
 **Body stays at 18px deliberately.** Dropping it to 16 would push the measure
 past Gate 7's 80-character ceiling; at 768 it already sits at exactly 80.
 
-**Cost: Gate 3a regressed, 19 → 15 of 30.** Recorded in full under Gate 3.
+**Cost: Gate 3a regressed, 19 → 16 of 30.** Recorded in full under Gate 3.
 Smaller headings carry less ink mass, so they dominate less. This was flagged
 as a risk before the batch ("re-measure Gates 3a and 7 after") and it
-materialised.
+materialised. A `--text-h2` bump to 40px was tested as a remedy and **rejected**:
+it moved the number not at all, and it is louder than the Intent Brief wants.
 
 **Unchanged and re-verified after the batch:** horizontal overflow 0 at all
 three widths, body 18px and 63–80 characters, contrast 7.27:1, CTA above the

@@ -5,6 +5,11 @@
 // (whole page) for all ten routes. review/ is gitignored — these are
 // regenerable output, like dist/.
 //
+// `--folds-only` skips the full-page half. measure-hierarchy.cjs reads nothing
+// else, and the full-page shots are the slow part — a 375x17000 canvas takes
+// longer than every fold on the page put together. Use it when iterating on a
+// change and judging it by Gate 3.
+//
 // ── TWO TRAPS, BOTH OF WHICH PRODUCED CONVINCING WRONG PICTURES ──────────────
 //
 // 1. WINDOWS CLAMPS THE MINIMUM WINDOW WIDTH (~500px), AND HEADLESS HONOURS IT.
@@ -61,6 +66,15 @@ const chrome = (args) => execFileSync(CHROME, args, { stdio: 'pipe', timeout: 24
 
 const flags = (w, h, budget, out) => [
   '--headless=new', '--disable-gpu', '--hide-scrollbars',
+  // Freeze motion. Six of the ten pages carry scene loops of 2.4-26s, and
+  // --virtual-time-budget lands the shutter at an arbitrary phase, so repeat
+  // runs of the SAME build differ. That made measure-hierarchy.cjs swing 15-17
+  // on identical input and briefly look like a regression caused by a code
+  // change. Every animation on this site sits inside
+  // @media (prefers-reduced-motion: no-preference), so forcing 'reduce' stops
+  // them dead AND resolves the scroll reveals instantly - deterministic
+  // captures, fully revealed content, no mid-fade frames.
+  '--force-prefers-reduced-motion',
   '--force-device-scale-factor=1', '--run-all-compositor-stages-before-draw',
   '--allow-file-access-from-files', '--user-data-dir=' + PROFILE,
   '--window-size=' + w + ',' + h,
@@ -93,7 +107,8 @@ const shootFramed = async (url, out, w, h, budget) => {
   for (const [name, route] of ROUTES) {
     for (const w of WIDTHS) {
       const line = [(name + ' @' + w).padEnd(20)];
-      for (const kind of ['fold', 'full']) {
+      const KINDS = process.argv.includes('--folds-only') ? ['fold'] : ['fold', 'full'];
+      for (const kind of KINDS) {
         const out = path.join(OUT, name + '-' + w + '-' + kind + '.png');
         const h = kind === 'fold' ? FOLD_H[w] : FULL_H[w];
         const budget = kind === 'fold' ? 4500 : 8000;
