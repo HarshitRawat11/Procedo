@@ -5,9 +5,7 @@ Status board for the Procedo Infosystems website.
 immediately after `CLAUDE.md`.
 
 - **Last updated:** 2026-09-20
-- **Build:** ✅ passing — **11 pages**, **0 errors / 0 warnings / 0 hints** (`npm run build`).
-  Ten are the site; the eleventh is `/hero-preview`, a proposal awaiting a
-  verdict (`CLAUDE.md` §5)
+- **Build:** ✅ passing — 10 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
 - **Deployed:** ✅ preview live at https://procedoinfo-preview.pages.dev, git-connected,
   auto-deploying from `master`. **Not** on procedoinfo.com — that domain still
   serves the old site and the cutover is the client's call
@@ -16,10 +14,10 @@ immediately after `CLAUDE.md`.
   criteria — a baseline not to regress. It was briefly frozen on 2026-09-19 and
   **unfrozen the same day**; it is a record, not a gate. Open work is in
   `BACKLOG.md`
-- **Design gates:** `QUALITY-GATES.md` v1.2 — **5 of 10 passing**, 2 checks
-  waived, 2 not measurable until launch. Gates 2 and 7 were fixed on 2026-09-20;
-  1, 3 and 4 still fail and all three are the same finding — the home hero is
-  generic. `/hero-preview` is the proposed answer, awaiting a verdict
+- **Design gates:** `QUALITY-GATES.md` v1.3 — **7 of 10 passing**, 2 checks
+  waived, 2 not measurable until launch. Only **Gate 3 (hierarchy)** still
+  fails, at 16 of 30 views, almost all at 375 where a single-column stack gives
+  nothing dominance
 - **Overall:** v1 is complete against every written criterion in
   `FINISH-LINE.md`. The design audit is a separate and later standard, and the
   site does not yet meet all of it. Only the legal review and the domain cutover

@@ -55,17 +55,21 @@ Neither was ever confirmed. If one turns out to be wrong, correct it here — it
 
 **The site is exactly ten routes. A route not on this list is out of scope.**
 
-> **One eleventh page is built and deployed, and it is not part of the site:**
-> `/hero-preview`, added 2026-09-20. It is a proposal for the home hero from the
-> design audit — `noindex`, in no nav, linked from nowhere, out of the sitemap,
-> and the real home page with only the hero swapped so the two can be compared.
-> It is recorded here rather than left to contradict the line above. **It goes
-> when the hero question is settled, either way.** See `QUALITY-GATES.md`
-> batch 3 and `CLAUDE.md` §5.
+> **Still ten.** An eleventh page, `/hero-preview`, existed for part of
+> 2026-09-20 so a proposed home hero could be judged on the deployed preview.
+> It was approved and the component adopted into `components/home/Hero.astro`,
+> so the page was deleted the same day. Recorded here because the route briefly
+> existed and a future reader may find it in the git history.
+>
+> **The home page's entry below is otherwise unchanged in substance** — the
+> hero still carries a headline, sub, two CTAs, two badges and the five
+> competencies. Only their arrangement changed: the competency index moved from
+> a card on the right to a full-width numbered list. See `QUALITY-GATES.md`
+> batch 3.
 
 | # | Route | Must exist | Status |
 |---|---|---|---|
-| 1 | `/` | Hero with headline, sub, two CTAs, two badges; competency index (5); competencies preview; "Who we are"; "Why partner with Procedo?"; closing CTA | **VERIFIED** |
+| 1 | `/` | Hero with headline, sub, two CTAs, two badges and the competency index (5, as a full-width numbered list since 2026-09-20); competencies preview; "Who we are"; "Why partner with Procedo?"; closing CTA | **VERIFIED** |
 | 2 | `/company` | Header + statement band with `CompanyScene`; overview prose; "What we deliver" (5); "What we stand for" (6 values); "Why partner" (4); closing CTA | **VERIFIED** |
 | 3 | `/services` | Header with `RackScene`; all five competencies, each with tagline, intro, groups, bullets and a quote; closing CTA | **VERIFIED** |
 | 4 | `/our-mission` | Header; mission statement + body with `QuietScene` panel; Vision and Mission cards; "How we work" (3 principles); closing CTA | **VERIFIED** |

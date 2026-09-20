@@ -169,28 +169,11 @@ each page. Note that a parked preview **drifts from its live page the moment
 either is edited** — un-parking one means copying the live section back into it
 first, not trusting what is in the file.
 
-**ONE preview page is un-parked, and it is the only open question: `hero-preview`.**
-Added 2026-09-20. Everything else in `src/pages/` is the real site plus
-underscored files.
-
-It exists because the design audit (`QUALITY-GATES.md`) failed the home hero on
-both distinctiveness checks — with the logo masked it reads as any B2B firm with
-an orange accent, and it follows the Tailwind UI marketing shape exactly. The
-page is the **real home page with one substitution**, `HeroIndex` for `Hero`, so
-the only difference from `/` is the hero itself and the two can be compared
-directly. It is un-parked rather than parked precisely so it can be seen on the
-deployed Cloudflare preview.
-
-It is sealed off the usual way: `noindex`, in no nav, linked from nowhere, and
-`/hero-preview` was already in the sitemap filter.
-
-**Do not confuse it with `_hero-preview`**, which is still parked and still
-rejected — that one proposed an *illustration* in the hero and Harshit said no
-on 2026-09-18. This one adds no illustration; it rearranges what is already
-there. The rejection stands and this does not reopen it.
-
-**Delete this page once the hero question is settled**, either way: adopt
-`HeroIndex` into `components/home/` and remove the page, or bin both.
+**EVERY preview page is parked again.** `hero-preview` was un-parked on
+2026-09-20 so the proposed hero could be judged on the deployed Cloudflare
+preview, and **deleted the same day when it was adopted** — its component now
+lives at `components/home/Hero.astro` and the page only duplicated `/`.
+`src/pages/` contains the real site plus underscored files.
 
 **Parked 2026-09-18, with verdicts:**
 - `_our-mission-preview` — **rejected**. Harshit: *"we will go with our-mission

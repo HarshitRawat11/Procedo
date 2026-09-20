@@ -1,7 +1,48 @@
 ---
-// Home hero (light): calm GitHub-style sans headline with a single orange
-// accent word, muted body, orange + outlined CTAs, trust badges, and a clean
-// white competency index card on the right. Subtle dot-grid atmosphere.
+/*
+ * HOME HERO — the competency index is the page's spine, not an aside.
+ *
+ * WHERE IT IS USED: `/` only, from src/pages/index.astro.
+ *
+ * ADOPTED 2026-09-20 ("Hero preview looks good"), replacing a hero that had
+ * stood since the site was built. The previous version is in git history; the
+ * commit that replaced it says which.
+ *
+ * WHY IT CHANGED. The design audit (QUALITY-GATES.md) failed the old hero on
+ * both distinctiveness checks:
+ *
+ *   4a LOGO-COVER    with the logo masked it read as "a B2B infrastructure
+ *                    firm with an orange accent" — not as Procedo.
+ *   4b TEMPLATE      it followed the Tailwind UI marketing shape exactly:
+ *                    left headline with one accented word, two buttons, badge
+ *                    pills beneath, feature card to the right.
+ *
+ * The right-hand white card was the strongest tell, and the old component's
+ * own comment recorded that it was redundant — those five links reappear as
+ * full cards in ServicesPreview, the very next section, so removing it cost no
+ * navigation. It gained something too: the index shows each discipline's
+ * tagline, which the card never did.
+ *
+ * WHY THE NUMERALS ARE MONOSPACE AND LARGE. The audit found the site's actual
+ * site-wide signature is NOT the illustrations — they appear on 6 of 10 pages
+ * and not here — but the IBM Plex Mono eyebrow, which appears on 10 of 10.
+ * This promotes that motif from decoration to structure, the specific lesson
+ * INTENT-BRIEF.md takes from the Oxide Computer benchmark.
+ *
+ * WHAT DID NOT CHANGE. No copy. No new colour, typeface, illustration or
+ * radius. Every element of the old hero survives — eyebrow, headline, sub,
+ * both CTAs, both badges, all five links. Only the arrangement differs, which
+ * is exactly what Gate 4b measures.
+ *
+ * THE OLD `aside` SLOT IS GONE. It existed so a page could swap the card for
+ * something else, and only the parked, rejected `_hero-preview` ever used it —
+ * to put an illustration in the hero, which Harshit rejected on 2026-09-18.
+ * That page is now defunct: un-parking it would pass a slot that no longer
+ * exists and silently render nothing.
+ *
+ * CONSTRAINTS THIS RESPECTS: no illustration in the hero, the illustration set
+ * stays closed at six, seven type steps and three radii.
+ */
 import Container from '../Container.astro';
 import Button from '../Button.astro';
 import Badge from '../Badge.astro';
@@ -9,18 +50,6 @@ import { Icon } from 'astro-icon/components';
 import { hero, competencies } from '../../data/site';
 
 const badgeIcons = ['lucide:shield-check', 'lucide:clock'];
-
-/*
- * The right-hand column holds a competency index card. Pass an `aside` slot to
- * put something else there instead — the home hero preview passes an
- * illustration. The column wrapper and its classes are outside the branch, so a
- * page that passes nothing emits markup identical to before this slot existed.
- *
- * Worth knowing before choosing: the five links on that card are repeated as
- * full cards in ServicesPreview, the very next section, so replacing it costs
- * no navigation.
- */
-const hasAside = Astro.slots.has('aside');
 ---
 
 <section class="relative overflow-hidden bg-cream">
@@ -32,67 +61,77 @@ const hasAside = Astro.slots.has('aside');
   </div>
 
   <Container class="relative pb-14 pt-24 sm:pb-16 lg:pb-16 lg:pt-28">
-    <div class="grid items-center gap-14 lg:grid-cols-12 lg:gap-12">
-      <!-- Value proposition -->
-      <div class="lg:col-span-7" data-reveal>
-        <p class="flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
-          <span class="inline-block h-px w-7 bg-brand-500" aria-hidden="true"></span>
-          {hero.eyebrow}
-        </p>
+    <div data-reveal>
+      <p class="flex items-center gap-2.5 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
+        <span class="inline-block h-px w-7 bg-brand-500" aria-hidden="true"></span>
+        {hero.eyebrow}
+      </p>
 
-        <h1 class="mt-6 max-w-2xl text-balance text-h1 font-semibold leading-[1.12] tracking-tight text-navy-950">
-          We design systems that work <span class="text-brand-600">intelligently</span>—so you can
-          focus on what matters.
-        </h1>
+      <h1
+        class="mt-6 max-w-4xl text-balance text-h1 font-semibold leading-[1.12] tracking-tight text-navy-950"
+      >
+        We design systems that work <span class="text-brand-600">intelligently</span>—so you can
+        focus on what matters.
+      </h1>
 
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink-600">{hero.sub}</p>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-ink-600">{hero.sub}</p>
 
-        <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-          <Button href={hero.primaryCta.href} size="lg" chevron>{hero.primaryCta.label}</Button>
-          <Button href={hero.secondaryCta.href} size="lg" variant="secondary">
-            {hero.secondaryCta.label}
-          </Button>
-        </div>
-
-        <div class="mt-9 flex flex-wrap gap-3">
-          {hero.badges.map((b, i) => <Badge icon={badgeIcons[i]}>{b}</Badge>)}
-        </div>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <Button href={hero.primaryCta.href} size="lg" chevron>{hero.primaryCta.label}</Button>
+        <Button href={hero.secondaryCta.href} size="lg" variant="secondary">
+          {hero.secondaryCta.label}
+        </Button>
       </div>
 
-      <!-- Competency index, or whatever the page puts in its place -->
-      <div class="lg:col-span-5" data-reveal style="--reveal-delay:120ms">
-        {hasAside && <slot name="aside" />}
-        {!hasAside && (
-        <div class="overflow-hidden rounded-lg border border-line bg-white shadow-sm shadow-navy-950/[0.04]">
-          <p class="border-b border-line px-6 py-4 font-mono text-xs uppercase tracking-[0.18em] text-navy-600">
-            Core competencies
-          </p>
-          <ul>
-            {
-              competencies.map((c, i) => (
-                <li class={i > 0 ? 'border-t border-line' : ''}>
-                  <a
-                    href={`/services#${c.slug}`}
-                    class="group flex items-center gap-4 px-6 py-4 transition-colors hover:bg-band"
-                  >
-                    <span class="font-mono text-xs text-ink-500 tabular-nums">0{i + 1}</span>
-                    <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-brand-50 text-brand-600 ring-1 ring-brand-100">
-                      <Icon name={c.icon} class="size-[18px]" aria-hidden="true" />
-                    </span>
-                    <span class="min-w-0 flex-1 font-medium text-navy-900">{c.title}</span>
-                    <Icon
-                      name="lucide:arrow-up-right"
-                      class="size-4 text-ink-400 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand-600"
-                      aria-hidden="true"
-                    />
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-        )}
+      <div class="mt-9 flex flex-wrap gap-3">
+        {hero.badges.map((b, i) => <Badge icon={badgeIcons[i]}>{b}</Badge>)}
       </div>
     </div>
+
+    {/*
+      The index. A numbered contents list, full width, hairline-ruled. The
+      numeral column is `tabular-nums` so 01-05 sit on the same optical axis,
+      and it is the element carrying the brand on hover rather than the row,
+      which keeps the resting state quiet.
+    */}
+    <nav
+      aria-label="Core competencies"
+      class="mt-14 border-t border-line"
+      data-reveal
+      style="--reveal-delay:120ms"
+    >
+      <p class="sr-only">Core competencies</p>
+      <ol>
+        {
+          competencies.map((c, i) => (
+            <li class="border-b border-line">
+              <a
+                href={`/services#${c.slug}`}
+                class="group flex items-baseline gap-5 py-5 transition-colors hover:bg-band/60 sm:gap-8"
+              >
+                <span class="font-mono text-2xl tabular-nums text-ink-500 transition-colors group-hover:text-brand-600">
+                  0{i + 1}
+                </span>
+
+                <span class="min-w-0 flex-1">
+                  <span class="block text-lg font-semibold leading-snug text-navy-950">
+                    {c.title}
+                  </span>
+                  <span class="mt-1 hidden text-sm leading-relaxed text-ink-600 sm:block">
+                    {c.tagline}
+                  </span>
+                </span>
+
+                <Icon
+                  name="lucide:arrow-up-right"
+                  class="size-5 shrink-0 self-center text-ink-400 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-brand-600"
+                  aria-hidden="true"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
   </Container>
 </section>

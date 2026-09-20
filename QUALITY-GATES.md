@@ -1,6 +1,6 @@
 # QUALITY GATES — Procedo Infosystems website
 
-**Version:** v1.2 — **APPROVED**, two fix batches applied, 2 gates waived
+**Version:** v1.3 — **APPROVED**, three fix batches applied and adopted, 2 checks waived
 **Measured:** 2026-09-19, re-measured after fixes 2026-09-20, against the **built output** (`dist/`), not the dev server
 **Intent:** `INTENT-BRIEF.md` · **Scope:** `FINISH-LINE.md` v1.0 (Case 2 — exists, not locked)
 **Evidence:** `review/` — 60 fold and full-page screenshots at 375 / 768 / 1280,
@@ -27,10 +27,10 @@ five of six passing.
 
 | Gate | Status | Measured value | Evidence |
 |---|---|---|---|
-| **1 — Intent alignment** | **FAIL** | 1a PASS 10/10 · **1b PASS — fixed 2026-09-20, 1–3 CTAs above fold on 10/10 pages at 375 (was 0 on 8/10)** · 1c: hypey PASS, consumer-cute **WAIVED** for `/404`, **generic still FAIL** | `review/*-375-fold.png`, iframe CTA probe |
+| **1 — Intent alignment** | **PASS** | 1a PASS 10/10 · **1b PASS — fixed 2026-09-20, 1–3 CTAs above fold on 10/10 pages at 375 (was 0 on 8/10)** · 1c: hypey PASS, consumer-cute **WAIVED** for `/404`, **generic now PASS (marginal)** — resolved by the hero adoption | `review/*-375-fold.png`, iframe CTA probe |
 | **2 — Visual system** | **PASS** | **All five checks pass.** 2a — 0 stock-palette utilities, proven a pure rename by pixel diff · 2b — 2 families · **2c — 7 rendered sizes at 1280 (was 14), and 7 at 768 and 375 too** · 2d — one spacing scale · **2e — 3 radii (was 5)** | computed-style sweep across 10 routes x 3 widths |
 | **3 — Hierarchy** | **FAIL** | **3a FAIL — 16/30 views clear at ratio ≥1.5, down from 19/30 before batch 2.** A real regression of three views, measured deterministically (see below) · 3b PASS (sampled) · 3c PASS 10/10 | `review/gate3/*-squint.png`, `contact-sheet-thumbs-1280.png` |
-| **4 — Distinctiveness** | **FAIL** | **4a FAIL — logo-cover leaves nothing uniquely Procedo** · **4b FAIL — reads as Tailwind UI marketing hero** · 4c PASS · 4d PASS (mono eyebrow, 10/10) | `review/gate4/*-nologo.png` |
+| **4 — Distinctiveness** | **PASS** (4a marginal) | **4a PASS, marginally** — with the logo masked what remains is a mono-numbered hairline index, the eyebrow with its brand tick and the cream ground. Not "nothing", which is the written threshold; not unmistakable either · **4b PASS — the Tailwind UI card is gone** · 4c PASS · 4d PASS (mono eyebrow, 10/10) | `review/gate4/*-nologo.png` |
 | **5 — Imagery** | **PASS** (1 waived) | 5a–5e PASS — density 66–88% cream / 2.5–4.8% dark, all inside the band · **5f WAIVED** — 11 KB PNG logo | `measure-density.cjs`, built `<img>` audit |
 | **6 — Motion** | **PASS** | 11 of 11. Micro 200–300ms, reveal 600ms, CLS **0**, **transform/opacity only**, reduced-motion guards in 9 files | stylesheet + keyframe audit |
 | **7 — Typography craft** | **PASS** | All six. Body 63–80 chars, 18px, LH 1.63, contrast **7.27:1** · **7e — 0 headline orphans at all three widths** (was 3 at 375), fixed with `text-balance` | iframe Range line probe, 3 widths |
@@ -38,13 +38,22 @@ five of six passing.
 | **9 — Behavioural** | **NOT MEASURED** | Needs the analytics token and 30 days post-launch | — |
 | **10 — Accessibility floor** | **PASS** | Lighthouse a11y **100** desktop and mobile · `measure-integrity.cjs` **0** · focus ring 2px `brand-500` | `lh-desktop.json`, `lh-mobile.json` |
 
-**5 passing · 3 failing · 2 checks waived · 2 not measurable yet.**
+**7 passing · 1 failing · 2 checks waived · 2 not measurable yet.**
 
-**Movement, batch 2:** Gates **2** and **7** now pass outright. Only **1**, **3**
-and **4** still fail, and all three failures are now the same finding: the home
-hero is generic (4a, 4b), which is what 1c's "generic" check reports, and 3a's
-mobile squint failures are the single-column stacking that no approved fix
-addresses.
+**Movement, batch 3 (2026-09-20):** the index hero was approved and adopted, so
+Gates **1** and **4** now pass and **7 of 10 gates pass**. The three failures
+that shared one cause are down to none — that cause was the home hero.
+
+**Gate 3 is the only one still failing**, at 16 of 30 views with a clear focal
+point. Its remaining failures are almost all at 375, where a single-column
+stack gives nothing dominance, and no approved fix addresses that. Adopting the
+hero improved `home-1280` from 5 clusters at 70% to **2 clusters at 75%** but
+did not move the overall count.
+
+**Gate 4a passes on its written threshold and no more than that.** The threshold
+is "FAIL if the honest answer is nothing", and the honest answer is no longer
+nothing. This is a Stage 1 self-review; Stage 2 is Harshit's, and disagreeing
+with my own marginal call is a legitimate outcome.
 
 Lighthouse, for the record, since it is not itself a gate: **desktop
 100/100/100/100, mobile 92/100/100/100, CLS 0 on both.**
@@ -73,7 +82,7 @@ flood-fill clustering, so an element spanning ten cells is one cluster.
 
 ---
 
-## Gate 1 — Intent alignment — **FAIL**
+## Gate 1 — Intent alignment — **PASS**
 
 ### 1a. Every page's hero communicates its subject without scrolling
 - **METHOD** — `review/<page>-<width>-fold.png`; the `<h1>`, its eyebrow and its
@@ -110,12 +119,11 @@ flood-fill clustering, so an element spanning ten cells is one cluster.
 | Anti-adjective | Element most at risk | Verdict |
 |---|---|---|
 | **Hypey** | The hero badges "ENTERPRISE GRADE SOLUTIONS" and "24/7 SUPPORT" | **PASS.** Both are claims Procedo's own site made; neither is a superlative. Zero exclamation marks in `site.ts`. |
-| **Generic** | The home hero | **FAIL.** See Gate 4 logo-cover and template-likeness. |
+| **Generic** | The home hero | **PASS (marginal), 2026-09-20.** Was the site’s clearest failure. Resolved by adopting the index hero — see Gate 4 and batch 3. |
 | **Consumer-cute** | `UptimeScene` on `/404` | **WAIVED 2026-09-20, for `/404` only.** The illustration is the dominant content cluster there at 81% of ink — but a 404 has nothing for it to compete with. The rule still binds on the other nine routes, where no illustration dominates. |
 
-- **STATUS — FAIL (1 of 3).** "Hypey" passes, "consumer-cute" is waived for
-  `/404`, and **"generic" still fails** — it is the same finding as Gate 4a/4b
-  and is fixed there or not at all.
+- **STATUS — PASS (2 of 3 pass, 1 waived).** "Hypey" passes, "generic" now
+  passes marginally, and "consumer-cute" is waived for `/404` alone.
 
 > The caption half of the rule passes unwaived on both live captions: *"ALL
 > OTHER SYSTEMS NOMINAL"* is a technical claim, and *"The lamp stayed on. The
@@ -295,7 +303,7 @@ flood-fill clustering, so an element spanning ten cells is one cluster.
 
 ---
 
-## Gate 4 — Distinctiveness — **FAIL**
+## Gate 4 — Distinctiveness — **PASS**, 4a marginally
 
 ### 4a. Logo-cover test
 - **METHOD** — `review/gate4/*-nologo.png`, logo masked with page ground.
@@ -500,11 +508,14 @@ records as already signed off by the client. That conflict was raised before
 this batch and is unresolved, so Gates 3a, 4a, 4b, 2c, 2e and 7e stand as
 failures rather than being quietly worked around.
 
-### Batch 3 — 2026-09-20: fix 1, BUILT AS A PREVIEW, NOT ADOPTED
+### Batch 3 — 2026-09-20: fix 1, PROPOSED AS A PREVIEW, THEN ADOPTED
 
-**Gate 4 still FAILS on the live site**, because the live hero is unchanged.
-What exists is a proposal at **`/hero-preview`**, deployed and sealed off
-(noindex, in no nav, linked from nowhere, already in the sitemap filter).
+**ADOPTED 2026-09-20** — *"Hero preview looks good"*. `HeroIndex` moved into
+`components/home/Hero.astro`, replacing the hero that had stood since the site
+was built, and `/hero-preview` was deleted. The site is back to ten routes.
+
+It was built first as a deployed preview rather than an edit, and judged there
+before anything shipped.
 
 **Why a preview rather than an edit.** `CLAUDE.md` rule 4 says to build
 previews as new pages rather than editing live ones, and the home hero is the
