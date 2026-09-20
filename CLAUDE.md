@@ -169,8 +169,28 @@ each page. Note that a parked preview **drifts from its live page the moment
 either is edited** — un-parking one means copying the live section back into it
 first, not trusting what is in the file.
 
-**EVERY preview page is parked.** There is no un-parked one and no open
-question; `src/pages/` contains only the real site plus underscored files.
+**ONE preview page is un-parked, and it is the only open question: `hero-preview`.**
+Added 2026-09-20. Everything else in `src/pages/` is the real site plus
+underscored files.
+
+It exists because the design audit (`QUALITY-GATES.md`) failed the home hero on
+both distinctiveness checks — with the logo masked it reads as any B2B firm with
+an orange accent, and it follows the Tailwind UI marketing shape exactly. The
+page is the **real home page with one substitution**, `HeroIndex` for `Hero`, so
+the only difference from `/` is the hero itself and the two can be compared
+directly. It is un-parked rather than parked precisely so it can be seen on the
+deployed Cloudflare preview.
+
+It is sealed off the usual way: `noindex`, in no nav, linked from nowhere, and
+`/hero-preview` was already in the sitemap filter.
+
+**Do not confuse it with `_hero-preview`**, which is still parked and still
+rejected — that one proposed an *illustration* in the hero and Harshit said no
+on 2026-09-18. This one adds no illustration; it rearranges what is already
+there. The rejection stands and this does not reopen it.
+
+**Delete this page once the hero question is settled**, either way: adopt
+`HeroIndex` into `components/home/` and remove the page, or bin both.
 
 **Parked 2026-09-18, with verdicts:**
 - `_our-mission-preview` — **rejected**. Harshit: *"we will go with our-mission
@@ -235,9 +255,10 @@ commit `9aeddcf`, but there is no reason to: `WorkshopScene` failed Gate 1b at
 This is the one place where an illustration did NOT survive its page — and the
 rule above still holds, because what changed is that a better one was live first.
 
-**What is left in `src/components/preview/` is therefore exactly ONE file:**
-`SceneVariant`, the 404 comparison strip used by `_404-preview`. Every scene the
-site draws now has a page:
+**`src/components/preview/` holds TWO files:** `SceneVariant`, the 404
+comparison strip used by `_404-preview`, and `HeroIndex` (added 2026-09-20),
+the proposed hero used by `hero-preview`. Neither is on the real site. Every
+scene the site draws now has a page:
 
 | scene | where it lives |
 |---|---|

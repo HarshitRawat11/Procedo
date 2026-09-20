@@ -4,8 +4,10 @@ Status board for the Procedo Infosystems website.
 **Update this file whenever a task changes state.** New sessions should read it
 immediately after `CLAUDE.md`.
 
-- **Last updated:** 2026-09-19
-- **Build:** ✅ passing — 10 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
+- **Last updated:** 2026-09-20
+- **Build:** ✅ passing — **11 pages**, **0 errors / 0 warnings / 0 hints** (`npm run build`).
+  Ten are the site; the eleventh is `/hero-preview`, a proposal awaiting a
+  verdict (`CLAUDE.md` §5)
 - **Deployed:** ✅ preview live at https://procedoinfo-preview.pages.dev, git-connected,
   auto-deploying from `master`. **Not** on procedoinfo.com — that domain still
   serves the old site and the cutover is the client's call
@@ -14,8 +16,14 @@ immediately after `CLAUDE.md`.
   criteria — a baseline not to regress. It was briefly frozen on 2026-09-19 and
   **unfrozen the same day**; it is a record, not a gate. Open work is in
   `BACKLOG.md`
-- **Overall:** v1 is complete against every written criterion. Only the legal
-  review and the domain cutover remain, and both are the client's to do.
+- **Design gates:** `QUALITY-GATES.md` v1.2 — **5 of 10 passing**, 2 checks
+  waived, 2 not measurable until launch. Gates 2 and 7 were fixed on 2026-09-20;
+  1, 3 and 4 still fail and all three are the same finding — the home hero is
+  generic. `/hero-preview` is the proposed answer, awaiting a verdict
+- **Overall:** v1 is complete against every written criterion in
+  `FINISH-LINE.md`. The design audit is a separate and later standard, and the
+  site does not yet meet all of it. Only the legal review and the domain cutover
+  block launch, and both are the client's to do.
 
 Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · ⬜ not started
 
@@ -103,7 +111,152 @@ measured state; the gap it lists is empty.
 
 ## Log
 
-### 2026-09-19 (last) — the finish line, locked, and unfrozen an hour later
+### 2026-09-20 (last) — a design audit, three fix batches, and four broken instruments
+
+The site passed every criterion in `FINISH-LINE.md` and was still, by its own
+admission, forgettable. A second prompt supplied a way to test that: extract
+what the site is trying to make a specific person feel and do, turn it into
+falsifiable gates, measure, fix, judge. `INTENT-BRIEF.md` and
+`QUALITY-GATES.md` are the result, and this entry is what they cost.
+
+**The intent, agreed rather than assumed.** Audience: a corporate IT or
+facilities manager in Delhi NCR or elsewhere in India who specifies
+infrastructure work, shortlists who does it, and carries the risk if the branch
+opening slips. Evoke *precise, dependable, quietly expert*; avoid *hypey,
+generic, consumer-cute*. Benchmarks: Fly.io, Oxide Computer, 37signals — each
+picked against a weakness the audit had already measured, not for general
+excellence.
+
+**That third anti-adjective immediately collided with six cat illustrations.**
+Rather than leave Gate 1 to discover it, the tension was named in the brief and
+resolved in advance: no illustration may be the dominant element of any view,
+and every caption must carry a technical claim rather than a punchline. Both
+live captions pass unwaived — *"ALL OTHER SYSTEMS NOMINAL"* is a claim, and
+*"The lamp stayed on. The page did not."* states what happened.
+
+---
+
+#### What the gates found
+
+**Gate 1b was the worst of it, and it had nothing to do with beauty.** Below
+`md` the header's "Get in Touch" was hidden and the inner pages carry no CTA in
+their `PageHeader`, so **eight of ten pages opened on a phone with no visible
+way to make contact** until the visitor scrolled. The button inside the mobile
+menu does not count; it is behind a tap. Fixed in `Header.astro` — a compact
+"Contact" button now sits beside the hamburger at every width. 0 → 1–3 CTAs
+above the fold on 10 of 10 pages, overflow still 0.
+
+**Gate 2a: the palette was never closed.** 81 stock-Tailwind colour utilities
+across `src/`, and the site's commonest text colour was `slate-600` — a
+framework default. The cause was structural: `@theme` defined `cream`,
+`surface`, `band` and `line`, all *surfaces*, and **no colour for text**, so
+every component reaching for body grey had nothing to reach for.
+
+The utility grep had also missed the actual worst offender. `body { color }` in
+`@layer base` was a raw `#475569` — invisible to a class-name search and
+responsible for more rendered pixels than any utility. It surfaced only because
+the post-fix computed-style sweep still reported 32 off-palette text nodes
+*after* every utility had been swapped.
+
+**Gate 2c: fourteen rendered type sizes at 1280.** Six one-off
+`text-[clamp(…)]` expressions had accumulated, one per component, with
+overlapping ranges — two of them covering the same range with a different `vw`
+term. Now seven steps, three of them `@theme` clamps. Every collapse picked the
+*smaller* neighbour, because the brief asks for quietly expert: hero 52→48,
+section headings 40→36, mid-level 30→24, card titles 20→18 with weight carrying
+that step instead of size. The only things that grew were the 10px and 11px
+mono labels, which became 12px — three sizes existed for one semantic role and
+the smallest was below any legibility floor worth defending.
+
+**Gate 2e: five corner radii down to three.** Downward again —
+`rounded-xl` folded into `rounded-lg` rather than up into `rounded-2xl`,
+because at 16px the cards read softer and more consumer.
+
+**Gate 4 is the one still failing, and it is the point of the whole document.**
+With the logo masked the home hero reads as *"a B2B infrastructure firm with an
+orange accent"* and follows the Tailwind UI marketing shape exactly. A related
+finding: the site's actual site-wide signature is **not** the illustrations —
+they appear on 6 of 10 pages and not on the home page — but the IBM Plex Mono
+eyebrow, which appears on 10 of 10.
+
+`/hero-preview` is the proposed answer and is **not adopted**. It moves the five
+disciplines out of the white card and into a full-width numbered index: hairline
+rules, large mono numerals, no card chrome. Gate 4b passes; 4a improves from
+"nothing" to marginal. Adopting it changes the client's signed-off front page,
+so it wants Harshit's eye and then Procedo's.
+
+---
+
+#### Four instruments produced confident, wrong answers
+
+More time went into finding these than into the fixes. Each is now recorded in
+the script that has it, because every one looked exactly like a site defect.
+
+**1. The 375px screenshots were cropped desktop layouts.** Windows enforces a
+minimum window width of about 500px and headless Chrome honours it, so
+`--window-size=375,812` produced files that *are* 375×812 but showed the left
+375px of a wider render — text cut mid-word, no hamburger. It reads as a mobile
+overflow bug and is not one: measured in-browser at a true 375px viewport, all
+ten routes report `scrollWidth - clientWidth = 0`. Widths below the clamp are
+now shot inside an iframe pinned to that width and cropped back.
+
+**2. The hierarchy metric split headlines and called the halves rivals.** A 4×4
+grid scored cell by cell reported 16 of 30 views as having no focal point,
+including the home page at 1280 where the blurred image shows one unmistakable
+dark mass. Replaced with flood-fill clustering.
+
+**3. The same metric then swung 15–17 on identical source.** Six of the ten
+pages carry scene loops of 2.4–26s and `--virtual-time-budget` lands the shutter
+at an arbitrary phase. Batch 2 was reported on that basis as regressing Gate 3a
+from 19 to 15, and a `--text-h2` bump appeared to recover a view; **both
+readings were noise.** Fixed with `--force-prefers-reduced-motion`, which stops
+every animation on this site — they all sit inside
+`@media (prefers-reduced-motion: no-preference)` — and resolves the scroll
+reveals instantly. Three consecutive runs now return the same number. Re-derived
+properly by checking out each source state: **19 before batch 2, 16 after, and
+16 with the h2 bump**, so the regression is real at three views and the bump
+does nothing. It was reverted.
+
+**4. Screenshots render with fallback fonts, and fallbacks break lines
+differently.** A capture of the closing CTA at 375 showed *"Ready to Future-"* /
+*"Proof Your Business?"* — a hyphenated compound split across lines, which was
+nearly fixed as a real typographic fault. In a real browser with Inter loaded it
+breaks at the space. **Never read a measure, an orphan or a line break off these
+images.**
+
+A fifth was nearly a fifth: the Gate 2a rename was verified by pixel-diffing
+every route at 1280, and six pages differed by 0.01–0.22%, which looks exactly
+like a botched rename. Running the same build twice reproduced the same
+differences on the same six pages with no code change at all. The four pages
+with no animation came back byte-for-byte identical — which is the actual proof
+the rename was inert.
+
+---
+
+#### Housekeeping
+
+Six measurement scripts moved into `scripts/` so the gates are reproducible by
+someone who was not here: `serve-dist`, `shoot-screens`, `measure-hierarchy`,
+`measure-weight`, `extract-scenes`, `diff-screens`. `review/` is gitignored — a
+full run is 21 MB of PNGs against a 6.3 MB repo, and it is regenerable output
+like `dist/`. The scripts were the half worth keeping.
+
+Two waivers granted, both scoped: Gate 1c on `/404` only, because a 404 has no
+content for its illustration to compete with; and Gate 5f, because the only
+raster on the site is an 11 KB logo.
+
+Two items logged as EXTRA and deliberately not done: `/assets/*` carries no
+`Cache-Control` rule, and the header logo is about 1.6× oversized.
+
+Lighthouse, run once by hand after an `npm cache clean --force` fixed a
+corrupted cache: **desktop 100/100/100/100, mobile 92/100/100/100, CLS 0 on
+both.** It is still not a gate and still not installed.
+
+**Standing state: 5 of 10 gates passing, 2 checks waived, 2 not measurable until
+the site launches and analytics exist.** Gates 1, 3 and 4 fail, and all three
+are the same finding.
+
+### 2026-09-19 — the finish line, locked, and unfrozen an hour later
 
 The project had no defined end. Requests arrived, were built, and were followed
 by more requests, with nothing in the repo distinguishing "in scope" from
