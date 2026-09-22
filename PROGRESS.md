@@ -4,7 +4,7 @@ Status board for the Procedo Infosystems website.
 **Update this file whenever a task changes state.** New sessions should read it
 immediately after `CLAUDE.md`.
 
-- **Last updated:** 2026-09-20
+- **Last updated:** 2026-09-22
 - **Build:** ✅ passing — 10 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
 - **Deployed:** ✅ preview live at https://procedoinfo-preview.pages.dev, git-connected,
   auto-deploying from `master`. **Not** on procedoinfo.com — that domain still
@@ -18,10 +18,15 @@ immediately after `CLAUDE.md`.
   waived, 2 not measurable until launch. Only **Gate 3 (hierarchy)** still
   fails, at 16 of 30 views, almost all at 375 where a single-column stack gives
   nothing dominance
+- **Legal:** ✅ **signed off 2026-09-22.** All three policy pages approved and
+  stamped. One change on the advisor's instruction: the Privacy Policy's
+  newsletter clause is gone. ⚠️ This did **not** lift the preview's `noindex` —
+  that had two reasons and only one is resolved
 - **Overall:** v1 is complete against every written criterion in
-  `FINISH-LINE.md`. The design audit is a separate and later standard, and the
-  site does not yet meet all of it. Only the legal review and the domain cutover
-  block launch, and both are the client's to do.
+  `FINISH-LINE.md`, and the legal review is done. **Launch now waits on one
+  thing: the DNS cutover**, which is Procedo's to do. The design audit is a
+  separate and later standard the site does not yet fully meet — see the gate
+  line above.
 
 Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · ⬜ not started
 
@@ -35,7 +40,7 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 2 | Real copy across all 9 public pages | ✅ | — | — |
 | 3 | Recover real copy from the old React bundle | ✅ | — | — |
 | 4 | Remove all Aviator Infotech material | ✅ | — | — |
-| 5 | Legal pages (privacy / terms / cookies) | 🔴 | Needs review by Procedo's legal advisor | **Cookie Policy rewritten 2026-09-18 and awaiting sign-off.** The old text was the previous React site's policy describing that site — it claimed analytics and preference cookies and "relevant content or ads"; this site sets none, measured live (no cookies, no localStorage/sessionStorage/IndexedDB, zero third-party origins). The new policy answers "no" first, drops the three invented cookie categories and the pointless "managing cookies" advice, and adds why there is no consent banner, how traffic is measured instead, and what the contact form does. **Its cookie claims now DERIVE from `analytics.provider`**, so the page cannot go stale again — set `ga4` and it switches to "Yes" by itself. Two matching false lines corrected in the Privacy Policy. **Flagged, not changed:** the Privacy Policy still offers newsletters and marketing mail, for which there is no list and no consent mechanism — a permissions judgement for the advisor, not a factual fix. Send all three for sign-off, then reset the `updated` dates |
+| 5 | Legal pages (privacy / terms / cookies) | ✅ | — | **SIGNED OFF 2026-09-22.** Procedo’s legal advisor approved all three; the one instruction was to remove the Privacy Policy’s "send updates, marketing material, or newsletters (only with your consent)" line, which had no mailing list, no sign-up and no consent mechanism behind it. Removed, with a note at that spot saying not to reinstate it without building the mechanism first. All three pages restamped 22 September 2026. The Cookie Policy had already been rewritten on 2026-09-18 and its claims now DERIVE from `analytics.provider`, so it cannot go stale again. **This was the last thing blocking launch.** ⚠️ Sign-off did NOT lift the preview’s `noindex`: that had two reasons and only one is gone — an indexed preview would still compete with procedoinfo.com for Procedo’s own terms |
 | 6 | Contact form delivery | ✅ | — | Web3Forms key set 2026-08-30. First key was tied to the wrong inbox and replaced same day; the current key (ending `...6a36`) is verified live via two real form submissions through `/contact` |
 | 7 | Office address | ✅ | — | 324 Guru Ram Das Nagar, Laxmi Nagar, Delhi – 110092. PIN confirmed by user 2026-08-30. Live on `/contact` and in the homepage JSON-LD |
 | 8 | LinkedIn profile URL | 🔴 | Not supplied | Client to provide; replace `'#'` in `socials` — footer icon unhides itself |
@@ -73,37 +78,54 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 
 ## What's actually blocking launch
 
-**One thing:** legal sign-off (#5) on the privacy / terms / cookie pages. The
-text is real, carried over from the previous site, but nobody has reviewed it.
+**One thing, and it is not ours: the DNS cutover.** Procedo pointing
+procedoinfo.com at this build. About fifteen minutes once they say go.
 
-**Put two things in front of that reviewer.**
+**Legal sign-off arrived 2026-09-22** and was the last item that was. All three
+policy pages are approved and stamped with that date.
 
-**One — the Cookie Policy is new and needs approving like the other two.** The
-old text was the previous React site's policy describing the previous React
-site: it claimed analytics and preference cookies and "relevant content or ads".
-Measured in a browser on the built output, 2026-09-18: **this site sets no
-cookies.** `document.cookie` is empty, localStorage and sessionStorage are
-empty, no third-party script loads on any page, and the contact form is a plain
-POST to Web3Forms. It was not an exposure in the dangerous direction — the risk
-is undisclosed tracking, and there is none — but it was untrue on a page whose
-job is to be true, and a visitor could check it in ten seconds. Rewritten
-2026-09-18, once the analytics decision (#18) unblocked it: Cloudflare Web
-Analytics is cookieless, so the answer is a plain no and no consent banner is
-needed. **The page's cookie claims now derive from `analytics.provider`**, so it
-cannot go stale again — set `ga4` and it switches to "Yes" by itself.
+The advisor changed one thing. The Privacy Policy's *"To send updates, marketing
+material, or newsletters (only with your consent)"* is **removed**. It had been
+flagged for that review on 2026-09-18 and deliberately left alone until someone
+with the authority ruled on it: there is no newsletter, no mailing list and no
+way on this site for anyone to give the consent it referred to. The sentence was
+not false — it was conditional on a consent never sought — but it described a
+thing that does not exist, on a page whose whole job is to be true. The note at
+that spot in `site.ts` says not to reinstate it without building the mechanism
+first, because adding the sentence back on its own would recreate the promise.
 
-**Two — the Privacy Policy still offers newsletters and marketing mail**, for
-which there is no list and no consent mechanism. Flagged, not changed: that is a
-permissions judgement for the advisor, not a factual fix.
+The Cookie Policy needed nothing at sign-off because it had already been fixed
+on 2026-09-18. The old text was the previous React site's policy describing
+*that* site — it claimed analytics and preference cookies and "relevant content
+or ads". Measured in a browser on the built output, this site sets none:
+`document.cookie` empty, no localStorage, no sessionStorage, no IndexedDB, not
+one third-party origin. **Its claims now derive from `analytics.provider`**, so
+the page and the configuration cannot drift apart again — set `ga4` and it
+switches to "Yes" by itself.
 
-Reset the `updated` dates on all three when sign-off arrives.
+> ⚠️ **SIGN-OFF DID NOT LIFT THE PREVIEW'S `noindex`, AND THIS IS THE EASIEST
+> THING ON THIS PAGE TO GET WRONG.** There were two reasons for it. One is gone.
+> The other stands: an indexed preview at `procedoinfo-preview.pages.dev` would
+> compete with procedoinfo.com for Procedo's own terms — two sites, the same
+> copy, the same company, and the one that would lose is the one that matters.
+> **The noindex comes off when the real domain is live and this preview is
+> retired, not when the lawyer says yes.**
 
-Deployment (#16) is done for the preview and auto-deploys from `master`. The
-production cutover is the client pointing procedoinfo.com at the new build.
-Nothing is blocked on code.
+⚠️ **Sign-off covers what is written today, not whatever it becomes.** A
+material change to any of the three pages needs re-approval, and the `updated`
+date needs moving with it. Switching `analytics.provider` to `ga4` would be one:
+the Cookie Policy would correctly start saying the site sets cookies, and a site
+that sets analytics cookies needs a consent banner asking *before* the script
+loads. There is none.
 
-**Everything else is finished.** `FINISH-LINE.md` records the criteria and their
-measured state; the gap it lists is empty.
+Deployment (#16) is done for the preview and auto-deploys from `master`.
+**Nothing is blocked on code.**
+
+**Everything else is finished** against `FINISH-LINE.md`, whose gap is empty.
+The design audit in `QUALITY-GATES.md` is a separate and later bar: 7 of 10
+gates pass, 2 checks are waived, 2 cannot be measured until the site is live,
+and Gate 3 (hierarchy) fails at 16 of 30 views — almost all at 375px, where a
+single-column stack gives nothing dominance.
 
 ---
 

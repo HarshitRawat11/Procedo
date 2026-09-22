@@ -238,10 +238,11 @@ commit `9aeddcf`, but there is no reason to: `WorkshopScene` failed Gate 1b at
 This is the one place where an illustration did NOT survive its page — and the
 rule above still holds, because what changed is that a better one was live first.
 
-**`src/components/preview/` holds TWO files:** `SceneVariant`, the 404
-comparison strip used by `_404-preview`, and `HeroIndex` (added 2026-09-20),
-the proposed hero used by `hero-preview`. Neither is on the real site. Every
-scene the site draws now has a page:
+**`src/components/preview/` is back to exactly ONE file:** `SceneVariant`, the
+404 comparison strip used by `_404-preview`. `HeroIndex` lived here for part of
+2026-09-20 and was **adopted the same day into `components/home/Hero.astro`**,
+which is the trip every accepted component makes. Every scene the site draws now
+has a page:
 
 | scene | where it lives |
 |---|---|
@@ -557,9 +558,17 @@ npm run build && grep -cE '^[[:space:]]+X-Robots-Tag:' dist/_headers   # 0
 npm run build:preview && grep -cE '^[[:space:]]+X-Robots-Tag:' dist/_headers   # 1
 ```
 
-Two things still make the noindex necessary: the legal pages have not been
-reviewed (PROGRESS.md #5), and an indexed preview would compete with
-procedoinfo.com for its own terms. Cloudflare adds a noindex to *non-production*
+**ONE thing still makes the noindex necessary, and it is enough.** There were
+two. The legal pages were signed off on 2026-09-22, so that reason is gone. What
+remains: **an indexed preview would compete with procedoinfo.com for Procedo's
+own terms** — two sites, same copy, same company, and the one with no
+backlinks and a `.pages.dev` domain is not the one that should win. The noindex
+comes off when the real domain is live and this preview is retired, not before.
+
+Do not read "legal sign-off is done" as "the preview can be indexed now". They
+are separate facts and only one of them has changed.
+
+Cloudflare adds a noindex to *non-production*
 deployments by itself, but the preview is deployed as its project's production
 deployment — that is what gives it a stable URL rather than a hash-prefixed one
 — so the automatic protection does not apply.

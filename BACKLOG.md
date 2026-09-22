@@ -19,7 +19,7 @@ same list written for the client to read.
 
 | Item | What it needs | Effect while missing |
 |---|---|---|
-| **Legal sign-off** on `/privacy`, `/terms`, `/cookies` | Their advisor to approve or correct the text. Two things to flag: the Cookie Policy is newly rewritten, and the Privacy Policy still offers a newsletter that has no mechanism | Blocks **launch**, not completion. The preview stays `noindex` until it is done |
+| ~~**Legal sign-off**~~ | **DONE 2026-09-22.** One instruction: remove the Privacy Policy’s newsletter clause. Done, and all three pages restamped | **Was the only launch blocker.** Launch now waits on the DNS cutover alone |
 | **DNS cutover** to procedoinfo.com | Their say-so plus DNS access | Preview URL is the live deployment. ~15 minutes once approved |
 | **LinkedIn URL** | One URL | Footer icon hides itself. No dead link ships |
 | **Cloudflare Web Analytics token** | 32 hex characters from their dashboard | Nothing is measured. Provider already chosen and wired |

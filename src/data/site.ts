@@ -856,35 +856,43 @@ export const contactForm = {
 
 /* ==========================================================================
  *  Legal pages — real policy text carried over from the previous Procedo site.
- *  ⚠️ Have these reviewed by your legal advisor before go-live, and keep the
- *  `updated` date current whenever you change the text.
  *
- *  ⚠️ ONE THING FOR THAT REVIEW, measured 2026-09-18.
+ *  ✅ SIGNED OFF BY PROCEDO'S LEGAL ADVISOR, 2026-09-22. All three pages carry
+ *  that date. This was the last thing blocking launch, and it no longer is.
  *
- *  THIS SITE SETS NO COOKIES. Checked in a real browser on the built output:
- *  document.cookie is empty, localStorage and sessionStorage are empty, and no
- *  third-party script is loaded on any page. `analytics.provider` is 'none',
- *  there is no consent banner, and the contact form is a plain POST to
- *  Web3Forms. Nothing on the site stores anything on a visitor's device.
+ *  ── WHAT THE REVIEW CHANGED ────────────────────────────────────────────────
+ *  One thing: the Privacy Policy's "send updates, marketing material, or
+ *  newsletters (only with your consent)" was REMOVED on the advisor's
+ *  instruction. See the note at that spot, which also says why reinstating it
+ *  without building the mechanism would recreate the problem.
  *
- *  The Cookie Policy below nevertheless says Procedo uses cookies to understand
- *  how you use the website, remember your preferences and "provide relevant
- *  content or ads", and lists analytics and preference cookies as types in use.
- *  The Privacy Policy lists cookies under information collected, and mentions
- *  newsletters and marketing material, for which the site has no mechanism.
+ *  ── WHAT HAD ALREADY BEEN FIXED BEFORE THE REVIEW ──────────────────────────
+ *  The Cookie Policy was rewritten on 2026-09-18. The old text was the previous
+ *  React site's policy describing THAT site: it claimed Procedo used cookies to
+ *  understand how you use the website, remember preferences and "provide
+ *  relevant content or ads", and listed analytics and preference cookies as
+ *  types in use. Measured in a real browser on the built output, this site sets
+ *  none of them — document.cookie empty, no localStorage, no sessionStorage, no
+ *  IndexedDB, not one third-party origin.
  *
- *  That is the old React site's policy describing the old React site. It is not
- *  a compliance exposure in the dangerous direction — the risk is undisclosed
- *  tracking, and there is none — but it is untrue today, on a page whose whole
- *  job is to be true, and a visitor can verify it in ten seconds.
+ *  Its cookie claims now DERIVE from `analytics.provider` (see the block above
+ *  that comment), so the page and the configuration cannot drift apart again.
  *
- *  NOT CHANGED HERE ON PURPOSE. It is verified Procedo copy under rule #1, a
- *  lawyer has to sign these off before go-live anyway, and every word becomes
- *  accurate again the moment `analytics.provider` is set to anything. So it is
- *  ONE question for that same review rather than an edit made on our own:
- *  does the site launch with analytics or without? Answer that first, then fix
- *  the policy to match — and if the answer is GA4, note that GA4 sets cookies
- *  and therefore needs a consent banner that does not exist yet.
+ *  ── WHAT STILL APPLIES ─────────────────────────────────────────────────────
+ *  ⚠️ Keep the `updated` date current whenever the text changes, and send a
+ *  material change back for re-approval. Sign-off covers what is written here
+ *  today, not whatever it becomes.
+ *
+ *  ⚠️ SIGN-OFF DOES NOT MEAN THE PREVIEW CAN BE INDEXED. It removed ONE of the
+ *  two reasons for `X-Robots-Tag: noindex` — the other stands: an indexed
+ *  preview at procedoinfo-preview.pages.dev would compete with
+ *  procedoinfo.com for Procedo's own terms. The noindex stays until the real
+ *  domain is live. See the hosting section of CLAUDE.md.
+ *
+ *  ⚠️ IF `analytics.provider` BECOMES 'ga4', the Cookie Policy will correctly
+ *  start saying the site sets cookies — and a site that sets analytics cookies
+ *  needs a consent banner asking BEFORE the script loads. There is none. That
+ *  would be a material change and would need re-approval.
  * ========================================================================== */
 
 export interface LegalSection {
@@ -907,7 +915,7 @@ export const privacyPolicy: LegalDoc = {
   title: 'Privacy Policy',
   intro:
     'At Procedo Infosystems Pvt. Ltd. (“we”, “our”, or “us”), your privacy is one of our top priorities. This Privacy Policy outlines how we collect, use, and safeguard the information you provide when using our website and services.',
-  updated: '27 August 2026',
+  updated: '22 September 2026',
   sections: [
     {
       heading: 'Information we collect',
@@ -927,14 +935,21 @@ export const privacyPolicy: LegalDoc = {
       list: [
         'To provide and maintain our services.',
         'To respond to your inquiries or customer support requests.',
-        /* ⚠️ FOR THE LEGAL REVIEWER, flagged 2026-09-18 and deliberately NOT
-           changed. There is no newsletter, no mailing list and no mechanism on
-           this site by which anyone could give the consent this line refers to.
-           The sentence is not false — it is conditional on a consent that is
-           never sought — but it describes a thing that does not exist. Whether
-           to keep it as headroom for later or drop it is a legal judgement
-           about permissions, not a factual correction, so it is left alone. */
-        'To send updates, marketing material, or newsletters (only with your consent).',
+        /* A line was REMOVED here on 2026-09-22, on the legal advisor's
+           instruction at sign-off:
+             "To send updates, marketing material, or newsletters (only with
+              your consent)."
+           It was flagged for that review on 2026-09-18 and deliberately left
+           alone until someone with the authority ruled on it. There is no
+           newsletter, no mailing list and no mechanism on this site by which
+           anyone could give the consent it referred to. The sentence was not
+           false — it was conditional on a consent never sought — but it
+           described a thing that does not exist, on a page whose entire job is
+           to be true.
+
+           DO NOT REINSTATE IT without building the mechanism first: a sign-up,
+           a list, a provider, and a record of consent. Adding the sentence back
+           on its own would re-create a promise the site cannot keep. */
         'To analyze usage trends and improve website performance.',
       ],
     },
@@ -981,7 +996,7 @@ export const termsOfService: LegalDoc = {
   title: 'Terms of Service',
   intro:
     'These Terms of Service govern your use of the website and services provided by Procedo Infosystems Pvt. Ltd. Please read them carefully before using our services.',
-  updated: '27 August 2026',
+  updated: '22 September 2026',
   sections: [
     {
       heading: 'Acceptance of terms',
@@ -1054,7 +1069,7 @@ export const cookiePolicy: LegalDoc = {
   title: 'Cookie Policy',
   intro:
     'This policy explains how Procedo Infosystems Pvt. Ltd. uses cookies and similar technologies on this website, and what that means for you.',
-  updated: '18 September 2026',
+  updated: '22 September 2026',
   sections: [
     analyticsSetsCookies
       ? {

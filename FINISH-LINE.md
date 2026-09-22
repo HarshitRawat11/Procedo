@@ -94,16 +94,20 @@ Neither was ever confirmed. If one turns out to be wrong, correct it here — it
 |---|---|---|
 | LinkedIn profile URL | Procedo | **VERIFIED** — footer icon hidden, no dead link shipped |
 | Cloudflare Web Analytics site token | Procedo | **VERIFIED** — nothing emitted; provider already chosen |
-| Legal sign-off on `/privacy`, `/terms`, `/cookies` | Procedo's legal advisor | Pages ship with text from the previous site plus a rewritten Cookie Policy. **v1 ships without sign-off; this is a recorded, accepted state.** |
+| ~~Legal sign-off on `/privacy`, `/terms`, `/cookies`~~ | Procedo’s legal advisor | **RECEIVED 2026-09-22.** All three stamped with that date. The advisor’s one instruction was to remove the Privacy Policy’s newsletter clause, which had no mechanism behind it; done. |
 | DNS cutover to `procedoinfo.com` | Procedo | Preview URL is the v1 deployment |
 
-> **On the legal sign-off, deliberately.** `PROGRESS.md` and `CLIENT-PENDING.txt`
-> have both called this "the only thing standing between the site and going
-> live", and both still say so, because for *launch* it is true. For *v1* it is
-> not: the rule agreed at lock is that a placeholder documented here and
-> assigned to the client counts as DONE — the site is finished, the client owes
-> the content. Those two statements do not conflict. **The site is complete; the
-> launch is the client's to authorise.**
+> **The legal question is closed.** It was the one item where this document and
+> the client-facing ones said different things — "v1 is DONE regardless" here,
+> "the only thing standing between the site and going live" there. Both were
+> true, because they measured different things: completion versus launch. That
+> distinction no longer has to be explained, because **the sign-off arrived on
+> 2026-09-22.**
+>
+> **Launch now waits on one thing only: the DNS cutover**, which is Procedo
+> pointing procedoinfo.com at this build. The other two owed items — the
+> LinkedIn URL and the analytics token — degrade gracefully and never blocked
+> anything.
 
 ### 1.2 Design
 

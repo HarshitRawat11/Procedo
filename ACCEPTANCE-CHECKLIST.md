@@ -1,15 +1,16 @@
 # Procedo Infosystems website — acceptance checklist
 
-**Prepared 19 September 2026.** For Procedo Infosystems Pvt. Ltd.
+**Prepared 19 September 2026, updated 22 September.** For Procedo Infosystems Pvt. Ltd.
 
 The website is finished. This is the list of what "finished" means, written so
 you can check each line yourself in a browser rather than take our word for it.
 
 **See it here:** <https://procedoinfo-preview.pages.dev>
 
-That address is deliberately hidden from Google until your legal advisor has
-read the three policy pages. It works on a phone, a tablet and a computer, and
-you can share the link with anyone you like.
+That address is deliberately hidden from Google until the real domain goes live
+— otherwise it would compete with procedoinfo.com for your own name. It works on
+a phone, a tablet and a computer, and you can share the link with anyone you
+like.
 
 ---
 
@@ -36,9 +37,9 @@ There are **ten pages**, and this is all of them.
 | ☐ | **Our Mission** | The mission statement, the vision, and how Procedo works |
 | ☐ | **Careers** | Why work at Procedo, the six roles you hire for, and a way to apply speculatively |
 | ☐ | **Contact** | Phone, email, WhatsApp, the office address with a map link, and a working enquiry form |
-| ☐ | **Privacy Policy** | *Needs your legal advisor — see section 5* |
-| ☐ | **Terms of Use** | *Needs your legal advisor — see section 5* |
-| ☐ | **Cookie Policy** | *Rewritten, and needs your legal advisor — see section 5* |
+| ☑ | **Privacy Policy** | **Approved 22 September.** One line removed on your advisor’s instruction — see section 5 |
+| ☑ | **Terms of Use** | **Approved 22 September**, unchanged |
+| ☑ | **Cookie Policy** | **Approved 22 September.** Rewritten on 18 September because the old text described your previous site |
 | ☐ | **"Page not found"** | What a visitor sees if they follow a broken or mistyped link |
 
 **☐ Every word about Procedo on this site is yours.** The text comes from your
@@ -89,23 +90,37 @@ We want these on the record, so nobody thinks they were forgotten.
 
 ---
 
-## 5. What we need from your legal advisor
+## 5. The legal pages — **done, 22 September**
 
-**This is the one thing standing between the site and going live.**
+**This was the one thing standing between the site and going live, and it is
+closed.** Your advisor approved all three pages. Each now shows 22 September as
+its "last updated" date.
 
-The Privacy Policy, the Terms of Use and the Cookie Policy carry text from your
-previous website. Nobody has reviewed it against this one. Your advisor needs to
-read all three and either approve them or send corrections.
+**One change was made, on their instruction.** The Privacy Policy no longer says
+we may send you updates, marketing material or newsletters. There was no mailing
+list and no way for anyone to agree to one, so the sentence described something
+that did not exist — on a page whose whole job is to be accurate. If you want a
+newsletter later, it needs a sign-up form and a record of consent, not just the
+sentence put back.
 
-Two things to point out to them:
+**The Cookie Policy needed nothing**, because it had already been rewritten on
+18 September. The old text was your previous website's policy describing *that*
+site: it claimed cookies for analytics, preferences and "relevant content or
+ads". This site sets none — we checked in a browser before changing a word — and
+the page now says so plainly. Better still, its answer is now derived from the
+analytics setting, so the two cannot disagree again.
 
 | | |
 |---|---|
-| ☐ | **The Cookie Policy is new.** The old one described your previous website — it claimed the site used cookies for analytics, preferences and "relevant content or ads". This site sets none, which we checked in a browser before changing a word. The new text says so plainly. It needs approving like the other two |
-| ☐ | **The Privacy Policy still offers newsletters and marketing email.** There is no mailing list and no way for anyone to consent to one. Your advisor should either remove the offer or tell us to build the mechanism |
+| ☑ | **Privacy Policy** — approved, newsletter line removed |
+| ☑ | **Terms of Use** — approved, unchanged |
+| ☑ | **Cookie Policy** — approved, rewritten 18 September |
 
-When they approve, tell us and we will reset the "last updated" dates on all
-three pages to that day.
+**Two things to keep in mind.** Approval covers what the pages say today: a
+material change means going back to your advisor and moving the date with it.
+And the site is still hidden from Google — that had two reasons and only one has
+gone; the other is that this preview address would compete with procedoinfo.com
+for your own name. It comes out of hiding when the real domain goes live.
 
 ---
 

@@ -1,50 +1,45 @@
 PROCEDO INFOSYSTEMS — WEBSITE: WHAT WE NEED FROM YOU
-Updated 19 September 2026
+Updated 22 September 2026
 
-The site is built and complete. Everything below is waiting on your side.
-Nothing on this list is blocked on development work.
+The site is built, complete and legally approved. Everything below is
+waiting on your side. Nothing on this list is blocked on development work.
 
 You can see it now, on every device, at:
 
    https://procedoinfo-preview.pages.dev
 
-That is a private preview address. It is deliberately kept out of Google
-until the legal pages have been reviewed.
+That is a private preview address, deliberately kept out of Google until
+the real domain goes live.
 
 
-BLOCKING LAUNCH — 1 ITEM
+NOTHING IS BLOCKING LAUNCH ANY MORE
 ------------------------------------------------------------------------
-1. LEGAL SIGN-OFF
-   The Privacy Policy, Terms of Use and Cookie Policy pages carry the text
-   from your previous website. Nobody has reviewed it against the current
-   site. Your legal advisor needs to read all three and either approve
-   them or send corrections.
+   LEGAL SIGN-OFF came through on 22 September. That was the last item
+   standing between the site and going live, and it is done. All three
+   policy pages are approved and now show that date.
 
-   Two things to put in front of that reviewer:
+   Your advisor asked for one change and we made it: the Privacy Policy
+   no longer says we may send you updates, marketing material or
+   newsletters. There was no mailing list and no way for anyone to
+   agree to one, so the sentence described something that did not
+   exist. If you want a newsletter later, tell us — it needs a sign-up
+   form and a record of consent, not just the sentence back.
 
-     - The COOKIE POLICY was rewritten on 18 September. The old one was
-       the previous website's policy describing the previous website: it
-       claimed analytics and preference cookies and "relevant content or
-       ads". This site sets no cookies at all, which we measured in a
-       browser before changing a word. The new text says so plainly.
-       It needs approving like the other two.
-
-     - The PRIVACY POLICY still offers newsletters and marketing email.
-       There is no mailing list and no way to consent to one. That is a
-       judgement for your advisor — remove the offer, or tell us to build
-       the mechanism.
-
-   This is the only thing standing between the site and going live.
+   One thing this did NOT change: the site is still hidden from Google.
+   There were two reasons for that and only one has gone. The other is
+   that this preview address would compete with procedoinfo.com for
+   your own name in search results. It comes out of hiding when we
+   point the real domain at it — which is item 1 below.
 
 
 NEEDED TO GO LIVE
 ------------------------------------------------------------------------
-2. DOMAIN
+1. DOMAIN
    Confirmation to point procedoinfo.com at the new build, and access to
    the DNS records. The build is ready; this is a 15-minute change once
    you say go.
 
-3. ANALYTICS — ONE VALUE
+2. ANALYTICS — ONE VALUE
    Decided on 18 September: Cloudflare Web Analytics. It is free, it
    sets no cookies, it needs no consent banner, and the site is already
    hosted on Cloudflare, so there is nothing new to sign up for.
@@ -58,11 +53,11 @@ NEEDED TO GO LIVE
 
 NEEDED TO FINISH THE CONTENT
 ------------------------------------------------------------------------
-4. LINKEDIN URL
+3. LINKEDIN URL
    The footer has a LinkedIn icon ready. It stays hidden until you send
    the profile URL.
 
-5. THREE SERVICE SECTIONS ARE THINNER THAN THE OTHER TWO
+4. THREE SERVICE SECTIONS ARE THINNER THAN THE OTHER TWO
    This is the most worthwhile thing on the list, and the quickest.
 
    In September you rewrote Digital Workplace Services and Datacenter
@@ -109,7 +104,7 @@ NEEDED TO FINISH THE CONTENT
    If you would rather leave all three as they are, say so and we will
    close this. They are accurate as written — just quieter.
 
-6. PROOF — ANY OF THE FOLLOWING
+5. PROOF — ANY OF THE FOLLOWING
    The site currently makes no claims it cannot back up, which is correct
    but means there is no third-party proof anywhere. Whatever you can
    share helps:
@@ -122,18 +117,18 @@ NEEDED TO FINISH THE CONTENT
    If none of this can be shared publicly yet, say so and we will leave
    the section out rather than pad it.
 
-7. HOW A PROJECT ACTUALLY RUNS
+6. HOW A PROJECT ACTUALLY RUNS
    Four to six steps, in your words — for example: site survey, design
    and BOQ, procurement, installation and commissioning, handover, AMC.
    Prospective clients ask "what happens after I call you", and the site
    has no answer today.
 
-8. FIVE OR SIX FAQs
+7. FIVE OR SIX FAQs
    The questions you are actually asked on a first call, with your
    answers. Typical ones: minimum project size, geographic coverage,
    support/SLA terms, AMC options, lead times.
 
-   Items 6, 7 and 8 are NOT needed for launch. The site is complete
+   Items 5, 6 and 7 are NOT needed for launch. The site is complete
    without them. They are the first things worth adding afterwards.
 
 
@@ -143,12 +138,13 @@ ALREADY DECIDED — NO ACTION NEEDED
    Photography                    Not used. Illustrations instead.
    Blog                           Not wanted. Removed.
    Services copy revision         Applied in full for the two sections you
-                                  sent. The other three are item 5.
+                                  sent. The other three are item 4.
+   Legal sign-off                 Received 22 September. Closed.
    Office address, phone, email   In place and working.
    Contact form                   Live and tested with real submissions.
    WhatsApp                       Confirmed 13 September — same number as
                                   the phone line. Live on the Contact page.
-   Analytics tool                 Chosen 18 September (see item 3).
+   Analytics tool                 Chosen 18 September (see item 2).
 
 
 ILLUSTRATIONS
