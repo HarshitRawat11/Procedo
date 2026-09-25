@@ -63,6 +63,10 @@ the one part of the hosting setup that is easy to break invisibly.
 ## Directory layout
 
 ```
+├── .github/
+│   ├── workflows/ci.yml   Build + eight checks, required before any merge
+│   └── rulesets/          The master branch ruleset, as GitHub can import it
+│
 ├── CLAUDE.md              Working agreement — read this first
 ├── FINISH-LINE.md         What the site is: ten routes, ~30 measured criteria
 ├── BACKLOG.md             What is not done yet, and what each thing needs
@@ -100,15 +104,20 @@ the company's real copy.
 
 ### Continuous integration
 
-`.github/workflows/ci.yml` runs the build and seven checks on every push to
+`.github/workflows/ci.yml` runs the build and eight checks on every push to
 `master` and on any pull request. It guards the things this repo has actually
 been broken by — each of which fails **silently**, with no error and a page that
 still looks right.
 
-⚠️ **It reports; it does not prevent.** Work goes straight to `master` and
-Cloudflare builds on push, so CI finishes after the preview has published.
-Making it preventive needs pull requests and a branch-protection rule requiring
-the check — a change to how the repo is worked, not to the workflow.
+**It prevents, rather than only reporting.** A branch ruleset on `master`
+requires a pull request and requires the `verify` job to be green before it can
+merge, so CI now runs *before* Cloudflare publishes rather than after. `git push
+origin master` is refused; branch, open a PR, merge when green.
+
+The ruleset itself is committed at `.github/rulesets/master.json` and checked by
+`scripts/verify-branch-protection.cjs`, because it is the one part of this setup
+that lives entirely outside the repository — it can be disabled or deleted on
+github.com without a single file here changing.
 
 The browser-driven design gates are deliberately excluded: they need Chrome,
 produce ~21 MB of PNGs, and two of them are judged by eye.
@@ -125,6 +134,12 @@ node scripts/measure-weight.cjs      # wire weight per route, brotli, vs the 100
 node scripts/verify-headers.cjs      # the noindex safety property + one /* rule
 node scripts/verify-tokens.cjs       # palette, type scale, radius, theme-color
 node scripts/measure-svg.cjs <file>  # the illustration loop's countable checks
+```
+
+One checks a setting on github.com rather than a file, and needs no build:
+
+```bash
+node scripts/verify-branch-protection.cjs   # the master ruleset is still enforced
 ```
 
 The design gates in [`QUALITY-GATES.md`](./QUALITY-GATES.md) need a server and
@@ -185,9 +200,9 @@ silently fail.
 
 **4. Experiments are additive.**
 Build previews as new pages rather than editing live ones, and confirm before
-deleting anything. CI runs on every push (see above), but there is no branch
-protection, so it reports rather than prevents — git history is still the only
-undo.
+deleting anything. CI runs on every push and a branch ruleset blocks merges
+until it is green (see above) — but that stops a bad *push*, not a bad *edit*.
+Git history is still the only undo, and uncommitted work has none.
 
 **5. Keep it accessible.**
 All motion is gated behind `prefers-reduced-motion`. Keep semantic markup, real

@@ -6,12 +6,17 @@ name: CI
 # fails SILENTLY without it: no error, no warning, and a page that still looks
 # right in a browser. That is the whole reason they are worth a workflow.
 #
-# ⚠️ IT CANNOT PREVENT A BAD DEPLOY, ONLY REPORT ONE.
-# Work here goes straight to `master`, and Cloudflare Pages builds on push. By
-# the time this workflow finishes, the preview has already published. Making it
-# preventive needs pull requests and a branch-protection rule requiring this
-# check — a change to how the repo is worked, not to this file. Until then,
-# treat a red run as "the last push broke something, fix it forward".
+# IT PREVENTS A BAD DEPLOY, since 2026-09-25.
+# For three days it could not. Work went straight to `master`, Cloudflare Pages
+# built on push, and this workflow finished after the preview had published —
+# so a red run meant "the last push broke something, fix it forward".
+#
+# A branch ruleset now requires a pull request into `master` and requires THIS
+# JOB to be green before one can merge. `verify` is the required context, and
+# that name is load-bearing: renaming this job without updating
+# `.github/rulesets/master.json` does not weaken the protection, it DEADLOCKS
+# it — every pull request then waits for a status that will never be reported.
+# `scripts/verify-branch-protection.cjs` is the step below that catches it.
 #
 # It deliberately does NOT run the browser-driven design gates from
 # QUALITY-GATES.md (shoot-screens, measure-hierarchy, diff-screens). Those need
@@ -91,3 +96,16 @@ jobs:
         run: |
           npm run build:preview
           node scripts/verify-headers.cjs --preview
+
+      # ── The one check that is not about dist/ at all: is GitHub still
+      # enforcing what .github/rulesets/master.json says? The ruleset can be
+      # switched to "evaluate", handed a bypass actor or deleted, and nothing in
+      # the repo would look any different. Network trouble is a loud skip rather
+      # than a failure — that is not a statement about the ruleset.
+      #
+      # GITHUB_TOKEN is passed only to dodge the 60-per-hour unauthenticated
+      # rate limit that shared runners share an IP for; the endpoint is public.
+      - name: Branch protection matches the committed ruleset
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/verify-branch-protection.cjs
