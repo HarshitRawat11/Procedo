@@ -142,10 +142,15 @@ for any new unknown.
 
 ### 4. Confirm before destructive changes
 Git is set up and pushed to GitHub (`HarshitRawat11/Procedo`). Since 2026-09-22
-there is CI, but **there is still no branch protection**, so CI reports after the
-fact and prevents nothing — **confirm before deleting or overwriting anything**,
-and prefer additive changes. Preview work goes in a new file, never on top of a
-live page. Uncommitted work still has no undo.
+there is CI, and since 2026-09-25 a branch ruleset that makes it bite — see
+*Branch protection* below. **`git push origin master` is refused.** Work goes on
+a branch and merges through a pull request once `verify` is green.
+
+None of that is an undo. A ruleset stops a bad *push*; it does nothing about a
+bad *edit*, and the window that has actually cost time here is the one before
+the commit. So: **confirm before deleting or overwriting anything**, prefer
+additive changes, and put preview work in a new file rather than on top of a
+live page. Uncommitted work still has no history to go back to.
 
 ### 5. Concept and preview pages must be sealed off — and are currently parked
 Anything not part of the real site must be: not in `nav`, linked from nowhere,
@@ -480,16 +485,49 @@ SILENT, with no error and a page that still looks right:
 | `measure-seo / integrity / weight` | the gates that need only `dist/` |
 | `measure-content` | **partial in CI** — its provenance half needs `scrape/procedo/app.js`, which is gitignored, so CI runs the depth half only and says so. **CI cannot catch an invented claim; run it locally before shipping copy.** |
 | `verify-tokens.cjs` | stock palette colours, an eighth type size, a fourth radius, raw hex outside `@theme`, and `theme-color` drifting from `--color-cream` |
-
-⚠️ **CI REPORTS; IT CANNOT PREVENT.** Work goes straight to `master` and
-Cloudflare builds on push, so the workflow finishes after the preview has
-already published. A red run means the last push broke something — fix it
-forward. Making it preventive needs pull requests plus a branch-protection rule
-requiring the check, which is a change to how this repo is worked and has not
-been made.
+| `verify-branch-protection.cjs` | the ruleset below being deleted, disabled, or handed a bypass actor |
 
 The browser-driven design gates are deliberately NOT in CI: they need Chrome,
 produce ~21 MB of PNGs, and two of them are judged by eye.
+
+### Branch protection: CI prevents, since 2026-09-25
+
+For its first three days CI **reported and could not prevent** — work went
+straight to `master`, Cloudflare built on push, and the workflow finished after
+the preview had already published. That is no longer true.
+
+A branch ruleset on `master` requires a pull request, requires the `verify` job
+green before merge, and refuses force pushes and deletion. **There are no bypass
+actors, including Harshit** — the API reports `current_user_can_bypass: never`.
+An admin bypass on a one-contributor repo makes the whole thing decorative,
+which was the point of turning it on.
+
+**So `git push origin master` is refused.** The loop is: branch, push the
+branch, open a pull request, wait for `verify`, merge. `gh pr create` and
+`gh pr merge` do the last two from here.
+
+- **Zero approvals are required, deliberately.** GitHub will not let you approve
+  your own pull request, so requiring one would deadlock every merge on a repo
+  with one contributor. The status check is what gates; the PR is what makes the
+  check run before the deploy rather than after it.
+- **The ruleset is committed at `.github/rulesets/master.json`**, in the format
+  GitHub's own *Import a ruleset* button reads. It is the intent; github.com
+  holds the state; `scripts/verify-branch-protection.cjs` fails when they
+  disagree. Change one, change the other in the same sitting.
+- **`verify` is a load-bearing name.** It is the job id in `ci.yml` and the
+  required context in the ruleset, bound to app `15368`. Renaming the job
+  without updating the ruleset does not weaken protection — it **deadlocks** it,
+  leaving every pull request waiting for a status nobody will ever report.
+
+Two things this does **not** cover, both by design:
+
+- **`npm run deploy:preview` still bypasses everything.** It direct-uploads the
+  working tree to Cloudflare without touching git at all. That is what it is
+  for, and it stays true.
+- **A ruleset is not a lock.** A repo admin can edit or delete it in the
+  settings UI without touching the repo. It is a deliberate speed bump against
+  your own mistakes, not a security control against yourself — which is why the
+  CI step above watches it.
 
 Measured gates, all reading `dist/` so they see what a visitor gets:
 
@@ -501,6 +539,12 @@ node scripts/optimise-images.cjs     # re-encode the two PNGs on every page (ide
 node scripts/measure-weight.cjs      # wire weight per route, brotli, vs the 100 KB cap
 node scripts/verify-headers.cjs      # noindex property, one /* rule, all 7 headers
 node scripts/verify-tokens.cjs       # palette, type scale, radius, theme-color
+```
+
+One more reads neither `dist/` nor `src/`, but github.com:
+
+```bash
+node scripts/verify-branch-protection.cjs   # the ruleset is still enforced
 ```
 
 Dev server launch configs are in `.claude/launch.json` as `procedo-dev` and
