@@ -477,7 +477,8 @@ SILENT, with no error and a page that still looks right:
 | `npm run build` | type errors; `astro check` runs first |
 | `verify-headers.cjs` | a noindex leaking into a PRODUCTION build, a second `/*` rule eating the security headers, a missing header |
 | `verify-headers.cjs --preview` | the preview NOT carrying its noindex |
-| `measure-seo / integrity / content / weight` | the four gates that need only `dist/` |
+| `measure-seo / integrity / weight` | the gates that need only `dist/` |
+| `measure-content` | **partial in CI** — its provenance half needs `scrape/procedo/app.js`, which is gitignored, so CI runs the depth half only and says so. **CI cannot catch an invented claim; run it locally before shipping copy.** |
 | `verify-tokens.cjs` | stock palette colours, an eighth type size, a fourth radius, raw hex outside `@theme`, and `theme-color` drifting from `--color-cream` |
 
 ⚠️ **CI REPORTS; IT CANNOT PREVENT.** Work goes straight to `master` and

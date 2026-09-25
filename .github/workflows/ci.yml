@@ -67,7 +67,13 @@ jobs:
       - name: Integrity (dead links, duplicate ids, headings, labels)
         run: node scripts/measure-integrity.cjs
 
-      - name: Content (services depth, and every claim traceable to a source)
+      # ⚠️ PARTIAL IN CI. The provenance half of this gate compares copy against
+      # scrape/procedo/app.js, which is gitignored on purpose — a 1 MB minified
+      # third-party bundle — so it is absent from any fresh checkout. The script
+      # says so loudly and runs the DEPTH half only. That means CI cannot catch
+      # an invented claim, and rule 1 is the most important rule in this repo:
+      # run this locally, where the bundle exists, before shipping copy.
+      - name: Content (services depth; provenance skipped, no bundle in CI)
         run: node scripts/measure-content.cjs
 
       - name: Wire weight (every route, brotli, against the 100 KB cap)

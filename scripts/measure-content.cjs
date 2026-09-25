@@ -23,7 +23,28 @@ const fs = require('fs');
 const path = require('path');
 const ROOT = path.join(__dirname, '..');
 
-const bundle = fs.readFileSync(path.join(ROOT, 'scrape/procedo/app.js'), 'utf8');
+/* ── THE BUNDLE IS GITIGNORED, SO IT IS ABSENT IN CI ────────────────────────
+   scrape/procedo/app.js is a 1 MB minified third-party bundle, deliberately
+   untracked. This script used to read it unguarded, which was fine for years of
+   local runs and failed the moment CI ran it on a fresh checkout — ENOENT, and
+   every later step skipped.
+
+   This script has two halves and only one of them needs the bundle:
+
+     DEPTH       reads src/data/site.ts. Works anywhere.
+     PROVENANCE  compares copy against the bundle. Needs it.
+
+   So when the bundle is missing, the depth half still runs and the provenance
+   half is SKIPPED LOUDLY — named in the output, and the run does not pretend to
+   have checked something it could not. It exits 0, because failing every CI run
+   over an intentionally untracked file would just get the gate switched off.
+
+   ⚠️ THAT MEANS CI CANNOT CATCH AN INVENTED CLAIM. Rule 1 is the most
+   important rule in this repo and its automated check only runs on a machine
+   that has the bundle. Run this locally before shipping copy. */
+const BUNDLE = path.join(ROOT, 'scrape/procedo/app.js');
+const HAVE_BUNDLE = fs.existsSync(BUNDLE);
+const bundle = HAVE_BUNDLE ? fs.readFileSync(BUNDLE, 'utf8') : '';
 const norm = (s) =>
   s
     .replace(/[‘’]/g, "'")
@@ -128,6 +149,17 @@ const attestedBy = (s) => {
   const m = rx.exec(bN);
   return m ? m[0] : null;
 };
+
+if (!HAVE_BUNDLE) {
+  console.log('\nPROVENANCE — SKIPPED, and this run has NOT checked rule 1.\n');
+  console.log('  scrape/procedo/app.js is not present. It is gitignored on purpose —');
+  console.log('  a 1 MB minified third-party bundle — so any fresh checkout, CI');
+  console.log('  included, lacks it.');
+  console.log('\n  The depth table above is real. Nothing here has verified that the');
+  console.log('  copy traces to a source, which is the most important rule in this');
+  console.log('  repo. Run this on a machine that has the bundle before shipping copy.\n');
+  process.exit(0);
+}
 
 const attested = [];
 const unattested = [];
