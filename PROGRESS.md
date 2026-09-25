@@ -4,8 +4,12 @@ Status board for the Procedo Infosystems website.
 **Update this file whenever a task changes state.** New sessions should read it
 immediately after `CLAUDE.md`.
 
-- **Last updated:** 2026-09-22
+- **Last updated:** 2026-09-25
 - **Build:** ✅ passing — 10 pages, **0 errors / 0 warnings / 0 hints** (`npm run build`)
+- **CI:** ✅ `.github/workflows/ci.yml` — build plus eight checks on every push to
+  `master` and every pull request. Since 2026-09-25 a branch ruleset **requires**
+  the `verify` job green before a merge, so **`git push origin master` is
+  refused**: branch, open a pull request, merge when green
 - **Deployed:** ✅ preview live at https://procedoinfo-preview.pages.dev, git-connected,
   auto-deploying from `master`. **Not** on procedoinfo.com — that domain still
   serves the old site and the cutover is the client's call
@@ -73,6 +77,8 @@ Legend — ✅ done · 🟡 needs a decision · 🔴 blocked on someone else · 
 | 35 | Client pending list | ✅ | — | `CLIENT-PENDING.txt` at the repo root: one page, what the client owes — legal sign-off (the only blocker), domain, analytics choice, LinkedIn, proof material, engagement process, FAQs, WhatsApp. Plus what is already decided, so it is not reopened |
 | 36 | WhatsApp channel | ✅ | — | Number confirmed by Harshit 2026-09-13 — the same line as the phone. `contact.whatsapp` in `site.ts` with a derived `whatsappHref`; the channel drops out entirely if the number is ever cleared (§3). Live on the Contact page |
 | 37 | Illustration weight — the "subtle" pass | ✅ | — | **All six pass, measured on the built pages 2026-09-19** — on each scene’s live viewBox, which is what a visitor sees, not the component in isolation. Two gates, because weight and scale fail independently. **Gate 1b** (`scripts/measure-density.cjs`): at least 60% bare cream, at most 5% dark. **Balance** (`scripts/measure-balance.cjs`): the ink centred in the frame, which Gate 1b cannot see. **And scale**: apparent size is subject width over CANVAS width. Standing, cream/dark: ReceptionScene 88.2/2.5 · CareersScene 86.5/4.4 · QuietScene 80.9/3.4 · RackScene 75.5/4.8 · CompanyScene 72.8/4.5 · UptimeScene 66.0/3.2. The two that used to fail were not tuned but rebuilt — RackScene from 0.2/30.0, and WorkshopScene replaced outright |
+| 38 | Continuous integration | ✅ | — | **Added 2026-09-22**, `.github/workflows/ci.yml`, Node 22 to match the Cloudflare project. Build plus eight checks on every push to `master` and every pull request. It guards the failure modes this repo has actually been broken by, every one of which is **silent** — no error, no warning, a page that still looks right. Two scripts were written for the two that had no check at all: `verify-headers.cjs` (a noindex leaking into a PRODUCTION build; a second `/*` rule making Cloudflare drop most security headers) and `verify-tokens.cjs` (stock palette colours, an eighth type size, a fourth radius, raw hex outside `@theme`, `theme-color` drifting from `--color-cream`). ⚠️ **The content gate is PARTIAL in CI**: its provenance half needs `scrape/procedo/app.js`, which is gitignored on purpose, so **CI cannot catch an invented claim** — run `measure-content.cjs` locally before shipping copy. The first run went red for exactly that reason, unguarded, and local runs could never have found it |
+| 39 | Branch protection | ✅ | — | **Added 2026-09-25**, and it is what turned CI from reporting into preventing. For three days work went straight to `master` and Cloudflare built on push, so the workflow finished **after** the preview had already published. Ruleset `23984970` on `master`: a pull request required, `verify` green before merge, force pushes and deletion refused, and **no bypass actors, including Harshit** — GitHub reports `current_user_can_bypass: never`, because an admin bypass on a one-contributor repo makes the whole thing decorative. **Zero approvals required, deliberately**: GitHub will not let you approve your own pull request, so requiring one would deadlock every merge. The ruleset is committed at `.github/rulesets/master.json` and `scripts/verify-branch-protection.cjs` fails when github.com stops matching it — it is the only part of this setup that lives entirely outside the repo. **Two things it does not cover, by design:** `npm run deploy:preview` still bypasses all of it, and an admin can delete the ruleset from the settings UI. It is a speed bump against your own mistakes, not a control against yourself |
 
 ---
 
@@ -130,6 +136,91 @@ single-column stack gives nothing dominance.
 ---
 
 ## Log
+
+### 2026-09-25 — CI stops reporting and starts preventing
+
+Harshit: *"do the branch protection"*. It was the open item left over from the
+CI work on 2026-09-22, and the reason every record in the repo carried the same
+caveat: **CI reported, it could not prevent.** Work went straight to `master`,
+Cloudflare Pages builds on push, so the workflow finished after the preview had
+already published. A red run meant "the last push broke something", never "that
+push was stopped".
+
+**Ruleset `23984970` on `master`.** A pull request is required, the `verify` job
+must be green before a merge, force pushes and deletion are refused, and there
+are **no bypass actors at all**. GitHub reports `current_user_can_bypass: never`.
+
+Two choices in it are worth the words:
+
+- **Zero approvals required.** Not laxity — GitHub will not let you approve your
+  own pull request, and this repo has one contributor. Requiring one approval
+  would have deadlocked every merge with nothing able to clear it. The status
+  check is what gates; the pull request is only what makes the check run before
+  the deploy instead of after it.
+- **No bypass, including Harshit.** An admin bypass on a one-person repo makes
+  the whole thing decorative. The cost is real and was stated before it was
+  applied: the direct pushes these sessions had been making stop working, and
+  every change now needs a branch and a pull request. That is the change he
+  asked for.
+
+**The setting lives outside the repo, which is the whole problem.** It can be
+switched to `evaluate`, handed a bypass actor, or deleted on github.com, and not
+one file here would change — the same hazard as the Cloudflare build command
+that `CLAUDE.md` warns about, with the same failure mode, which is silence. So
+the ruleset is committed at `.github/rulesets/master.json` in the format
+GitHub's own *Import a ruleset* button reads, and `verify-branch-protection.cjs`
+compares that file against the live API as a ninth CI step.
+
+**Its comparison logic was tested, not trusted.** Four measurement scripts in
+this repo have shipped confidently wrong, and every branch in this one fires
+only on a bad day. A fixture seam feeds it thirteen answers — ruleset missing,
+wrong name, `evaluate` instead of `active`, a bypass actor added, the required
+context renamed, the check bound to the wrong app, the `pull_request` rule
+removed, coverage pointed at another branch, network down, rate limited, repo
+gone. All thirteen behave as intended. Network trouble is a **loud skip**, not a
+failure: "GitHub had a bad minute" is not a statement about the ruleset, and a
+gate that goes red for unrelated reasons is a gate that gets switched off.
+
+**`verify` is now a load-bearing name in two places** — the job id in `ci.yml`
+and the required context in the ruleset, bound to app `15368`. Both were read
+off a real check run rather than remembered, because getting the pair wrong does
+not weaken the protection, it **deadlocks** it: a context nobody reports leaves
+every pull request waiting forever for a status that will never arrive. The new
+step exists mostly to catch that.
+
+**GitHub set a parameter we never sent.** Creating the ruleset returned
+`require_extra_approval_for_unattributed_changes: true`. On a repo where every
+commit carries a `Co-Authored-By` trailer for an address with no GitHub account,
+and where zero approvers are available, that had an obvious route to deadlocking
+every merge. It did not — PR 1 reached `CLEAN` with both checks green and zero
+approvals. The field is recorded in the JSON as GitHub set it rather than fought
+or omitted, because that file is what you re-POST to rebuild the ruleset, and
+one reproducing our intentions instead of reality would rebuild something
+subtly different from what was tested. The verifier's header now states which
+fields it **asserts** and which the JSON merely **records** — deliberately not
+the same set, since GitHub will keep adding parameters.
+
+**Proved end to end, through the thing itself.** PR 1 carried the records
+correction, sat at `mergeStateStatus: BLOCKED` until `verify` reported, then
+merged; PR 2 carried the parameter reconciliation the same way. Both rebased to
+fast-forwards, so history stays linear and the commit messages survived intact.
+
+**One thing was NOT verified, and should not be read as if it were.** The
+obvious negative test — push a commit straight to `master` and watch it bounce
+— was refused by the tooling, which reads that command as an attempt to bypass
+CI. That is a fair reading and it was not worked around. So a rejected push has
+not been observed first-hand; what has been observed is the configuration that
+produces one, plus a merge that was genuinely blocked until the check went
+green. Strong, but not the same observation.
+
+**Also corrected here:** the board had no row for CI at all. It was added
+2026-09-22 and never recorded, which is precisely the drift `CLAUDE.md` warns
+about and that `README.md`, `PROGRESS.md` and `CLIENT-PENDING.txt` had all
+suffered before. Rows 38 and 39 now cover both, including the honest limitation
+that **CI cannot catch an invented claim** — the provenance half of the content
+gate needs a gitignored bundle, so rule 1 is still enforced by running
+`measure-content.cjs` locally before shipping copy, and by nothing else.
+
 
 ### 2026-09-20 (last) — a design audit, three fix batches, and four broken instruments
 
