@@ -23,6 +23,21 @@
 //     not a statement about the ruleset, and failing every run because GitHub
 //     had a bad minute is how a gate gets switched off. Same rule as the
 //     missing bundle in measure-content.cjs.
+//
+// WHAT IT ASSERTS, versus what the JSON merely RECORDS. The committed file is a
+// full snapshot, so re-POSTing it reproduces the ruleset exactly. The checks
+// below are a deliberate subset: enforcement, coverage, bypass actors, the
+// presence of each rule, and the required check's context and app id. Those are
+// the fields whose drift changes whether anything is blocked.
+//
+// Everything else is recorded and not asserted, on purpose -- GitHub adds
+// parameters to these rules over time and defaults them server-side, and a
+// checker that failed on every new field would be red for reasons that have
+// nothing to do with this repo. That already happened once: creating the
+// ruleset on 2026-09-25 returned require_extra_approval_for_unattributed_changes
+// set true, which was never sent. It turned out to be harmless here -- pull
+// request 1 merged clean with zero approvers -- and it is in the JSON now
+// because the file has to reproduce reality, not our intentions about it.
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
