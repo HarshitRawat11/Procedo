@@ -1,0 +1,87 @@
+name: CI
+
+# WHAT THIS GUARDS, AND WHAT IT DOES NOT
+#
+# It runs the checks this repo has actually been broken by. Every one of them
+# fails SILENTLY without it: no error, no warning, and a page that still looks
+# right in a browser. That is the whole reason they are worth a workflow.
+#
+# ⚠️ IT CANNOT PREVENT A BAD DEPLOY, ONLY REPORT ONE.
+# Work here goes straight to `master`, and Cloudflare Pages builds on push. By
+# the time this workflow finishes, the preview has already published. Making it
+# preventive needs pull requests and a branch-protection rule requiring this
+# check — a change to how the repo is worked, not to this file. Until then,
+# treat a red run as "the last push broke something, fix it forward".
+#
+# It deliberately does NOT run the browser-driven design gates from
+# QUALITY-GATES.md (shoot-screens, measure-hierarchy, diff-screens). Those need
+# Chrome, produce ~21 MB of PNGs, take minutes, and two of them are judged by
+# eye. They belong in a person's hands, not a pipeline.
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Pinned to 22 to match NODE_VERSION on the Cloudflare Pages project.
+          # If those two drift, CI can pass on a Node the deploy never uses.
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      # ── Build. `npm run build` runs `astro check` first, so this is also the
+      # type check. CLAUDE.md rule 7 requires 0 errors.
+      - name: Build (astro check + build)
+        run: npm run build
+
+      # ── The production build must NOT carry the preview noindex, and the
+      # security headers must all sit in ONE `/*` rule. Both failure modes are
+      # invisible: see the header of the script.
+      - name: Headers — production build
+        run: node scripts/verify-headers.cjs
+
+      # ── The four gates that need only the built output.
+      - name: SEO (titles, descriptions, schema, og, canonicals)
+        run: node scripts/measure-seo.cjs
+
+      - name: Integrity (dead links, duplicate ids, headings, labels)
+        run: node scripts/measure-integrity.cjs
+
+      - name: Content (services depth, and every claim traceable to a source)
+        run: node scripts/measure-content.cjs
+
+      - name: Wire weight (every route, brotli, against the 100 KB cap)
+        run: node scripts/measure-weight.cjs
+
+      # ── Design system drift: stock palette colours, an eighth type size, a
+      # fourth radius, raw hex outside @theme, theme-color vs --color-cream.
+      - name: Design system (palette, type scale, radius)
+        run: node scripts/verify-tokens.cjs
+
+      # ── Last, because it overwrites dist/_headers: prove the PREVIEW build
+      # does carry the noindex. Running this earlier would leave the noindex in
+      # dist/ and make the production check above pass for the wrong reason.
+      - name: Headers — preview build carries the noindex
+        run: |
+          npm run build:preview
+          node scripts/verify-headers.cjs --preview

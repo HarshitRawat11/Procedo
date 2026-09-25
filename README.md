@@ -98,6 +98,21 @@ the one part of the hosting setup that is easy to break invisibly.
 previous React site. **Do not delete it** — it is the only surviving source of
 the company's real copy.
 
+### Continuous integration
+
+`.github/workflows/ci.yml` runs the build and seven checks on every push to
+`master` and on any pull request. It guards the things this repo has actually
+been broken by — each of which fails **silently**, with no error and a page that
+still looks right.
+
+⚠️ **It reports; it does not prevent.** Work goes straight to `master` and
+Cloudflare builds on push, so CI finishes after the preview has published.
+Making it preventive needs pull requests and a branch-protection rule requiring
+the check — a change to how the repo is worked, not to the workflow.
+
+The browser-driven design gates are deliberately excluded: they need Chrome,
+produce ~21 MB of PNGs, and two of them are judged by eye.
+
 ### Quality gates
 
 Each reads `dist/`, so it checks what a visitor actually gets. Build first.
@@ -107,6 +122,8 @@ node scripts/measure-seo.cjs         # titles, descriptions, schema, og, canonic
 node scripts/measure-integrity.cjs   # dead links/anchors, duplicate ids, headings, labels
 node scripts/measure-content.cjs     # services copy depth and provenance
 node scripts/measure-weight.cjs      # wire weight per route, brotli, vs the 100 KB cap
+node scripts/verify-headers.cjs      # the noindex safety property + one /* rule
+node scripts/verify-tokens.cjs       # palette, type scale, radius, theme-color
 node scripts/measure-svg.cjs <file>  # the illustration loop's countable checks
 ```
 
@@ -168,7 +185,9 @@ silently fail.
 
 **4. Experiments are additive.**
 Build previews as new pages rather than editing live ones, and confirm before
-deleting anything — there is no CI or branch protection here, only git history.
+deleting anything. CI runs on every push (see above), but there is no branch
+protection, so it reports rather than prevents — git history is still the only
+undo.
 
 **5. Keep it accessible.**
 All motion is gated behind `prefers-reduced-motion`. Keep semantic markup, real

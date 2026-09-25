@@ -135,7 +135,9 @@
 
   ::selection {
     background-color: var(--color-brand-500);
-    color: #fff;
+    /* Was a raw #fff. Found 2026-09-22 by scripts/verify-tokens.cjs on its
+       first run — the only live raw hex left in src/ outside SVG artwork. */
+    color: var(--color-surface);
   }
 
   :focus-visible {

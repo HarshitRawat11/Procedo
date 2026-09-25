@@ -141,10 +141,11 @@ dead link, an empty card, or a form that silently fails. Preserve that pattern
 for any new unknown.
 
 ### 4. Confirm before destructive changes
-Git is set up and pushed to GitHub (`HarshitRawat11/Procedo`), but there is no CI
-or branch protection — **confirm before deleting or overwriting anything**, and
-prefer additive changes. Preview work goes in a new file, never on top of a live
-page. Uncommitted work still has no undo.
+Git is set up and pushed to GitHub (`HarshitRawat11/Procedo`). Since 2026-09-22
+there is CI, but **there is still no branch protection**, so CI reports after the
+fact and prevents nothing — **confirm before deleting or overwriting anything**,
+and prefer additive changes. Preview work goes in a new file, never on top of a
+live page. Uncommitted work still has no undo.
 
 ### 5. Concept and preview pages must be sealed off — and are currently parked
 Anything not part of the real site must be: not in `nav`, linked from nowhere,
@@ -466,6 +467,29 @@ anything rendering user input — this policy stops being adequate.** Then the 6
 inline style attributes need turning into utility classes (six distinct delay
 values, about twenty call sites) and the router question needs solving.
 
+**CI runs the build and seven checks on every push to `master`**, in
+`.github/workflows/ci.yml`, on Node 22 to match the Cloudflare project. Added
+2026-09-22. It guards the failure modes recorded in this file — each of which is
+SILENT, with no error and a page that still looks right:
+
+| Check | What it catches |
+|---|---|
+| `npm run build` | type errors; `astro check` runs first |
+| `verify-headers.cjs` | a noindex leaking into a PRODUCTION build, a second `/*` rule eating the security headers, a missing header |
+| `verify-headers.cjs --preview` | the preview NOT carrying its noindex |
+| `measure-seo / integrity / content / weight` | the four gates that need only `dist/` |
+| `verify-tokens.cjs` | stock palette colours, an eighth type size, a fourth radius, raw hex outside `@theme`, and `theme-color` drifting from `--color-cream` |
+
+⚠️ **CI REPORTS; IT CANNOT PREVENT.** Work goes straight to `master` and
+Cloudflare builds on push, so the workflow finishes after the preview has
+already published. A red run means the last push broke something — fix it
+forward. Making it preventive needs pull requests plus a branch-protection rule
+requiring the check, which is a change to how this repo is worked and has not
+been made.
+
+The browser-driven design gates are deliberately NOT in CI: they need Chrome,
+produce ~21 MB of PNGs, and two of them are judged by eye.
+
 Measured gates, all reading `dist/` so they see what a visitor gets:
 
 ```bash
@@ -473,6 +497,9 @@ node scripts/measure-seo.cjs         # titles, descriptions, schema, og, canonic
 node scripts/measure-integrity.cjs   # dead links/anchors, duplicate ids, headings, labels
 node scripts/measure-content.cjs     # services copy depth and provenance
 node scripts/optimise-images.cjs     # re-encode the two PNGs on every page (idempotent)
+node scripts/measure-weight.cjs      # wire weight per route, brotli, vs the 100 KB cap
+node scripts/verify-headers.cjs      # noindex property, one /* rule, all 7 headers
+node scripts/verify-tokens.cjs       # palette, type scale, radius, theme-color
 ```
 
 Dev server launch configs are in `.claude/launch.json` as `procedo-dev` and

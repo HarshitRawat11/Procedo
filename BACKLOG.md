@@ -59,7 +59,7 @@ Honest assessment attached to each, including the ones not worth doing.
 | **Hash-locked CSP** | **No — proven impossible.** Astro's ClientRouter neuters already-run scripts with a `data:application/javascript,` URL, which no hash and not even `strict-dynamic` will allow. Tried twice, both broke the site. `public/_headers` records the full finding |
 | **Font subsetting** | **No.** Saves ~2 KB against a real risk of a missing glyph |
 | **Migration to Workers static assets** | **Not yet, but expect it.** Cloudflare is folding Pages into Workers. Re-check `_headers` support first — the whole preview `noindex` design depends on it |
-| **Any CI pipeline** | **Open question.** There is none, and no branch protection. The gates exist and are run by hand |
+| ~~**Any CI pipeline**~~ | **DONE 2026-09-22.** `.github/workflows/ci.yml` runs the build and seven checks on every push to `master`. **It reports, it cannot prevent** — work goes straight to master and Cloudflare builds on push, so CI finishes after the deploy. Making it preventive needs PRs plus a branch-protection rule: a change to how the repo is worked, and still open |
 | **Deleting the 8 parked previews, `dist-client/`, `deliverables/`** | **No.** None reaches the public site, and each parked page is rehearsal space for the next change to its live page |
 
 ---
