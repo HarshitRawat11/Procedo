@@ -65,6 +65,27 @@
 # connect-src and form-action name Web3Forms because the contact form fetches
 # https://api.web3forms.com/submit, and falls back to a native POST to the same
 # URL when JavaScript is unavailable.
+#
+# THE TWO CLOUDFLAREINSIGHTS ORIGINS WERE ADDED 2026-09-27, WITH ANALYTICS, AND
+# NOT BEFORE. They are the whole reason this policy needed touching: the beacon
+# is a third-party script, which is exactly what `script-src 'self'` exists to
+# refuse. Measured rather than predicted — with analytics switched on at the
+# Pages project and this policy unchanged, every page load logged
+#
+#   Loading the script 'https://static.cloudflareinsights.com/beacon.min.js'
+#   violates the following Content Security Policy directive: "script-src
+#   'self' 'unsafe-inline' data:". The action has been blocked.
+#
+# so nothing was measured AND every page gained a console error, against
+# FINISH-LINE's recorded zero. Two entries are needed, not one: the script
+# itself loads from static.cloudflareinsights.com, and it POSTs its beacon to
+# cloudflareinsights.com/cdn-cgi/rum, which connect-src governs. Allowing only
+# the first gets a script that loads and then silently cannot report — the
+# worse failure, because nothing in the console says so.
+#
+# If analytics is ever switched off again, TAKE THESE BACK OUT. A policy that
+# permits an origin the site no longer uses is a policy that has stopped
+# describing the site.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
@@ -72,7 +93,7 @@
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Cross-Origin-Opener-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline' data:; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com https://cloudflareinsights.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests
 
 # Astro fingerprints these filenames, so they can be cached forever.
 /_astro/*
