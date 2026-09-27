@@ -66,26 +66,24 @@
 # https://api.web3forms.com/submit, and falls back to a native POST to the same
 # URL when JavaScript is unavailable.
 #
-# THE TWO CLOUDFLAREINSIGHTS ORIGINS WERE ADDED 2026-09-27, WITH ANALYTICS, AND
-# NOT BEFORE. They are the whole reason this policy needed touching: the beacon
-# is a third-party script, which is exactly what `script-src 'self'` exists to
-# refuse. Measured rather than predicted — with analytics switched on at the
-# Pages project and this policy unchanged, every page load logged
+# ── WHEN ANALYTICS IS SWITCHED ON, THIS POLICY NEEDS TWO MORE ORIGINS ───────
+# Added 2026-09-27 and removed again the same day, because the token turned out
+# to be dead. Both lines go back in the moment `analytics.id` in site.ts has a
+# real token — the exact strings, and why there are two:
 #
-#   Loading the script 'https://static.cloudflareinsights.com/beacon.min.js'
-#   violates the following Content Security Policy directive: "script-src
-#   'self' 'unsafe-inline' data:". The action has been blocked.
+#   script-src  … https://static.cloudflareinsights.com   serves beacon.min.js
+#   connect-src … https://cloudflareinsights.com          receives /cdn-cgi/rum
 #
-# so nothing was measured AND every page gained a console error, against
-# FINISH-LINE's recorded zero. Two entries are needed, not one: the script
-# itself loads from static.cloudflareinsights.com, and it POSTs its beacon to
-# cloudflareinsights.com/cdn-cgi/rum, which connect-src governs. Allowing only
-# the first gets a script that loads and then silently cannot report — the
-# worse failure, because nothing in the console says so.
+# ONE IS NOT ENOUGH. Allow only the script and you get a beacon that loads and
+# then silently cannot report: console clean, dashboard empty, nothing anywhere
+# saying why. Both halves were observed on the deployed preview rather than
+# predicted — first the script blocked outright by `script-src 'self'`, then,
+# after adding it, the report blocked as well.
 #
-# If analytics is ever switched off again, TAKE THESE BACK OUT. A policy that
-# permits an origin the site no longer uses is a policy that has stopped
-# describing the site.
+# THEY ARE OUT RIGHT NOW ON PURPOSE. The site loads no beacon while
+# `analytics.id` is empty, and a policy that permits an origin the site does
+# not use has stopped describing the site. That is the entire value of the
+# thing. Put them back WITH the token, not before it.
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
@@ -93,7 +91,7 @@
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   Cross-Origin-Opener-Policy: same-origin
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline' data: https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com https://cloudflareinsights.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; frame-src 'none'; script-src 'self' 'unsafe-inline' data:; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; upgrade-insecure-requests
 
 # Astro fingerprints these filenames, so they can be cached forever.
 /_astro/*

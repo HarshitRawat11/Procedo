@@ -446,14 +446,20 @@ npm run deploy:preview  # build:preview, then push dist/ to Cloudflare Pages
 **A CSP ships in `public/_headers` and carries NO hashes**, which is why it can
 be a static line rather than a build step.
 
-**Two `cloudflareinsights.com` origins were added 2026-09-27, with analytics.**
-`script-src` for `static.cloudflareinsights.com`, which serves the beacon, and
-`connect-src` for `cloudflareinsights.com`, which receives it. **Both are
-needed** — allowing only the script gets one that loads and then silently
-cannot report, which is the worse failure because nothing says so. This was
-found the hard way: the beacon was switched on at the Pages project first, the
-CSP blocked it outright, and every page gained a console error while nothing
-was measured. **If analytics is ever switched off, take these back out.** A hash-locked policy was attempted
+**Switching analytics on will need two more origins in it**, and they are not
+there now because analytics is not on. `script-src` for
+`static.cloudflareinsights.com`, which serves the beacon, and `connect-src` for
+`cloudflareinsights.com`, which receives it. **Both are needed** — allow only
+the script and you get one that loads and then silently cannot report, which is
+the worse failure because the console stays clean and the dashboard stays empty.
+
+Both halves were observed on the deployed preview on 2026-09-27 rather than
+predicted, along with a third trap: **a token created by the Pages project's own
+Web Analytics toggle dies when that toggle is switched off**, and every report
+then comes back `404`, which the browser reports as a CORS error because a 404
+carries no `Access-Control-Allow-Origin`. The exact strings and the full story
+are in a comment in `public/_headers`. **Put them back with the token, not
+before it.** A hash-locked policy was attempted
 twice — hand-rolled, then with Astro's own `security.csp` — and both broke the
 site. Two hard blocks, and neither appears on a cold page load, so only walking
 the nav with a `securitypolicyviolation` listener found them:
@@ -472,7 +478,7 @@ the nav with a `securitypolicyviolation` listener found them:
 So the shipped policy keeps every directive that genuinely constrains this site
 and drops the two that cannot work. It still blocks scripts from other origins,
 object/embed, framing, `<base>` rewriting, and form or fetch traffic to anywhere
-but this origin, Web3Forms and Cloudflare Insights. It cannot stop INLINE injection — and on a site
+but this origin and Web3Forms. It cannot stop INLINE injection — and on a site
 that is static HTML built from `site.ts`, with nothing anywhere echoing user
 input back into a page, there is no route to inject in the first place.
 

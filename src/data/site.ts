@@ -122,17 +122,30 @@ export const directionsHref = contact.address
  */
 export type AnalyticsProvider = 'none' | 'cloudflare' | 'plausible' | 'umami' | 'ga4';
 export const analytics: { provider: AnalyticsProvider; id: string; host: string } = {
-  provider: 'cloudflare',
-  /* Cloudflare Web Analytics site token. NOT a secret — it ships in the HTML of
-     every page and is visible to every visitor; that is how the beacon works.
+  /* PROVIDER IS CHOSEN AND WIRED; the id is empty because there is no valid
+     token yet, and an empty id keeps the whole feature switched off (§3 — a
+     missing value hides its feature rather than faking it).
 
-     Where it came from, 2026-09-27: the Pages project's own Web Analytics
-     toggle was switched on, which made Cloudflare inject a beacon at the edge
-     carrying this token. That route was then turned OFF again — see
-     Analytics.astro for why the switch belongs in this file — but the token it
-     created is a perfectly ordinary one and is reused here rather than
-     generating a second site and splitting the data in two. */
-  id: 'eca84370803f4b67a3edeebc8f76cf21',
+     ⚠️ DO NOT REUSE A TOKEN THE PAGES TOGGLE CREATED. That was tried on
+     2026-09-27 and it does not survive. Enabling Web Analytics on the Pages
+     project auto-creates a site and injects a beacon carrying its token;
+     DISABLING the toggle deletes that site, and the token dies with it. The
+     beacon then loads happily and every report 404s:
+
+       POST https://cloudflareinsights.com/cdn-cgi/rum  ->  404 Not Found
+
+     which the browser surfaces as a CORS error, because a 404 carries no
+     Access-Control-Allow-Origin and that is the only thing the browser can
+     see. Three console errors per page, and a dashboard that would have
+     stayed empty looking like no traffic.
+
+     TO SWITCH ON: Cloudflare dashboard -> Analytics & Logs -> Web Analytics ->
+     Add a site -> copy the 32-hex site token into `id` below. That site is
+     independent of the Pages project and is not deleted by anything. Then put
+     the two cloudflareinsights origins back into public/_headers, which were
+     removed in the same commit as this note — see the block in that file. */
+  provider: 'cloudflare',
+  id: '',
   host: '',
 };
 
