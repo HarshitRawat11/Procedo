@@ -122,8 +122,17 @@ export const directionsHref = contact.address
  */
 export type AnalyticsProvider = 'none' | 'cloudflare' | 'plausible' | 'umami' | 'ga4';
 export const analytics: { provider: AnalyticsProvider; id: string; host: string } = {
-  provider: 'none',
-  id: '',
+  provider: 'cloudflare',
+  /* Cloudflare Web Analytics site token. NOT a secret — it ships in the HTML of
+     every page and is visible to every visitor; that is how the beacon works.
+
+     Where it came from, 2026-09-27: the Pages project's own Web Analytics
+     toggle was switched on, which made Cloudflare inject a beacon at the edge
+     carrying this token. That route was then turned OFF again — see
+     Analytics.astro for why the switch belongs in this file — but the token it
+     created is a perfectly ordinary one and is reused here rather than
+     generating a second site and splitting the data in two. */
+  id: 'eca84370803f4b67a3edeebc8f76cf21',
   host: '',
 };
 
