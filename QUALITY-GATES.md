@@ -29,7 +29,7 @@ five of six passing.
 |---|---|---|---|
 | **1 — Intent alignment** | **PASS** | 1a PASS 10/10 · **1b PASS — fixed 2026-09-20, 1–3 CTAs above fold on 10/10 pages at 375 (was 0 on 8/10)** · 1c: hypey PASS, consumer-cute **WAIVED** for `/404`, **generic now PASS (marginal)** — resolved by the hero adoption | `review/*-375-fold.png`, iframe CTA probe |
 | **2 — Visual system** | **PASS** | **All five checks pass.** 2a — 0 stock-palette utilities, proven a pure rename by pixel diff · 2b — 2 families · **2c — 7 rendered sizes at 1280 (was 14), and 7 at 768 and 375 too** · 2d — one spacing scale · **2e — 3 radii (was 5)** | computed-style sweep across 10 routes x 3 widths |
-| **3 — Hierarchy** | **FAIL** | **3a FAIL — 16/30 views clear at ratio ≥1.5, down from 19/30 before batch 2.** A real regression of three views, measured deterministically (see below) · 3b PASS (sampled) · 3c PASS 10/10 | `review/gate3/*-squint.png`, `contact-sheet-thumbs-1280.png` |
+| **3 — Hierarchy** | **FAIL** | **3a FAIL — 19/30 views clear at ratio ≥1.5 after the 2026-09-27 fix, up from 16.** The statement blockquote moved `text-h3` → `text-h2` on `/company` and `/our-mission`; measured deterministically (see below) · 3b PASS (sampled) · 3c PASS 10/10 | `review/gate3/*-squint.png`, `contact-sheet-thumbs-1280.png` |
 | **4 — Distinctiveness** | **PASS** (4a marginal) | **4a PASS, marginally** — with the logo masked what remains is a mono-numbered hairline index, the eyebrow with its brand tick and the cream ground. Not "nothing", which is the written threshold; not unmistakable either · **4b PASS — the Tailwind UI card is gone** · 4c PASS · 4d PASS (mono eyebrow, 10/10) | `review/gate4/*-nologo.png` |
 | **5 — Imagery** | **PASS** (1 waived) | 5a–5e PASS — density 66–88% cream / 2.5–4.8% dark, all inside the band · **5f WAIVED** — 11 KB PNG logo | `measure-density.cjs`, built `<img>` audit |
 | **6 — Motion** | **PASS** | 11 of 11. Micro 200–300ms, reveal 600ms, CLS **0**, **transform/opacity only**, reduced-motion guards in 9 files | stylesheet + keyframe audit |
@@ -325,11 +325,60 @@ flood-fill clustering, so an element spanning ten cells is one cluster.
   text beside `CompanyScene`: two masses of near-equal ink, side by side at
   1280 and stacked at 375, neither leading at any width.
 
-  **Not fixed here, deliberately.** Giving one of those two masses priority
-  changes how the page *looks*, which `CLAUDE.md` classes as a redesign rather
-  than a system change, and that is Harshit's call rather than a gate's. The
-  measurement is recorded so the decision can be made on current numbers instead
-  of stale ones.
+  ### FIXED 2026-09-27 — 16 → **19 of 30**, by moving the statement blockquote
+  from `text-h3` to `text-h2`
+
+  **The first attempt was wrong, and the squint artefact is what corrected it.**
+  The diagnosis above blames `CompanyScene` for competing with the text, so the
+  first fix narrowed it — `lg:col-span-5` → `4`, capped on mobile. It made the
+  gate **worse**: `company-1280` 1.14 → 1.00, `company-768` 1.13 → 1.01.
+  Reverted.
+
+  Looking at `review/gate3/company-1280-squint.png` instead of reasoning about
+  it showed why. **The illustration is a pale third.** The two heavy masses are
+  the `PageHeader` title and the statement blockquote — both dark, both on the
+  left, at parity. Narrowing the illustration was irrelevant; shifting the grid
+  only re-wrapped the text and pushed title and quote closer together.
+
+  So the lever is the statement itself. `text-h3` existed for exactly one
+  pattern — this blockquote, on `/company` and `/our-mission` and nowhere else
+  live. Both moved to `text-h2`, so the two pages stay identical:
+
+  | View | Before | After |
+  |---|---|---|
+  | `company-1280` | 1.14 | **4.00** |
+  | `company-768` | 1.13 | **1.52** |
+  | `our-mission-1280` | 1.21 | **6.81** |
+  | `our-mission-768` | 1.33 | **2.03** |
+  | `our-mission-375` | *1.78* | 1.37 ⚠️ |
+  | `company-375` | 1.13 | 1.06 |
+
+  **`our-mission-375` went from passing to failing and the page did not get
+  worse** — checked against `review/our-mission-375-fold.png`, where the
+  statement is plainly the focal point. The cluster count went **3 → 11** and
+  the dominant share 64% → 28%: at 375 the larger type wraps into more lines and
+  the flood-fill splits one block into many. That is the instrument
+  fragmenting, not a hierarchy loss, and it is the fifth time a measurement in
+  this repo has confidently pointed the wrong way.
+
+  **What this costs.** It is a visible change on two signed-off pages: the
+  statement renders at 36px rather than 24px at 1280. There is no step between
+  them — that is what a seven-step scale means — so the choice was h3 or h2 and
+  nothing in between. It also leaves **`text-h3` unused by any live page**,
+  referenced now only by three parked previews. The token stays defined rather
+  than removed; retiring it is a separate decision.
+
+  **It also cuts against a precedent in this document**, which should be said
+  rather than hidden: fix 4 shrank every heading and cost this gate three views,
+  and they were kept smaller anyway because *"a heading at parity with its
+  illustration is arguably better than one swamped by it, and the gate cannot
+  see that."* The same argument applies in reverse here. What makes this
+  different is that it was judged on the rendered page first and the number
+  second — see the two fold screenshots — rather than chosen because the ratio
+  moved.
+- **STATUS — still FAIL at 19 of 30**, but the best figure this gate has
+  recorded, matching the pre-batch-2 high with the *smaller* heading scale in
+  place.
 - **STATUS — FAIL**
 
 ### 3b. Greyscale test
