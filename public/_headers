@@ -77,3 +77,34 @@
 # Astro fingerprints these filenames, so they can be cached forever.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
+
+# ── The static images, which are NOT fingerprinted ──────────────────────────
+# Added 2026-09-27. Until now `/_astro/*` was the only Cache-Control rule in
+# this file, so everything under public/ was served with none at all and the
+# header logo — which loads on every page of the site — was revalidated on every
+# navigation. Found by Lighthouse; it is the cheapest repeat-visit win here.
+#
+# ⚠️ THESE CANNOT BE `immutable`, AND THAT IS THE WHOLE REASON THEY NEED THEIR
+# OWN RULE. Astro fingerprints the filenames under /_astro/, so a changed file
+# is a different URL and a one-year immutable cache is safe. These filenames are
+# fixed: replace the brand artwork and `procedo-logo-header.png` still points at
+# whatever a visitor already has. `immutable` here would mean a rebrand that
+# never reaches anyone who had visited before, with no way to force it short of
+# renaming the file.
+#
+# One day is the compromise: a repeat visitor inside the same day pays nothing,
+# and new artwork reaches everyone within 24 hours without a deploy trick.
+# `stale-while-revalidate` lets the week after that serve instantly and refresh
+# in the background, which is the right trade for a logo — a day-old mark is not
+# a defect, a blocking request for one is.
+/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/favicon.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Only social crawlers ever fetch this — it is referenced from a <meta> tag and
+# no visitor downloads it — but the rule costs nothing and a crawler re-fetching
+# 111 KB on every scrape is pure waste.
+/og-default.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
