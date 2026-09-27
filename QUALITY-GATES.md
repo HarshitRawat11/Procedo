@@ -282,6 +282,54 @@ flood-fill clustering, so an element spanning ten cells is one cluster.
 
   Note the pattern: **375 fails 7 of 10**. Single-column mobile stacks blocks of
   similar weight, so nothing dominates.
+
+  ### ⚠️ RE-MEASURED 2026-09-27 — same score, different failures, and the
+  diagnosis above is now WRONG
+
+  Re-shot and re-measured on the current build. **Still 16 of 30**, which is why
+  nothing looked as though it had moved. It had:
+
+  | | |
+  |---|---|
+  | Now passing, listed above as failing | `cookies-375` · `privacy-375` · `services-1280` · `services-375` · `terms-375` |
+  | Now failing, not listed above | `404-1280` · `careers-375` · `company-1280` · `company-375` · `our-mission-1280` · `our-mission-768` |
+
+  Eleven of thirty views changed verdict while the total stayed put. The site
+  moved underneath this gate — the legal restamp and the token work both landed
+  after the last measurement — and a headline number that happens to be stable
+  hid it completely.
+
+  **The "375 is the problem" reading no longer holds.** Failures by width are
+  now **375: 5/10 · 768: 4/10 · 1280: 5/10** — spread evenly, not concentrated
+  at mobile. Acting on the paragraph above would have sent someone to rework
+  single-column stacking, which is no longer where the failures are.
+
+  **What the new distribution does show.** Sorted by page rather than width,
+  one page fails at *every* width:
+
+  | Page | 375 | 768 | 1280 |
+  |---|---|---|---|
+  | **`/company`** | **1.13** | **1.13** | **1.14** |
+  | `/404` | 1.01 | *1.85* | 1.04 |
+  | `/careers` | 1.12 | 1.10 | *2.17* |
+  | `/contact` | 1.25 | *4.36* | 1.42 |
+  | `/home` | 1.01 | 1.31 | *2.92* |
+  | `/our-mission` | *1.78* | 1.33 | 1.21 |
+  | `/privacy` | *2.09* | *100%* | 1.23 |
+  | `/cookies`, `/services`, `/terms` | *pass* | *pass* | *pass* |
+
+  A page that fails at one width and passes at another is usually the metric
+  reacting to how blocks reflow. **A page that sits at 1.13–1.14 at all three
+  is a hierarchy problem that exists independently of layout**, and `/company`
+  is the only one. Its statement band is a 12-column `items-center` two-up of
+  text beside `CompanyScene`: two masses of near-equal ink, side by side at
+  1280 and stacked at 375, neither leading at any width.
+
+  **Not fixed here, deliberately.** Giving one of those two masses priority
+  changes how the page *looks*, which `CLAUDE.md` classes as a redesign rather
+  than a system change, and that is Harshit's call rather than a gate's. The
+  measurement is recorded so the decision can be made on current numbers instead
+  of stale ones.
 - **STATUS — FAIL**
 
 ### 3b. Greyscale test
