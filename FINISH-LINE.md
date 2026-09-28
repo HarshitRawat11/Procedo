@@ -1,6 +1,6 @@
 # FINISH LINE — Procedo Infosystems website
 
-**Version:** v1.0 — **UNFROZEN 2026-09-19**
+**Version:** v1.0 — **UNFROZEN 2026-09-19** · criteria re-measured **2026-09-28**
 **Locked:** 2026-09-19 · **Unfrozen:** 2026-09-19, the same day
 **Drafted:** 2026-09-19 (v0), revised 2026-09-19 (v1), locked 2026-09-19 (v1.0)
 **Completion authority:** client work — Procedo Infosystems Pvt. Ltd.
@@ -93,7 +93,7 @@ Neither was ever confirmed. If one turns out to be wrong, correct it here — it
 | Item | Owner | Behaviour while missing |
 |---|---|---|
 | LinkedIn profile URL | Procedo | **VERIFIED** — footer icon hidden, no dead link shipped |
-| Cloudflare Web Analytics site token | Procedo | **VERIFIED** — nothing emitted; provider already chosen |
+| ~~Cloudflare Web Analytics site token~~ | ~~Procedo~~ | **SUPPLIED 2026-09-28** — no longer owed. The beacon ships and the Cookie Policy discloses it, both derived from `analytics.id`. The graceful-degradation behaviour this row recorded was verified in *both* directions on the way: empty id emitted nothing and `/cookies` said so; a filled id emits the beacon and `/cookies` says that instead |
 | ~~Legal sign-off on `/privacy`, `/terms`, `/cookies`~~ | Procedo’s legal advisor | **RECEIVED 2026-09-22.** All three stamped with that date. The advisor’s one instruction was to remove the Privacy Policy’s newsletter clause, which had no mechanism behind it; done. |
 | DNS cutover to `procedoinfo.com` | Procedo | Preview URL is the v1 deployment |
 
@@ -138,7 +138,7 @@ page deviates from it.
 | O2 | `node scripts/measure-seo.cjs` | passes | **VERIFIED — all 10 pages** |
 | O3 | `node scripts/measure-integrity.cjs` | 0 problems | **VERIFIED — 0** |
 | O4 | Console errors on load, every route, excluding the 404 route's own 404 status | 0 | **VERIFIED — 0 across all ten** |
-| O5 | Wire weight, **every route** | ≤ 100 KB | **VERIFIED — heaviest `/services` 49.9 KB, lightest `/terms` 44.1, all 5 requests. Measured brotli on the built output 2026-09-19; 39.5 KB of each is shared and cached after the first page** |
+| O5 | Wire weight, **every route** | ≤ 100 KB | **VERIFIED — heaviest `/services` 50.1 KB, lightest `/terms` 44.3 (re-measured 2026-09-28; was 49.9 / 44.1, the 0.2 KB being the analytics beacon script tag), all 5 requests. Measured brotli on the built output 2026-09-19; 39.5 KB of each is shared and cached after the first page** |
 | O6 | `<title>` length, every page | ≤ 62 chars | **VERIFIED — 29–62** |
 | O7 | `meta description` length | 120–160 chars | **VERIFIED — 132–158** |
 | O8 | Exactly one `<h1>` per page | exactly 1 | **VERIFIED — 10/10** |
@@ -237,9 +237,32 @@ The ones marked *rejected* are closed; the rest are simply not done yet, and
 | ~~G4~~ | ~~Responsive floor at 768px never measured.~~ | **CLOSED 2026-09-19** — measured, all ten routes, overflow = 0 |
 | ~~G5~~ | ~~Console errors measured on `/` only.~~ | **CLOSED 2026-09-19** — measured on all ten, 0 |
 
-**There is no remaining work in scope.** What is left belongs to the client:
-legal sign-off and the domain cutover, both recorded in §1.1 as owed content
-with an owner.
+**There is no remaining work in scope.**
+
+### Re-measured 2026-09-28 — still EMPTY, and now on a much-changed site
+
+The verdict above was reached on 2026-09-19. Everything below landed after it —
+CI, branch protection, a hero redesign, the type scale and token palette rework,
+the legal sign-off, asset caching, a Gate 3 fix and analytics — so it was
+re-measured rather than assumed. **All ten optimization criteria, both
+deployment criteria and the console check still pass**, the last on all ten
+routes rather than a sample.
+
+Two numbers moved and are corrected above: `/services` 49.9 → **50.1 KB** (the
+analytics script tag) and the analytics token is **supplied**, so only two of
+the three client-owed items remain.
+
+**One criterion was genuinely broken in between, and it is worth recording
+because nothing in CI caught it.** Between 2026-09-27 and 2026-09-28 the site
+shipped a dead Cloudflare Web Analytics token. O4 was violated on every route —
+three console errors per page — while the build was clean, every gate passed and
+the page looked perfect. **The only thing that finds an O4 breach is loading the
+site in a browser and looking**, which is exactly why O4 is a criterion and not
+a script.
+
+**What is left belongs to the client**: the domain cutover, the LinkedIn URL,
+and — the one that actually decides this question — **acceptance under §3**,
+which has not been recorded.
 
 ### A non-defect, recorded so it is not re-reported
 
