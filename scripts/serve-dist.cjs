@@ -89,7 +89,22 @@ http
       send(404, fs.existsSync(nf) ? fs.readFileSync(nf) : 'Not found', '.html');
     }
   })
-  .listen(PORT, () => {
+  /* ── BIND LOOPBACK ONLY, AND THE REASON IS ADMIN RIGHTS ───────────────────
+     `.listen(PORT)` with no host binds 0.0.0.0 and [::], and the first time a
+     program listens on a non-loopback interface Windows raises its "allow this
+     app through the firewall?" dialog — WHICH REQUIRES ADMINISTRATOR TO ACCEPT.
+
+     This machine happens to carry an Allow rule for node.exe already, so the
+     prompt never appeared. That is luck, not design: if the rule is ever
+     removed by policy, or these scripts are run on a machine that never had
+     one, shoot-screens.cjs hangs waiting on a dialog nobody present can
+     dismiss, and the failure looks like a hung screenshot run rather than a
+     permissions problem.
+
+     Nothing needs to reach this server from another machine — shoot-screens
+     drives it over localhost — so loopback costs nothing and removes the
+     dependency entirely. Do not "fix" this back to `.listen(PORT)`. ── */
+  .listen(PORT, '127.0.0.1', () => {
     const csp = BLOCKS.flatMap((b) => b.headers).find(([k]) => k.toLowerCase() === 'content-security-policy');
     console.log('dist/ on http://localhost:' + PORT);
     console.log(

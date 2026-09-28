@@ -297,6 +297,25 @@ browser, load it and check it. Report what actually happened, including failures
 | Node | v24.16.0 |
 | OS | Windows 11. Shell is PowerShell; a bash tool is also available |
 
+- **THERE ARE NO ADMINISTRATOR RIGHTS HERE, and nothing in this project needs
+  any.** Checked 2026-09-28: the token carries `BUILTIN\Users` and nothing else
+  — `BUILTIN\Administrators` is absent entirely, not merely unelevated. Every
+  build, `npm ci`, screenshot run, local server, git operation and Cloudflare
+  deploy in this repo has run without it.
+
+  That holds because everything is user-scope: npm writes to
+  `AppData\Roaming\npm` and `AppData\Local\npm-cache`, `wrangler` runs from
+  `node_modules` via `npx`, the fonts are self-hosted in the repo rather than
+  installed, and `sharp` ships a prebuilt `win32-x64` binary so a reinstall
+  needs no compiler. Node and Chrome live in `Program Files` but are only
+  executed, which needs no rights.
+
+  **The one thing that would have needed admin is why `serve-dist.cjs` binds
+  `127.0.0.1`** — see the comment at its `listen` call. Keep any new local
+  server on loopback for the same reason, and prefer tools that install
+  user-scope. If something genuinely cannot avoid admin, say so rather than
+  assuming the prompt can be answered.
+
 - **Tailwind must stay on PostCSS.** Astro 6 ships a rolldown-based Vite whose
   native resolver breaks the Tailwind Vite plugin. See `postcss.config.mjs`.
 - **Design tokens live in `src/styles/global.css`** under `@theme`. Use the
