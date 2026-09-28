@@ -123,16 +123,30 @@ export const directionsHref = contact.address
 export type AnalyticsProvider = 'none' | 'cloudflare' | 'plausible' | 'umami' | 'ga4';
 export const analytics: { provider: AnalyticsProvider; id: string; host: string } = {
   provider: 'cloudflare',
-  /* Cloudflare Web Analytics site token. NOT a secret — it ships in the HTML of
-     every page and is visible to every visitor; that is how the beacon works.
+  /* Cloudflare Web Analytics site token, from Analytics & Logs -> Web
+     Analytics -> Add a site. NOT a secret — it ships in the HTML of every page
+     and is visible to every visitor; that is how a beacon works.
 
-     Where it came from, 2026-09-27: the Pages project's own Web Analytics
-     toggle was switched on, which made Cloudflare inject a beacon at the edge
-     carrying this token. That route was then turned OFF again — see
-     Analytics.astro for why the switch belongs in this file — but the token it
-     created is a perfectly ordinary one and is reused here rather than
-     generating a second site and splitting the data in two. */
-  id: 'eca84370803f4b67a3edeebc8f76cf21',
+     ⚠️ IT MUST COME FROM THERE, NOT FROM THE PAGES PROJECT'S TOGGLE. Enabling
+     Web Analytics on the Pages project auto-creates a site and injects a
+     beacon carrying its token. DISABLING that toggle deletes the site, and the
+     token dies with it. The first token tried here, eca84370…, was one of
+     those, and the failure it produced is nasty: the beacon loads perfectly,
+     no CSP violation, no 404 in the console — and every report is refused,
+     surfacing only as
+
+       Access to XMLHttpRequest at 'https://cloudflareinsights.com/cdn-cgi/rum'
+       blocked by CORS policy: No 'Access-Control-Allow-Origin' header
+
+     because a rejected report carries no CORS headers and that is all the
+     browser can see. A dashboard at zero looks exactly like a quiet week.
+
+     Established by deploying three combinations, not by reasoning: dead token
+     with `defer` fails; live token with `type="module"` is clean; live token
+     with `defer` is clean. So the script tag is not involved and Analytics.astro
+     stays as it was — worth stating, because Cloudflare's dashboard hands you a
+     `type="module"` snippet and it is tempting to assume that matters. */
+  id: '5f2df2c411764317af13dd8df65886c2',
   host: '',
 };
 
